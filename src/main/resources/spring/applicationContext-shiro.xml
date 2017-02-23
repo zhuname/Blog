@@ -16,7 +16,7 @@
 
 	<!-- 权限管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<!-- 数据库认证的实现 org.springrain.frame.shiro.ShiroDbRealm -->
+		<!-- 数据库认证的实现 com.cz.mts.frame.shiro.ShiroDbRealm -->
 		<property name="realm" ref="shiroDbRealm" />
 		<!-- session 管理器 -->
 		<property name="sessionManager" ref="sessionManager" />
@@ -52,7 +52,7 @@
 
 	<!-- session 集群 -->
 	<!-- 
-	<bean id="shiroCacheManager" class="org.springrain.frame.shiro.ShiroRedisCacheManager"> 
+	<bean id="shiroCacheManager" class="com.cz.mts.frame.shiro.ShiroRedisCacheManager"> 
 		<property name="cached" ref="redisCached" /> 
 	</bean>
 	 -->
