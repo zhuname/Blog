@@ -1,0 +1,157 @@
+<#escape x as x?html>
+
+<SCRIPT type="text/javascript">
+<!--
+
+jQuery(document).ready(function(){
+	//回选 下拉框
+	//jQuery("#search_state option[value='是']").prop("selected",true);
+	
+	/*
+	$('.date-picker').datepicker({
+		    autoclose: true,
+		    format: 'yyyy-mm-dd',
+		    language: 'zh-CN'
+		    //,todayBtn: 'linked',
+		    //startDate:new Date(2014,10,27),
+			//endDate:'+60d',
+		    //startDate: '+1d',
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	*/
+	
+	
+	
+	});
+	
+	
+//-->
+</SCRIPT>
+
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/city/update" > 
+			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name" >城市名</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="name" class="col-xs-12 col-sm-6" id="name" value="${(returnDatas.data.name)!''}"  type="text" />
+					</div><div class="help-block" for="name"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="capital" >拼音首字母</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="capital" class="col-xs-12 col-sm-6" id="capital" value="${(returnDatas.data.capital)!''}"  type="text" />
+					</div><div class="help-block" for="capital"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="open" >是否开通  1为开通0否</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="open" class="col-xs-12 col-sm-6" id="open" value="${(returnDatas.data.open)!''}"  type="text" />
+					</div><div class="help-block" for="open"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="father_id" >所属城市id</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="father_id" class="col-xs-12 col-sm-6" id="father_id" value="${(returnDatas.data.father_id)!''}"  type="text" />
+					</div><div class="help-block" for="father_id"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="pinyin" >拼音</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="pinyin" class="col-xs-12 col-sm-6" id="pinyin" value="${(returnDatas.data.pinyin)!''}"  type="text" />
+					</div><div class="help-block" for="pinyin"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="is_hot" >是否热门0否1是</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="is_hot" class="col-xs-12 col-sm-6" id="is_hot" value="${(returnDatas.data.is_hot)!''}"  type="text" />
+					</div><div class="help-block" for="is_hot"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone" >客服电话</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="phone" class="col-xs-12 col-sm-6" id="phone" value="${(returnDatas.data.phone)!''}"  type="text" />
+					</div><div class="help-block" for="phone"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="money" >最低额度</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="money" class="col-xs-12 col-sm-6" id="money" value="${(returnDatas.data.money)!''}"  type="text" />
+					</div><div class="help-block" for="money"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="limit_money" >额度预警</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="limit_money" class="col-xs-12 col-sm-6" id="limit_money" value="${(returnDatas.data.limit_money)!''}"  type="text" />
+					</div><div class="help-block" for="limit_money"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="open_first_money" >是否打开首次登陆送红包0否1是</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="open_first_money" class="col-xs-12 col-sm-6" id="open_first_money" value="${(returnDatas.data.open_first_money)!''}"  type="text" />
+					</div><div class="help-block" for="open_first_money"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="red_money" >首次登录红包金额</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="red_money" class="col-xs-12 col-sm-6" id="red_money" value="${(returnDatas.data.red_money)!''}"  type="text" />
+					</div><div class="help-block" for="red_money"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >分站余额</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="balance" class="col-xs-12 col-sm-6" id="balance" value="${(returnDatas.data.balance)!''}"  type="text" />
+					</div><div class="help-block" for="balance"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+		</form>
+		<div class="wizard-actions">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/city/list');">
+				保存
+			</button>
+		</div>
+	</div>
+</div>
+
+
+</#escape>
