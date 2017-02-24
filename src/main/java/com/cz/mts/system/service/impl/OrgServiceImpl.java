@@ -145,7 +145,7 @@ public class OrgServiceImpl extends BaseSpringrainServiceImpl implements IOrgSer
     	}
     	
     	User u=list.get(0);
-    	org.setManagerId(u.getId());
+    	org.setManagerId(u.getId()+"");
     	org.setManagerName(u.getName());
     	
     	

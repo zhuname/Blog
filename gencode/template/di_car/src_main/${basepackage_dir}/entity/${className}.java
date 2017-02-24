@@ -16,8 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import org.springrain.frame.annotation.WhereSQL;
-import org.springrain.frame.entity.BaseEntity;
+import com.cz.mts.frame.annotation.WhereSQL;
+import com.cz.mts.frame.entity.BaseEntity;
 <#include "/copyright_class.include" >
 @Table(name="${table.sqlName}")
 public class ${className}  extends BaseEntity {

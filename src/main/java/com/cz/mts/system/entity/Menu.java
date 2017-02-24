@@ -16,7 +16,7 @@ import com.cz.mts.frame.entity.BaseEntity;
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
  * @version  2013-07-06 16:02:58
- * @see com.cz.mts.system.entity.Menu
+ * @see org.springrain.system.entity.Menu
  */
 @Table(name="t_menu")
 public class Menu  extends BaseEntity {

@@ -8,10 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import ${basepackage}.entity.${className};
 import ${basepackage}.service.I${className}Service;
-import org.springrain.frame.entity.IBaseEntity;
-import org.springrain.frame.util.Finder;
-import org.springrain.frame.util.Page;
-import org.springrain.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.frame.entity.IBaseEntity;
+import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.Page;
+import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 
 
 <#include "/copyright_class.include" >

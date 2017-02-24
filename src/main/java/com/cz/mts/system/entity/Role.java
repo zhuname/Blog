@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -15,7 +16,7 @@ import com.cz.mts.frame.entity.BaseEntity;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2013-07-06 16:02:59
+ * @version  2017-02-24 11:23:53
  * @see com.cz.mts.system.entity.Role
  */
 @Table(name="t_role")
@@ -25,13 +26,13 @@ public class Role  extends BaseEntity {
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "Role";
+	public static final String TABLE_ALIAS = "角色";
 	public static final String ALIAS_ID = "角色ID";
 	public static final String ALIAS_NAME = "角色名称";
-	public static final String ALIAS_PERMISSIONS = "权限";
-	public static final String ALIAS_PID = "所属部门";
+	public static final String ALIAS_CODE = "权限编码";
+	public static final String ALIAS_PID = "上级角色ID";
 	public static final String ALIAS_REMARK = "备注";
-	public static final String ALIAS_STATE = "状态(0:禁用2:启用)";
+	public static final String ALIAS_STATE = "是否有效(否/是)";
     */
 	//date formats
 	
@@ -44,12 +45,12 @@ public class Role  extends BaseEntity {
 	 * 角色名称
 	 */
 	private java.lang.String name;
-	/** 
-	 * 角色编码，用于生成权限框架的惟一标识权限
+	/**
+	 * 权限编码
 	 */
 	private java.lang.String code;
 	/**
-	 * 所属部门
+	 * 上级角色ID
 	 */
 	private java.lang.String pid;
 	/**
@@ -57,10 +58,11 @@ public class Role  extends BaseEntity {
 	 */
 	private java.lang.String remark;
 	/**
-	 * 状态(0:禁用1:启用)
+	 * 是否有效(否/是)
 	 */
 	private java.lang.String state;
 	//columns END 数据库字段结束
+	
 	
 	private List<Menu> menus;
 	
@@ -75,8 +77,20 @@ public class Role  extends BaseEntity {
 		this.id = id;
 	}
 
+	@Transient
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
+
 	//get and set
 	public void setId(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.id = value;
 	}
 	
@@ -86,6 +100,9 @@ public class Role  extends BaseEntity {
 		return this.id;
 	}
 	public void setName(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.name = value;
 	}
 	
@@ -93,8 +110,21 @@ public class Role  extends BaseEntity {
 	public java.lang.String getName() {
 		return this.name;
 	}
-
+	public void setCode(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
+		this.code = value;
+	}
+	
+     @WhereSQL(sql="code=:Role_code")
+	public java.lang.String getCode() {
+		return this.code;
+	}
 	public void setPid(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.pid = value;
 	}
 	
@@ -103,6 +133,9 @@ public class Role  extends BaseEntity {
 		return this.pid;
 	}
 	public void setRemark(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.remark = value;
 	}
 	
@@ -110,12 +143,15 @@ public class Role  extends BaseEntity {
 	public java.lang.String getRemark() {
 		return this.remark;
 	}
-	public void setState(String value) {
+	public void setState(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.state = value;
 	}
 	
      @WhereSQL(sql="state=:Role_state")
-	public String getState() {
+	public java.lang.String getState() {
 		return this.state;
 	}
 	
@@ -124,9 +160,9 @@ public class Role  extends BaseEntity {
 			.append("角色ID[").append(getId()).append("],")
 			.append("角色名称[").append(getName()).append("],")
 			.append("权限编码[").append(getCode()).append("],")
-			.append("所属部门[").append(getPid()).append("],")
+			.append("上级角色ID[").append(getPid()).append("],")
 			.append("备注[").append(getRemark()).append("],")
-			.append("状态(0:禁用1:启用)[").append(getState()).append("],")
+			.append("是否有效(否/是)[").append(getState()).append("],")
 			.toString();
 	}
 	
@@ -143,23 +179,6 @@ public class Role  extends BaseEntity {
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
-	}
-
-	@Transient
-	public List<Menu> getMenus() {
-		return menus;
-	}
-
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-
-	public java.lang.String getCode() {
-		return code;
-	}
-
-	public void setCode(java.lang.String code) {
-		this.code = code;
 	}
 }
 

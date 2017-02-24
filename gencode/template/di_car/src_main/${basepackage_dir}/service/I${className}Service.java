@@ -4,7 +4,7 @@
 package ${basepackage}.service;
 
 import ${basepackage}.entity.${className};
-import org.springrain.system.service.IBaseSpringrainService;
+import com.cz.mts.system.service.IBaseSpringrainService;
 <#include "/copyright_class.include" >
 public interface I${className}Service extends IBaseSpringrainService {
 	
