@@ -34,7 +34,7 @@
                 <entry key="shiro"  value-ref="shiroTags"/>   
                 
                 <!-- CMS 标签 -->
-                <entry key="cms_channel_list"  value-ref="channelListDirective"/>   
+               <!--  <entry key="cms_channel_list"  value-ref="channelListDirective"/>    -->
             </map>   
         </property>  
 	</bean>
