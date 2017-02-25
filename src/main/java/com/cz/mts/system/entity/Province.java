@@ -1,7 +1,14 @@
 package com.cz.mts.system.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -9,6 +16,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -51,6 +59,17 @@ public class Province  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	//concstructor
+	
+	@Transient
+	private List<City> citys;
+	
+	public List<City> getCitys() {
+		return citys;
+	}
+
+	public void setCitys(List<City> citys) {
+		this.citys = citys;
+	}
 
 	public Province(){
 	}

@@ -33,7 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Province
  */
 @Controller
-@RequestMapping(value="/province")
+@RequestMapping(value="system/province")
 public class ProvinceController  extends BaseController {
 	@Resource
 	private IProvinceService provinceService;
@@ -71,6 +71,29 @@ public class ProvinceController  extends BaseController {
 	@RequestMapping("/list/json")
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Province province) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<Province> datas=provinceService.findListDataByFinder(null,page,Province.class,province);
+			returnObject.setQueryBean(province);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param province
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getArea/json")
+	public @ResponseBody
+	ReturnDatas getAreajson(HttpServletRequest request, Model model,Province province) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);

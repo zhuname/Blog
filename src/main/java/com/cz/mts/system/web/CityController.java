@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -213,5 +214,31 @@ public class CityController  extends BaseController {
 		
 		
 	}
+	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param city
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getArea/json")
+	public @ResponseBody
+	ReturnDatas getArea(HttpServletRequest request, Model model,City city,String type,Integer fatherId) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
+			returnObject.setQueryBean(city);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
+	
+	
 
 }
