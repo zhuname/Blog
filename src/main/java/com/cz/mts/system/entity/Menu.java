@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -15,8 +16,8 @@ import com.cz.mts.frame.entity.BaseEntity;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2013-07-06 16:02:58
- * @see org.springrain.system.entity.Menu
+ * @version  2017-02-24 15:17:27
+ * @see com.cz.mts.system.entity.Menu
  */
 @Table(name="t_menu")
 public class Menu  extends BaseEntity {
@@ -25,15 +26,16 @@ public class Menu  extends BaseEntity {
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "Menu";
+	public static final String TABLE_ALIAS = "菜单";
 	public static final String ALIAS_ID = "id";
-	public static final String ALIAS_NAME = "name";
+	public static final String ALIAS_NAME = "菜单名称";
 	public static final String ALIAS_PID = "pid";
-	public static final String ALIAS_DESCRIPTION = "description";
+	public static final String ALIAS_DESCRIPTION = "描述";
 	public static final String ALIAS_PAGEURL = "pageurl";
-	public static final String ALIAS_TYPE = "0.普通资源1.菜单资源";
-	public static final String ALIAS_SYSTEMID = "systemId";
-	public static final String ALIAS_STATE = "state";
+	public static final String ALIAS_TYPE = "0.功能按钮,1.导航菜单";
+	public static final String ALIAS_STATE = "是否有效";
+	public static final String ALIAS_SORTNO = "sortno";
+	public static final String ALIAS_MENUICON = "menuIcon";
     */
 	//date formats
 	
@@ -43,7 +45,7 @@ public class Menu  extends BaseEntity {
 	 */
 	private java.lang.String id;
 	/**
-	 * name
+	 * 菜单名称
 	 */
 	private java.lang.String name;
 	/**
@@ -51,7 +53,7 @@ public class Menu  extends BaseEntity {
 	 */
 	private java.lang.String pid;
 	/**
-	 * description
+	 * 描述
 	 */
 	private java.lang.String description;
 	/**
@@ -59,37 +61,36 @@ public class Menu  extends BaseEntity {
 	 */
 	private java.lang.String pageurl;
 	/**
-	 * 0.普通资源1.菜单资源
+	 * 0.功能按钮,1.导航菜单
 	 */
 	private java.lang.Integer type;
 	/**
-	 * 排序
-	 */
-	
-	private Integer sortno;
-	/**
-	 * 图标样式
-	 */
-	private String menuIcon;
-	
-
-	/**
-	 * state
+	 * 是否有效
 	 */
 	private java.lang.String state;
+	/**
+	 * sortno
+	 */
+	private java.lang.Integer sortno;
+	/**
+	 * menuIcon
+	 */
+	private java.lang.String menuIcon;
 	//columns END 数据库字段结束
-	private String pidName;
-	@Transient
-	public String getPidName() {
-		return pidName;
-	}
-
-	public void setPidName(String pidName) {
-		this.pidName = pidName;
-	}
-
-	//
+	
+	
+	
 	private List<Menu> leaf;
+	
+	
+	@Transient
+	public List<Menu> getLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(List<Menu> leaf) {
+		this.leaf = leaf;
+	}
 	
 	//concstructor
 
@@ -104,6 +105,9 @@ public class Menu  extends BaseEntity {
 
 	//get and set
 	public void setId(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.id = value;
 	}
 	
@@ -113,6 +117,9 @@ public class Menu  extends BaseEntity {
 		return this.id;
 	}
 	public void setName(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.name = value;
 	}
 	
@@ -121,6 +128,9 @@ public class Menu  extends BaseEntity {
 		return this.name;
 	}
 	public void setPid(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.pid = value;
 	}
 	
@@ -129,6 +139,9 @@ public class Menu  extends BaseEntity {
 		return this.pid;
 	}
 	public void setDescription(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.description = value;
 	}
 	
@@ -137,6 +150,9 @@ public class Menu  extends BaseEntity {
 		return this.description;
 	}
 	public void setPageurl(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.pageurl = value;
 	}
 	
@@ -152,44 +168,48 @@ public class Menu  extends BaseEntity {
 	public java.lang.Integer getType() {
 		return this.type;
 	}
-     @WhereSQL(sql="sortno=:Menu_sortno")
-	public Integer getSortno() {
-		return sortno;
-	}
-
-	public void setSortno(Integer sortno) {
-		this.sortno = sortno;
-	}
-
-	
-
-	public void setState(String value) {
+	public void setState(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.state = value;
 	}
 	
      @WhereSQL(sql="state=:Menu_state")
-	public String getState() {
+	public java.lang.String getState() {
 		return this.state;
 	}
+	public void setSortno(java.lang.Integer value) {
+		this.sortno = value;
+	}
+	
+     @WhereSQL(sql="sortno=:Menu_sortno")
+	public java.lang.Integer getSortno() {
+		return this.sortno;
+	}
+	public void setMenuIcon(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
+		this.menuIcon = value;
+	}
+	
      @WhereSQL(sql="menuIcon=:Menu_menuIcon")
-	public String getMenuIcon() {
-		return menuIcon;
+	public java.lang.String getMenuIcon() {
+		return this.menuIcon;
 	}
-
-	public void setMenuIcon(String menuIcon) {
-		this.menuIcon = menuIcon;
-	}
-
+	
 	public String toString() {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
-			.append("name[").append(getName()).append("],")
+			.append("菜单名称[").append(getName()).append("],")
 			.append("pid[").append(getPid()).append("],")
-			.append("description[").append(getDescription()).append("],")
+			.append("描述[").append(getDescription()).append("],")
 			.append("pageurl[").append(getPageurl()).append("],")
-			.append("0.普通资源1.菜单资源[").append(getType()).append("],")
-			.append("state[").append(getState()).append("],")
+			.append("0.功能按钮,1.导航菜单[").append(getType()).append("],")
+			.append("是否有效[").append(getState()).append("],")
 			.append("sortno[").append(getSortno()).append("],")
+			.append("menuIcon[").append(getMenuIcon()).append("],")
 			.toString();
 	}
 	
@@ -206,15 +226,6 @@ public class Menu  extends BaseEntity {
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
-	}
-
-	@Transient
-	public List<Menu> getLeaf() {
-		return leaf;
-	}
-
-	public void setLeaf(List<Menu> leaf) {
-		this.leaf = leaf;
 	}
 }
 

@@ -13,7 +13,7 @@ import com.cz.mts.frame.entity.BaseEntity;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 11:23:50
+ * @version  2017-02-24 15:17:25
  * @see com.cz.mts.system.entity.Category
  */
 @Table(name="t_category")

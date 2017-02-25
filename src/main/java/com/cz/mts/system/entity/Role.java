@@ -16,7 +16,7 @@ import com.cz.mts.frame.entity.BaseEntity;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 11:23:53
+ * @version  2017-02-24 15:17:28
  * @see com.cz.mts.system.entity.Role
  */
 @Table(name="t_role")
@@ -63,10 +63,20 @@ public class Role  extends BaseEntity {
 	private java.lang.String state;
 	//columns END 数据库字段结束
 	
+	//concstructor
+
 	
 	private List<Menu> menus;
 	
-	//concstructor
+	
+	@Transient
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
 
 	public Role(){
 	}
@@ -75,15 +85,6 @@ public class Role  extends BaseEntity {
 		java.lang.String id
 	){
 		this.id = id;
-	}
-
-	@Transient
-	public List<Menu> getMenus() {
-		return menus;
-	}
-
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
 	}
 
 	//get and set

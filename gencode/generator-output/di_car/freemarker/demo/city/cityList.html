@@ -1,6 +1,6 @@
 <#escape x as x?html>
 
-<script type="text/javascript" src="${ctx}/js/demo/city/city.js"></script>
+<script type="text/javascript" src="${ctx}/js/system/city/city.js"></script>
 
 <script type="text/javascript">
 
@@ -86,15 +86,7 @@ function deleteCity(){
 						<th id="th_name" >城市名</th>
 						<th id="th_capital" >拼音首字母</th>
 						<th id="th_open" >是否开通  1为开通0否</th>
-						<th id="th_father_id" >所属城市id</th>
-						<th id="th_pinyin" >拼音</th>
-						<th id="th_is_hot" >是否热门0否1是</th>
-						<th id="th_phone" >客服电话</th>
-						<th id="th_money" >最低额度</th>
-						<th id="th_limit_money" >额度预警</th>
-						<th id="th_open_first_money" >是否打开首次登陆送红包0否1是</th>
-						<th id="th_red_money" >首次登录红包金额</th>
-						<th id="th_balance" >分站余额</th>
+						<th id="th_fatherId" >父类id</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -171,31 +163,7 @@ function deleteCity(){
 								${(_data.open)!0}
 							</td>
 							<td >
-								${(_data.father_id)!0}
-							</td>
-							<td >
-								${(_data.pinyin)!''}
-							</td>
-							<td >
-								${(_data.is_hot)!0}
-							</td>
-							<td >
-								${(_data.phone)!''}
-							</td>
-							<td >
-								${(_data.money)!0}
-							</td>
-							<td >
-								${(_data.limit_money)!0}
-							</td>
-							<td >
-								${(_data.open_first_money)!0}
-							</td>
-							<td >
-								${(_data.red_money)!0}
-							</td>
-							<td >
-								${(_data.balance)!0}
+								${(_data.fatherId)!0}
 							</td>
 						</tr>
 					</#list>

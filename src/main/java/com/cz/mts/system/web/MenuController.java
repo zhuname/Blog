@@ -1,7 +1,4 @@
 package  com.cz.mts.system.web;
-
-import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,37 +8,42 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Menu;
-import com.cz.mts.system.service.IMenuService;
+import com.cz.mts.frame.common.SessionUser;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
-import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.Menu;
+import com.cz.mts.system.service.IMenuService;
+import com.cz.mts.system.service.IUserRoleMenuService;
+
 
 
 /**
- * TODO 在此加入类描述
- * @copyright {@link 9iu.org}
- * @author springrain<Auto generate>
- * @version  2017-02-24 11:23:52
- * @see com.cz.mts.system.web.Menu
+ * 
+ * @Title: MenuController.java
+ * @Package org.springrain.springrain.web
+ * @Description: o
+ * @author springrain
+ * @date 2013-7-11 下午9:36:31
+ * @version V1.0
+ *
  */
 @Controller
-@RequestMapping(value="/menu")
+@RequestMapping(value="/system/menu")
 public class MenuController  extends BaseController {
+	
 	@Resource
 	private IMenuService menuService;
 	
-	private String listurl="/system/menu/menuList";
+	@Resource
+	private IUserRoleMenuService userRoleMenuService;
 	
+	private String listurl="/system/menu/menuList";  //菜单列表路径
 	
-	   
 	/**
 	 * 列表数据,调用listjson方法,保证和app端数据统一
 	 * 
@@ -52,13 +54,12 @@ public class MenuController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Menu menu) 
-			throws Exception {
+	public String list(HttpServletRequest request, Model model, Menu menu) throws Exception {
 		ReturnDatas returnObject = listjson(request, model, menu);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
-	
+
 	/**
 	 * json数据,为APP提供数据
 	 * 
@@ -70,77 +71,76 @@ public class MenuController  extends BaseController {
 	 */
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Menu menu) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model, Menu menu) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		// ==构造分页请求
-		Page page = newPage(request);
-		// ==执行分页查询
-		List<Menu> datas=menuService.findListDataByFinder(null,page,Menu.class,menu);
-			returnObject.setQueryBean(menu);
-		returnObject.setPage(page);
+	
+		List<Menu> datas = menuService.findListDataByFinder(null, null, Menu.class, menu);
+		returnObject.setQueryBean(menu);
+		//returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
+
 	
-	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Menu menu) throws Exception{
-		// ==构造分页请求
-		Page page = newPage(request);
 	
-		File file = menuService.findDataExportExcel(null,listurl, page,Menu.class,menu);
-		String fileName="menu"+GlobalStatic.excelext;
-		downFile(response, file, fileName,true);
-		return;
-	}
 	
-		/**
+	
+	
+
+	/**
 	 * 查看操作,调用APP端lookjson方法
 	 */
 	@RequestMapping(value = "/look")
-	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+	public String look(Model model, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/system/menu/menuLook";
 	}
 
-	
 	/**
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
 	public @ResponseBody
-	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+	ReturnDatas lookjson(Model model, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		java.lang.String id=request.getParameter("id");
-		if(StringUtils.isNotBlank(id)){
-		  Menu menu = menuService.findMenuById(id);
-		   returnObject.setData(menu);
-		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+		String id = request.getParameter("id");
+		if (StringUtils.isNotBlank(id)) {
+			Menu menu = menuService.findMenuById(id);
+			returnObject.setData(menu);
+		} else {
+			returnObject.setStatus(ReturnDatas.ERROR);
 		}
+
 		return returnObject;
-		
+
 	}
-	
-	
+
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
 	@RequestMapping("/update")
-	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Menu menu,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	public @ResponseBody ReturnDatas saveorupdate(Menu menu, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-			java.lang.String id =menu.getId();
+			String id=menu.getId();
+			String pid=menu.getPid();
+			String pageurl=menu.getPageurl();
 			if(StringUtils.isBlank(id)){
-			  menu.setId(null);
+				menu.setId(null);
+			}	
+			if(StringUtils.isBlank(pid)){
+				menu.setPid(null);
 			}
-		
-			menuService.saveorupdate(menu);
-			
+			if(StringUtils.isBlank(pageurl)){
+				menu.setPageurl(null);
+			}
+			menuService.saveorupdateMenu(menu);
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -148,70 +148,70 @@ public class MenuController  extends BaseController {
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
 		return returnObject;
-	
 	}
-	
+
 	/**
 	 * 进入修改页面,APP端可以调用 lookjson 获取json格式数据
 	 */
 	@RequestMapping(value = "/update/pre")
-	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
+	public String edit(Model model, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/system/menu/menuCru";
 	}
-	
+
 	/**
 	 * 删除操作
 	 */
-	@RequestMapping(value="/delete")
-	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
-
-			// 执行删除
+	@RequestMapping(value = "/delete")
+	public @ResponseBody
+	ReturnDatas destroy(HttpServletRequest request) throws Exception {
+		// 执行删除
 		try {
-		java.lang.String id=request.getParameter("id");
-		if(StringUtils.isNotBlank(id)){
-				menuService.deleteById(id,Menu.class);
-				return new ReturnDatas(ReturnDatas.SUCCESS,
-						MessageUtils.DELETE_SUCCESS);
+			java.lang.String id = request.getParameter("id");
+			if (StringUtils.isNotBlank(id)) {
+				menuService.deleteMenuById(id);
+				return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.DELETE_SUCCESS);
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 	}
+
+	
 	
 	/**
-	 * 删除多条记录
 	 * 
+	 * @Title: menu
+	 * @Description: 菜单列表
+	 * @return
+	 * @return Map
+	 * @throws
 	 */
-	@RequestMapping("/delete/more")
-	public @ResponseBody
-	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
-		String records = request.getParameter("records");
-		if(StringUtils.isBlank(records)){
-			 return new ReturnDatas(ReturnDatas.ERROR,
-					MessageUtils.DELETE_ALL_FAIL);
+	@RequestMapping("/leftMenu")
+	public @ResponseBody ReturnDatas leftMenu(){
+		//获取当前登录人
+		String userId=SessionUser.getUserId();
+		if(StringUtils.isBlank(userId)){
+			return null;
 		}
-		String[] rs = records.split(",");
-		if (rs == null || rs.length < 1) {
-			return new ReturnDatas(ReturnDatas.ERROR,
-					MessageUtils.DELETE_NULL_FAIL);
-		}
+		
 		try {
-			List<String> ids = Arrays.asList(rs);
-			menuService.deleteByIds(ids,Menu.class);
+		     List<Menu> listMenu=userRoleMenuService.findMenuAndLeafByUserId(userId);
+			return new ReturnDatas(ReturnDatas.SUCCESS, null,listMenu);
+		
 		} catch (Exception e) {
-			return new ReturnDatas(ReturnDatas.ERROR,
-					MessageUtils.DELETE_ALL_FAIL);
+			logger.error("获取导航菜单异常", e);
+			return new ReturnDatas(ReturnDatas.ERROR, MessageUtils.SELECT_WARING);
 		}
-		return new ReturnDatas(ReturnDatas.SUCCESS,
-				MessageUtils.DELETE_ALL_SUCCESS);
-		
-		
+	
 	}
-
+	
+	
+	
+	
 }

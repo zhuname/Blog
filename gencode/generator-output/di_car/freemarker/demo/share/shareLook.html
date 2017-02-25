@@ -1,0 +1,46 @@
+<#escape x as x?html>
+<div class="row">
+	<div class="col-xs-12">
+		<!--input  hidden  Start-->
+	<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="shareTime" >分享时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.shareTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >用户id</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.userId)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="shareType" >分享类型 </label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.shareType)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isNum" >是否增加红包领取次数</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.isNum)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+	</div><!-- /.col -->
+</div>
+</#escape>

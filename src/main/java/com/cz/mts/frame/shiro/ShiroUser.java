@@ -48,7 +48,7 @@ public class ShiroUser implements Serializable {
 
 	public ShiroUser(User user) {
 		this.id = user.getId()+"";
-		this.account = user.getPhone();
+		this.account = user.getAccount();
 		this.name = user.getName();
 		this.email = "";
 		this.userType = 0;

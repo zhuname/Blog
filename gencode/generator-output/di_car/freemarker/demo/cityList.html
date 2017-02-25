@@ -1,6 +1,6 @@
 <#escape x as x?html>
 
-<script type="text/javascript" src="${ctx}/js/demo/city/city.js"></script>
+<script type="text/javascript" src="${ctx}/js/system/city/city.js"></script>
 
 <script type="text/javascript">
 
@@ -159,15 +159,7 @@ function saveCity(){
 												<th id="th_name" >城市名</th>
 												<th id="th_capital" >拼音首字母</th>
 												<th id="th_open" >是否开通  1为开通0否</th>
-												<th id="th_father_id" >所属城市id</th>
-												<th id="th_pinyin" >拼音</th>
-												<th id="th_is_hot" >是否热门0否1是</th>
-												<th id="th_phone" >客服电话</th>
-												<th id="th_money" >最低额度</th>
-												<th id="th_limit_money" >额度预警</th>
-												<th id="th_open_first_money" >是否打开首次登陆送红包0否1是</th>
-												<th id="th_red_money" >首次登录红包金额</th>
-												<th id="th_balance" >分站余额</th>
+												<th id="th_fatherId" >父类id</th>
 
 										</tr>
 									</thead>
@@ -196,31 +188,7 @@ function saveCity(){
 													${(_data.open)!0}
 											</td>
 											<td >
-													${(_data.father_id)!0}
-											</td>
-											<td >
-													${(_data.pinyin)!''}
-											</td>
-											<td >
-													${(_data.is_hot)!0}
-											</td>
-											<td >
-													${(_data.phone)!''}
-											</td>
-											<td >
-													${(_data.money)!0}
-											</td>
-											<td >
-													${(_data.limit_money)!0}
-											</td>
-											<td >
-													${(_data.open_first_money)!0}
-											</td>
-											<td >
-													${(_data.red_money)!0}
-											</td>
-											<td >
-													${(_data.balance)!0}
+													${(_data.fatherId)!0}
 											</td>
 											
 										</tr>
@@ -270,65 +238,9 @@ function saveCity(){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="father_id" >所属城市id</label>
+											<label class="col-sm-3 control-label no-padding-right" for="fatherId" >父类id</label>
 												 <div class="col-sm-9">
-													<input name="father_id"  id="father_id" value="" placeholder="所属城市id" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="pinyin" >拼音</label>
-												 <div class="col-sm-9">
-													<input name="pinyin"  id="pinyin" value="" placeholder="拼音" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="is_hot" >是否热门0否1是</label>
-												 <div class="col-sm-9">
-													<input name="is_hot"  id="is_hot" value="" placeholder="是否热门0否1是" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="phone" >客服电话</label>
-												 <div class="col-sm-9">
-													<input name="phone"  id="phone" value="" placeholder="客服电话" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="money" >最低额度</label>
-												 <div class="col-sm-9">
-													<input name="money"  id="money" value="" placeholder="最低额度" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="limit_money" >额度预警</label>
-												 <div class="col-sm-9">
-													<input name="limit_money"  id="limit_money" value="" placeholder="额度预警" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="open_first_money" >是否打开首次登陆送红包0否1是</label>
-												 <div class="col-sm-9">
-													<input name="open_first_money"  id="open_first_money" value="" placeholder="是否打开首次登陆送红包0否1是" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="red_money" >首次登录红包金额</label>
-												 <div class="col-sm-9">
-													<input name="red_money"  id="red_money" value="" placeholder="首次登录红包金额" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="balance" >分站余额</label>
-												 <div class="col-sm-9">
-													<input name="balance"  id="balance" value="" placeholder="分站余额" class="form-control"  type="text" />
+													<input name="fatherId"  id="fatherId" value="" placeholder="父类id" class="form-control"  type="text" />
 												 </div> 
 										</div>
 																		

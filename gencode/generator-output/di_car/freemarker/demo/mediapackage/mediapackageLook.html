@@ -1,0 +1,267 @@
+<#escape x as x?html>
+<div class="row">
+	<div class="col-xs-12">
+		<!--input  hidden  Start-->
+	<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >用户id</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.userId)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="categoryId" >分类id</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.categoryId)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="title" >主题</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.title)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="descr" >简介</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.descr)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="encrypt" >是否加密:0否1是</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.encrypt)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="command" >加密口令</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.command)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumMoney" >红包金额</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.sumMoney)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="getNum" >领取次数</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.getNum)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topPrice" >最高金额</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.topPrice)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payMoney" >支付金额</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.payMoney)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status" >状态：0未支付 1支付 2失败 3通过 4抢完5过期</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.status)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payType" >支付类型：1支付宝 2微信 3余额支付</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.payType)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.expTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.createTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payTime" >支付时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.payTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failTime" >失败时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.failTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="succTime" >审核通过时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.succTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+					<!--日期型-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="endTime" >抢完时间</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									${((returnDatas.data.endTime)?string('yyyy-MM-dd'))!'' }
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failReason" >失败原因</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.failReason)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >剩余金额</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.balance)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="num" >剩余待抢次数</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.num)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="code" >订单编号</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.code)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxCode" >微信交易流水号</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.wxCode)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="tradeNo" >交易流水号</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.tradeNo)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaUrl" >视频url</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.mediaUrl)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaImage" >视频图片</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.mediaImage)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="scanNum" >浏览次数</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.scanNum)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isDel" >是否删除: 0否 1是</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.isDel)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+	</div><!-- /.col -->
+</div>
+</#escape>

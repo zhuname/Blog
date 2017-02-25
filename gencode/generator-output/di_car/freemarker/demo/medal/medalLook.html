@@ -1,0 +1,54 @@
+<#escape x as x?html>
+<div class="row">
+	<div class="col-xs-12">
+		<!--input  hidden  Start-->
+	<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name" >勋章名称</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.name)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >勋章图片</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.image)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="descr" >简介</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.descr)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >类型：1图片认证 2视频认证</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.type)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="applyInstructions" >申请说明</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+								${(returnDatas.data.applyInstructions)!''}
+								</div>
+							</div>
+						</div>
+	                    <div class="space-2"></div>
+	</div><!-- /.col -->
+</div>
+</#escape>

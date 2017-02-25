@@ -108,7 +108,7 @@ public class LoginController extends BaseController  {
 				return "/login";
 	        }
 			//通过账号和密码获取 UsernamePasswordToken token
-			FrameAuthenticationToken token = new FrameAuthenticationToken(currUser.getPhone(),currUser.getPassword());
+			FrameAuthenticationToken token = new FrameAuthenticationToken(currUser.getAccount(),currUser.getPassword());
 			
 			String rememberme=request.getParameter("rememberme");
 			if(StringUtils.isNotBlank(rememberme)){

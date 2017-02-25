@@ -1,0 +1,239 @@
+<#escape x as x?html>
+
+<SCRIPT type="text/javascript">
+<!--
+
+jQuery(document).ready(function(){
+	//回选 下拉框
+	//jQuery("#search_state option[value='是']").prop("selected",true);
+	
+	/*
+	$('.date-picker').datepicker({
+		    autoclose: true,
+		    format: 'yyyy-mm-dd',
+		    language: 'zh-CN'
+		    //,todayBtn: 'linked',
+		    //startDate:new Date(2014,10,27),
+			//endDate:'+60d',
+		    //startDate: '+1d',
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	*/
+	
+	
+	
+	});
+	
+	
+//-->
+</SCRIPT>
+
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/card/update" > 
+			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="images" >图片地址</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}"  type="text" />
+					</div><div class="help-block" for="images"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="catergoryId" >分类id</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="catergoryId" class="col-xs-12 col-sm-6" id="catergoryId" value="${(returnDatas.data.catergoryId)!''}"  type="text" />
+					</div><div class="help-block" for="catergoryId"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >用户id</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="userId" class="col-xs-12 col-sm-6" id="userId" value="${(returnDatas.data.userId)!''}"  type="text" />
+					</div><div class="help-block" for="userId"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="title" >标题</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="title" class="col-xs-12 col-sm-6" id="title" value="${(returnDatas.data.title)!''}"  type="text" />
+					</div><div class="help-block" for="title"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="descr" >简介</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="descr" class="col-xs-12 col-sm-6" id="descr" value="${(returnDatas.data.descr)!''}"  type="text" />
+					</div><div class="help-block" for="descr"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="convertMoney" >兑换金额</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="convertMoney" class="col-xs-12 col-sm-6" id="convertMoney" value="${(returnDatas.data.convertMoney)!''}"  type="text" />
+					</div><div class="help-block" for="convertMoney"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="convertNum" >兑换数量</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="convertNum" class="col-xs-12 col-sm-6" id="convertNum" value="${(returnDatas.data.convertNum)!''}"  type="text" />
+					</div><div class="help-block" for="convertNum"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="address" >领取地址</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="address" class="col-xs-12 col-sm-6" id="address" value="${(returnDatas.data.address)!''}"  type="text" />
+					</div><div class="help-block" for="address"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lat" >纬度</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="lat" class="col-xs-12 col-sm-6" id="lat" value="${(returnDatas.data.lat)!''}"  type="text" />
+					</div><div class="help-block" for="lat"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lot" >经度</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="lot" class="col-xs-12 col-sm-6" id="lot" value="${(returnDatas.data.lot)!''}"  type="text" />
+					</div><div class="help-block" for="lot"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone" >联系电话</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="phone" class="col-xs-12 col-sm-6" id="phone" value="${(returnDatas.data.phone)!''}"  type="text" />
+					</div><div class="help-block" for="phone"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="endTime" >到期时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="endTime"  class="form-control date-picker"  id="endTime" readonly="readonly" value="${(returnDatas.data.endTime)!''}"  type="text" />
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="endTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="createTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failTime" >失败时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="failTime"  class="form-control date-picker"  id="failTime" readonly="readonly" value="${(returnDatas.data.failTime)!''}"  type="text" />
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="failTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="succTime" >通过时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="succTime"  class="form-control date-picker"  id="succTime" readonly="readonly" value="${(returnDatas.data.succTime)!''}"  type="text" />
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="succTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failReason" >失败原因</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="failReason" class="col-xs-12 col-sm-6" id="failReason" value="${(returnDatas.data.failReason)!''}"  type="text" />
+					</div><div class="help-block" for="failReason"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="num" >剩余兑换次数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="num" class="col-xs-12 col-sm-6" id="num" value="${(returnDatas.data.num)!''}"  type="text" />
+					</div><div class="help-block" for="num"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isDel" >是否删除： 0否 1是</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="isDel" class="col-xs-12 col-sm-6" id="isDel" value="${(returnDatas.data.isDel)!''}"  type="text" />
+					</div><div class="help-block" for="isDel"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+		</form>
+		<div class="wizard-actions">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/card/list');">
+				保存
+			</button>
+		</div>
+	</div>
+</div>
+
+
+</#escape>

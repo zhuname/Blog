@@ -29,7 +29,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 11:23:54
+ * @version  2017-02-24 15:17:29
  * @see com.cz.mts.system.web.User
  */
 @Controller
@@ -111,10 +111,8 @@ public class UserController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		  String  strId=request.getParameter("id");
-		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
+		java.lang.String id=request.getParameter("id");
+		if(StringUtils.isNotBlank(id)){
 		  User user = userService.findUserById(id);
 		   returnObject.setData(user);
 		}else{
@@ -136,6 +134,10 @@ public class UserController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
+			java.lang.String id =user.getId();
+			if(StringUtils.isBlank(id)){
+			  user.setId(null);
+			}
 		
 			userService.saveorupdate(user);
 			
@@ -167,10 +169,8 @@ public class UserController  extends BaseController {
 
 			// 执行删除
 		try {
-		  String  strId=request.getParameter("id");
-		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
+		java.lang.String id=request.getParameter("id");
+		if(StringUtils.isNotBlank(id)){
 				userService.deleteById(id,User.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);

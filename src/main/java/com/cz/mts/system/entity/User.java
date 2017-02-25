@@ -1,8 +1,10 @@
 package com.cz.mts.system.entity;
 
-import java.text.ParseException;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -10,11 +12,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.cz.mts.system.service.impl.UserRoleServiceImpl;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 11:23:54
+ * @version  2017-02-24 15:17:29
  * @see com.cz.mts.system.entity.User
  */
 @Table(name="t_user")
@@ -24,173 +27,109 @@ public class User  extends BaseEntity {
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "用户表";
-	public static final String ALIAS_ID = "id";
-	public static final String ALIAS_NAME = "昵称";
+	public static final String TABLE_ALIAS = "用户";
+	public static final String ALIAS_ID = "编号";
+	public static final String ALIAS_NAME = "姓名";
+	public static final String ALIAS_ACCOUNT = "账号";
 	public static final String ALIAS_PASSWORD = "密码";
-	public static final String ALIAS_PHONE = "电话";
-	public static final String ALIAS_QQNUM = "qq号";
-	public static final String ALIAS_WXNUM = "微信号";
 	public static final String ALIAS_SEX = "性别";
-	public static final String ALIAS_CREATETIME = "创建时间";
-	public static final String ALIAS_HEADER = "头像";
-	public static final String ALIAS_CITYNAME = "城市名称 ";
-	public static final String ALIAS_SIGN = "个性签名";
-	public static final String ALIAS_SINANUM = "新浪账号";
-	public static final String ALIAS_BALANCE = "余额";
-	public static final String ALIAS_FROZEBANLANCE = "冻结余额";
-	public static final String ALIAS_OSTYPE = "操作系统";
-	public static final String ALIAS_BANKNAME = "银行名称";
-	public static final String ALIAS_BRANCHBANK = "开户行";
-	public static final String ALIAS_OWNERNAME = "户主名称/真实姓名";
-	public static final String ALIAS_OWNERPHONE = "户主手机号";
-	public static final String ALIAS_CARDNUM = "卡号/支付宝账号";
-	public static final String ALIAS_WITHDRAWTYPE = "1银行 2支付宝";
-	public static final String ALIAS_CURRENTGETNUM = "当前可领取次数";
-	public static final String ALIAS_CURRENTSHARENUM = "当前可分享次数";
-	public static final String ALIAS_GETNUM = "可领取次数";
-	public static final String ALIAS_SHARENUM = "可分享次数";
-	public static final String ALIAS_ISCLOSEFEE = "是否关闭卡券手续费 0否 1是";
-	public static final String ALIAS_ISUPDATE = "是否有信息更新 0否 1是";
-	public static final String ALIAS_ISBLACK = "是否是黑名单 0否 1是";
+	public static final String ALIAS_MOBILE = "手机号码";
+	public static final String ALIAS_EMAIL = "邮箱";
+	public static final String ALIAS_WEIXINID = "微信Id";
+	public static final String ALIAS_USERTYPE = "0后台管理员|/system/,1会员用户|/front/,2cms管理员|/cms/houtai/|cms_siteManager,3活动管理员|/huodong/houtai";
+	public static final String ALIAS_STATE = "是否有效,是/否";
     */
 	//date formats
-	//public static final String FORMAT_CREATETIME = DateUtils.DATETIME_FORMAT;
 	
 	//columns START
 	/**
-	 * id
+	 * 编号
 	 */
-	private java.lang.Integer id;
+	private java.lang.String id;
 	/**
-	 * 昵称
+	 * 姓名
 	 */
 	private java.lang.String name;
+	/**
+	 * 账号
+	 */
+	private java.lang.String account;
 	/**
 	 * 密码
 	 */
 	private java.lang.String password;
 	/**
-	 * 电话
-	 */
-	private java.lang.String phone;
-	/**
-	 * qq号
-	 */
-	private java.lang.String qqNum;
-	/**
-	 * 微信号
-	 */
-	private java.lang.String wxNum;
-	/**
 	 * 性别
 	 */
 	private java.lang.String sex;
 	/**
-	 * 创建时间
+	 * 手机号码
 	 */
-	private java.util.Date createTime;
+	private java.lang.String mobile;
 	/**
-	 * 头像
+	 * 邮箱
 	 */
-	private java.lang.String header;
+	private java.lang.String email;
 	/**
-	 * 城市名称 
+	 * 微信Id
 	 */
-	private java.lang.String cityName;
+	private java.lang.String weixinId;
 	/**
-	 * 个性签名
+	 * 0后台管理员|/system/,1会员用户|/front/,2cms管理员|/cms/houtai/|cms_siteManager,3活动管理员|/huodong/houtai
 	 */
-	private java.lang.String sign;
+	private java.lang.Integer userType;
 	/**
-	 * 新浪账号
+	 * 是否有效,是/否
 	 */
-	private java.lang.String sinaNum;
-	/**
-	 * 余额
-	 */
-	private java.lang.Double balance;
-	/**
-	 * 冻结余额
-	 */
-	private java.lang.Double frozeBanlance;
-	/**
-	 * 操作系统
-	 */
-	private java.lang.String osType;
-	/**
-	 * 银行名称
-	 */
-	private java.lang.String bankName;
-	/**
-	 * 开户行
-	 */
-	private java.lang.String branchBank;
-	/**
-	 * 户主名称/真实姓名
-	 */
-	private java.lang.String ownerName;
-	/**
-	 * 户主手机号
-	 */
-	private java.lang.String ownerPhone;
-	/**
-	 * 卡号/支付宝账号
-	 */
-	private java.lang.String cardNum;
-	/**
-	 * 1银行 2支付宝
-	 */
-	private java.lang.Integer withdrawType;
-	/**
-	 * 当前可领取次数
-	 */
-	private java.lang.Integer currentGetNum;
-	/**
-	 * 当前可分享次数
-	 */
-	private java.lang.Integer currentShareNum;
-	/**
-	 * 可领取次数
-	 */
-	private java.lang.Integer getNum;
-	/**
-	 * 可分享次数
-	 */
-	private java.lang.Integer shareNum;
-	/**
-	 * 是否关闭卡券手续费 0否 1是
-	 */
-	private java.lang.Integer isCloseFee;
-	/**
-	 * 是否有信息更新 0否 1是
-	 */
-	private java.lang.Integer isUpdate;
-	/**
-	 * 是否是黑名单 0否 1是
-	 */
-	private java.lang.Integer isBlack;
+	private java.lang.String state;
 	//columns END 数据库字段结束
+	
+	
+	private List<Org> userOrgs;
+	
+	
+	private List<Role> userRoles;
+	
 	
 	//concstructor
 
 	public User(){
 	}
 
+	@Transient
+	public List<Org> getUserOrgs() {
+		return userOrgs;
+	}
+
+	public void setUserOrgs(List<Org> userOrgs) {
+		this.userOrgs = userOrgs;
+	}
+	@Transient
+	public List<Role> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(List<Role> userRoles) {
+		this.userRoles = userRoles;
+	}
+
 	public User(
-		java.lang.Integer id
+		java.lang.String id
 	){
 		this.id = id;
 	}
 
 	//get and set
-	public void setId(java.lang.Integer value) {
+	public void setId(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
 		this.id = value;
 	}
 	
 	@Id
      @WhereSQL(sql="id=:User_id")
-	public java.lang.Integer getId() {
+	public java.lang.String getId() {
 		return this.id;
 	}
 	public void setName(java.lang.String value) {
@@ -204,6 +143,17 @@ public class User  extends BaseEntity {
 	public java.lang.String getName() {
 		return this.name;
 	}
+	public void setAccount(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
+		this.account = value;
+	}
+	
+     @WhereSQL(sql="account=:User_account")
+	public java.lang.String getAccount() {
+		return this.account;
+	}
 	public void setPassword(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
 			 value=value.trim();
@@ -214,39 +164,6 @@ public class User  extends BaseEntity {
      @WhereSQL(sql="password=:User_password")
 	public java.lang.String getPassword() {
 		return this.password;
-	}
-	public void setPhone(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.phone = value;
-	}
-	
-     @WhereSQL(sql="phone=:User_phone")
-	public java.lang.String getPhone() {
-		return this.phone;
-	}
-	public void setQqNum(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.qqNum = value;
-	}
-	
-     @WhereSQL(sql="qqNum=:User_qqNum")
-	public java.lang.String getQqNum() {
-		return this.qqNum;
-	}
-	public void setWxNum(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.wxNum = value;
-	}
-	
-     @WhereSQL(sql="wxNum=:User_wxNum")
-	public java.lang.String getWxNum() {
-		return this.wxNum;
 	}
 	public void setSex(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
@@ -259,243 +176,71 @@ public class User  extends BaseEntity {
 	public java.lang.String getSex() {
 		return this.sex;
 	}
-		/*
-	public String getcreateTimeString() {
-		return DateUtils.convertDate2String(FORMAT_CREATETIME, getcreateTime());
-	}
-	public void setcreateTimeString(String value) throws ParseException{
-		setcreateTime(DateUtils.convertString2Date(FORMAT_CREATETIME,value));
-	}*/
-	
-	public void setCreateTime(java.util.Date value) {
-		this.createTime = value;
-	}
-	
-     @WhereSQL(sql="createTime=:User_createTime")
-	public java.util.Date getCreateTime() {
-		return this.createTime;
-	}
-	public void setHeader(java.lang.String value) {
+	public void setMobile(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
 			 value=value.trim();
 			}
-		this.header = value;
+		this.mobile = value;
 	}
 	
-     @WhereSQL(sql="header=:User_header")
-	public java.lang.String getHeader() {
-		return this.header;
+     @WhereSQL(sql="mobile=:User_mobile")
+	public java.lang.String getMobile() {
+		return this.mobile;
 	}
-	public void setCityName(java.lang.String value) {
+	public void setEmail(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
 			 value=value.trim();
 			}
-		this.cityName = value;
+		this.email = value;
 	}
 	
-     @WhereSQL(sql="cityName=:User_cityName")
-	public java.lang.String getCityName() {
-		return this.cityName;
+     @WhereSQL(sql="email=:User_email")
+	public java.lang.String getEmail() {
+		return this.email;
 	}
-	public void setSign(java.lang.String value) {
+	public void setWeixinId(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
 			 value=value.trim();
 			}
-		this.sign = value;
+		this.weixinId = value;
 	}
 	
-     @WhereSQL(sql="sign=:User_sign")
-	public java.lang.String getSign() {
-		return this.sign;
+     @WhereSQL(sql="weixinId=:User_weixinId")
+	public java.lang.String getWeixinId() {
+		return this.weixinId;
 	}
-	public void setSinaNum(java.lang.String value) {
+	public void setUserType(java.lang.Integer value) {
+		this.userType = value;
+	}
+	
+     @WhereSQL(sql="userType=:User_userType")
+	public java.lang.Integer getUserType() {
+		return this.userType;
+	}
+	public void setState(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
 			 value=value.trim();
 			}
-		this.sinaNum = value;
+		this.state = value;
 	}
 	
-     @WhereSQL(sql="sinaNum=:User_sinaNum")
-	public java.lang.String getSinaNum() {
-		return this.sinaNum;
-	}
-	public void setBalance(java.lang.Double value) {
-		this.balance = value;
-	}
-	
-     @WhereSQL(sql="balance=:User_balance")
-	public java.lang.Double getBalance() {
-		return this.balance;
-	}
-	public void setFrozeBanlance(java.lang.Double value) {
-		this.frozeBanlance = value;
-	}
-	
-     @WhereSQL(sql="frozeBanlance=:User_frozeBanlance")
-	public java.lang.Double getFrozeBanlance() {
-		return this.frozeBanlance;
-	}
-	public void setOsType(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.osType = value;
-	}
-	
-     @WhereSQL(sql="osType=:User_osType")
-	public java.lang.String getOsType() {
-		return this.osType;
-	}
-	public void setBankName(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.bankName = value;
-	}
-	
-     @WhereSQL(sql="bankName=:User_bankName")
-	public java.lang.String getBankName() {
-		return this.bankName;
-	}
-	public void setBranchBank(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.branchBank = value;
-	}
-	
-     @WhereSQL(sql="branchBank=:User_branchBank")
-	public java.lang.String getBranchBank() {
-		return this.branchBank;
-	}
-	public void setOwnerName(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.ownerName = value;
-	}
-	
-     @WhereSQL(sql="ownerName=:User_ownerName")
-	public java.lang.String getOwnerName() {
-		return this.ownerName;
-	}
-	public void setOwnerPhone(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.ownerPhone = value;
-	}
-	
-     @WhereSQL(sql="ownerPhone=:User_ownerPhone")
-	public java.lang.String getOwnerPhone() {
-		return this.ownerPhone;
-	}
-	public void setCardNum(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.cardNum = value;
-	}
-	
-     @WhereSQL(sql="cardNum=:User_cardNum")
-	public java.lang.String getCardNum() {
-		return this.cardNum;
-	}
-	public void setWithdrawType(java.lang.Integer value) {
-		this.withdrawType = value;
-	}
-	
-     @WhereSQL(sql="withdrawType=:User_withdrawType")
-	public java.lang.Integer getWithdrawType() {
-		return this.withdrawType;
-	}
-	public void setCurrentGetNum(java.lang.Integer value) {
-		this.currentGetNum = value;
-	}
-	
-     @WhereSQL(sql="currentGetNum=:User_currentGetNum")
-	public java.lang.Integer getCurrentGetNum() {
-		return this.currentGetNum;
-	}
-	public void setCurrentShareNum(java.lang.Integer value) {
-		this.currentShareNum = value;
-	}
-	
-     @WhereSQL(sql="currentShareNum=:User_currentShareNum")
-	public java.lang.Integer getCurrentShareNum() {
-		return this.currentShareNum;
-	}
-	public void setGetNum(java.lang.Integer value) {
-		this.getNum = value;
-	}
-	
-     @WhereSQL(sql="getNum=:User_getNum")
-	public java.lang.Integer getGetNum() {
-		return this.getNum;
-	}
-	public void setShareNum(java.lang.Integer value) {
-		this.shareNum = value;
-	}
-	
-     @WhereSQL(sql="shareNum=:User_shareNum")
-	public java.lang.Integer getShareNum() {
-		return this.shareNum;
-	}
-	public void setIsCloseFee(java.lang.Integer value) {
-		this.isCloseFee = value;
-	}
-	
-     @WhereSQL(sql="isCloseFee=:User_isCloseFee")
-	public java.lang.Integer getIsCloseFee() {
-		return this.isCloseFee;
-	}
-	public void setIsUpdate(java.lang.Integer value) {
-		this.isUpdate = value;
-	}
-	
-     @WhereSQL(sql="isUpdate=:User_isUpdate")
-	public java.lang.Integer getIsUpdate() {
-		return this.isUpdate;
-	}
-	public void setIsBlack(java.lang.Integer value) {
-		this.isBlack = value;
-	}
-	
-     @WhereSQL(sql="isBlack=:User_isBlack")
-	public java.lang.Integer getIsBlack() {
-		return this.isBlack;
+     @WhereSQL(sql="state=:User_state")
+	public java.lang.String getState() {
+		return this.state;
 	}
 	
 	public String toString() {
 		return new StringBuffer()
-			.append("id[").append(getId()).append("],")
-			.append("昵称[").append(getName()).append("],")
+			.append("编号[").append(getId()).append("],")
+			.append("姓名[").append(getName()).append("],")
+			.append("账号[").append(getAccount()).append("],")
 			.append("密码[").append(getPassword()).append("],")
-			.append("电话[").append(getPhone()).append("],")
-			.append("qq号[").append(getQqNum()).append("],")
-			.append("微信号[").append(getWxNum()).append("],")
 			.append("性别[").append(getSex()).append("],")
-			.append("创建时间[").append(getCreateTime()).append("],")
-			.append("头像[").append(getHeader()).append("],")
-			.append("城市名称 [").append(getCityName()).append("],")
-			.append("个性签名[").append(getSign()).append("],")
-			.append("新浪账号[").append(getSinaNum()).append("],")
-			.append("余额[").append(getBalance()).append("],")
-			.append("冻结余额[").append(getFrozeBanlance()).append("],")
-			.append("操作系统[").append(getOsType()).append("],")
-			.append("银行名称[").append(getBankName()).append("],")
-			.append("开户行[").append(getBranchBank()).append("],")
-			.append("户主名称/真实姓名[").append(getOwnerName()).append("],")
-			.append("户主手机号[").append(getOwnerPhone()).append("],")
-			.append("卡号/支付宝账号[").append(getCardNum()).append("],")
-			.append("1银行 2支付宝[").append(getWithdrawType()).append("],")
-			.append("当前可领取次数[").append(getCurrentGetNum()).append("],")
-			.append("当前可分享次数[").append(getCurrentShareNum()).append("],")
-			.append("可领取次数[").append(getGetNum()).append("],")
-			.append("可分享次数[").append(getShareNum()).append("],")
-			.append("是否关闭卡券手续费 0否 1是[").append(getIsCloseFee()).append("],")
-			.append("是否有信息更新 0否 1是[").append(getIsUpdate()).append("],")
-			.append("是否是黑名单 0否 1是[").append(getIsBlack()).append("],")
+			.append("手机号码[").append(getMobile()).append("],")
+			.append("邮箱[").append(getEmail()).append("],")
+			.append("微信Id[").append(getWeixinId()).append("],")
+			.append("0后台管理员|/system/,1会员用户|/front/,2cms管理员|/cms/houtai/|cms_siteManager,3活动管理员|/huodong/houtai[").append(getUserType()).append("],")
+			.append("是否有效,是/否[").append(getState()).append("],")
 			.toString();
 	}
 	
