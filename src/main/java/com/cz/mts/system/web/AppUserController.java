@@ -17,12 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ISmsService;
+import com.cz.mts.system.service.impl.SmsServiceImpl;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.frame.util.SecUtils;
+import com.sun.tools.classfile.Annotation.element_value;
 
 
 /**
@@ -40,7 +45,8 @@ public class AppUserController  extends BaseController {
 	
 	private String listurl="/appuser/appuserList";
 	
-	
+	@Resource
+	private ISmsService smsService;
 	   
 	/**
 	 * 列表数据,调用listjson方法,保证和app端数据统一
@@ -135,8 +141,6 @@ public class AppUserController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
 			appUserService.saveorupdate(appUser);
 			
 		} catch (Exception e) {
@@ -213,5 +217,112 @@ public class AppUserController  extends BaseController {
 		
 		
 	}
+	
+	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/login/json")
+	public @ResponseBody
+	ReturnDatas loginjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		
+		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
+			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			if(datas!=null){
+				returnObject.setData(datas.get(0));
+			}
+		}else {
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		
+		return returnObject;
+	}
+	
+	
+	/**
+	 * 第三方登录接口json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/loginS/json")
+	public @ResponseBody
+	ReturnDatas loginSjson(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		
+		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null||appUser.getSinaNum()!=null){
+			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			if(datas.size()>0){
+				returnObject.setData(datas.get(0));
+			}else{
+				//没有找到的话就是新增接口
+				returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+				try {
+					appUser.setIsBlack(0);
+					
+					//有手机号的时候判断下是不是已经注册过的手机号了
+					
+					if(appUser.getPhone()!=null){
+						Sms sms=new Sms();
+						sms.setPhone(appUser.getPhone());
+						sms.setContent(content);
+						sms.setType(1);
+						List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+						
+						if(smss.size()==0){
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+							return returnObject;
+						}
+						
+					}
+					
+					
+					//看下手机号是不是已经呗注册过了
+					AppUser appUserPhone=new AppUser();
+					appUserPhone.setPhone(appUser.getPhone());
+					List<AppUser> dataPhones=appUserService.findListDataByFinder(null,page,AppUser.class,appUserPhone);
+					if(dataPhones.size()>0){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+						return returnObject;
+					}
+					
+					Object appuser=(Object) appUserService.saveorupdate(appUser);
+					returnObject.setData(appUserService.findById(appuser, AppUser.class));
+				} catch (Exception e) {
+					String errorMessage = e.getLocalizedMessage();
+					logger.error(errorMessage);
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+				}
+				return returnObject;
+			}
+		}else {
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		
+		return returnObject;
+	}
+	
 
 }

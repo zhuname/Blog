@@ -33,7 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Category
  */
 @Controller
-@RequestMapping(value="/category")
+@RequestMapping(value="/system/category")
 public class CategoryController  extends BaseController {
 	@Resource
 	private ICategoryService categoryService;
@@ -75,6 +75,7 @@ public class CategoryController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
+		page.setPageSize(10000);
 		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
 			returnObject.setQueryBean(category);
 		returnObject.setPage(page);

@@ -1,6 +1,9 @@
 package com.cz.mts.system.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +59,8 @@ public class City  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	//concstructor
+	
+	
 
 	public City(){
 	}

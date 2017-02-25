@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.LunboPic;
+import com.cz.mts.system.entity.User;
 import com.cz.mts.system.service.ILunboPicService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.sun.tools.classfile.Annotation.element_value;
 
 
 /**
@@ -33,7 +36,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.LunboPic
  */
 @Controller
-@RequestMapping(value="/lunbopic")
+@RequestMapping(value="/system/lunbopic")
 public class LunboPicController  extends BaseController {
 	@Resource
 	private ILunboPicService lunboPicService;
@@ -75,10 +78,18 @@ public class LunboPicController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
+		
+		if(lunboPic.getType()!=null&&lunboPic.getType()==4){
+			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and type= :type order by Rand() limit 1");
+			finder.setParam("type", lunboPic.getType());
+			returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
+		}else {
+			List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
 			returnObject.setQueryBean(lunboPic);
-		returnObject.setPage(page);
-		returnObject.setData(datas);
+			returnObject.setPage(page);
+			returnObject.setData(datas);
+		}
+		
 		return returnObject;
 	}
 	
