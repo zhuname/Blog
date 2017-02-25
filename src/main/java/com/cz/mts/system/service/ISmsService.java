@@ -19,6 +19,15 @@ public interface ISmsService extends IBaseSpringrainService {
 	 */
 	Sms findSmsById(Object id) throws Exception;
 	
+	/**
+	 * 获取验证码
+	 * @author wj
+	 * @param sms
+	 * @return
+	 * @throws Exception
+	 */
+	Sms saveContent(Sms sms) throws Exception;
+	
 	
 	
 }

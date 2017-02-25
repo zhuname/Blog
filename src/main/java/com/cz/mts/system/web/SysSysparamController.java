@@ -33,7 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.SysSysparam
  */
 @Controller
-@RequestMapping(value="/syssysparam")
+@RequestMapping(value="/system/syssysparam")
 public class SysSysparamController  extends BaseController {
 	@Resource
 	private ISysSysparamService sysSysparamService;
@@ -71,13 +71,8 @@ public class SysSysparamController  extends BaseController {
 	@RequestMapping("/list/json")
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,SysSysparam sysSysparam) throws Exception{
+		List<SysSysparam> datas = sysSysparamService.findListParamData();
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		// ==构造分页请求
-		Page page = newPage(request);
-		// ==执行分页查询
-		List<SysSysparam> datas=sysSysparamService.findListDataByFinder(null,page,SysSysparam.class,sysSysparam);
-			returnObject.setQueryBean(sysSysparam);
-		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}

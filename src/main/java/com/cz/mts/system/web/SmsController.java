@@ -33,7 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Sms
  */
 @Controller
-@RequestMapping(value="/sms")
+@RequestMapping(value="/system/sms")
 public class SmsController  extends BaseController {
 	@Resource
 	private ISmsService smsService;
@@ -213,5 +213,20 @@ public class SmsController  extends BaseController {
 		
 		
 	}
+	
+	/**
+	 * 获取验证码
+	 * @author wj
+	 */
+	@RequestMapping(value = "/content/json")
+	public @ResponseBody
+	ReturnDatas contentjson(Model model,HttpServletRequest request,HttpServletResponse response,Sms sms) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Sms smsRecord = smsService.saveContent(sms);
+		returnObject.setData(smsRecord);
+		return returnObject;
+		
+	}
+	
 
 }

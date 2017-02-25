@@ -2,13 +2,17 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.util.List;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import com.cz.mts.system.entity.SysSysparam;
-import com.cz.mts.system.service.ISysSysparamService;
+
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.ISysSysparamService;
 
 
 /**
@@ -73,6 +77,13 @@ public class SysSysparamServiceImpl extends BaseSpringrainServiceImpl implements
 			Class<T> clazz, Object o)
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
+		}
+		
+		@Override
+		@Cacheable(value = GlobalStatic.cacheKey, key = "'findListParamData'")
+		public List<SysSysparam> findListParamData() throws Exception {
+			Finder finder=Finder.getSelectFinder(SysSysparam.class);
+			return super.queryForList(finder, SysSysparam.class);
 		}
 
 }

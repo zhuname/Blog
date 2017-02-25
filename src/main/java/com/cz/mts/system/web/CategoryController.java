@@ -33,7 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Category
  */
 @Controller
-@RequestMapping(value="/category")
+@RequestMapping(value="/system/category")
 public class CategoryController  extends BaseController {
 	@Resource
 	private ICategoryService categoryService;

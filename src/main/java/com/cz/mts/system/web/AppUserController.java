@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,18 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.frame.util.SecUtils;
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.service.IAppUserService;
 
 
 /**
@@ -129,16 +129,41 @@ public class AppUserController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			appUserService.saveorupdate(appUser);
-			
+			Page page = newPage(request);
+			AppUser user = new AppUser();
+			if(StringUtils.isNoneBlank(appUser.getPhone())){
+				user.setPhone(appUser.getPhone());
+			}
+			//判断手机号是否注册过
+			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+			if(null != datas && datas.size() > 0){
+				returnObject.setStatus(ReturnDatas.WARNING);
+			}else{
+				if(null == appUser.getId()){
+					String content = request.getParameter("content");
+					if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(content)){
+						returnObject.setStatus(ReturnDatas.WARNING);
+					}else{
+						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						appUser.setCreateTime(new Date());
+						appUser.setIsBlack(0);
+						Object id = appUserService.saveorupdate(appUser);
+						returnObject.setData(appUserService.findById(id, AppUser.class));
+					}
+				}else{
+					if(StringUtils.isNotBlank(appUser.getPassword())){
+						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					}
+					appUserService.update(appUser,true);
+					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
+				}
+			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -213,5 +238,33 @@ public class AppUserController  extends BaseController {
 		
 		
 	}
+	
+	/**
+	 * 忘记密码接口
+	 * @author wj
+	 */
+	@RequestMapping(value = "/forget/json")
+	public @ResponseBody
+	ReturnDatas forgetjson(Model model,HttpServletRequest request,HttpServletResponse response,AppUser appUser) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String content = request.getParameter("content");
+		if(StringUtils.isBlank(content) || StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword())){
+			returnObject.setStatus(ReturnDatas.WARNING);
+		}else{
+			//判断该用户是否存在
+			AppUser appUserRecord = new AppUser();
+			appUserRecord.setPhone(appUser.getPhone());
+			AppUser user = appUserService.queryForObject(appUserRecord);
+			if(null != user){
+				user.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+				appUserService.update(user);
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}
+		}
+		return returnObject;
+		
+	}
+	
 
 }

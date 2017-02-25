@@ -50,6 +50,8 @@ public class SysSysparam  extends BaseEntity {
 	private java.lang.String chooseFlag;
 	//columns END 数据库字段结束
 	
+	private java.lang.Integer id;
+	
 	//concstructor
 
 	public SysSysparam(){
@@ -69,6 +71,15 @@ public class SysSysparam  extends BaseEntity {
 		this.code = value;
 	}
 	
+	 @WhereSQL(sql="id=:SysSysparam_id")
+	public java.lang.Integer getId() {
+		return this.id;
+	}
+
+	public void setId(java.lang.Integer id) {
+		this.id = id;
+	}
+
 	@Id
      @WhereSQL(sql="code=:SysSysparam_code")
 	public java.lang.String getCode() {
