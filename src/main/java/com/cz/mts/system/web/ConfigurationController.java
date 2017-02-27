@@ -11,18 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Configuration;
-import com.cz.mts.system.service.IConfigurationService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.ConfigBean;
+import com.cz.mts.system.entity.Configuration;
+import com.cz.mts.system.service.IConfigurationService;
 
 
 /**
@@ -33,7 +32,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Configuration
  */
 @Controller
-@RequestMapping(value="/configuration")
+@RequestMapping(value="/system/configuration")
 public class ConfigurationController  extends BaseController {
 	@Resource
 	private IConfigurationService configurationService;
@@ -71,13 +70,9 @@ public class ConfigurationController  extends BaseController {
 	@RequestMapping("/list/json")
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Configuration configuration) throws Exception{
+//		List<Configuration> datas = configurationService.findListParamData();
+		ConfigBean datas = configurationService.findParamBean();
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		// ==构造分页请求
-		Page page = newPage(request);
-		// ==执行分页查询
-		List<Configuration> datas=configurationService.findListDataByFinder(null,page,Configuration.class,configuration);
-			returnObject.setQueryBean(configuration);
-		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}

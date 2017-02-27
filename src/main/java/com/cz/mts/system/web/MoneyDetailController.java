@@ -11,18 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.MoneyDetail;
-import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IMoneyDetailService;
 
 
 /**
@@ -33,10 +33,12 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.MoneyDetail
  */
 @Controller
-@RequestMapping(value="/moneydetail")
+@RequestMapping(value="/system/moneydetail")
 public class MoneyDetailController  extends BaseController {
 	@Resource
 	private IMoneyDetailService moneyDetailService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/system/moneydetail/moneydetailList";
 	
@@ -74,11 +76,25 @@ public class MoneyDetailController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		// ==执行分页查询
-		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+		if(null != moneyDetail.getType() && null != moneyDetail.getItemId()){
+			List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+			if(null != datas && datas.size() > 0){
+				for (MoneyDetail md : datas) {
+					AppUser appUser = appUserService.findAppUserById(md.getUserId());
+					if(null != appUser){
+						md.setAppUser(appUser);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该用户不存在");
+					}
+				}
+			}
 			returnObject.setQueryBean(moneyDetail);
-		returnObject.setPage(page);
-		returnObject.setData(datas);
+			returnObject.setData(datas);
+		}else{
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}
 		return returnObject;
 	}
 	
@@ -212,6 +228,44 @@ public class MoneyDetailController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param moneyDetail
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/money/json")
+	public @ResponseBody
+	ReturnDatas moneyjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		if(null != moneyDetail.getUserId()){
+			List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+			if(null != datas && datas.size() > 0){
+				for (MoneyDetail md : datas) {
+					AppUser appUser = appUserService.findAppUserById(md.getUserId());
+					if(null != appUser){
+						md.setAppUser(appUser);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该用户不存在");
+					}
+				}
+			}
+			returnObject.setQueryBean(moneyDetail);
+			returnObject.setData(datas);
+			returnObject.setPage(page);
+		}else{
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}
+		return returnObject;
 	}
 
 }

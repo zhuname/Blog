@@ -1,5 +1,8 @@
 package com.cz.mts.system.service;
 
+import java.util.List;
+
+import com.cz.mts.system.entity.ConfigBean;
 import com.cz.mts.system.entity.Configuration;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -18,6 +21,15 @@ public interface IConfigurationService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	Configuration findConfigurationById(Object id) throws Exception;
+	
+	
+	/**
+	 * 获取app配置接口
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	ConfigBean findParamBean() throws Exception;
 	
 	
 	

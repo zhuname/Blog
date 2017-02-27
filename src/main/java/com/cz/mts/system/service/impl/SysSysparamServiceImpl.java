@@ -1,14 +1,21 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.Iterator;
 import java.util.List;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import com.cz.mts.system.entity.SysSysparam;
-import com.cz.mts.system.service.ISysSysparamService;
+
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.system.entity.SysParamBean;
+import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.ISysSysparamService;
 
 
 /**
@@ -73,6 +80,31 @@ public class SysSysparamServiceImpl extends BaseSpringrainServiceImpl implements
 			Class<T> clazz, Object o)
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
+		}
+		
+		@Override
+		@Cacheable(value = GlobalStatic.cacheKey, key = "'sysParamData'")
+		public SysParamBean findParamBean() throws Exception {
+			Finder finder=Finder.getSelectFinder(SysSysparam.class);
+			List<SysSysparam> list = super.queryForList(finder, SysSysparam.class);
+			//利用反射将list对象转化为Bean
+			SysParamBean param = new SysParamBean() ;
+			//获取类
+			Class clazz = param.getClass() ;
+			Iterator<SysSysparam> iter = list.iterator() ;
+			while(iter.hasNext()){
+				
+				SysSysparam sysSysparam = iter.next() ;
+				String code = sysSysparam.getCode() ;
+				String val = sysSysparam.getValue() ;
+				//获取属性
+				Field field = clazz.getDeclaredField(code) ;
+				//打破封装性，但是会导致java对象的属性不安全
+				field.setAccessible(true);
+				//给configBean对象的属性赋值
+				field.set(param, val);
+			}
+			return param ;
 		}
 
 }

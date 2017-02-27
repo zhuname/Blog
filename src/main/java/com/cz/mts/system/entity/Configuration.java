@@ -48,6 +48,8 @@ public class Configuration  extends BaseEntity {
 	 * 是否使用(Y是N否)
 	 */
 	private java.lang.String chooseFlag;
+	
+	private java.lang.Integer id;
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -67,6 +69,15 @@ public class Configuration  extends BaseEntity {
 			 value=value.trim();
 			}
 		this.code = value;
+	}
+	
+	 @WhereSQL(sql="id=:SysSysparam_id")
+	public java.lang.Integer getId() {
+		return this.id;
+	}
+
+	public void setId(java.lang.Integer id) {
+		this.id = id;
 	}
 	
 	@Id

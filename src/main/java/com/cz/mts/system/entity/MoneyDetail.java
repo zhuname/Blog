@@ -1,8 +1,10 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -73,6 +75,17 @@ public class MoneyDetail  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+	private AppUser appUser;
+	
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
+	}
 
 	public MoneyDetail(){
 	}

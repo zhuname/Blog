@@ -1,5 +1,8 @@
 package com.cz.mts.system.service;
 
+import java.util.List;
+
+import com.cz.mts.system.entity.SysParamBean;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -18,6 +21,14 @@ public interface ISysSysparamService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	SysSysparam findSysSysparamById(Object id) throws Exception;
+	
+	/**
+	 * 查询常量表
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	SysParamBean findParamBean() throws Exception;
 	
 	
 	

@@ -2,13 +2,17 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
+
 import org.springframework.stereotype.Service;
-import com.cz.mts.system.entity.Sms;
-import com.cz.mts.system.service.ISmsService;
+
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.SMSUtil;
+import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.ISmsService;
 
 
 /**
@@ -73,6 +77,35 @@ public class SmsServiceImpl extends BaseSpringrainServiceImpl implements ISmsSer
 			Class<T> clazz, Object o)
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
+		}
+		
+		@Override
+		public Sms saveContent(Sms sms) throws Exception{
+			//生成随机码
+			Random r = new Random();
+			String x = r.nextInt(99999) + "";
+			if (x.length() < 4) {
+				for (int i = 0; i <= 4 - x.length(); i++) {
+					x += "0";
+				}
+			}  
+			String smscode = x;
+			sms.setContent(smscode);
+			String content = "";
+			
+			//发送短信
+			if(1 == sms.getType()){  //注册
+				content = "【美天赏】"+smscode+"(美天赏注册验证码，请完成验证)，如非本人操作，请忽略此短信。";
+			}else if(2 == sms.getType()){     //修改原手机号
+				content = "【美天赏】"+smscode+"(修改绑定原手机号验证码)。工作人员不会向您索要，请勿向任何人泄漏。";
+			}else if(3 == sms.getType()){    //绑定新手机号
+				content = "【美天赏】"+smscode+"(美天赏绑定新手机号验证码，请完成验证)，如非本人操作，请忽略此短信。";
+			}else if(4 == sms.getType()){    //商家找回密码
+				content = "【美天赏】"+smscode+"(找回密码验证码)。工作人员不会向您索要，请勿向任何人泄漏。";
+			}
+			SMSUtil.SendSMS(sms.getPhone(), content);
+			save(sms);
+			return sms;
 		}
 
 }
