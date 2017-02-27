@@ -2,6 +2,7 @@ package com.cz.mts.system.service;
 
 import java.util.List;
 
+import com.cz.mts.system.entity.ConfigBean;
 import com.cz.mts.system.entity.Configuration;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -28,7 +29,7 @@ public interface IConfigurationService extends IBaseSpringrainService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Configuration> findListParamData() throws Exception;
+	ConfigBean findParamBean() throws Exception;
 	
 	
 	

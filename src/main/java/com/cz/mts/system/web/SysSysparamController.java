@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.SysParamBean;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.frame.controller.BaseController;
@@ -71,7 +72,7 @@ public class SysSysparamController  extends BaseController {
 	@RequestMapping("/list/json")
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,SysSysparam sysSysparam) throws Exception{
-		List<SysSysparam> datas = sysSysparamService.findListParamData();
+		SysParamBean datas = sysSysparamService.findParamBean();
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setData(datas);
 		return returnObject;
