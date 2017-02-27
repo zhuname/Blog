@@ -125,7 +125,8 @@ public class AppUserController  extends BaseController {
 		  AppUser appUser = appUserService.findAppUserById(id);
 		   returnObject.setData(appUser);
 		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}
 		return returnObject;
 		
@@ -150,12 +151,14 @@ public class AppUserController  extends BaseController {
 			//判断手机号是否注册过
 			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
 			if(null != datas && datas.size() > 0){
-				returnObject.setStatus(ReturnDatas.WARNING);
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户已注册");
 			}else{
 				if(null == appUser.getId()){
 					String content = request.getParameter("content");
 					if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(content)){
-						returnObject.setStatus(ReturnDatas.WARNING);
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("参数缺失");
 					}else{
 						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						appUser.setCreateTime(new Date());
@@ -256,7 +259,8 @@ public class AppUserController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		String content = request.getParameter("content");
 		if(StringUtils.isBlank(content) || StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword())){
-			returnObject.setStatus(ReturnDatas.WARNING);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}else{
 			//判断该用户是否存在
 			AppUser appUserRecord = new AppUser();
@@ -267,6 +271,7 @@ public class AppUserController  extends BaseController {
 				appUserService.update(user);
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户不存在");
 			}
 		}
 		return returnObject;
@@ -298,6 +303,7 @@ public class AppUserController  extends BaseController {
 			}
 		}else {
 			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}
 		
 		return returnObject;
@@ -349,14 +355,13 @@ public class AppUserController  extends BaseController {
 						
 					}
 					
-					
 					//看下手机号是不是已经呗注册过了
 					AppUser appUserPhone=new AppUser();
 					appUserPhone.setPhone(appUser.getPhone());
 					List<AppUser> dataPhones=appUserService.findListDataByFinder(null,page,AppUser.class,appUserPhone);
 					if(dataPhones.size()>0){
 						returnObject.setStatus(ReturnDatas.ERROR);
-						returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+						returnObject.setMessage("该手机号已经被注册");
 						return returnObject;
 					}
 					
@@ -372,10 +377,147 @@ public class AppUserController  extends BaseController {
 			}
 		}else {
 			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}
 		
 		return returnObject;
 	}
 	
+	/**
+	 * 修改原绑定手机号
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/modifytel/json")
+	public @ResponseBody 
+	ReturnDatas modifytelJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		String modifyTelContent = request.getParameter("content");
+		// ==执行分页查询
+		if(StringUtils.isBlank(modifyTelContent) || StringUtils.isBlank(appUser.getPhone())){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			//查找该用户是否存在
+			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			if(null != datas && datas.size() > 0){
+				//判断验证码
+				Sms sms=new Sms();
+				sms.setPhone(appUser.getPhone());
+				sms.setContent(modifyTelContent);
+				sms.setType(2);
+				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+				if(null != smss && smss.size() > 0 ){
+					appUserService.saveorupdate(appUser);
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("该验证码不存在");
+				}
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户不存在");
+			}
+			
+		}
+		return returnObject;
+	}
+	
+	/**
+	 * 修改新绑定手机号
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/modifynewtel/json")
+	public @ResponseBody 
+	ReturnDatas modifynewtelJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		String contents = request.getParameter("content");
+		if(StringUtils.isBlank(contents) || StringUtils.isBlank(appUser.getPhone()) || null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			//查找该用户是否存在
+			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			if(null == datas || 0 == datas.size()){
+				//判断验证码
+				Sms sms=new Sms();
+				sms.setPhone(appUser.getPhone());
+				sms.setContent(contents);
+				sms.setType(3);
+				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+				if(null != smss && smss.size() > 0 ){
+					//根据id查询信息
+					AppUser appUserNewPhone = appUserService.findAppUserById(appUser.getId());
+					if(null != appUserNewPhone){
+						appUserNewPhone.setPhone(appUser.getPhone());
+						appUserService.update(appUserNewPhone);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该用户不存在");
+					}
+					
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("暂未收到验证码");
+				}
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该手机号已被绑定");
+			}
+			
+		}
+		return returnObject;
+	}
+	
+	
+	/**
+	 * 修改密码接口
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/changepwd/json")
+	public @ResponseBody 
+	ReturnDatas changepwdJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(appUser.getNewPwd()) || null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			AppUser appRecord = appUserService.findAppUserById(appUser.getId());
+			if(null != appRecord){
+				if(StringUtils.isNotBlank(appRecord.getPassword())){
+					//比较查询出来的密码和传过来的密码是否相等
+					if(appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getPassword()))){
+						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+						appUserService.update(appRecord);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("原密码输入错误");
+					}
+				}
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户不存在");
+			}
+		}
+		return returnObject;
+	}
 
 }

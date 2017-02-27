@@ -1,8 +1,8 @@
 package com.cz.mts.system.entity;
 
-import java.text.ParseException;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -170,9 +170,22 @@ public class AppUser  extends BaseEntity {
 	 * 是否是黑名单 0否 1是
 	 */
 	private java.lang.Integer isBlack;
+	
+	private java.lang.String newPwd;
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+	@Transient
+	public java.lang.String getNewPwd() {
+		return newPwd;
+	}
+
+	public void setNewPwd(java.lang.String newPwd) {
+		this.newPwd = newPwd;
+	}
 
 	public AppUser(){
 	}
