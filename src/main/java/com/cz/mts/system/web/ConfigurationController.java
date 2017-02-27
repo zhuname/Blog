@@ -19,6 +19,7 @@ import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.ConfigBean;
 import com.cz.mts.system.entity.Configuration;
 import com.cz.mts.system.service.IConfigurationService;
 
@@ -69,7 +70,8 @@ public class ConfigurationController  extends BaseController {
 	@RequestMapping("/list/json")
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Configuration configuration) throws Exception{
-		List<Configuration> datas = configurationService.findListParamData();
+//		List<Configuration> datas = configurationService.findListParamData();
+		ConfigBean datas = configurationService.findParamBean();
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setData(datas);
 		return returnObject;

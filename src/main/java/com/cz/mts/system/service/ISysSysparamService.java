@@ -2,6 +2,7 @@ package com.cz.mts.system.service;
 
 import java.util.List;
 
+import com.cz.mts.system.entity.SysParamBean;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -27,7 +28,7 @@ public interface ISysSysparamService extends IBaseSpringrainService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<SysSysparam> findListParamData() throws Exception;
+	SysParamBean findParamBean() throws Exception;
 	
 	
 	
