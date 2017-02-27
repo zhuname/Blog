@@ -79,9 +79,9 @@ public class LunboPicController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		if(lunboPic.getType()!=null&&lunboPic.getType()==4){
-			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and type= :type order by Rand() limit 1");
-			finder.setParam("type", lunboPic.getType());
+		if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
+			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and position= :position order by Rand() limit 1");
+			finder.setParam("position", lunboPic.getPosition());
 			returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
 		}else {
 			List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);

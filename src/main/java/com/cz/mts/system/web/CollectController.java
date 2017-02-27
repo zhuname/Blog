@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Collect
  */
 @Controller
-@RequestMapping(value="/collect")
+@RequestMapping(value="/system/collect")
 public class CollectController  extends BaseController {
 	@Resource
 	private ICollectService collectService;
@@ -129,15 +130,26 @@ public class CollectController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Collect collect,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
-			collectService.saveorupdate(collect);
+			Page page=new Page();
+			// ==执行分页查询
+			List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
+			
+			if(datas.size()>0){
+				//删除所有收藏的
+				for (Collect collectD : datas) {
+					collectService.deleteByEntity(collectD);
+				}
+			}else {
+				collect.setCreateTime(new Date());
+				collectService.saveorupdate(collect);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -213,5 +225,33 @@ public class CollectController  extends BaseController {
 		
 		
 	}
+	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param collect
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/coll/json")
+	public @ResponseBody
+	ReturnDatas colljson(HttpServletRequest request, Model model,Collect collect) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
+		if(datas.size()>0){
+			returnObject.setData(1);
+		}else {
+			returnObject.setData(0);
+		}
+		returnObject.setPage(page);
+		return returnObject;
+	}
+	
 
 }

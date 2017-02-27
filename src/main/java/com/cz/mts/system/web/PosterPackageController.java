@@ -16,8 +16,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.User;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.IUserService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -33,13 +39,19 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.PosterPackage
  */
 @Controller
-@RequestMapping(value="/posterpackage")
+@RequestMapping(value="/system/posterpackage")
 public class PosterPackageController  extends BaseController {
 	@Resource
 	private IPosterPackageService posterPackageService;
 	
 	private String listurl="/system/posterpackage/posterpackageList";
 	
+	
+	@Resource
+	private IAppUserService appUserService;
+	
+	@Resource
+	private IMoneyDetailService moneyDetailService;
 	
 	   
 	/**
@@ -98,7 +110,7 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping(value = "/look")
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
-		ReturnDatas returnObject = lookjson(model, request, response);
+		ReturnDatas returnObject = lookjson(model, request, response,null);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/system/posterpackage/posterpackageLook";
 	}
@@ -109,16 +121,45 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping(value = "/look/json")
 	public @ResponseBody
-	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response,String appUserId) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
-		   returnObject.setData(posterPackage);
+			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
+			 
+			 
+			 //查询发红包的用户
+			 if(posterPackage!=null&&posterPackage.getUserId()!=null){
+				 AppUser appUser=appUserService.findAppUserById(posterPackage.getUserId());
+				 if(appUser!=null){
+					 posterPackage.setAppUser(appUser);
+				 }
+			 }
+			 
+			 
+			 //是否领取  look 1 为领取过的
+			 if(posterPackage!=null&&StringUtils.isNotBlank(appUserId)){
+				 MoneyDetail moneyDetail=new MoneyDetail();
+				 moneyDetail.setUserId(Integer.parseInt(appUserId));
+				 moneyDetail.setItemId(posterPackage.getId());
+				 moneyDetail.setType(1);
+				// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,posterPackage);
+					if(datas!=null&&datas.size()>0){
+						posterPackage.setIsLook(1);
+					}else{
+						posterPackage.setIsLook(0);
+					}
+			 }
+			 
+			 returnObject.setData(posterPackage);
 		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+			 returnObject.setMessage("参数缺失");
+			 returnObject.setStatus(ReturnDatas.ERROR);
 		}
 		return returnObject;
 		
@@ -154,7 +195,7 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping(value = "/update/pre")
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
-		ReturnDatas returnObject = lookjson(model, request, response);
+		ReturnDatas returnObject = lookjson(model, request, response,null);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/system/posterpackage/posterpackageCru";
 	}

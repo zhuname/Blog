@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.City;
+import com.cz.mts.system.entity.Province;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.sun.tools.classfile.Annotation.element_value;
 
 
 /**
@@ -34,7 +36,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.City
  */
 @Controller
-@RequestMapping(value="/city")
+@RequestMapping(value="/system/city")
 public class CityController  extends BaseController {
 	@Resource
 	private ICityService cityService;
@@ -75,6 +77,7 @@ public class CityController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(100000);
 		// ==执行分页查询
 		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
 			returnObject.setQueryBean(city);
@@ -227,15 +230,36 @@ public class CityController  extends BaseController {
 	 */
 	@RequestMapping("/getArea/json")
 	public @ResponseBody
-	ReturnDatas getArea(HttpServletRequest request, Model model,City city,String type,Integer fatherId) throws Exception{
+	ReturnDatas getArea(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		Province province=new Province();
+		
+		City city=new City();
+		
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(10000);
 		// ==执行分页查询
-		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
+		if(level==1){
+			List<Province> datas=cityService.findListDataByFinder(null,page,Province.class,province);
+			returnObject.setQueryBean(province);
+			returnObject.setData(datas);
+		}else if(level==2){
+			if(fatherId!=null){
+				city.setFatherId(fatherId);
+			}else {
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatusCode(ReturnDatas.ERROR);
+				return returnObject;
+			}
+			List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
 			returnObject.setQueryBean(city);
+			returnObject.setData(datas);
+		}
+		
+		
 		returnObject.setPage(page);
-		returnObject.setData(datas);
 		return returnObject;
 	}
 	
