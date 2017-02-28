@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -33,7 +35,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Attention
  */
 @Controller
-@RequestMapping(value="/attention")
+@RequestMapping(value="/system/attention")
 public class AttentionController  extends BaseController {
 	@Resource
 	private IAttentionService attentionService;
@@ -129,15 +131,25 @@ public class AttentionController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Attention attention,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			attentionService.saveorupdate(attention);
+			Page page=new Page();
+			// ==执行分页查询
+			List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+			
+			if(datas.size()>0){
+				//删除所有关注的
+				for (Attention AttentionD : datas) {
+					attentionService.deleteByEntity(AttentionD);
+				}
+			}else {
+				attention.setIsUpdate(0);
+				attentionService.saveorupdate(attention);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
