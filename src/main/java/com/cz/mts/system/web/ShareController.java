@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Share
  */
 @Controller
-@RequestMapping(value="/share")
+@RequestMapping(value="/system/share")
 public class ShareController  extends BaseController {
 	@Resource
 	private IShareService shareService;
@@ -127,18 +128,18 @@ public class ShareController  extends BaseController {
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
+	 * 分享接口
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Share share,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
+			share.setIsNum(0);
+			share.setShareTime(new Date());
 			shareService.saveorupdate(share);
-			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
