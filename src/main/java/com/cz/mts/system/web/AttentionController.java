@@ -225,5 +225,34 @@ public class AttentionController  extends BaseController {
 		
 		
 	}
+	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param collect
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/atten/json")
+	public @ResponseBody
+	ReturnDatas attenjson(HttpServletRequest request, Model model,Attention attention) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+		if(datas.size()>0){
+			returnObject.setData(1);
+		} else {
+			returnObject.setData(0);
+		}
+		returnObject.setPage(page);
+		return returnObject;
+	}
+	
+	
 
 }
