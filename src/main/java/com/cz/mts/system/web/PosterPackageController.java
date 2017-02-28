@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -252,7 +253,26 @@ public class PosterPackageController  extends BaseController {
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
+	}
+	
+	/**
+	 * 抢红包
+	 * @param request
+	 * @param model
+	 * @param id 红包id
+	 * @param userId  操作人id
+	 * @return
+	 * @author wxy
+	 * @date 2017年2月28日
+	 */
+	@RequestMapping("/snatch/more")
+	public @ResponseBody 
+	ReturnDatas snatch(HttpServletRequest request, Model model,String id,String userId){
 		
+		
+		
+		return new ReturnDatas(ReturnDatas.SUCCESS,
+				MessageUtils.UPDATE_SUCCESS);
 	}
 
 }
