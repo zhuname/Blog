@@ -148,7 +148,7 @@ public class PosterPackageController  extends BaseController {
 				// ==构造分页请求
 					Page page = newPage(request);
 					// ==执行分页查询
-					List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,posterPackage);
+					List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
 					if(datas!=null&&datas.size()>0){
 						posterPackage.setIsLook(1);
 					}else{

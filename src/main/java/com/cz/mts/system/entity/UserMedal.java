@@ -1,8 +1,10 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -52,7 +54,19 @@ public class UserMedal  extends BaseEntity {
 	private java.util.Date createTime;
 	//columns END 数据库字段结束
 	
+	private Medal medal;
+	
+	
+	
 	//concstructor
+	@Transient
+	public Medal getMedal() {
+		return medal;
+	}
+
+	public void setMedal(Medal medal) {
+		this.medal = medal;
+	}
 
 	public UserMedal(){
 	}

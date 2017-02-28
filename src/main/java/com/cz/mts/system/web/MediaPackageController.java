@@ -11,18 +11,29 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.MediaPackage;
-import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Collect;
+import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.User;
+import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICollectService;
+import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IUserMedalService;
 
 
 /**
@@ -33,10 +44,22 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.MediaPackage
  */
 @Controller
-@RequestMapping(value="/mediapackage")
+@RequestMapping(value="/system/mediapackage")
 public class MediaPackageController  extends BaseController {
 	@Resource
 	private IMediaPackageService mediaPackageService;
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IMedalService medalService;
+	@Resource
+	private ICollectService collectService;
+	@Resource
+	private IAttentionService attentionService;
 	
 	private String listurl="/system/mediapackage/mediapackageList";
 	
@@ -75,8 +98,75 @@ public class MediaPackageController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
+		String appUserId = request.getParameter("appUserId");
 		List<MediaPackage> datas=mediaPackageService.findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
-			returnObject.setQueryBean(mediaPackage);
+		if(null != datas && datas.size() > 0){
+			for (MediaPackage mp : datas) {
+				//返回发布人的信息
+				if(null != mp.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(mp.getUserId());
+					if(null != appUser){
+						mp.setAppUser(appUser);
+					}
+					UserMedal userMedal = new UserMedal();
+					//查询勋章列表
+					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+					if(null != userMedals && userMedals.size() > 0){
+						for (UserMedal um : userMedals) {
+							if(null != um.getMedalId()){
+								Medal medal = medalService.findMedalById(um.getMedalId());
+								if(null != medal){
+									um.setMedal(medal);
+								}
+							}
+						}
+						mp.setUserMedals(userMedals);
+					}
+					
+					//返回是否关注
+					Attention attention = new Attention();
+					attention.setUserId(Integer.parseInt(appUserId));
+					attention.setItemId(mp.getUserId());
+					List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+					if(null != attentions && attentions.size() > 0){
+						mp.setIsAttention(1);
+					}else{
+						mp.setIsAttention(0);
+					}
+				}
+				
+				
+				//返回是否收藏
+				Collect collect = new Collect();
+				collect.setUserId(Integer.parseInt(appUserId));
+				collect.setItemId(mp.getId());
+				collect.setType(2);
+				List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
+				if(null != collects && collects.size() > 0){
+					mp.setIsCollect(1);
+				}else{
+					mp.setIsCollect(0);
+				}
+				
+				//已抢红包列表
+				MoneyDetail moneyDetail = new MoneyDetail();
+				moneyDetail.setItemId(mp.getId());
+				moneyDetail.setType(2);
+				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+				if(null != moneyDetails && moneyDetails.size() > 0){
+					for (MoneyDetail md : moneyDetails) {
+						if(null != md.getUserId()){
+							AppUser appUser = appUserService.findAppUserById(md.getUserId());
+							if(null != appUser){
+								md.setAppUser(appUser);
+							}
+						}
+					}
+					mp.setMoneyDetails(moneyDetails);
+				}
+			}
+		}
+		returnObject.setQueryBean(mediaPackage);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -93,7 +183,7 @@ public class MediaPackageController  extends BaseController {
 		return;
 	}
 	
-		/**
+	/**
 	 * 查看操作,调用APP端lookjson方法
 	 */
 	@RequestMapping(value = "/look")
@@ -112,13 +202,39 @@ public class MediaPackageController  extends BaseController {
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
+		  String appUserId = request.getParameter("appUserId");
 		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
+		  if(StringUtils.isNotBlank(strId) && StringUtils.isNotBlank(appUserId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
+			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
+			  //查询发红包的用户
+			 if(mediaPackage != null && mediaPackage.getUserId() != null){
+				 AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
+				 if(appUser!=null){
+					 mediaPackage.setAppUser(appUser);
+				 }
+			 }
+			 
+			 //是否领取  look 1 为领取过的
+			 if(mediaPackage!=null&&StringUtils.isNotBlank(appUserId)){
+				 MoneyDetail moneyDetail=new MoneyDetail();
+				 moneyDetail.setUserId(Integer.parseInt(appUserId));
+				 moneyDetail.setItemId(mediaPackage.getId());
+				 moneyDetail.setType(2);
+				// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<MoneyDetail> datas = moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+					if(datas != null && datas.size() > 0){
+						mediaPackage.setIsLook(1);
+					}else{
+						mediaPackage.setIsLook(0);
+					}
+			 }
 		   returnObject.setData(mediaPackage);
 		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}
 		return returnObject;
 		
