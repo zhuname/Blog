@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
+import com.cz.mts.system.entity.LunboPic;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -39,6 +43,8 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class AttentionController  extends BaseController {
 	@Resource
 	private IAttentionService attentionService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/system/attention/attentionList";
 	
@@ -62,6 +68,7 @@ public class AttentionController  extends BaseController {
 	}
 	
 	/**
+	 * 获取关注人列表
 	 * json数据,为APP提供数据
 	 * 
 	 * @param request
@@ -76,11 +83,18 @@ public class AttentionController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		// ==执行分页查询
-		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
-			returnObject.setQueryBean(attention);
+		/*// ==执行分页查询
+		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);*/
+		if(attention.getUserId()!=null){
+			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.userId = au.id WHERE att.userId= :id  order by att.id");
+			finder.setParam("id", attention.getUserId());
+			returnObject.setData(appUserService.queryForList(finder,page));
+		}else {
+			returnObject.setMessage("参数缺失");
+		}
+		
+		returnObject.setQueryBean(attention);
 		returnObject.setPage(page);
-		returnObject.setData(datas);
 		return returnObject;
 	}
 	
