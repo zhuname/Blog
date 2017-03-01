@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,14 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 
@@ -48,6 +52,9 @@ public class PosterPackageController  extends BaseController {
 	
 	@Resource
 	private IMoneyDetailService moneyDetailService;
+	
+	@Resource
+	private ICategoryService categoryService;
 	
 	   
 	/**
@@ -83,10 +90,16 @@ public class PosterPackageController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<PosterPackage> datas=posterPackageService.findListDataByFinder(null,page,PosterPackage.class,posterPackage);
-			returnObject.setQueryBean(posterPackage);
+		//List<PosterPackage> datas=posterPackageService.findListDataByFinder(null,page,PosterPackage.class,posterPackage);
+		
+		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
+		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
+		Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id");
+		returnObject.setData(posterPackageService.queryForList(finder1,page));
+		
+		
+		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);
-		returnObject.setData(datas);
 		return returnObject;
 	}
 	
@@ -268,6 +281,77 @@ public class PosterPackageController  extends BaseController {
 		
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.UPDATE_SUCCESS);
+	}
+	
+	/**
+	 * 发布、修改红包接口
+	 * 
+	 */
+	@RequestMapping("/update/json")
+	public @ResponseBody
+	ReturnDatas saveorupdateJson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			
+			
+			if(posterPackage.getId()==null){
+				
+				//必须有的参数
+				
+				if(posterPackage.getUserId()==null||posterPackage.getCategoryId()==null){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("参数缺失");
+					return returnObject;
+				}
+				
+				if(posterPackage.getCategoryId()!=null){
+					
+					Category category=categoryService.findById(posterPackage.getCategoryId(), Category.class);
+					
+					if(category==null){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("分类不存在");
+						return returnObject;
+					}
+					
+				}
+				
+				posterPackage.setStatus(0);
+				
+				posterPackage.setIsDel(0);
+				
+				posterPackage.setCreateTime(new Date());
+				
+				posterPackageService.save(posterPackage);
+				
+			}else {
+				
+				//如果分类改了就判断下
+				if(posterPackage.getCategoryId()!=null){
+					
+					Category category=categoryService.findById(posterPackage.getCategoryId(), Category.class);
+					
+					if(category==null){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("分类不存在");
+						return returnObject;
+					}
+					
+				}
+				
+				posterPackageService.update(posterPackage, true);
+				
+			}
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
 	}
 
 }
