@@ -1,8 +1,11 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -181,6 +184,94 @@ public class MediaPackage  extends BaseEntity {
 	 */
 	private java.lang.Integer isDel;
 	//columns END 数据库字段结束
+	
+	private AppUser appUser;
+	
+	
+	private Integer isLook;
+	
+	private Integer isAttention;
+	
+	private List<AppUser> appUsers;
+	
+	private Integer isCollect;
+	
+	private List<UserMedal> userMedals;
+	
+	private Integer appUserId;
+	
+	private List<MoneyDetail> moneyDetails;
+	
+	
+	
+	
+	//concstructor
+	@Transient
+	public List<MoneyDetail> getMoneyDetails() {
+		return moneyDetails;
+	}
+
+	public void setMoneyDetails(List<MoneyDetail> moneyDetails) {
+		this.moneyDetails = moneyDetails;
+	}
+
+	@Transient
+	public Integer getAppUserId() {
+		return appUserId;
+	}
+
+	public void setAppUserId(Integer appUserId) {
+		this.appUserId = appUserId;
+	}
+
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+	
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
+	@Transient
+	public Integer getIsCollect() {
+		return isCollect;
+	}
+	public void setIsCollect(Integer isCollect) {
+		this.isCollect = isCollect;
+	}
+	@Transient
+	public Integer getIsAttention() {
+		return isAttention;
+	}
+
+	public void setIsAttention(Integer isAttention) {
+		this.isAttention = isAttention;
+	}
+	@Transient
+	public List<AppUser> getAppUsers() {
+		return appUsers;
+	}
+
+	public void setAppUsers(List<AppUser> appUsers) {
+		this.appUsers = appUsers;
+	}
+
+	@Transient
+	public Integer getIsLook() {
+		return isLook;
+	}
+
+	public void setIsLook(Integer isLook) {
+		this.isLook = isLook;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
+	}
 	
 	//concstructor
 

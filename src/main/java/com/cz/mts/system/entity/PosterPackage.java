@@ -180,7 +180,28 @@ public class PosterPackage  extends BaseEntity {
 	private Integer isLook;
 	//concstructor
 	
+	private String userHeader;
 	
+	private String lookNum;
+	
+	@Transient
+	public String getLookNum() {
+		return lookNum;
+	}
+
+	public void setLookNum(String lookNum) {
+		this.lookNum = lookNum;
+	}
+
+	@Transient
+	public String getUserHeader() {
+		return userHeader;
+	}
+
+	public void setUserHeader(String userHeader) {
+		this.userHeader = userHeader;
+	}
+
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;

@@ -340,7 +340,7 @@ public class AppUserController  extends BaseController {
 					
 					//有手机号的时候判断下是不是已经注册过的手机号了
 					
-					if(appUser.getPhone()!=null){
+					if(appUser.getPhone()!=null&&content!=null){
 						Sms sms=new Sms();
 						sms.setPhone(appUser.getPhone());
 						sms.setContent(content);
