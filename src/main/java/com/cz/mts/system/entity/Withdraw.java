@@ -101,6 +101,8 @@ public class Withdraw  extends BaseEntity {
 	 * 1银行 2支付宝
 	 */
 	private java.lang.Integer withdrawType;
+	
+	private String bankName;
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -119,6 +121,15 @@ public class Withdraw  extends BaseEntity {
 		this.id = value;
 	}
 	
+	@WhereSQL(sql="bankName=:Withdraw_bankName")
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
 	@Id
      @WhereSQL(sql="id=:Withdraw_id")
 	public java.lang.Integer getId() {

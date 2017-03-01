@@ -75,11 +75,16 @@ public class CollectController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		// ==执行分页查询
-		List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
+		if(null == collect.getUserId() || null == collect.getType()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			// ==执行分页查询
+			List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
 			returnObject.setQueryBean(collect);
-		returnObject.setPage(page);
-		returnObject.setData(datas);
+			returnObject.setPage(page);
+			returnObject.setData(datas);
+		}
 		return returnObject;
 	}
 	
@@ -140,7 +145,6 @@ public class CollectController  extends BaseController {
 			Page page=new Page();
 			// ==执行分页查询
 			List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
-			
 			if(datas.size()>0){
 				//删除所有收藏的
 				for (Collect collectD : datas) {

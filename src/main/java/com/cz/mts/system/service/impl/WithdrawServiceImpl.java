@@ -1,13 +1,27 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.Withdraw;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IWithdrawService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 
 
@@ -20,7 +34,12 @@ import com.cz.mts.system.service.BaseSpringrainServiceImpl;
  */
 @Service("withdrawService")
 public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IWithdrawService {
-
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private ISysSysparamService sysSysparamService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -74,5 +93,74 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+		
+	
+	@Override
+	public ReturnDatas applyWithdraw(Withdraw withdraw) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == withdraw.getUserId() || null == withdraw.getWithdrawType() || null == withdraw.getMoney()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			//查询该用户是否有手机号
+			AppUser appUserRecord = appUserService.findAppUserById(withdraw.getUserId());
+			if(null != appUserRecord){
+				if(StringUtils.isNotBlank(appUserRecord.getPhone())){
+					//银行提现
+					if(1 == withdraw.getWithdrawType()){
+						appUserRecord.setWithdrawType(withdraw.getWithdrawType());
+						appUserRecord.setBankName(withdraw.getBankName());
+						appUserRecord.setBranchBank(withdraw.getBranchBank());
+						appUserRecord.setOwnerName(withdraw.getOwnerName());
+						appUserRecord.setOwnerPhone(withdraw.getOwnerPhone());
+						appUserRecord.setCardNum(withdraw.getCardNum());
+					}else if(2 == withdraw.getWithdrawType()){
+						//支付宝
+						appUserRecord.setWithdrawType(withdraw.getWithdrawType());
+						appUserRecord.setOwnerName(withdraw.getOwnerName());
+						appUserRecord.setCardNum(withdraw.getCardNum());
+					}else{
+						//微信
+						appUserRecord.setWithdrawType(withdraw.getWithdrawType());
+						appUserRecord.setWxName(withdraw.getOwnerName());
+						appUserRecord.setWxAccount(withdraw.getCardNum());
+						appUserRecord.setWxPhone(withdraw.getOwnerPhone());
+					}
+					appUserRecord.setBalance(appUserRecord.getBalance() - withdraw.getMoney());
+					appUserRecord.setFrozeBanlance(withdraw.getMoney());
+					appUserService.update(appUserRecord);
+					withdraw.setCreateTime(new Date());
+					withdraw.setStatus(1);
+					//手续费
+					Finder finder = new Finder("select * FROM t_sys_sysparam where id=9");
+					SysSysparam sysSysparam = new SysSysparam();
+					Page page = new Page();
+					List<SysSysparam> sysparams = sysSysparamService.findListDataByFinder(finder, page, SysSysparam.class,sysSysparam );
+					if(null != sysparams && sysparams.size() > 0){
+						sysSysparam = sysparams.get(0);
+					}
+					Double factorage = Double.parseDouble(sysSysparam.getValue()) * withdraw.getMoney();
+					//实际到账金额
+					Double realMoney = withdraw.getMoney() - factorage;
+					withdraw.setFactorage(factorage);
+					withdraw.setRealMoney(realMoney);
+					saveorupdate(withdraw);
+					//向moneyDetail表中增加记录
+					MoneyDetail moneyDetail = new MoneyDetail();
+					moneyDetail.setUserId(withdraw.getUserId());
+					moneyDetail.setCreateTime(new Date());
+					moneyDetail.setType(7);
+					moneyDetail.setMoney(withdraw.getMoney());
+					moneyDetail.setBalance(appUserRecord.getBalance());
+					moneyDetailService.saveorupdate(moneyDetail);
+					returnObject.setStatus(MessageUtils.UPDATE_SUCCESS);
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("请绑定手机号");
+				}
+			}
+		}
+		return returnObject;
+	}
 
 }
