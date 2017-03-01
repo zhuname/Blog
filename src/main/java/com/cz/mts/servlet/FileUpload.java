@@ -4,10 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
+import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +18,8 @@ import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.cz.mts.frame.util.ReturnDatas;
+
 /**
  * Servlet implementation class FileUpload
  */
@@ -29,9 +30,12 @@ public class FileUpload extends HttpServlet {
 	private static final String filepathdir = "filepathdir";
 	
 	//保存文件的文件夹名称
-	private static final String uploadDirName="upload";
-	//http的绝对路径
-	private static final String httpfilepath="/"+uploadDirName;
+	private static final String uploadDirName="mts";
+	private static final String realpath="/usr/local/app/";
+	private static final String realfilepath= realpath+uploadDirName;
+	//http地址
+	private static final String httppath="http://114.55.4.234:22222/";
+	private static final String httpfilepath=httppath+uploadDirName;
 	//callback的url的key
 	private static final String callbackurlName="callbackurl";
 	
@@ -66,11 +70,14 @@ public class FileUpload extends HttpServlet {
 	 * 上传文件必须为POST方法
 	 */
 	@SuppressWarnings({ "static-access", "deprecation" })
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
-		response. setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		Integer userId = Integer.parseInt(request.getParameter("userId").toString());
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// 3. 判断是否是上传表单
 		boolean b = upload.isMultipartContent(request);
 		if (!b) { // 不是文件上传
@@ -85,11 +92,12 @@ public class FileUpload extends HttpServlet {
 			e.printStackTrace();
 		}
 		if (fileitems == null) {
-			return;
+			return ;
 		}
 		// 创建文件
-		ServletContext context = getServletContext();
-		String dir = context.getRealPath("/")+"/"+uploadDirName;
+//		ServletContext context = getServletContext();
+//		String dir = context.getRealPath("/")+"\\"+uploadDirName+"\\"+userId;
+		String dir = realfilepath+"/"+userId;
 		String dirpath = null;
 	    String httppath=httpfilepath;
 	    String callbackurl=null;
@@ -109,9 +117,9 @@ public class FileUpload extends HttpServlet {
 			}
 		}
 		
-		if(callbackurl==null){
-			return;
-		}
+//		if(callbackurl==null){
+//			return;
+//		}
 		
 		
 		String allhttpfile="";
@@ -141,7 +149,7 @@ public class FileUpload extends HttpServlet {
 				file.createNewFile();
 			}
 		
-			allhttpfile=allhttpfile+httppath+"/"+filename+",";
+			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+";";
 			// 获得流，读取数据写入文件
 			InputStream in = item.getInputStream();
 			FileOutputStream fos = new FileOutputStream(file);
@@ -160,15 +168,21 @@ public class FileUpload extends HttpServlet {
 		if(allhttpfile.endsWith(",")){
 			allhttpfile=allhttpfile.substring(0, allhttpfile.length()-1);
 		}
-		allhttpfile=URLEncoder.encode(allhttpfile);
+//		allhttpfile=URLEncoder.encode(allhttpfile);
 		
-		if(callbackurl.contains("?")){
-			callbackurl=callbackurl+"&filename="+allhttpfile;
-		}else{
-			callbackurl=callbackurl+"?filename="+allhttpfile;
-		}
+//		if(callbackurl.contains("?")){
+//			callbackurl=callbackurl+"&filename="+allhttpfile;
+//		}else{
+//			callbackurl=callbackurl+"?filename="+allhttpfile;
+//		}
 		//跳转到第三方路径
-		response.sendRedirect(callbackurl);
+//		response.sendRedirect(callbackurl);
+		  out.print("{\"Path\":\"" +allhttpfile+"\"}");
+//		returnObject.setData(allhttpfile);
+//		JSONObject json = JSONObject.fromObject(returnObject);//将java对象转换为json对象
+//		String str = json.toString();//将json对象转换为字符串
+//		out.print(str);
+	    System.out.println(allhttpfile);		        
 	}
 
 }

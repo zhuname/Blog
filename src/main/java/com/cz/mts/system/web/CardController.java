@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -39,6 +41,8 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class CardController  extends BaseController {
 	@Resource
 	private ICardService cardService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/system/card/cardList";
 	
@@ -76,11 +80,16 @@ public class CardController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		// ==执行分页查询
-		List<Card> datas=cardService.findListDataByFinder(null,page,Card.class,card);
-			returnObject.setQueryBean(card);
-		returnObject.setPage(page);
-		returnObject.setData(datas);
+		if(null == card.getStatus() || null == card.getCatergoryId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			// ==执行分页查询
+			List<Card> datas=cardService.findListDataByFinder(null,page,Card.class,card);
+				returnObject.setQueryBean(card);
+			returnObject.setPage(page);
+			returnObject.setData(datas);
+		}
 		return returnObject;
 	}
 	
@@ -117,10 +126,17 @@ public class CardController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Card card = cardService.findCardById(id);
-		   returnObject.setData(card);
+			 Card card = cardService.findCardById(id);
+			 if(null != card.getUserId()){
+				 AppUser appUser = appUserService.findAppUserById(card.getUserId());
+				 if(null != appUser){
+					 card.setAppUser(appUser);
+				 }
+			 }
+			 returnObject.setData(card);
 		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}
 		return returnObject;
 		

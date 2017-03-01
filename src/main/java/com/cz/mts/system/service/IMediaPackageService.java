@@ -1,5 +1,9 @@
 package com.cz.mts.system.service;
 
+import java.util.List;
+
+import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -18,6 +22,17 @@ public interface IMediaPackageService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	MediaPackage findMediaPackageById(Object id) throws Exception;
+	
+	/**
+	 * 视频红包列表
+	 * @author wj
+	 * @param mediaPackage
+	 * @param page
+	 * @param appUserId
+	 * @return
+	 * @throws Exception
+	 */
+	ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId) throws Exception;
 	
 	
 	
