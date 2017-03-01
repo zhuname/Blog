@@ -122,6 +122,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 							mp.setAppUser(appUser);
 						}
 						UserMedal userMedal = new UserMedal();
+						userMedal.setUserId(mp.getUserId());
 						//查询勋章列表
 						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
 						if(null != userMedals && userMedals.size() > 0){

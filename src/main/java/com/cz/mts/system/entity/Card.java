@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -135,10 +136,20 @@ public class Card  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	private AppUser appUser;
+	private List<UserMedal> userMedals;
 	
 	
 	
 	//concstructor
+
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
 
 	@Transient
 	public AppUser getAppUser() {

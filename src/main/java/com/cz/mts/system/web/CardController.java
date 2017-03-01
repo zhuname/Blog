@@ -84,7 +84,7 @@ public class CardController  extends BaseController {
 		}else{
 			// ==执行分页查询
 			List<Card> datas=cardService.findListDataByFinder(null,page,Card.class,card);
-				returnObject.setQueryBean(card);
+			returnObject.setQueryBean(card);
 			returnObject.setPage(page);
 			returnObject.setData(datas);
 		}
