@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ProgressListener;
@@ -32,11 +30,11 @@ public class FileUpload extends HttpServlet {
 	private static final String filepathdir = "filepathdir";
 	
 	//保存文件的文件夹名称
-	private static final String uploadDirName="image";
-	private static final String realpath="http://192.168.31.108/mts/";
+	private static final String uploadDirName="mts";
+	private static final String realpath="/usr/local/app/";
 	private static final String realfilepath= realpath+uploadDirName;
 	//http地址
-	private static final String httppath="http://192.168.31.108/mts/";
+	private static final String httppath="http://114.55.4.234:22222/";
 	private static final String httpfilepath=httppath+uploadDirName;
 	//callback的url的key
 	private static final String callbackurlName="callbackurl";
@@ -101,7 +99,7 @@ public class FileUpload extends HttpServlet {
 //		String dir = context.getRealPath("/")+"\\"+uploadDirName+"\\"+userId;
 		String dir = realfilepath+"/"+userId;
 		String dirpath = null;
-	    String httppath=realfilepath;
+	    String httppath=httpfilepath;
 	    String callbackurl=null;
 
 		// 5. 遍历集合,获取项目路径
@@ -151,7 +149,7 @@ public class FileUpload extends HttpServlet {
 				file.createNewFile();
 			}
 		
-			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+",";
+			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+";";
 			// 获得流，读取数据写入文件
 			InputStream in = item.getInputStream();
 			FileOutputStream fos = new FileOutputStream(file);
@@ -179,12 +177,12 @@ public class FileUpload extends HttpServlet {
 //		}
 		//跳转到第三方路径
 //		response.sendRedirect(callbackurl);
-//		  out.print("{\"Path\":\"" +allhttpfile+"\"}");
-		returnObject.setData(allhttpfile);
-		JSONObject json = JSONObject.fromObject(returnObject);//将java对象转换为json对象
-		String str = json.toString();//将json对象转换为字符串
-		out.print(str);
-	    System.out.println(str);		        
+		  out.print("{\"Path\":\"" +allhttpfile+"\"}");
+//		returnObject.setData(allhttpfile);
+//		JSONObject json = JSONObject.fromObject(returnObject);//将java对象转换为json对象
+//		String str = json.toString();//将json对象转换为字符串
+//		out.print(str);
+	    System.out.println(allhttpfile);		        
 	}
 
 }
