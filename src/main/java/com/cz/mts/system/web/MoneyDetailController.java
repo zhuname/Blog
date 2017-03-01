@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IMoneyDetailService;
@@ -267,5 +269,36 @@ public class MoneyDetailController  extends BaseController {
 		}
 		return returnObject;
 	}
+	
+	
+	/**
+	 * 获取关注人列表
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param attention
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listuser/json")
+	public @ResponseBody
+	ReturnDatas listuserjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		if(moneyDetail.getItemId()!=null){
+			Finder finder=new Finder("SELECT * FROM t_app_user au WHERE id IN (SELECT userId FROM t_money_detail mon WHERE mon.itemId = :itemId AND mon.type=3)");
+			finder.setParam("itemId", moneyDetail.getItemId());
+			returnObject.setData(appUserService.queryForList(finder,page));
+		}else {
+			returnObject.setMessage("参数缺失");
+		}
+		
+		returnObject.setQueryBean(moneyDetail);
+		returnObject.setPage(page);
+		return returnObject;
+	}
+	
 
 }

@@ -15,11 +15,11 @@ public class Page implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final int DEFAULT_PAGE_SIZE = 20;
+	public static final int DEFAULT_PAGE_SIZE = 10;
 	/** 页码,从1开始 */
 	private int pageIndex;
 	/** 每页多少行 */
-	private int pageSize=20;
+	private int pageSize=10;
 	/** 数据总行数 */
 	private int totalCount = 0;
 	/** 总共可以分多少页 */

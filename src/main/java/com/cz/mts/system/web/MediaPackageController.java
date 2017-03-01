@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
@@ -29,6 +31,7 @@ import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
@@ -60,6 +63,10 @@ public class MediaPackageController  extends BaseController {
 	private ICollectService collectService;
 	@Resource
 	private IAttentionService attentionService;
+
+	@Resource
+	private ICategoryService categoryService;
+	
 	
 	private String listurl="/system/mediapackage/mediapackageList";
 	
@@ -328,6 +335,75 @@ public class MediaPackageController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 新增视频红包
+	 * 新增/修改 操作吗,返回json格式数据
+	 * @author wwwwwwwwwwwwwwwwwmmmmmmmmmmmmmmmmmmmmmmllllllllllllllllll
+	 */
+	@RequestMapping("/update/json")
+	public @ResponseBody
+	ReturnDatas saveorupdatejson(Model model,MediaPackage mediaPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+		
+			//新增
+			if(mediaPackage.getId()==null){
+				//判断必传参数
+				if(mediaPackage.getCategoryId()==null||mediaPackage.getUserId()==null||mediaPackage.getNum()==null){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("参数缺失");
+					return returnObject;
+				}
+				
+				if(mediaPackage.getCategoryId()!=null){
+					
+					Category category=categoryService.findById(mediaPackage.getCategoryId(), Category.class);
+					
+					if(category==null){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("分类不存在");
+						return returnObject;
+					}
+					
+				}
+				
+				//生成验证码
+				Long code=new Date().getTime();
+				mediaPackage.setCode("M"+code);
+				
+				mediaPackage.setStatus(0);
+				mediaPackage.setScanNum(0);
+				mediaPackage.setCreateTime(new Date());
+				mediaPackage.setNum(mediaPackage.getNum());
+				Object id=mediaPackageService.saveorupdate(mediaPackage);
+				returnObject.setData(mediaPackageService.findMediaPackageById(id));
+			}else{
+				if(mediaPackage.getCategoryId()!=null){
+					
+					Category category=categoryService.findById(mediaPackage.getCategoryId(), Category.class);
+					
+					if(category==null){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("分类不存在");
+						return returnObject;
+					}
+					
+				}
+				Object id=mediaPackageService.update(mediaPackage,true);
+				returnObject.setData(mediaPackageService.findMediaPackageById(id));
+			}
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
 	}
 
 }

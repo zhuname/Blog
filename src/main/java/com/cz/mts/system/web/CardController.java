@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -33,7 +35,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Card
  */
 @Controller
-@RequestMapping(value="/card")
+@RequestMapping(value="/system/card")
 public class CardController  extends BaseController {
 	@Resource
 	private ICardService cardService;
@@ -213,5 +215,70 @@ public class CardController  extends BaseController {
 		
 		
 	}
+	
+	
+	/**
+	 * 新增/修改 操作吗,返回json格式数据
+	 * 
+	 */
+	@RequestMapping("/update/json")
+	public @ResponseBody
+	ReturnDatas saveorupdatejson(Model model,Card card,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+		
+			//新增
+			if(card.getId()==null){
+				//判断必传参数
+				if(card.getCatergoryId()==null||card.getUserId()==null||card.getNum()==null){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("参数缺失");
+					return returnObject;
+				}
+				
+				if(card.getCatergoryId()!=null){
+					
+					Category category=cardService.findById(card.getCatergoryId(), Category.class);
+					
+					if(category==null){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("分类不存在");
+						return returnObject;
+					}
+					
+				}
+				
+				card.setNum(card.getNum());
+				card.setCreateTime(new Date());
+				Object id=cardService.saveorupdate(card);
+				returnObject.setData(cardService.findCardById(id));
+			}else{
+				if(card.getCatergoryId()!=null){
+					
+					Category category=cardService.findById(card.getCatergoryId(), Category.class);
+					
+					if(category==null){
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("分类不存在");
+						return returnObject;
+					}
+					
+				}
+				Object id=cardService.update(card,true);
+				returnObject.setData(cardService.findCardById(id));
+			}
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
+	
 
 }

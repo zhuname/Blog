@@ -298,8 +298,11 @@ public class AppUserController  extends BaseController {
 		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
 			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
-			if(datas!=null){
+			if(datas!=null&&datas.size()>0){
 				returnObject.setData(datas.get(0));
+			}else {
+				returnObject.setStatus(ReturnDatas.WARNING);
+				returnObject.setMessage("帐号密码错误");
 			}
 		}else {
 			returnObject.setStatus(ReturnDatas.ERROR);
