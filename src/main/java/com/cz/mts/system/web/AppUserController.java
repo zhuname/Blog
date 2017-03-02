@@ -541,8 +541,14 @@ public class AppUserController  extends BaseController {
 				if(StringUtils.isNotBlank(appRecord.getPassword())){
 					//比较查询出来的密码和传过来的密码是否相等
 					if(appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getPassword()))){
-						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
-						appUserService.update(appRecord);
+						//判断新密码和旧密码是否相等
+						if(!appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()))){
+							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+							appUserService.update(appRecord);
+						}else{
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage("新旧密码不能相同");
+						}
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("原密码输入错误");
