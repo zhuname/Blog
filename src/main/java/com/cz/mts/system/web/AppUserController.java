@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -597,6 +598,56 @@ public class AppUserController  extends BaseController {
 				returnObject.setMessage("该用户不存在");
 			}
 		}
+		return returnObject;
+	}
+	
+	
+	/**
+	 * 余额支付接口
+	 * 
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/pay/json")
+	public @ResponseBody
+	ReturnDatas pay(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		
+		
+		if(userId==null||type==null){
+			returnObject.setMessage("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			return returnObject;
+		}
+		try {
+			//支付 ，并且返回状态
+			Integer result=appUserService.pay(userId, type, itemId,code);
+			if(result==1){
+				returnObject.setMessage("支付成功");
+				returnObject.setStatus(ReturnDatas.SUCCESS);
+			}else if (result==2) {
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==3) {
+				returnObject.setMessage("用户不存在");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==4) {
+				returnObject.setMessage("目标信息不正确");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==5) {
+				returnObject.setMessage("用户余额不足");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
 		return returnObject;
 	}
 	

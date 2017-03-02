@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -137,8 +138,17 @@ public class Card  extends BaseEntity {
 	private AppUser appUser;
 	
 	
+	private List<UserCard> userCards;
 	
 	//concstructor
+	@Transient
+	public List<UserCard> getUserCards() {
+		return userCards;
+	}
+
+	public void setUserCards(List<UserCard> userCards) {
+		this.userCards = userCards;
+	}
 
 	@Transient
 	public AppUser getAppUser() {

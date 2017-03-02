@@ -1,17 +1,21 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.User;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IUserCardService;
+import com.cz.mts.system.service.IUserService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -43,6 +51,8 @@ public class CardController  extends BaseController {
 	private ICardService cardService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IUserCardService userCardService;
 	
 	private String listurl="/system/card/cardList";
 	
@@ -295,6 +305,79 @@ public class CardController  extends BaseController {
 	
 	}
 	
+	
+	/**
+	 * 新增/修改 操作吗,返回json格式数据
+	 * 
+	 */
+	@RequestMapping("/payCard/json")
+	public @ResponseBody
+	ReturnDatas payCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Integer num,Integer cardId,Integer userId) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			
+			if(cardId==null||userId==null||num==null){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+				return returnObject;
+			}
+			
+			//获取卡券信息
+			Card card=cardService.findCardById(cardId);
+			
+			if(card==null){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("找不到此卡券");
+				return returnObject;
+			}
+			//判断数量
+			if(card.getNum()<num){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("卡券数量不足");
+				return returnObject;
+			}
+			
+			List<UserCard> userCards=new ArrayList<>();
+			
+			String code=new Date().getTime()+""+RandomUtils.nextInt(1, 9);
+			
+			//新增usercard
+			for (int i = 0; i < num; i++) {
+				UserCard userCar = new UserCard();
+				
+				String userCardCode=new Date().getTime()+""+RandomUtils.nextInt(1000, 9999);
+				
+				userCar.setCardCode(userCardCode);
+				
+				userCar.setUserId(userId);
+				userCar.setCardId(cardId);
+				userCar.setStatus(0);
+				userCar.setCreateTime(new Date());
+				userCar.setCode(code);
+				userCar.setSumMoney(card.getConvertMoney());
+				userCar.setPhone(card.getPhone());
+				userCar.setAdress(card.getAddress());
+				
+				userCards.add(userCar);
+			}
+			userCardService.save(userCards);
+			
+			card.setNum(card.getNum()-num);
+			cardService.update(card, true);
+			
+			card.setUserCards(userCards);
+			returnObject.setData(card);
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
 	
 
 }
