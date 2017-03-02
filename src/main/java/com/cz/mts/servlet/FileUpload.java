@@ -177,7 +177,7 @@ public class FileUpload extends HttpServlet {
 //		}
 		//跳转到第三方路径
 //		response.sendRedirect(callbackurl);
-		  out.print("{\"" +allhttpfile+"\"}");
+		  out.print(allhttpfile);
 //		returnObject.setData(allhttpfile);
 //		JSONObject json = JSONObject.fromObject(returnObject);//将java对象转换为json对象
 //		String str = json.toString();//将json对象转换为字符串
