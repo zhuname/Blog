@@ -95,7 +95,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 	@Override
 	public ReturnDatas list(Card card,Page page) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		if(null == card.getStatus() || null == card.getCatergoryId()){
+		if(null == card.getStatus()){
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
