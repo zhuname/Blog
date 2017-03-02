@@ -224,9 +224,13 @@ public class PosterPackageController  extends BaseController {
 	}
 	
 	/**
-	 * 删除操作
+	 * 删除海报红包接口
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
 	 */
-	@RequestMapping(value="/delete")
+	@RequestMapping(value="/delete/json")
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -235,12 +239,14 @@ public class PosterPackageController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				posterPackageService.deleteById(id,PosterPackage.class);
-				return new ReturnDatas(ReturnDatas.SUCCESS,
-						MessageUtils.DELETE_SUCCESS);
+				PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
+				if(null != posterPackage){
+					posterPackage.setIsDel(1);
+					posterPackageService.update(posterPackage,true);
+				}
+				return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
