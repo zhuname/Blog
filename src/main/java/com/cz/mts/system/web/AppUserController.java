@@ -15,20 +15,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Sms;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.ISmsService;
-import com.cz.mts.system.service.impl.SmsServiceImpl;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.service.IAppUserService;
-import com.sun.tools.classfile.Annotation.element_value;
+import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ISmsService;
 
 
 /**
@@ -43,6 +42,8 @@ import com.sun.tools.classfile.Annotation.element_value;
 public class AppUserController  extends BaseController {
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IAttentionService attentionService;
 	
 	private String listurl="/appuser/appuserList";
 	
@@ -112,7 +113,10 @@ public class AppUserController  extends BaseController {
 
 	
 	/**
+	 * 获取个人信息接口
+	 * @param id
 	 * 查看的Json格式数据,为APP端提供数据
+	 * @author wj
 	 */
 	@RequestMapping(value = "/look/json")
 	public @ResponseBody
@@ -122,8 +126,29 @@ public class AppUserController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  AppUser appUser = appUserService.findAppUserById(id);
-		   returnObject.setData(appUser);
+			 AppUser appUser = appUserService.findAppUserById(id);
+			 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
+			 finder.setParam("itemId", id);
+			 Page page = new Page();
+			 Attention attention = new Attention();
+			 //获取别人关注我的列表
+			 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
+			 if(null != attentions && attentions.size() > 0){
+				 appUser.setFansNum(attentions.size());
+			 }else{
+				 appUser.setFansNum(0);
+			 }
+			 //获取我的关注列表
+			 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId");
+			 fder.setParam("userId", id);
+			 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+			 if(null != myAttens && myAttens.size() > 0){
+				 for (Attention at : myAttens) {
+					at.setIsUpdate(0);
+					attentionService.update(at);
+				}
+			 }
+			 returnObject.setData(appUser);
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
@@ -298,8 +323,11 @@ public class AppUserController  extends BaseController {
 		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
 			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
-			if(datas!=null){
+			if(datas!=null&&datas.size()>0){
 				returnObject.setData(datas.get(0));
+			}else {
+				returnObject.setStatus(ReturnDatas.WARNING);
+				returnObject.setMessage("帐号密码错误");
 			}
 		}else {
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -351,6 +379,9 @@ public class AppUserController  extends BaseController {
 							returnObject.setStatus(ReturnDatas.ERROR);
 							returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 							return returnObject;
+						}else{
+							//删除该条记录
+							smsService.deleteByEntity(smss.get(0));
 						}
 						
 					}
@@ -414,6 +445,8 @@ public class AppUserController  extends BaseController {
 				sms.setType(2);
 				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
 				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
 					appUserService.saveorupdate(appUser);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
@@ -459,6 +492,8 @@ public class AppUserController  extends BaseController {
 				sms.setType(3);
 				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
 				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
 					//根据id查询信息
 					AppUser appUserNewPhone = appUserService.findAppUserById(appUser.getId());
 					if(null != appUserNewPhone){
@@ -519,5 +554,52 @@ public class AppUserController  extends BaseController {
 		}
 		return returnObject;
 	}
+	
+	/**
+	 * 绑定手机号接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/bindphone/json")
+	public @ResponseBody 
+	ReturnDatas bindPhone(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(content) || null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			Page page = new Page();
+			AppUser appRecord = appUserService.findAppUserById(appUser.getId());
+			if(null != appRecord){
+				//判断验证码
+				Sms sms=new Sms();
+				sms.setPhone(appUser.getPhone());
+				sms.setContent(content);
+				sms.setType(5);
+				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
+					//更新appUser表中的记录
+					appRecord.setPhone(appUser.getPhone());
+					appUserService.update(appRecord);
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("请再次获取验证码");
+				}
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户不存在");
+			}
+		}
+		return returnObject;
+	}
+	
+	
 
 }

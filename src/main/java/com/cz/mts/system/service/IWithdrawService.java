@@ -1,7 +1,7 @@
 package com.cz.mts.system.service;
 
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.Withdraw;
-import com.cz.mts.system.service.IBaseSpringrainService;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -18,6 +18,14 @@ public interface IWithdrawService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	Withdraw findWithdrawById(Object id) throws Exception;
+	
+	/**
+	 * 申请提现
+	 * @author wj
+	 * @param withdraw
+	 * @throws Exception
+	 */
+	ReturnDatas applyWithdraw(Withdraw withdraw) throws Exception;
 	
 	
 	

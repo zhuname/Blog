@@ -1,7 +1,9 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,13 +18,20 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.Withdraw;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IWithdrawService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
 
 
 /**
@@ -33,10 +42,14 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Withdraw
  */
 @Controller
-@RequestMapping(value="/withdraw")
+@RequestMapping(value="/system/withdraw")
 public class WithdrawController  extends BaseController {
 	@Resource
 	private IWithdrawService withdrawService;
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private ISysSysparamService sysSysparamService;
 	
 	private String listurl="/system/withdraw/withdrawList";
 	
@@ -126,19 +139,18 @@ public class WithdrawController  extends BaseController {
 	
 	
 	/**
+	 * 申请提现接口
+	 * @author wj
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Withdraw withdraw,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			withdrawService.saveorupdate(withdraw);
-			
+			returnObject = withdrawService.applyWithdraw(withdraw);
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

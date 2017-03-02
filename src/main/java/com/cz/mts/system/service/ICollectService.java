@@ -1,5 +1,7 @@
 package com.cz.mts.system.service;
 
+import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -18,6 +20,16 @@ public interface ICollectService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	Collect findCollectById(Object id) throws Exception;
+	
+	/**
+	 * 收藏列表
+	 * @author wj
+	 * @param collect
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	ReturnDatas list(Collect collect,Page page) throws Exception;
 	
 	
 	

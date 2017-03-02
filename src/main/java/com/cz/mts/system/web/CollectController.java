@@ -61,8 +61,8 @@ public class CollectController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
-	 * 
+	 * 收藏列表
+	 * @author wj
 	 * @param request
 	 * @param model
 	 * @param collect
@@ -75,11 +75,7 @@ public class CollectController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		// ==执行分页查询
-		List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
-			returnObject.setQueryBean(collect);
-		returnObject.setPage(page);
-		returnObject.setData(datas);
+		returnObject = collectService.list(collect, page);
 		return returnObject;
 	}
 	
@@ -140,7 +136,6 @@ public class CollectController  extends BaseController {
 			Page page=new Page();
 			// ==执行分页查询
 			List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
-			
 			if(datas.size()>0){
 				//删除所有收藏的
 				for (Collect collectD : datas) {

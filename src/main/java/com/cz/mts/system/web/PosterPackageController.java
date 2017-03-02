@@ -12,29 +12,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Category;
-import com.cz.mts.system.entity.LunboPic;
-import com.cz.mts.system.entity.MoneyDetail;
-import com.cz.mts.system.entity.PosterPackage;
-import com.cz.mts.system.entity.User;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.ICategoryService;
-import com.cz.mts.system.service.IMoneyDetailService;
-import com.cz.mts.system.service.IPosterPackageService;
-import com.cz.mts.system.service.IUserService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IPosterPackageService;
 
 
 /**
@@ -82,7 +76,7 @@ public class PosterPackageController  extends BaseController {
 	
 	/**
 	 * json数据,为APP提供数据
-	 * 
+	 * @author wml
 	 * @param request
 	 * @param model
 	 * @param posterPackage
@@ -100,9 +94,15 @@ public class PosterPackageController  extends BaseController {
 		
 		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
-		Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id");
-		returnObject.setData(posterPackageService.queryForList(finder1,page));
 		
+		if(StringUtils.isBlank(posterPackage.getTitle())){
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id");
+			returnObject.setData(posterPackageService.queryForList(finder1,page));
+		} else {
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title ");
+			finder1.setParam("title", posterPackage.getTitle());
+			returnObject.setData(posterPackageService.queryForList(finder1,page));
+		}
 		
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);
@@ -111,9 +111,9 @@ public class PosterPackageController  extends BaseController {
 	
 	@RequestMapping("/list/export")
 	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,PosterPackage posterPackage) throws Exception{
+		
 		// ==构造分页请求
 		Page page = newPage(request);
-	
 		File file = posterPackageService.findDataExportExcel(null,listurl, page,PosterPackage.class,posterPackage);
 		String fileName="posterPackage"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
@@ -132,7 +132,9 @@ public class PosterPackageController  extends BaseController {
 
 	
 	/**
+	 * 查看还包红包详情
 	 * 查看的Json格式数据,为APP端提供数据
+	 * @author wml
 	 */
 	@RequestMapping(value = "/look/json")
 	public @ResponseBody
@@ -144,6 +146,13 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
+			 if(posterPackage.getLookNum()==null){
+				 posterPackage.setLookNum(1);
+			 }else{
+				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
+			 }
+			 
+			 posterPackageService.update(posterPackage);
 			 
 			 //查询发红包的用户
 			 if(posterPackage!=null&&posterPackage.getUserId()!=null){
@@ -152,7 +161,6 @@ public class PosterPackageController  extends BaseController {
 					 posterPackage.setAppUser(appUser);
 				 }
 			 }
-			 
 			 
 			 //是否领取  look 1 为领取过的
 			 if(posterPackage!=null&&StringUtils.isNotBlank(appUserId)){
@@ -328,6 +336,10 @@ public class PosterPackageController  extends BaseController {
 				posterPackage.setIsDel(0);
 				
 				posterPackage.setCreateTime(new Date());
+				
+				//生成验证码
+				Long code=new Date().getTime();
+				posterPackage.setCode("P"+code);
 				
 				posterPackageService.save(posterPackage);
 				
