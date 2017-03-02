@@ -108,6 +108,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	@Override
 	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		mediaPackage.setIsDel(0);
 		List<MediaPackage> dataList = findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
 		if(null == mediaPackage.getStatus()){
 			returnObject.setStatus(ReturnDatas.ERROR);

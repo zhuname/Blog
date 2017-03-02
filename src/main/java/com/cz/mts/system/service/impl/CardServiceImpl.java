@@ -100,6 +100,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 			returnObject.setMessage("参数缺失");
 		}else{
 			// ==执行分页查询
+			card.setIsDel(0);
 			List<Card> datas = findListDataByFinder(null,page,Card.class,card);
 			if(null != datas && datas.size() > 0){
 				for (Card cd : datas) {
