@@ -136,6 +136,7 @@ public class Card  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	private AppUser appUser;
+	private List<UserMedal> userMedals;
 	
 	
 	private List<UserCard> userCards;
@@ -148,6 +149,15 @@ public class Card  extends BaseEntity {
 
 	public void setUserCards(List<UserCard> userCards) {
 		this.userCards = userCards;
+	}
+
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
 	}
 
 	@Transient

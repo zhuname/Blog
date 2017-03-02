@@ -165,7 +165,7 @@ public class FileUpload extends HttpServlet {
 			item.delete(); // 删除临时文件
 		}
 		
-		if(allhttpfile.endsWith(",")){
+		if(allhttpfile.endsWith(";")){
 			allhttpfile=allhttpfile.substring(0, allhttpfile.length()-1);
 		}
 //		allhttpfile=URLEncoder.encode(allhttpfile);
@@ -177,7 +177,7 @@ public class FileUpload extends HttpServlet {
 //		}
 		//跳转到第三方路径
 //		response.sendRedirect(callbackurl);
-		  out.print("{\"Path\":\"" +allhttpfile+"\"}");
+		  out.print(allhttpfile);
 //		returnObject.setData(allhttpfile);
 //		JSONObject json = JSONObject.fromObject(returnObject);//将java对象转换为json对象
 //		String str = json.toString();//将json对象转换为字符串

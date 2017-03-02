@@ -81,6 +81,26 @@ public class MoneyDetail  extends BaseEntity {
 
 	private AppUser appUser;
 	
+	private Double sumMoney;
+	private Integer sumPerson;
+	
+	@Transient
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+	@Transient
+	public Integer getSumPerson() {
+		return sumPerson;
+	}
+
+	public void setSumPerson(Integer sumPerson) {
+		this.sumPerson = sumPerson;
+	}
+
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;

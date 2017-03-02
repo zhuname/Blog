@@ -108,8 +108,9 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	@Override
 	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		mediaPackage.setIsDel(0);
 		List<MediaPackage> dataList = findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
-		if(StringUtils.isBlank(appUserId) || null == mediaPackage.getUserId() || null == mediaPackage.getStatus() || null == mediaPackage.getCategoryId()){
+		if(null == mediaPackage.getStatus()){
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
@@ -122,6 +123,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 							mp.setAppUser(appUser);
 						}
 						UserMedal userMedal = new UserMedal();
+						userMedal.setUserId(mp.getUserId());
 						//查询勋章列表
 						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
 						if(null != userMedals && userMedals.size() > 0){
@@ -136,28 +138,32 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 							mp.setUserMedals(userMedals);
 						}
 						//返回是否关注
-						Attention attention = new Attention();
-						attention.setUserId(Integer.parseInt(appUserId));
-						attention.setItemId(mp.getUserId());
-						List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
-						if(null != attentions && attentions.size() > 0){
-							mp.setIsAttention(1);
-						}else{
-							mp.setIsAttention(0);
+						if(StringUtils.isNotBlank(appUserId)){
+							Attention attention = new Attention();
+							attention.setUserId(Integer.parseInt(appUserId));
+							attention.setItemId(mp.getUserId());
+							List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+							if(null != attentions && attentions.size() > 0){
+								mp.setIsAttention(1);
+							}else{
+								mp.setIsAttention(0);
+							}
+							
+							//返回是否收藏
+							Collect collect = new Collect();
+							collect.setUserId(Integer.parseInt(appUserId));
+							collect.setItemId(mp.getId());
+							collect.setType(2);
+							List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
+							if(null != collects && collects.size() > 0){
+								mp.setIsCollect(1);
+							}else{
+								mp.setIsCollect(0);
+							}
 						}
 					}
 					
-					//返回是否收藏
-					Collect collect = new Collect();
-					collect.setUserId(Integer.parseInt(appUserId));
-					collect.setItemId(mp.getId());
-					collect.setType(2);
-					List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
-					if(null != collects && collects.size() > 0){
-						mp.setIsCollect(1);
-					}else{
-						mp.setIsCollect(0);
-					}
+					
 					//已抢红包列表
 					MoneyDetail moneyDetail = new MoneyDetail();
 					moneyDetail.setItemId(mp.getId());

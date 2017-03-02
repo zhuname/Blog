@@ -224,9 +224,12 @@ public class MediaPackageController  extends BaseController {
 	}
 	
 	/**
-	 * 删除操作
+	 * 删除视频红包接口
+	 * @param request
+	 * @return
+	 * @throws Exception
 	 */
-	@RequestMapping(value="/delete")
+	@RequestMapping(value="/delete/json")
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -235,12 +238,15 @@ public class MediaPackageController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				mediaPackageService.deleteById(id,MediaPackage.class);
+				MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
+				if(null != mediaPackage){
+					mediaPackage.setIsDel(1);
+					mediaPackageService.update(mediaPackage,true);
+				}
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

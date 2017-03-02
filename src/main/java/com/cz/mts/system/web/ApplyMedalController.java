@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.ApplyMedal
  */
 @Controller
-@RequestMapping(value="/applymedal")
+@RequestMapping(value="/system/applymedal")
 public class ApplyMedalController  extends BaseController {
 	@Resource
 	private IApplyMedalService applyMedalService;
@@ -126,19 +127,33 @@ public class ApplyMedalController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
-	 * 
+	 * 申请勋章认证接口
+	 * @author wj
+	 * @param model
+	 * @param applyMedal
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,ApplyMedal applyMedal,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			applyMedalService.saveorupdate(applyMedal);
-			
+			if(null == applyMedal){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+			}else{
+				if(null == applyMedal.getId()){
+					applyMedal.setApplyTime(new Date());
+					applyMedal.setStatus(1);
+					applyMedalService.saveorupdate(applyMedal);
+				}else{
+					applyMedalService.update(applyMedal,true);
+				}
+			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

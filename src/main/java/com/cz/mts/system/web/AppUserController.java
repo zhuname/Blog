@@ -170,21 +170,22 @@ public class AppUserController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 			Page page = newPage(request);
-			AppUser user = new AppUser();
-			if(StringUtils.isNoneBlank(appUser.getPhone())){
-				user.setPhone(appUser.getPhone());
-			}
-			//判断手机号是否注册过
-			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
-			if(null != datas && datas.size() > 0){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该用户已注册");
-			}else{
-				if(null == appUser.getId()){
-					String content = request.getParameter("content");
-					if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(content)){
+			if(null == appUser.getId()){
+				String content = request.getParameter("content");
+				if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(content)){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("参数缺失");
+				}else{
+					//判断手机号是否注册
+					AppUser user = new AppUser();
+					if(StringUtils.isNotBlank(appUser.getPhone())){
+						user.setPhone(appUser.getPhone());
+					}
+					//判断手机号是否注册过
+					List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+					if(null != datas && datas.size() > 0){
 						returnObject.setStatus(ReturnDatas.ERROR);
-						returnObject.setMessage("参数缺失");
+						returnObject.setMessage("该用户已注册");
 					}else{
 						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						appUser.setCreateTime(new Date());
@@ -192,13 +193,13 @@ public class AppUserController  extends BaseController {
 						Object id = appUserService.saveorupdate(appUser);
 						returnObject.setData(appUserService.findById(id, AppUser.class));
 					}
-				}else{
-					if(StringUtils.isNotBlank(appUser.getPassword())){
-						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-					}
-					appUserService.update(appUser,true);
-					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 				}
+			}else{
+				if(StringUtils.isNotBlank(appUser.getPassword())){
+					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+				}
+				appUserService.update(appUser,true);
+				returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -541,8 +542,14 @@ public class AppUserController  extends BaseController {
 				if(StringUtils.isNotBlank(appRecord.getPassword())){
 					//比较查询出来的密码和传过来的密码是否相等
 					if(appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getPassword()))){
-						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
-						appUserService.update(appRecord);
+						//判断新密码和旧密码是否相等
+						if(!appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()))){
+							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+							appUserService.update(appRecord);
+						}else{
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage("新旧密码不能相同");
+						}
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("原密码输入错误");
