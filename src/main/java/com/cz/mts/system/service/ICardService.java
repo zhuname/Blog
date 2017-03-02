@@ -1,5 +1,7 @@
 package com.cz.mts.system.service;
 
+import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -18,6 +20,17 @@ public interface ICardService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	Card findCardById(Object id) throws Exception;
+	
+	/**
+	 * 
+	 * 获取卡券列表
+	 * @author wj
+	 * @param card
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	ReturnDatas list(Card card,Page page) throws Exception;
 	
 	
 	

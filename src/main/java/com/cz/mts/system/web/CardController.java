@@ -80,16 +80,7 @@ public class CardController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		if(null == card.getStatus() || null == card.getCatergoryId()){
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage("参数缺失");
-		}else{
-			// ==执行分页查询
-			List<Card> datas=cardService.findListDataByFinder(null,page,Card.class,card);
-			returnObject.setQueryBean(card);
-			returnObject.setPage(page);
-			returnObject.setData(datas);
-		}
+		returnObject = cardService.list(card, page);
 		return returnObject;
 	}
 	
