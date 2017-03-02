@@ -165,7 +165,7 @@ public class FileUpload extends HttpServlet {
 			item.delete(); // 删除临时文件
 		}
 		
-		if(allhttpfile.endsWith(",")){
+		if(allhttpfile.endsWith(";")){
 			allhttpfile=allhttpfile.substring(0, allhttpfile.length()-1);
 		}
 //		allhttpfile=URLEncoder.encode(allhttpfile);
