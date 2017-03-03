@@ -1,5 +1,7 @@
 package com.cz.mts.system.entity;
 
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -182,13 +184,23 @@ public class AppUser  extends BaseEntity {
 	private java.lang.String wxPhone;	
 
 	
+	private List<UserMedal> userMedals;
+	
 	
 	//columns END 数据库字段结束
 	
 	//concstructor
 
 	
-	
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
+
 	@WhereSQL(sql="wxName=:AppUser_wxName")
 	public java.lang.String getWxName() {
 		return wxName;

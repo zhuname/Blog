@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Bank;
-import com.cz.mts.system.service.IBankService;
+import com.cz.mts.system.entity.Password;
+import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -29,16 +29,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 15:17:25
- * @see com.cz.mts.system.web.Bank
+ * @version  2017-03-03 15:28:50
+ * @see com.cz.mts.system.web.Password
  */
 @Controller
-@RequestMapping(value="/system/bank")
-public class BankController  extends BaseController {
+@RequestMapping(value="/password")
+public class PasswordController  extends BaseController {
 	@Resource
-	private IBankService bankService;
+	private IPasswordService passwordService;
 	
-	private String listurl="/system/bank/bankList";
+	private String listurl="/system/password/passwordList";
 	
 	
 	   
@@ -47,48 +47,48 @@ public class BankController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param bank
+	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Bank bank) 
+	public String list(HttpServletRequest request, Model model,Password password) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, bank);
+		ReturnDatas returnObject = listjson(request, model, password);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
 	
 	/**
-	 * 获取银行卡列表接口
-	 * @author wj
+	 * json数据,为APP提供数据
 	 * 
 	 * @param request
 	 * @param model
-	 * @param bank
+	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Bank bank) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,Password password) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Bank> datas=bankService.findListDataByFinder(null,page,Bank.class,bank);
-		returnObject.setQueryBean(bank);
+		List<Password> datas=passwordService.findListDataByFinder(null,page,Password.class,password);
+			returnObject.setQueryBean(password);
+		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Bank bank) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Password password) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = bankService.findDataExportExcel(null,listurl, page,Bank.class,bank);
-		String fileName="bank"+GlobalStatic.excelext;
+		File file = passwordService.findDataExportExcel(null,listurl, page,Password.class,password);
+		String fileName="password"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
@@ -100,7 +100,7 @@ public class BankController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/bank/bankLook";
+		return "/system/password/passwordLook";
 	}
 
 	
@@ -115,8 +115,8 @@ public class BankController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Bank bank = bankService.findBankById(id);
-		   returnObject.setData(bank);
+		  Password password = passwordService.findPasswordById(id);
+		   returnObject.setData(password);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -131,13 +131,13 @@ public class BankController  extends BaseController {
 	 */
 	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Bank bank,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,Password password,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
 		
-			bankService.saveorupdate(bank);
+			passwordService.saveorupdate(password);
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -156,7 +156,7 @@ public class BankController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/bank/bankCru";
+		return "/system/password/passwordCru";
 	}
 	
 	/**
@@ -171,7 +171,7 @@ public class BankController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				bankService.deleteById(id,Bank.class);
+				passwordService.deleteById(id,Password.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -203,7 +203,7 @@ public class BankController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			bankService.deleteByIds(ids,Bank.class);
+			passwordService.deleteByIds(ids,Password.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);

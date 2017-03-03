@@ -247,6 +247,7 @@ public class MoneyDetailController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(20);
 		if(null != moneyDetail.getUserId()){
 			List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
 			if(null != datas && datas.size() > 0){
