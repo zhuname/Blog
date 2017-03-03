@@ -172,12 +172,8 @@ public class AppUserController  extends BaseController {
 			 
 			 //获取我的勋章列表
 			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-			 if(null != userMedals && userMedals.size() > 0){
-				 appUser.setUserMedals(userMedals);
-			 }
-			 
 			 for (UserMedal userMedal2 : userMedals) {
-				
+				 
 				 if(userMedal2.getMedalId()!=null){
 					 
 					 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
@@ -188,6 +184,10 @@ public class AppUserController  extends BaseController {
 				 }
 				 
 			 }
+			 if(null != userMedals && userMedals.size() > 0){
+				 appUser.setUserMedals(userMedals);
+			 }
+			 
 			 
 			 returnObject.setData(appUser);
 			 
