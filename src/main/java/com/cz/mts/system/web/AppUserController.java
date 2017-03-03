@@ -25,11 +25,13 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.system.service.ISmsService;
 import com.cz.mts.system.service.IUserMedalService;
@@ -53,6 +55,8 @@ public class AppUserController  extends BaseController {
 	private IUserMedalService userMedalService;
 	@Resource
 	private IPasswordService passwordService;
+	@Resource
+	private IMedalService medalService;
 	
 	private String listurl="/appuser/appuserList";
 	
@@ -164,12 +168,30 @@ public class AppUserController  extends BaseController {
 				 }
 			 }
 			 
+			 UserMedal userMedal=new UserMedal();
+			 
 			 //获取我的勋章列表
-			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, null);
+			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
 			 if(null != userMedals && userMedals.size() > 0){
 				 appUser.setUserMedals(userMedals);
 			 }
+			 
+			 for (UserMedal userMedal2 : userMedals) {
+				
+				 if(userMedal2.getMedalId()!=null){
+					 
+					 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
+					 if(medal!=null){
+						 userMedal2.setMedal(medal);
+					 }
+					 
+				 }
+				 
+			 }
+			 
 			 returnObject.setData(appUser);
+			 
+			 
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
