@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,13 +25,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -53,6 +59,11 @@ public class CardController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IUserCardService userCardService;
+	@Resource
+	private ISysSysparamService sysparamService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
+	
 	
 	private String listurl="/system/card/cardList";
 	
@@ -343,12 +354,20 @@ public class CardController  extends BaseController {
 				
 				userCar.setUserId(userId);
 				userCar.setCardId(cardId);
-				userCar.setStatus(0);
+				
+				if(card.getConvertMoney()==null||card.getConvertMoney()==0.0){
+					userCar.setStatus(1);
+				}else{
+					userCar.setStatus(0);
+				}
+				
 				userCar.setCreateTime(new Date());
 				userCar.setCode(code);
 				userCar.setSumMoney(card.getConvertMoney());
 				userCar.setPhone(card.getPhone());
 				userCar.setAdress(card.getAddress());
+				
+				userCar.setExpTime(card.getEndTime());
 				
 				userCards.add(userCar);
 			}
@@ -369,6 +388,134 @@ public class CardController  extends BaseController {
 		return returnObject;
 	
 	}
+	
+	
+	/**
+	 * 兑换卡券接口
+	 * 
+	 */
+	@RequestMapping("/changeCardjson/json")
+	public @ResponseBody
+	ReturnDatas changeCardjson(Model model,HttpServletRequest request,HttpServletResponse response,UserCard userCard,Integer userId) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try { 
+			
+			if(userCard.getCode()==null){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+				return returnObject;
+			}
+			
+			Page page=newPage(request);
+			
+			page.setPageSize(1);
+			
+			Finder finder=Finder.getSelectFinder(UserCard.class).append(" where 1=1 ");
+
+			//接口传过来一个userId但是查的时候并不需要userid  只要一个code  所以把这个userid置为null
+			userCard.setUserId(null);
+			
+			//查出来的单个卡券
+			List<UserCard> usercards=userCardService.findListDataByFinder(finder, page, UserCard.class, userCard);
+			
+			if(usercards.size()==0){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券不存在");
+				return returnObject;
+			}
+			
+			//用户的购买的卡券信息
+			UserCard usercard=usercards.get(0);
+			
+			//发布人发布的卡券信息
+			Card card=null;
+			
+			//判断是否过期
+			if(usercard.getExpTime()!=null){
+				if(usercard.getExpTime().getTime()<new Date().getTime()){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券已过期");
+					return returnObject;
+				}
+			}
+			
+			//判断是否兑换
+			if(usercard.getStatus()!=null&&usercard.getStatus()!=1){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券已兑换");
+				return returnObject;
+			}
+			
+			
+			if(usercard.getCardId()!=null){
+				card=cardService.findCardById(usercard.getCardId());
+			}
+			
+			if(card==null&&userId!=card.getUserId()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券不存在");
+				return returnObject;
+			}
+			
+			//改变状态
+			usercard.setStatus(2);
+			usercard.setChangeTime(new Date());
+			userCardService.update(usercard, true);
+			
+			//手续费比例
+			BigDecimal cardCharge=new BigDecimal(0.0);
+			
+			SysSysparam sysSysparam = sysparamService.findSysSysparamById("cardCharge");
+			if(sysSysparam!=null){
+				cardCharge=new BigDecimal(sysSysparam.getValue());
+			}
+			
+			AppUser appUser=appUserService.findAppUserById(userId);
+			if(appUser!=null){
+				
+				BigDecimal sumMoney=new BigDecimal(0.0);
+				
+				//算出这次总共是多少钱的收益
+				if(usercard.getSumMoney()!=null){
+					sumMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
+					sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(sumMoney);
+				}
+				
+				if(appUser.getBalance()==null){
+					appUser.setBalance(sumMoney.doubleValue());
+				}else{
+					appUser.setBalance(appUser.getBalance()+sumMoney.doubleValue());
+				}
+				
+				appUserService.update(appUser,true);
+				
+				
+				//先保存收益记录
+				MoneyDetail moneyDetail=new MoneyDetail();
+				moneyDetail.setUserId(userId);
+				moneyDetail.setCreateTime(new Date());
+				moneyDetail.setType(8);
+				moneyDetail.setMoney(sumMoney.doubleValue());
+				moneyDetail.setItemId(usercard.getId());
+				moneyDetail.setBalance(appUser.getBalance());
+				
+				moneyDetailService.save(moneyDetail);
+				
+			}
+			
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
+	
 	
 
 }

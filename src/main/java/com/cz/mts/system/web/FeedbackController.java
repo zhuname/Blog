@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Feedback
  */
 @Controller
-@RequestMapping(value="/feedback")
+@RequestMapping(value="/system/feedback")
 public class FeedbackController  extends BaseController {
 	@Resource
 	private IFeedbackService feedbackService;
@@ -212,6 +213,39 @@ public class FeedbackController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 意见反馈接口
+	 * @author wwwwwwmmmmmmmmmmllllllllll
+	 * 新增/修改 操作吗,返回json格式数据
+	 * 
+	 */
+	@RequestMapping("/update/json")
+	public @ResponseBody
+	ReturnDatas saveorupdatejson(Model model,Feedback feedback,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			
+			if(feedback.getUserId()==null||feedback.getContent()==null){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+				return returnObject;
+			}
+			
+			feedback.setCreateTime(new Date());
+			
+			feedbackService.saveorupdate(feedback);
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
 	}
 
 }
