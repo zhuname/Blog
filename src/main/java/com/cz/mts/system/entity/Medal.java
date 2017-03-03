@@ -2,6 +2,7 @@ package com.cz.mts.system.entity;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -61,6 +62,17 @@ public class Medal  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	//concstructor
+	private Integer userId;
+	
+	
+	@Transient
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
 	public Medal(){
 	}

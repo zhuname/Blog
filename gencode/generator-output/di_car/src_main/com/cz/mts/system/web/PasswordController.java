@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Medal;
-import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.entity.Password;
+import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -30,16 +29,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 15:17:26
- * @see com.cz.mts.system.web.Medal
+ * @version  2017-03-03 15:28:50
+ * @see com.cz.mts.system.web.Password
  */
 @Controller
-@RequestMapping(value="/system/medal")
-public class MedalController  extends BaseController {
+@RequestMapping(value="/password")
+public class PasswordController  extends BaseController {
 	@Resource
-	private IMedalService medalService;
+	private IPasswordService passwordService;
 	
-	private String listurl="/system/medal/medalList";
+	private String listurl="/system/password/passwordList";
 	
 	
 	   
@@ -48,14 +47,14 @@ public class MedalController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param medal
+	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Medal medal) 
+	public String list(HttpServletRequest request, Model model,Password password) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, medal);
+		ReturnDatas returnObject = listjson(request, model, password);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -65,31 +64,31 @@ public class MedalController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param medal
+	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Medal medal) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,Password password) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Medal> datas=medalService.findListDataByFinder(null,page,Medal.class,medal);
-			returnObject.setQueryBean(medal);
+		List<Password> datas=passwordService.findListDataByFinder(null,page,Password.class,password);
+			returnObject.setQueryBean(password);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Medal medal) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Password password) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = medalService.findDataExportExcel(null,listurl, page,Medal.class,medal);
-		String fileName="medal"+GlobalStatic.excelext;
+		File file = passwordService.findDataExportExcel(null,listurl, page,Password.class,password);
+		String fileName="password"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
@@ -101,7 +100,7 @@ public class MedalController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/medal/medalLook";
+		return "/system/password/passwordLook";
 	}
 
 	
@@ -116,8 +115,8 @@ public class MedalController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Medal medal = medalService.findMedalById(id);
-		   returnObject.setData(medal);
+		  Password password = passwordService.findPasswordById(id);
+		   returnObject.setData(password);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -132,13 +131,13 @@ public class MedalController  extends BaseController {
 	 */
 	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Medal medal,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,Password password,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
 		
-			medalService.saveorupdate(medal);
+			passwordService.saveorupdate(password);
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -157,7 +156,7 @@ public class MedalController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/medal/medalCru";
+		return "/system/password/passwordCru";
 	}
 	
 	/**
@@ -172,7 +171,7 @@ public class MedalController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				medalService.deleteById(id,Medal.class);
+				passwordService.deleteById(id,Password.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -204,7 +203,7 @@ public class MedalController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			medalService.deleteByIds(ids,Medal.class);
+			passwordService.deleteByIds(ids,Password.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);
@@ -213,31 +212,6 @@ public class MedalController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
-	}
-	
-	/**
-	 * 所有勋章列表
-	 * @author wj
-	 * @param request
-	 * @param model
-	 * @param medal
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/all/json")
-	public @ResponseBody
-	ReturnDatas alljson(HttpServletRequest request, Model model,Medal medal) throws Exception{
-		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		if(null == medal.getUserId()){
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage("参数缺失");
-		}else{
-			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status`,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId )a ON md.id=a.id");
-			finder.setParam("userId", medal.getUserId());
-			List datas = medalService.queryForList(finder);
-			returnObject.setData(datas);
-		}
-		return returnObject;
 	}
 
 }

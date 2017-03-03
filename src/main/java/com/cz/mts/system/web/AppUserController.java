@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,10 +25,14 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.system.service.ISmsService;
+import com.cz.mts.system.service.IUserMedalService;
 
 
 /**
@@ -45,6 +49,10 @@ public class AppUserController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IAttentionService attentionService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IPasswordService passwordService;
 	
 	private String listurl="/appuser/appuserList";
 	
@@ -124,6 +132,7 @@ public class AppUserController  extends BaseController {
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
+		  String itemId = request.getParameter("itemId");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
@@ -139,15 +148,26 @@ public class AppUserController  extends BaseController {
 			 }else{
 				 appUser.setFansNum(0);
 			 }
-			 //获取我的关注列表
-			 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId");
-			 fder.setParam("userId", id);
-			 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
-			 if(null != myAttens && myAttens.size() > 0){
-				 for (Attention at : myAttens) {
-					at.setIsUpdate(0);
-					attentionService.update(at);
-				}
+			 
+			 
+			 if(StringUtils.isNotBlank(itemId)){
+				 //获取我的关注列表
+				 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
+				 fder.setParam("userId", id);
+				 fder.setParam("itemId", Integer.parseInt(itemId));
+				 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+				 if(null != myAttens && myAttens.size() > 0){
+					 for (Attention at : myAttens) {
+						at.setIsUpdate(0);
+						attentionService.update(at);
+					}
+				 }
+			 }
+			 
+			 //获取我的勋章列表
+			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, null);
+			 if(null != userMedals && userMedals.size() > 0){
+				 appUser.setUserMedals(userMedals);
 			 }
 			 returnObject.setData(appUser);
 		}else{
@@ -191,6 +211,17 @@ public class AppUserController  extends BaseController {
 						appUser.setCreateTime(new Date());
 						appUser.setIsBlack(0);
 						Object id = appUserService.saveorupdate(appUser);
+						//判断该密码在密码表中是否存在
+						Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+						finder.setParam("mdBeforePass", appUser.getPassword());
+						List<Map<String, Object>> list = passwordService.queryForList(finder);
+						if(list.isEmpty()){
+							//向password表中插入数据
+							Password password = new Password();
+							password.setMdBeforePass(appUser.getPassword());
+							password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+							passwordService.save(password);
+						}
 						returnObject.setData(appUserService.findById(id, AppUser.class));
 					}
 				}
@@ -199,6 +230,19 @@ public class AppUserController  extends BaseController {
 					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 				}
 				appUserService.update(appUser,true);
+				
+				//判断该密码在密码表中是否存在
+				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+				finder.setParam("mdBeforePass", appUser.getPassword());
+				List<Map<String, Object>> list = passwordService.queryForList(finder);
+				if(list.isEmpty()){
+					//向password表中插入数据
+					Password password = new Password();
+					password.setMdBeforePass(appUser.getPassword());
+					password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					passwordService.save(password);
+				}
+				
 				returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 			}
 		} catch (Exception e) {
@@ -296,6 +340,20 @@ public class AppUserController  extends BaseController {
 			if(null != user){
 				user.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 				appUserService.update(user);
+				
+				//判断该密码在密码表中是否存在
+				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+				finder.setParam("mdBeforePass", appUser.getPassword());
+				List<Map<String, Object>> list = passwordService.queryForList(finder);
+				if(list.isEmpty()){
+					//向password表中插入数据
+					Password password = new Password();
+					password.setMdBeforePass(appUser.getPassword());
+					password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					passwordService.save(password);
+				}
+				
+				
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("该用户不存在");
@@ -306,7 +364,7 @@ public class AppUserController  extends BaseController {
 	
 	
 	/**
-	 * json数据,为APP提供数据
+	 * 登录接口
 	 * 
 	 * @param request
 	 * @param model
@@ -546,6 +604,20 @@ public class AppUserController  extends BaseController {
 						if(!appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()))){
 							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
 							appUserService.update(appRecord);
+							
+							//判断该密码在密码表中是否存在
+							Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+							finder.setParam("mdBeforePass", appUser.getNewPwd());
+							List<Map<String, Object>> list = passwordService.queryForList(finder);
+							if(list.isEmpty()){
+								//向password表中插入数据
+								Password password = new Password();
+								password.setMdBeforePass(appUser.getNewPwd());
+								password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+								passwordService.save(password);
+							}
+							
+							
 						}else{
 							returnObject.setStatus(ReturnDatas.ERROR);
 							returnObject.setMessage("新旧密码不能相同");
@@ -658,6 +730,32 @@ public class AppUserController  extends BaseController {
 		return returnObject;
 	}
 	
-	
+	/**
+	 * 个人统计接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param userId
+	 * @param type
+	 * @param itemId
+	 * @param code
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/statics/json")
+	public @ResponseBody
+	ReturnDatas staticsJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			Finder finder = new Finder("SELECT f.*,COUNT(uc.id) as totalUserCard FROM(SELECT e.*,COUNT(um.id) as totalMedal FROM(SELECT d.*,COUNT(`at`.id) AS totalAttention FROM (SELECT c.*,COUNT(co.id) as totalCollect FROM(SELECT b.*,COUNT(ca.id) as totalCard FROM (SELECT a.*,COUNT(pp.id) AS totalPoster FROM(SELECT au.balance ,COUNT(mp.id) as totalMedia,au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId=au.id WHERE au.id=:id) a LEFT JOIN t_poster_package pp ON pp.userId = a.id )b LEFT JOIN t_card ca ON ca.userId=b.id)c LEFT JOIN t_collect co ON co.userId=c.id)d LEFT JOIN t_attention at ON `at`.userId=d.id)e LEFT JOIN t_user_medal um ON um.userId=e.id)f LEFT JOIN t_user_card uc ON uc.userId=f.id AND uc.`status` != 0;");
+			finder.setParam("id", appUser.getId());
+			List datas = appUserService.queryForList(finder);
+			returnObject.setData(datas);
+		}
+		return returnObject;
+	}
 
 }
