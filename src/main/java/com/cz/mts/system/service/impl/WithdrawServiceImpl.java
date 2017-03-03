@@ -145,11 +145,11 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 					withdraw.setFactorage(factorage);
 					withdraw.setRealMoney(realMoney);
 					saveorupdate(withdraw);
-					//向moneyDetail表中增加记录
+					//向moneyDetail表中增加记录,申请成功和申请失败都需要更新moneyDetail表中的信息
 					MoneyDetail moneyDetail = new MoneyDetail();
 					moneyDetail.setUserId(withdraw.getUserId());
 					moneyDetail.setCreateTime(new Date());
-					moneyDetail.setType(7);
+					moneyDetail.setType(10);
 					moneyDetail.setMoney(withdraw.getMoney());
 					moneyDetail.setBalance(appUserRecord.getBalance());
 					moneyDetailService.saveorupdate(moneyDetail);

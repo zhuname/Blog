@@ -120,7 +120,21 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					if(null != mp.getUserId()){
 						AppUser appUser = appUserService.findAppUserById(mp.getUserId());
 						if(null != appUser){
-							mp.setAppUser(appUser);
+							if(StringUtils.isNotBlank(appUser.getSign())){
+								mp.setSign(appUser.getSign());
+							}
+							if(StringUtils.isNotBlank(appUser.getName())){
+								mp.setName(appUser.getName());
+							}
+							if(StringUtils.isNotBlank(appUser.getHeader())){
+								mp.setHeader(appUser.getHeader());
+							}
+							if(StringUtils.isNotBlank(appUser.getSex())){
+								mp.setSex(appUser.getSex());
+							}
+							if(StringUtils.isNotBlank(appUser.getPhone())){
+								mp.setPhone(appUser.getPhone());
+							}
 						}
 						UserMedal userMedal = new UserMedal();
 						userMedal.setUserId(mp.getUserId());

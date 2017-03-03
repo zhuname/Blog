@@ -202,9 +202,55 @@ public class MediaPackage  extends BaseEntity {
 	
 	private List<MoneyDetail> moneyDetails;
 	
+	private String name;
+	private String phone;
+	private String sex;
+	private String header;
+	private String sign;
 	
 	
 	
+	@Transient
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Transient
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	@Transient
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	@Transient
+	public String getHeader() {
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+	@Transient
+	public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+
 	//concstructor
 	@Transient
 	public List<MoneyDetail> getMoneyDetails() {
