@@ -20,14 +20,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-<<<<<<< HEAD
 import com.cz.mts.frame.cached.ICached;
 import com.cz.mts.frame.cached.RedisCachedImpl;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
-=======
 import com.cz.mts.frame.controller.BaseController;
->>>>>>> 701d6d233c576059acbc5a10d09fbfafb7377a2f
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -37,10 +34,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
-<<<<<<< HEAD
 import com.cz.mts.system.entity.Snatch;
-=======
->>>>>>> 701d6d233c576059acbc5a10d09fbfafb7377a2f
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMoneyDetailService;
