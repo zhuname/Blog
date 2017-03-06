@@ -25,15 +25,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserCard;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.IUserService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -63,6 +67,10 @@ public class CardController  extends BaseController {
 	private ISysSysparamService sysparamService;
 	@Resource
 	private IMoneyDetailService moneyDetailService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IMedalService medalService;
 	
 	
 	private String listurl="/system/card/cardList";
@@ -144,6 +152,23 @@ public class CardController  extends BaseController {
 				 if(null != appUser){
 					 card.setAppUser(appUser);
 				 }
+				 
+				 //查询勋章列表
+				 Page page = new Page();
+				 UserMedal userMedal = new UserMedal();
+				 userMedal.setUserId(card.getUserId());
+				List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+				if(null != userMedals && userMedals.size() > 0){
+					for (UserMedal um : userMedals) {
+						if(null != um.getMedalId()){
+							Medal medal = medalService.findMedalById(um.getMedalId());
+							if(null != medal){
+								um.setMedal(medal);
+							}
+						}
+					}
+					card.setUserMedals(userMedals);
+				}
 			 }
 			 returnObject.setData(card);
 		}else{

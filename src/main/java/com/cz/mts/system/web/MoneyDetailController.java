@@ -22,9 +22,13 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IUserMedalService;
 
 
 /**
@@ -41,6 +45,10 @@ public class MoneyDetailController  extends BaseController {
 	private IMoneyDetailService moneyDetailService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IMedalService medalService;
 	
 	private String listurl="/system/moneydetail/moneydetailList";
 	
@@ -64,8 +72,8 @@ public class MoneyDetailController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
-	 * 
+	 * 领取红包人列表
+	 * @author wj
 	 * @param request
 	 * @param model
 	 * @param moneyDetail
@@ -78,25 +86,7 @@ public class MoneyDetailController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		if(null != moneyDetail.getType() && null != moneyDetail.getItemId()){
-			List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
-			if(null != datas && datas.size() > 0){
-				for (MoneyDetail md : datas) {
-					AppUser appUser = appUserService.findAppUserById(md.getUserId());
-					if(null != appUser){
-						md.setAppUser(appUser);
-					}else{
-						returnObject.setStatus(ReturnDatas.ERROR);
-						returnObject.setMessage("该用户不存在");
-					}
-				}
-			}
-			returnObject.setQueryBean(moneyDetail);
-			returnObject.setData(datas);
-		}else{
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage("参数缺失");
-		}
+		returnObject = moneyDetailService.list(moneyDetail, page);
 		return returnObject;
 	}
 	

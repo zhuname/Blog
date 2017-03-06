@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -84,6 +85,28 @@ public class MoneyDetail  extends BaseEntity {
 	private Double sumMoney;
 	private Integer sumPerson;
 	
+	private List<UserMedal> userMedals;
+	
+	private Double remainMoney;
+	
+	@Transient
+	public Double getRemainMoney() {
+		return remainMoney;
+	}
+
+	public void setRemainMoney(Double remainMoney) {
+		this.remainMoney = remainMoney;
+	}
+
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
+
 	@Transient
 	public Double getSumMoney() {
 		return sumMoney;

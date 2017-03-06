@@ -170,7 +170,6 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 								mediaPackage.setAppUser(appUser);
 							}
 						}
-						
 						//获取勋章列表
 						UserMedal userMedal = new UserMedal();
 						userMedal.setUserId(mediaPackage.getUserId());
@@ -224,6 +223,47 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 			returnObject.setQueryBean(collect);
 			returnObject.setPage(page);
 			returnObject.setData(datas);
+		}
+		return returnObject;
+	}
+		
+	@Override	
+	public ReturnDatas getStatics(Collect collect,Page page) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == collect.getUserId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			//查询海报数量
+			Finder posterFinder = new Finder("SELECT * FROM t_collect WHERE userId=:userId AND type=1 ;");
+			posterFinder.setParam("userId", collect.getUserId());
+			List posterList = queryForList(posterFinder);
+			if(null != posterList && posterList.size() > 0){
+				collect.setPosterCount(posterList.size());
+			}else{
+				collect.setPosterCount(0);
+			}
+			//查询视频数量
+			Finder mediaFinder = new Finder("SELECT * FROM t_collect WHERE userId=:userId AND type=2 ;");
+			mediaFinder.setParam("userId", collect.getUserId());
+			List mediaList = queryForList(mediaFinder);
+			if(null != mediaList && mediaList.size() > 0){
+				collect.setMediaCount(mediaList.size());
+			}else{
+				collect.setMediaCount(0);
+			}
+			
+			//查询卡券数量
+			Finder cardFinder = new Finder("SELECT * FROM t_collect WHERE userId=:userId AND type=3 ;");
+			cardFinder.setParam("userId", collect.getUserId());
+			List cardList = queryForList(cardFinder);
+			if(null != cardList && cardList.size() > 0){
+				collect.setCardCount(cardList.size());
+			}else{
+				collect.setCardCount(0);
+			}
+			
+			returnObject.setData(collect);
 		}
 		return returnObject;
 	}
