@@ -2,12 +2,34 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Collect;
+import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.User;
+import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICollectService;
+import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 
 
@@ -20,7 +42,22 @@ import com.cz.mts.system.service.BaseSpringrainServiceImpl;
  */
 @Service("collectService")
 public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICollectService {
-
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ICardService cardService;
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IMedalService medalService;
+	@Resource
+	private IAttentionService attentionService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -74,5 +111,121 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+	
+		@Override
+	public ReturnDatas list(Collect collect,Page page) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == collect.getUserId() || null == collect.getType()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			// ==执行分页查询
+			List<Collect> datas = findListDataByFinder(null,page,Collect.class,collect);
+			if(null != datas && datas.size() > 0){
+				for (Collect ct : datas) {
+					//计算收藏个数
+					ct.setCollectNum(datas.size());
+					//判断类型： 1海报红包   2视频红包   3卡券
+					if(1 == collect.getType()){
+						//查询海报红包的信息
+						PosterPackage posterPackage = posterPackageService.findPosterPackageById(ct.getItemId());
+						if(null != posterPackage && null != posterPackage.getUserId()){
+							AppUser appUser = appUserService.findAppUserById(posterPackage.getUserId());
+							if(null != appUser){
+								posterPackage.setAppUser(appUser);
+							}
+						}
+						ct.setPosterPackage(posterPackage);
+					}else if(3 == collect.getType()){
+						//查询卡券信息
+						Card card = cardService.findCardById(ct.getItemId());
+						if(null != card && null != card.getUserId()){
+							AppUser appUser = appUserService.findAppUserById(card.getUserId());
+							if(null != appUser){
+								card.setAppUser(appUser);
+							}
+							UserMedal userMedal = new UserMedal();
+							userMedal.setUserId(card.getUserId());
+							//查询勋章列表
+							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+							if(null != userMedals && userMedals.size() > 0){
+								for (UserMedal um : userMedals) {
+									if(null != um.getMedalId()){
+										Medal medal = medalService.findMedalById(um.getMedalId());
+										if(null != medal){
+											um.setMedal(medal);
+										}
+									}
+								}
+								card.setUserMedals(userMedals);
+							}
+						}
+						ct.setCard(card);
+					}else{
+						//查询视频红包信息
+						MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(ct.getItemId());
+						if(null != mediaPackage && null != mediaPackage.getUserId()){
+							AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
+							if(null != appUser){
+								mediaPackage.setAppUser(appUser);
+							}
+						}
+						
+						//获取勋章列表
+						UserMedal userMedal = new UserMedal();
+						userMedal.setUserId(mediaPackage.getUserId());
+						//查询勋章列表
+						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+						if(null != userMedals && userMedals.size() > 0){
+							for (UserMedal um : userMedals) {
+								if(null != um.getMedalId()){
+									Medal medal = medalService.findMedalById(um.getMedalId());
+									if(null != medal){
+										um.setMedal(medal);
+									}
+								}
+							}
+							mediaPackage.setUserMedals(userMedals);
+						}
+						mediaPackage.setIsCollect(1);
+						
+						//返回是否关注
+						Attention attention = new Attention();
+						attention.setUserId(ct.getUserId());
+						attention.setItemId(mediaPackage.getUserId());
+						List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+						if(null != attentions && attentions.size() > 0){
+							mediaPackage.setIsAttention(1);
+						}else{
+							mediaPackage.setIsAttention(0);
+						}
+						
+						//已抢红包列表
+						MoneyDetail moneyDetail = new MoneyDetail();
+						moneyDetail.setItemId(mediaPackage.getId());
+						moneyDetail.setType(2);
+						List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+						if(null != moneyDetails && moneyDetails.size() > 0){
+							for (MoneyDetail md : moneyDetails) {
+								if(null != md.getUserId()){
+									AppUser appUser = appUserService.findAppUserById(md.getUserId());
+									if(null != appUser){
+										md.setAppUser(appUser);
+									}
+								}
+							}
+							mediaPackage.setMoneyDetails(moneyDetails);
+						}
+						ct.setMediaPackage(mediaPackage);
+					}
+					
+				}
+			}
+			returnObject.setQueryBean(collect);
+			returnObject.setPage(page);
+			returnObject.setData(datas);
+		}
+		return returnObject;
+	}
 
 }

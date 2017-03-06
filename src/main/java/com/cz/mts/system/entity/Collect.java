@@ -1,8 +1,10 @@
 package com.cz.mts.system.entity;
 
-import java.text.ParseException;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -60,9 +62,56 @@ public class Collect  extends BaseEntity {
 	 * 操作系统
 	 */
 	private java.lang.String osType;
+	
+	private Integer collectNum;
+	
+	private PosterPackage posterPackage;
+	
+	private MediaPackage mediaPackage;
+	
+	private Card card;
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+
+	@Transient
+	public Integer getCollectNum() {
+		return collectNum;
+	}
+
+	@Transient
+	public PosterPackage getPosterPackage() {
+		return posterPackage;
+	}
+
+	public void setPosterPackage(PosterPackage posterPackage) {
+		this.posterPackage = posterPackage;
+	}
+
+	@Transient
+	public MediaPackage getMediaPackage() {
+		return mediaPackage;
+	}
+
+	public void setMediaPackage(MediaPackage mediaPackage) {
+		this.mediaPackage = mediaPackage;
+	}
+
+	@Transient
+	public Card getCard() {
+		return card;
+	}
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
+
+	public void setCollectNum(Integer collectNum) {
+		this.collectNum = collectNum;
+	}
 
 	public Collect(){
 	}

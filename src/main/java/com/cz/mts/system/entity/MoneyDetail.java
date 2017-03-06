@@ -74,10 +74,33 @@ public class MoneyDetail  extends BaseEntity {
 	private java.lang.String osType;
 	//columns END 数据库字段结束
 	
+	private Integer payType;
+	
+	
 	//concstructor
 
 	private AppUser appUser;
 	
+	private Double sumMoney;
+	private Integer sumPerson;
+	
+	@Transient
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+	@Transient
+	public Integer getSumPerson() {
+		return sumPerson;
+	}
+
+	public void setSumPerson(Integer sumPerson) {
+		this.sumPerson = sumPerson;
+	}
+
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;
@@ -100,6 +123,8 @@ public class MoneyDetail  extends BaseEntity {
 	public void setId(java.lang.Integer value) {
 		this.id = value;
 	}
+	
+	
 	
 	@Id
      @WhereSQL(sql="id=:MoneyDetail_id")
@@ -126,7 +151,16 @@ public class MoneyDetail  extends BaseEntity {
 		this.createTime = value;
 	}
 	
-     @WhereSQL(sql="createTime=:MoneyDetail_createTime")
+	@WhereSQL(sql="payType=:MoneyDetail_payType")
+     public Integer getPayType() {
+		return payType;
+	}
+
+	public void setPayType(Integer payType) {
+		this.payType = payType;
+	}
+
+	@WhereSQL(sql="createTime=:MoneyDetail_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
 	}

@@ -33,7 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Bank
  */
 @Controller
-@RequestMapping(value="/bank")
+@RequestMapping(value="/system/bank")
 public class BankController  extends BaseController {
 	@Resource
 	private IBankService bankService;
@@ -60,7 +60,8 @@ public class BankController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
+	 * 获取银行卡列表接口
+	 * @author wj
 	 * 
 	 * @param request
 	 * @param model
@@ -76,8 +77,7 @@ public class BankController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<Bank> datas=bankService.findListDataByFinder(null,page,Bank.class,bank);
-			returnObject.setQueryBean(bank);
-		returnObject.setPage(page);
+		returnObject.setQueryBean(bank);
 		returnObject.setData(datas);
 		return returnObject;
 	}

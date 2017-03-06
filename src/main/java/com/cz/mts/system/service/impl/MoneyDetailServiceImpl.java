@@ -2,12 +2,15 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 
 
@@ -74,5 +77,31 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+		
+	@Override
+	public ReturnDatas statics(MoneyDetail moneyDetail,Page page) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null != moneyDetail.getItemId() && null != moneyDetail.getType()){
+			List<MoneyDetail> moneyDetails = findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+			MoneyDetail monDetail = new MoneyDetail();
+			if(null != moneyDetails && moneyDetails.size() > 0){
+				Double sumMoney = 0.0;
+				for (MoneyDetail md : moneyDetails) {
+					sumMoney += md.getMoney();
+				}
+				monDetail.setSumMoney(sumMoney);
+				monDetail.setSumPerson(moneyDetails.size());
+			}else{
+				monDetail.setSumMoney(0.0);
+				monDetail.setSumPerson(0);
+			}
+			returnObject.setStatus(ReturnDatas.SUCCESS);
+			returnObject.setData(monDetail);
+		}else{
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}
+		return returnObject;
+	}
 
 }

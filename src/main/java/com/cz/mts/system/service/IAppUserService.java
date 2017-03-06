@@ -20,5 +20,27 @@ public interface IAppUserService extends IBaseSpringrainService {
 	AppUser findAppUserById(Object id) throws Exception;
 	
 	
+	/**
+	 * 余额支付接口
+	 * @param userId
+	 * @param type
+	 * @param itemId
+	 * @return
+	 * @throws Exception
+	 * @author wml
+	 */
+	Integer pay(Integer userId,Integer type,Integer itemId,String code)throws Exception;
+	
+	/**
+	 * 第三方支付接口
+	 * @param code  这个是id或者卡券的code
+	 * @param type  1海报红包 2
+	 * @param money
+	 * @param wxCode
+	 * @return
+	 * @throws Exception
+	 * @author wml
+	 */
+	Integer alipay(String code,Integer type,Double money,String wxCode,Integer payType  )throws Exception;
 	
 }

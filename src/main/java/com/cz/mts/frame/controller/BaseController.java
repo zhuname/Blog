@@ -224,7 +224,7 @@ public class BaseController extends BaseLogger {
 	 */
 	public Page newPage(HttpServletRequest request,String defaultOrder,String defaultSort) {
 		// ==获取分页信息
-
+		
 		String str_pageIndex = request.getParameter("pageIndex");
 		int pageIndex = NumberUtils.toInt(str_pageIndex, 1);
 		String order = request.getParameter("order");

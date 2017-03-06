@@ -1,13 +1,26 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+
+import javax.print.attribute.standard.Media;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.User;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 
 
@@ -74,5 +87,290 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+
+	@Override
+	public Integer pay(Integer userId, Integer type, Integer itemId,String code)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+		
+		if(userId==null||type==null){
+			return 2;
+		}
+		
+		//查询支付用户
+		AppUser appUser=super.findById(userId, AppUser.class);
+		if(appUser==null){
+			return 3;
+		}
+		
+		//判断购买的是什么类型的红包  1支付的海报红包   2支付的视频红包   3支付的卡券红包
+		switch (type) {
+		case 1:
+			if(itemId==null){
+				return 2;
+			}
+			//查询出来海报红包的数据
+			PosterPackage posterPackage=super.findById(itemId, PosterPackage.class);
+			if(posterPackage==null||posterPackage.getSumMoney()==null||userId!=posterPackage.getUserId()){
+				return 4;
+			}
+			
+			//判断用户余额足不足
+			if(appUser.getBalance()<posterPackage.getSumMoney()){
+				return 5;
+			}
+			
+			//扣除余额并且加到余额记录
+			appUser.setBalance(appUser.getBalance()-posterPackage.getSumMoney());
+			super.update(appUser, true);
+			//改变红包状态
+			posterPackage.setStatus(1);
+			posterPackage.setPayType(3);
+			posterPackage.setPayMoney(posterPackage.getSumMoney());
+			posterPackage.setPayTime(new Date());
+			super.update(posterPackage,true);
+			
+			//记录用户的余额记录
+			MoneyDetail moneyDetail=new MoneyDetail();
+			moneyDetail.setBalance(appUser.getBalance());
+			moneyDetail.setCreateTime(new Date());
+			moneyDetail.setItemId(itemId);
+			moneyDetail.setMoney(posterPackage.getSumMoney());
+			moneyDetail.setType(6);
+			moneyDetail.setPayType(3);
+			moneyDetail.setUserId(userId);
+			super.save(moneyDetail);
+			
+			break;
+		case 2:
+			if(itemId==null){
+				return 2;
+			}
+			//查询视频红包的信息
+			MediaPackage mediaPackage=super.findById(itemId, MediaPackage.class);
+			if(mediaPackage==null||mediaPackage.getSumMoney()==null||userId!=mediaPackage.getUserId()){
+				return 4;
+			}
+			
+			//判断用户余额足不足
+			if(appUser.getBalance()<mediaPackage.getSumMoney()){
+				return 5;
+			}
+			
+			//扣除余额并且加到余额记录
+			appUser.setBalance(appUser.getBalance()-mediaPackage.getSumMoney());
+			super.update(appUser, true);
+			//改变红包状态
+			mediaPackage.setStatus(1);
+			mediaPackage.setPayType(3);
+			mediaPackage.setPayMoney(mediaPackage.getSumMoney());
+			mediaPackage.setPayTime(new Date());
+			super.update(mediaPackage,true);
+			
+			//记录用户的余额记录
+			MoneyDetail moneyDetailM=new MoneyDetail();
+			moneyDetailM.setBalance(appUser.getBalance());
+			moneyDetailM.setCreateTime(new Date());
+			moneyDetailM.setItemId(itemId);
+			moneyDetailM.setMoney(mediaPackage.getSumMoney());
+			moneyDetailM.setType(5);
+			moneyDetailM.setPayType(3);
+			moneyDetailM.setUserId(userId);
+			super.save(moneyDetailM);
+			
+			break;
+		case 3:
+			//卡券的列表
+			if(StringUtils.isBlank(code)){
+				return 2;
+			}
+			//查询出来所有的卡券
+			Finder finder=Finder.getSelectFinder(UserCard.class).append(" where 1=1 and code= :code and userId= :userId ");
+			finder.setParam("code", code);
+			finder.setParam("userId", userId);
+			List<UserCard> cards=super.queryForList(finder, UserCard.class);
+			if(cards.size()==0){
+				return 4;
+			}
+			//定义一个卡券的所有金额
+			BigDecimal cardSum=new BigDecimal(0.0);
+			
+			if(cards.get(0).getSumMoney()!=null){
+				cardSum=new BigDecimal(cards.size()).multiply(new BigDecimal(cards.get(0).getSumMoney()));
+			}
+			
+			
+			
+			//判断用户余额足不足
+			if(appUser.getBalance()<cardSum.doubleValue()){
+				return 5;
+			}
+			
+			//扣除余额并且加到余额记录
+			appUser.setBalance(appUser.getBalance()-cardSum.doubleValue());
+			super.update(appUser, true);
+			
+			
+			//记录用户的余额记录
+			MoneyDetail moneyDetailC=new MoneyDetail();
+			moneyDetailC.setBalance(appUser.getBalance());
+			moneyDetailC.setCreateTime(new Date());
+			moneyDetailC.setItemId(itemId);
+			moneyDetailC.setMoney(cardSum.doubleValue());
+			moneyDetailC.setType(3);
+			moneyDetailC.setPayType(3);
+			moneyDetailC.setUserId(userId);
+			super.save(moneyDetailC);
+			
+			for (UserCard userCard : cards) {
+				userCard.setPayMoney(userCard.getSumMoney());
+				userCard.setPayType(3);
+				userCard.setPayTime(new Date());
+				userCard.setStatus(1);
+			}
+			
+			super.update(cards, true);
+			
+			
+			break;
+		}
+		
+		return 1;
+	}
+
+	@Override
+	public Integer alipay(String aliCode, Integer type, Double money,String wxCode, Integer payType) throws Exception {
+		// TODO Auto-generated method stub
+				
+				String[] codes=aliCode.split("_");
+				
+				Integer itemId=Integer.parseInt(codes[1].toString());
+				
+				String code = codes[1].toString();
+				
+				//判断购买的是什么类型的红包  1支付的海报红包   2支付的视频红包   3支付的卡券红包
+				switch (type) {
+				case 1:
+					if(itemId==null){
+						return 2;
+					}
+					//查询出来海报红包的数据
+					PosterPackage posterPackage=super.findById(itemId, PosterPackage.class);
+					if(posterPackage==null||posterPackage.getSumMoney()==null){
+						return 4;
+					}
+					
+					//改变红包状态
+					posterPackage.setStatus(1);
+					posterPackage.setPayType(payType);
+					if(payType==1){
+						posterPackage.setTradeNo(wxCode);
+					}else if (payType==2) {
+						posterPackage.setWxCode(wxCode);
+					}
+					posterPackage.setPayMoney(posterPackage.getSumMoney());
+					posterPackage.setPayTime(new Date());
+					super.update(posterPackage,true);
+					
+					AppUser appUser=this.findAppUserById(posterPackage.getUserId());
+					
+					//记录用户的余额记录
+					MoneyDetail moneyDetail=new MoneyDetail();
+					moneyDetail.setBalance(appUser.getBalance());
+					moneyDetail.setCreateTime(new Date());
+					moneyDetail.setItemId(itemId);
+					moneyDetail.setMoney(posterPackage.getSumMoney());
+					moneyDetail.setType(6);
+					moneyDetail.setPayType(payType);
+					moneyDetail.setUserId(posterPackage.getUserId());
+					super.save(moneyDetail);
+					
+					break;
+				case 2:
+					//查询视频红包的信息
+					MediaPackage mediaPackage=super.findById(itemId, MediaPackage.class);
+					if(mediaPackage==null||mediaPackage.getSumMoney()==null){
+						return 4;
+					}
+					
+					
+					//改变红包状态
+					mediaPackage.setStatus(1);
+					mediaPackage.setPayType(payType);
+					if(payType==1){
+						mediaPackage.setTradeNo(wxCode);
+					}else if (payType==2) {
+						mediaPackage.setWxCode(wxCode);
+					}
+					mediaPackage.setPayMoney(mediaPackage.getSumMoney());
+					mediaPackage.setPayTime(new Date());
+					super.update(mediaPackage,true);
+					
+					AppUser appUserM=this.findAppUserById(mediaPackage.getUserId());
+					
+					//记录用户的余额记录
+					MoneyDetail moneyDetailM=new MoneyDetail();
+					moneyDetailM.setBalance(appUserM.getBalance());
+					moneyDetailM.setCreateTime(new Date());
+					moneyDetailM.setItemId(itemId);
+					moneyDetailM.setMoney(mediaPackage.getSumMoney());
+					moneyDetailM.setType(5);
+					moneyDetailM.setPayType(payType);
+					moneyDetailM.setUserId(mediaPackage.getUserId());
+					super.save(moneyDetailM);
+					
+					break;
+				case 3:
+					//卡券的列表
+					if(StringUtils.isBlank(code)){
+						return 2;
+					}
+					//查询出来所有的卡券
+					Finder finder=Finder.getSelectFinder(UserCard.class).append(" where 1=1 and code= :code ");
+					finder.setParam("code", code);
+					List<UserCard> cards=super.queryForList(finder, UserCard.class);
+					if(cards.size()==0){
+						return 4;
+					}
+					//定义一个卡券的所有金额
+					BigDecimal cardSum=new BigDecimal(0.0);
+					
+					if(cards.get(0).getSumMoney()!=null){
+						cardSum=new BigDecimal(cards.size()).multiply(new BigDecimal(cards.get(0).getSumMoney()));
+					}
+					AppUser appUserC=this.findAppUserById(cards.get(0).getUserId());
+					
+					//记录用户的余额记录
+					MoneyDetail moneyDetailC=new MoneyDetail();
+					moneyDetailC.setBalance(appUserC.getBalance());
+					moneyDetailC.setCreateTime(new Date());
+					moneyDetailC.setItemId(itemId);
+					moneyDetailC.setMoney(cardSum.doubleValue());
+					moneyDetailC.setType(3);
+					moneyDetailC.setPayType(payType);
+					moneyDetailC.setUserId(cards.get(0).getUserId());
+					super.save(moneyDetailC);
+					
+					for (UserCard userCard : cards) {
+						userCard.setPayMoney(userCard.getSumMoney());
+						userCard.setPayType(payType);
+						userCard.setPayTime(new Date());
+						userCard.setStatus(1);
+						if(payType==1){
+							userCard.setTradeNo(wxCode);
+						}else if (payType==2) {
+							userCard.setWxCode(wxCode);
+						}
+						
+					}
+					
+					super.update(cards, true);
+					
+					
+					break;
+				}
+		return null;
+	}
 
 }

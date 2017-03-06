@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.UserCard
  */
 @Controller
-@RequestMapping(value="/usercard")
+@RequestMapping(value="/system/usercard")
 public class UserCardController  extends BaseController {
 	@Resource
 	private IUserCardService userCardService;
@@ -74,8 +75,12 @@ public class UserCardController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		Finder finder=Finder.getSelectFinder(UserCard.class).append("where 1=1 ");
+		page.setOrder("status,expTime");
+		page.setSort("asc");
 		// ==执行分页查询
-		List<UserCard> datas=userCardService.findListDataByFinder(null,page,UserCard.class,userCard);
+		List<UserCard> datas=userCardService.findListDataByFinder(finder,page,UserCard.class,userCard);
 			returnObject.setQueryBean(userCard);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
@@ -86,6 +91,8 @@ public class UserCardController  extends BaseController {
 	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,UserCard userCard) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		
 	
 		File file = userCardService.findDataExportExcel(null,listurl, page,UserCard.class,userCard);
 		String fileName="userCard"+GlobalStatic.excelext;

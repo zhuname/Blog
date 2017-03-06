@@ -1,5 +1,7 @@
 package com.cz.mts.system.entity;
 
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -166,6 +168,10 @@ public class AppUser  extends BaseEntity {
 	 * 是否有信息更新 0否 1是
 	 */
 	private java.lang.Integer isUpdate;
+	
+	private Integer fansNum;
+	
+	
 	/**
 	 * 是否是黑名单 0否 1是
 	 */
@@ -173,14 +179,67 @@ public class AppUser  extends BaseEntity {
 	
 	private java.lang.String newPwd;
 	
+	private java.lang.String wxName;
+	private java.lang.String wxAccount;
+	private java.lang.String wxPhone;	
+
+	
+	private List<UserMedal> userMedals;
+	
 	
 	//columns END 数据库字段结束
 	
 	//concstructor
 
+	
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
+
+	@WhereSQL(sql="wxName=:AppUser_wxName")
+	public java.lang.String getWxName() {
+		return wxName;
+	}
+
+	public void setWxName(java.lang.String wxName) {
+		this.wxName = wxName;
+	}
+	
+	@WhereSQL(sql="wxAccount=:AppUser_wxAccount")
+	public java.lang.String getWxAccount() {
+		return wxAccount;
+	}
+
+	public void setWxAccount(java.lang.String wxAccount) {
+		this.wxAccount = wxAccount;
+	}
+	
+	@WhereSQL(sql="wxPhone=:AppUser_wxPhone")
+	public java.lang.String getWxPhone() {
+		return wxPhone;
+	}
+
+	public void setWxPhone(java.lang.String wxPhone) {
+		this.wxPhone = wxPhone;
+	}
+
 	@Transient
 	public java.lang.String getNewPwd() {
 		return newPwd;
+	}
+
+	@Transient
+	public Integer getFansNum() {
+		return fansNum;
+	}
+
+	public void setFansNum(Integer fansNum) {
+		this.fansNum = fansNum;
 	}
 
 	public void setNewPwd(java.lang.String newPwd) {

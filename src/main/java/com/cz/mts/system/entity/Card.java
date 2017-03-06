@@ -1,8 +1,11 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -128,9 +131,43 @@ public class Card  extends BaseEntity {
 	 * 是否删除： 0否 1是
 	 */
 	private java.lang.Integer isDel;
+	
+	private java.lang.Integer status;
 	//columns END 数据库字段结束
 	
+	private AppUser appUser;
+	private List<UserMedal> userMedals;
+	
+	
+	private List<UserCard> userCards;
+	
 	//concstructor
+	@Transient
+	public List<UserCard> getUserCards() {
+		return userCards;
+	}
+
+	public void setUserCards(List<UserCard> userCards) {
+		this.userCards = userCards;
+	}
+
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
+
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
+	}
 
 	public Card(){
 	}
@@ -139,6 +176,16 @@ public class Card  extends BaseEntity {
 		java.lang.Integer id
 	){
 		this.id = id;
+	}
+
+	
+	@WhereSQL(sql="status=:Card_status")
+	public java.lang.Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(java.lang.Integer status) {
+		this.status = status;
 	}
 
 	//get and set
@@ -367,6 +414,7 @@ public class Card  extends BaseEntity {
 			.append("失败原因[").append(getFailReason()).append("],")
 			.append("剩余兑换次数[").append(getNum()).append("],")
 			.append("是否删除： 0否 1是[").append(getIsDel()).append("],")
+			.append("状态：[").append(getStatus()).append("],")
 			.toString();
 	}
 	

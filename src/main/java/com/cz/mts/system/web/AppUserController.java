@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,20 +16,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Sms;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.ISmsService;
-import com.cz.mts.system.service.impl.SmsServiceImpl;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.Password;
+import com.cz.mts.system.entity.Sms;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
-import com.sun.tools.classfile.Annotation.element_value;
+import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IPasswordService;
+import com.cz.mts.system.service.ISmsService;
+import com.cz.mts.system.service.IUserMedalService;
 
 
 /**
@@ -43,6 +49,14 @@ import com.sun.tools.classfile.Annotation.element_value;
 public class AppUserController  extends BaseController {
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IAttentionService attentionService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IPasswordService passwordService;
+	@Resource
+	private IMedalService medalService;
 	
 	private String listurl="/appuser/appuserList";
 	
@@ -112,18 +126,72 @@ public class AppUserController  extends BaseController {
 
 	
 	/**
+	 * 获取个人信息接口
+	 * @param id
 	 * 查看的Json格式数据,为APP端提供数据
+	 * @author wj
 	 */
 	@RequestMapping(value = "/look/json")
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
+		  String itemId = request.getParameter("itemId");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  AppUser appUser = appUserService.findAppUserById(id);
-		   returnObject.setData(appUser);
+			 AppUser appUser = appUserService.findAppUserById(id);
+			 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
+			 finder.setParam("itemId", id);
+			 Page page = new Page();
+			 Attention attention = new Attention();
+			 //获取别人关注我的列表
+			 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
+			 if(null != attentions && attentions.size() > 0){
+				 appUser.setFansNum(attentions.size());
+			 }else{
+				 appUser.setFansNum(0);
+			 }
+			 
+			 
+			 if(StringUtils.isNotBlank(itemId)){
+				 //获取我的关注列表
+				 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
+				 fder.setParam("userId", id);
+				 fder.setParam("itemId", Integer.parseInt(itemId));
+				 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+				 if(null != myAttens && myAttens.size() > 0){
+					 for (Attention at : myAttens) {
+						at.setIsUpdate(0);
+						attentionService.update(at);
+					}
+				 }
+			 }
+			 
+			 UserMedal userMedal=new UserMedal();
+			 
+			 //获取我的勋章列表
+			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+			 for (UserMedal userMedal2 : userMedals) {
+				 
+				 if(userMedal2.getMedalId()!=null){
+					 
+					 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
+					 if(medal!=null){
+						 userMedal2.setMedal(medal);
+					 }
+					 
+				 }
+				 
+			 }
+			 if(null != userMedals && userMedals.size() > 0){
+				 appUser.setUserMedals(userMedals);
+			 }
+			 
+			 
+			 returnObject.setData(appUser);
+			 
+			 
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
@@ -144,35 +212,60 @@ public class AppUserController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 			Page page = newPage(request);
-			AppUser user = new AppUser();
-			if(StringUtils.isNoneBlank(appUser.getPhone())){
-				user.setPhone(appUser.getPhone());
-			}
-			//判断手机号是否注册过
-			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
-			if(null != datas && datas.size() > 0){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该用户已注册");
-			}else{
-				if(null == appUser.getId()){
-					String content = request.getParameter("content");
-					if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(content)){
+			if(null == appUser.getId()){
+				String content = request.getParameter("content");
+				if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(content)){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("参数缺失");
+				}else{
+					//判断手机号是否注册
+					AppUser user = new AppUser();
+					if(StringUtils.isNotBlank(appUser.getPhone())){
+						user.setPhone(appUser.getPhone());
+					}
+					//判断手机号是否注册过
+					List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+					if(null != datas && datas.size() > 0){
 						returnObject.setStatus(ReturnDatas.ERROR);
-						returnObject.setMessage("参数缺失");
+						returnObject.setMessage("该用户已注册");
 					}else{
 						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						appUser.setCreateTime(new Date());
 						appUser.setIsBlack(0);
 						Object id = appUserService.saveorupdate(appUser);
+						//判断该密码在密码表中是否存在
+						Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+						finder.setParam("mdBeforePass", appUser.getPassword());
+						List<Map<String, Object>> list = passwordService.queryForList(finder);
+						if(list.isEmpty()){
+							//向password表中插入数据
+							Password password = new Password();
+							password.setMdBeforePass(appUser.getPassword());
+							password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+							passwordService.save(password);
+						}
 						returnObject.setData(appUserService.findById(id, AppUser.class));
 					}
-				}else{
-					if(StringUtils.isNotBlank(appUser.getPassword())){
-						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-					}
-					appUserService.update(appUser,true);
-					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 				}
+			}else{
+				if(StringUtils.isNotBlank(appUser.getPassword())){
+					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+				}
+				appUserService.update(appUser,true);
+				
+				//判断该密码在密码表中是否存在
+				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+				finder.setParam("mdBeforePass", appUser.getPassword());
+				List<Map<String, Object>> list = passwordService.queryForList(finder);
+				if(list.isEmpty()){
+					//向password表中插入数据
+					Password password = new Password();
+					password.setMdBeforePass(appUser.getPassword());
+					password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					passwordService.save(password);
+				}
+				
+				returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -269,6 +362,20 @@ public class AppUserController  extends BaseController {
 			if(null != user){
 				user.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 				appUserService.update(user);
+				
+				//判断该密码在密码表中是否存在
+				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+				finder.setParam("mdBeforePass", appUser.getPassword());
+				List<Map<String, Object>> list = passwordService.queryForList(finder);
+				if(list.isEmpty()){
+					//向password表中插入数据
+					Password password = new Password();
+					password.setMdBeforePass(appUser.getPassword());
+					password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					passwordService.save(password);
+				}
+				
+				
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("该用户不存在");
@@ -279,7 +386,7 @@ public class AppUserController  extends BaseController {
 	
 	
 	/**
-	 * json数据,为APP提供数据
+	 * 登录接口
 	 * 
 	 * @param request
 	 * @param model
@@ -298,8 +405,11 @@ public class AppUserController  extends BaseController {
 		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
 			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
-			if(datas!=null){
+			if(datas!=null&&datas.size()>0){
 				returnObject.setData(datas.get(0));
+			}else {
+				returnObject.setStatus(ReturnDatas.WARNING);
+				returnObject.setMessage("帐号密码错误");
 			}
 		}else {
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -351,6 +461,9 @@ public class AppUserController  extends BaseController {
 							returnObject.setStatus(ReturnDatas.ERROR);
 							returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 							return returnObject;
+						}else{
+							//删除该条记录
+							smsService.deleteByEntity(smss.get(0));
 						}
 						
 					}
@@ -414,6 +527,8 @@ public class AppUserController  extends BaseController {
 				sms.setType(2);
 				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
 				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
 					appUserService.saveorupdate(appUser);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
@@ -459,6 +574,8 @@ public class AppUserController  extends BaseController {
 				sms.setType(3);
 				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
 				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
 					//根据id查询信息
 					AppUser appUserNewPhone = appUserService.findAppUserById(appUser.getId());
 					if(null != appUserNewPhone){
@@ -505,8 +622,28 @@ public class AppUserController  extends BaseController {
 				if(StringUtils.isNotBlank(appRecord.getPassword())){
 					//比较查询出来的密码和传过来的密码是否相等
 					if(appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getPassword()))){
-						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
-						appUserService.update(appRecord);
+						//判断新密码和旧密码是否相等
+						if(!appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()))){
+							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+							appUserService.update(appRecord);
+							
+							//判断该密码在密码表中是否存在
+							Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+							finder.setParam("mdBeforePass", appUser.getNewPwd());
+							List<Map<String, Object>> list = passwordService.queryForList(finder);
+							if(list.isEmpty()){
+								//向password表中插入数据
+								Password password = new Password();
+								password.setMdBeforePass(appUser.getNewPwd());
+								password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+								passwordService.save(password);
+							}
+							
+							
+						}else{
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage("新旧密码不能相同");
+						}
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("原密码输入错误");
@@ -516,6 +653,129 @@ public class AppUserController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("该用户不存在");
 			}
+		}
+		return returnObject;
+	}
+	
+	/**
+	 * 绑定手机号接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/bindphone/json")
+	public @ResponseBody 
+	ReturnDatas bindPhone(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(content) || null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			Page page = new Page();
+			AppUser appRecord = appUserService.findAppUserById(appUser.getId());
+			if(null != appRecord){
+				//判断验证码
+				Sms sms=new Sms();
+				sms.setPhone(appUser.getPhone());
+				sms.setContent(content);
+				sms.setType(5);
+				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
+					//更新appUser表中的记录
+					appRecord.setPhone(appUser.getPhone());
+					appUserService.update(appRecord);
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("请再次获取验证码");
+				}
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户不存在");
+			}
+		}
+		return returnObject;
+	}
+	
+	
+	/**
+	 * 余额支付接口
+	 * 
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/pay/json")
+	public @ResponseBody
+	ReturnDatas pay(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		
+		
+		if(userId==null||type==null){
+			returnObject.setMessage("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			return returnObject;
+		}
+		try {
+			//支付 ，并且返回状态
+			Integer result=appUserService.pay(userId, type, itemId,code);
+			if(result==1){
+				returnObject.setMessage("支付成功");
+				returnObject.setStatus(ReturnDatas.SUCCESS);
+			}else if (result==2) {
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==3) {
+				returnObject.setMessage("用户不存在");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==4) {
+				returnObject.setMessage("目标信息不正确");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==5) {
+				returnObject.setMessage("用户余额不足");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
+		return returnObject;
+	}
+	
+	/**
+	 * 个人统计接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param userId
+	 * @param type
+	 * @param itemId
+	 * @param code
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/statics/json")
+	public @ResponseBody
+	ReturnDatas staticsJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			Finder finder = new Finder("SELECT f.*,COUNT(uc.id) as totalUserCard FROM(SELECT e.*,COUNT(um.id) as totalMedal FROM(SELECT d.*,COUNT(`at`.id) AS totalAttention FROM (SELECT c.*,COUNT(co.id) as totalCollect FROM(SELECT b.*,COUNT(ca.id) as totalCard FROM (SELECT a.*,COUNT(pp.id) AS totalPoster FROM(SELECT au.balance ,COUNT(mp.id) as totalMedia,au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId=au.id WHERE au.id=:id) a LEFT JOIN t_poster_package pp ON pp.userId = a.id )b LEFT JOIN t_card ca ON ca.userId=b.id)c LEFT JOIN t_collect co ON co.userId=c.id)d LEFT JOIN t_attention at ON `at`.userId=d.id)e LEFT JOIN t_user_medal um ON um.userId=e.id)f LEFT JOIN t_user_card uc ON uc.userId=f.id AND uc.`status` != 0;");
+			finder.setParam("id", appUser.getId());
+			List datas = appUserService.queryForList(finder);
+			returnObject.setData(datas);
 		}
 		return returnObject;
 	}

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Medal
  */
 @Controller
-@RequestMapping(value="/medal")
+@RequestMapping(value="/system/medal")
 public class MedalController  extends BaseController {
 	@Resource
 	private IMedalService medalService;
@@ -212,6 +213,31 @@ public class MedalController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 所有勋章列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param medal
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/all/json")
+	public @ResponseBody
+	ReturnDatas alljson(HttpServletRequest request, Model model,Medal medal) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == medal.getUserId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status`,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId )a ON md.id=a.id");
+			finder.setParam("userId", medal.getUserId());
+			List datas = medalService.queryForList(finder);
+			returnObject.setData(datas);
+		}
+		return returnObject;
 	}
 
 }

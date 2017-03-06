@@ -2,7 +2,6 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Feedback;
-import com.cz.mts.system.service.IFeedbackService;
+import com.cz.mts.system.entity.Password;
+import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -30,16 +29,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 15:17:26
- * @see com.cz.mts.system.web.Feedback
+ * @version  2017-03-03 15:28:50
+ * @see com.cz.mts.system.web.Password
  */
 @Controller
-@RequestMapping(value="/system/feedback")
-public class FeedbackController  extends BaseController {
+@RequestMapping(value="/password")
+public class PasswordController  extends BaseController {
 	@Resource
-	private IFeedbackService feedbackService;
+	private IPasswordService passwordService;
 	
-	private String listurl="/system/feedback/feedbackList";
+	private String listurl="/system/password/passwordList";
 	
 	
 	   
@@ -48,14 +47,14 @@ public class FeedbackController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param feedback
+	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Feedback feedback) 
+	public String list(HttpServletRequest request, Model model,Password password) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, feedback);
+		ReturnDatas returnObject = listjson(request, model, password);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -65,31 +64,31 @@ public class FeedbackController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param feedback
+	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Feedback feedback) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,Password password) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Feedback> datas=feedbackService.findListDataByFinder(null,page,Feedback.class,feedback);
-			returnObject.setQueryBean(feedback);
+		List<Password> datas=passwordService.findListDataByFinder(null,page,Password.class,password);
+			returnObject.setQueryBean(password);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Feedback feedback) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Password password) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = feedbackService.findDataExportExcel(null,listurl, page,Feedback.class,feedback);
-		String fileName="feedback"+GlobalStatic.excelext;
+		File file = passwordService.findDataExportExcel(null,listurl, page,Password.class,password);
+		String fileName="password"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
@@ -101,7 +100,7 @@ public class FeedbackController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/feedback/feedbackLook";
+		return "/system/password/passwordLook";
 	}
 
 	
@@ -116,8 +115,8 @@ public class FeedbackController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Feedback feedback = feedbackService.findFeedbackById(id);
-		   returnObject.setData(feedback);
+		  Password password = passwordService.findPasswordById(id);
+		   returnObject.setData(password);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -132,13 +131,13 @@ public class FeedbackController  extends BaseController {
 	 */
 	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Feedback feedback,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,Password password,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
 		
-			feedbackService.saveorupdate(feedback);
+			passwordService.saveorupdate(password);
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -157,7 +156,7 @@ public class FeedbackController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/feedback/feedbackCru";
+		return "/system/password/passwordCru";
 	}
 	
 	/**
@@ -172,7 +171,7 @@ public class FeedbackController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				feedbackService.deleteById(id,Feedback.class);
+				passwordService.deleteById(id,Password.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -204,7 +203,7 @@ public class FeedbackController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			feedbackService.deleteByIds(ids,Feedback.class);
+			passwordService.deleteByIds(ids,Password.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);
@@ -213,39 +212,6 @@ public class FeedbackController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
-	}
-	
-	/**
-	 * 意见反馈接口
-	 * @author wwwwwwmmmmmmmmmmllllllllll
-	 * 新增/修改 操作吗,返回json格式数据
-	 * 
-	 */
-	@RequestMapping("/update/json")
-	public @ResponseBody
-	ReturnDatas saveorupdatejson(Model model,Feedback feedback,HttpServletRequest request,HttpServletResponse response) throws Exception{
-		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
-		try {
-			
-			if(feedback.getUserId()==null||feedback.getContent()==null){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("参数缺失");
-				return returnObject;
-			}
-			
-			feedback.setCreateTime(new Date());
-			
-			feedbackService.saveorupdate(feedback);
-			
-		} catch (Exception e) {
-			String errorMessage = e.getLocalizedMessage();
-			logger.error(errorMessage);
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
-		}
-		return returnObject;
-	
 	}
 
 }
