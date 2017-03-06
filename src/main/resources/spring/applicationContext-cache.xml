@@ -23,10 +23,11 @@
 
 
 	<!-- 启用缓存注解功能，这个是必须的，否则注解不会生效,redis的实现是 redisCacheManager -->
-	<cache:annotation-driven cache-manager="cacheManager" />
+	<!-- <cache:annotation-driven cache-manager="cacheManager" /> -->
+	<cache:annotation-driven cache-manager="redisCacheManager" />
 
 	<!-- spring自己的换管理器，这里定义了两个缓存位置名称 ，既注解中的value -->
-	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+	<!-- <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">
 			<set>
 				<bean
@@ -44,14 +45,14 @@
 				
 			</set>
 		</property>
-	</bean>
+	</bean> -->
 	
 	
 
 <!--  redisCacheManager 用于spring 缓存, redisCached 为redis的工具类,用于业务的缓存. 基于redis分布的session共享也是基于这个redisCached -->
 
  
- <!-- 
+ 
 <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
       <constructor-arg ref="redisTemplate" />
        <property name="defaultExpiration" value="1800" />
@@ -62,7 +63,7 @@
 		<property name="connectionFactory" ref="redisConnectionFactory" />
 	</bean>
 
-	<bean id="redisCached" class="org.springrain.frame.cached.RedisCachedImpl">
+	<bean id="redisCached" class="com.cz.mts.frame.cached.RedisCachedImpl">
 		<property name="redisTemplate" ref="redisTemplate" />
 		<property name="expire" value="1800" />
 	</bean>
@@ -78,20 +79,20 @@
 		<property name="maxTotal" value="${redis.pool.maxTotal}" />
 		<property name="maxIdle" value="${redis.pool.maxIdle}" />
 	</bean>
- -->	
+	
 
 
 <!-- 消息队列   生产者和消费者模式 -->
 
-<!-- 
-	<bean id="sendMessage" class="org.springrain.frame.queue.SendMessage">
+
+	<bean id="sendMessage" class="com.cz.mts.frame.queue.SendMessage">
         <property name="redisTemplate" ref="redisTemplate"/>
     </bean> 
     
 	<bean id="jdkSerializationRedisSerializer"
         class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
         
-    <bean id="redisMessageDelegateListener" class="org.springrain.frame.queue.RedisMessageDelegateListener"/>
+    <bean id="redisMessageDelegateListener" class="com.cz.mts.frame.queue.RedisMessageDelegateListener"/>
 	
 	<bean id="redisMessageListener"
         class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
@@ -103,6 +104,6 @@
     <redis:listener-container>
         <redis:listener ref="redisMessageListener" method="handleMessage" serializer="jdkSerializationRedisSerializer" topic="springrainqueue" />
     </redis:listener-container>
- -->
+
 	
 </beans>

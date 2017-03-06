@@ -4,17 +4,26 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.cache.Cache;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.cached.ICached;
+import com.cz.mts.frame.cached.RedisCachedImpl;
+import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -25,6 +34,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.Snatch;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMoneyDetailService;
@@ -55,6 +65,9 @@ public class PosterPackageController  extends BaseController {
 	
 	@Resource
 	private ICategoryService categoryService;
+	
+	//定义一个默认大小的链表队列
+	private final LinkedBlockingQueue<Snatch> queue = new LinkedBlockingQueue<>() ;
 	
 	   
 	/**
@@ -290,6 +303,11 @@ public class PosterPackageController  extends BaseController {
 		
 	}
 	
+	@Autowired
+	private ICached cached ;
+	@Autowired
+	private ShiroRedisCacheManager cacheManager ;
+	
 	/**
 	 * 抢红包
 	 * @param request
@@ -300,14 +318,27 @@ public class PosterPackageController  extends BaseController {
 	 * @author wxy
 	 * @date 2017年2月28日
 	 */
-	@RequestMapping("/snatch/more")
+	@RequestMapping("/snatch/json")
 	public @ResponseBody 
 	ReturnDatas snatch(HttpServletRequest request, Model model,String id,String userId){
 		
+		if(StringUtils.isBlank(id) || StringUtils.isBlank(userId)) {
+			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;
+		}else {
+			
+			ICached cached = cacheManager.getCached() ;
+			try {
+				AppUser user = (AppUser) cached.getCached(userId.getBytes()) ;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ReturnDatas result =  new ReturnDatas(ReturnDatas.SUCCESS,
+					MessageUtils.UPDATE_SUCCESS);
+//			result.setData(snatch2);
+			return result ;
+		}
 		
-		
-		return new ReturnDatas(ReturnDatas.SUCCESS,
-				MessageUtils.UPDATE_SUCCESS);
 	}
 	
 	/**
