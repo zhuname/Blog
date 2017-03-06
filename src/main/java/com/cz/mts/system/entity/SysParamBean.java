@@ -1,6 +1,8 @@
 package com.cz.mts.system.entity;
 
-public class SysParamBean {
+import java.io.Serializable;
+
+public class SysParamBean implements Serializable {
 
 	public SysParamBean() {
 		super();
