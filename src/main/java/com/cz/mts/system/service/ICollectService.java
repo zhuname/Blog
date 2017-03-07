@@ -31,6 +31,16 @@ public interface ICollectService extends IBaseSpringrainService {
 	 */
 	ReturnDatas list(Collect collect,Page page) throws Exception;
 	
+	/**
+	 * 获取收藏数量接口
+	 * @author wj
+	 * @param collect
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	ReturnDatas getStatics(Collect collect,Page page) throws Exception;
+	
 	
 	
 }

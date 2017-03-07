@@ -250,5 +250,24 @@ public class CollectController  extends BaseController {
 		return returnObject;
 	}
 	
+	/**
+	 * 收藏数量接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param collect
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/statics/json")
+	public @ResponseBody
+	ReturnDatas staticsjson(HttpServletRequest request, Model model,Collect collect) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		returnObject = collectService.getStatics(collect, page);
+		return returnObject;
+	}
+	
 
 }

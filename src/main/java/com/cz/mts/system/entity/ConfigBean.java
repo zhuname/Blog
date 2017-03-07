@@ -1,7 +1,11 @@
 package com.cz.mts.system.entity;
 
-public class ConfigBean {
+import java.io.Serializable;
 
+public class ConfigBean implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
 	public ConfigBean() {
 		super();
 		// TODO Auto-generated constructor stub
