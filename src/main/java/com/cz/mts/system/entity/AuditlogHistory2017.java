@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -151,7 +153,7 @@ public class AuditlogHistory2017  extends BaseEntity {
 	public void setOperationTime(java.util.Date value) {
 		this.operationTime = value;
 	}
-	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="operationTime=:AuditlogHistory2017_operationTime")
 	public java.util.Date getOperationTime() {
 		return this.operationTime;

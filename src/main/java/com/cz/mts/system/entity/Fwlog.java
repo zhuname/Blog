@@ -15,6 +15,7 @@ import com.cz.mts.frame.annotation.TableGroup;
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
 import com.cz.mts.frame.util.GlobalStatic;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link springrain}
@@ -132,6 +133,7 @@ public class Fwlog  extends BaseEntity {
 		this.startDate = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="startDate=:Fwlog_startDate")
 	public java.util.Date getStartDate() {
 		return this.startDate;
@@ -143,6 +145,7 @@ public class Fwlog  extends BaseEntity {
 		this.strDate = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="strDate=:Fwlog_strDate")
 	public java.lang.String getStrDate() {
 		return this.strDate;

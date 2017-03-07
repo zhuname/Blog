@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -457,6 +458,7 @@ public class MediaPackage  extends BaseEntity {
 		this.expTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="expTime=:MediaPackage_expTime")
 	public java.util.Date getExpTime() {
 		return this.expTime;
@@ -473,6 +475,7 @@ public class MediaPackage  extends BaseEntity {
 		this.createTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:MediaPackage_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
@@ -489,6 +492,7 @@ public class MediaPackage  extends BaseEntity {
 		this.payTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="payTime=:MediaPackage_payTime")
 	public java.util.Date getPayTime() {
 		return this.payTime;
@@ -505,6 +509,7 @@ public class MediaPackage  extends BaseEntity {
 		this.failTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="failTime=:MediaPackage_failTime")
 	public java.util.Date getFailTime() {
 		return this.failTime;
@@ -521,6 +526,7 @@ public class MediaPackage  extends BaseEntity {
 		this.succTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="succTime=:MediaPackage_succTime")
 	public java.util.Date getSuccTime() {
 		return this.succTime;
@@ -537,6 +543,7 @@ public class MediaPackage  extends BaseEntity {
 		this.endTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="endTime=:MediaPackage_endTime")
 	public java.util.Date getEndTime() {
 		return this.endTime;

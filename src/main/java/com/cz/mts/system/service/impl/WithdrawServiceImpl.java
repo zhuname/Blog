@@ -153,7 +153,7 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 					moneyDetail.setMoney(withdraw.getMoney());
 					moneyDetail.setBalance(appUserRecord.getBalance());
 					moneyDetailService.saveorupdate(moneyDetail);
-					returnObject.setStatus(MessageUtils.UPDATE_SUCCESS);
+//					returnObject.setStatus(MessageUtils.UPDATE_SUCCESS);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("请绑定手机号");
