@@ -22,10 +22,12 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
@@ -55,6 +57,9 @@ public class PosterPackageController  extends BaseController {
 	
 	@Resource
 	private ICategoryService categoryService;
+	
+	@Resource
+	private IAttentionService attentionService;
 	
 	   
 	/**
@@ -185,6 +190,23 @@ public class PosterPackageController  extends BaseController {
 						posterPackage.setIsLook(0);
 					}
 			 }
+			 
+			 //是否关注
+			 if(posterPackage!=null&&StringUtils.isNotBlank(appUserId)){
+				 Attention attention=new Attention();
+				 attention.setUserId(Integer.parseInt(appUserId));
+				 attention.setItemId(posterPackage.getUserId());
+				// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+					if(datas!=null&&datas.size()>0){
+						posterPackage.setIsAtt(1);
+					}else{
+						posterPackage.setIsAtt(0);
+					}
+			 }
+			 
 			 
 			 returnObject.setData(posterPackage);
 		}else{

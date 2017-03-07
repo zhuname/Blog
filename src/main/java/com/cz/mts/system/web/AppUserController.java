@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +77,8 @@ public class AppUserController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,AppUser appUser) 
 			throws Exception {
 		ReturnDatas returnObject = listjson(request, model, appUser);
+		List<AppUser> list = new ArrayList<>()  ;
+		returnObject.setData(returnObject.getData());
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -114,7 +117,7 @@ public class AppUserController  extends BaseController {
 		return;
 	}
 	
-		/**
+	/**
 	 * 查看操作,调用APP端lookjson方法
 	 */
 	@RequestMapping(value = "/look")
@@ -152,8 +155,8 @@ public class AppUserController  extends BaseController {
 			 }else{
 				 appUser.setFansNum(0);
 			 }
-			 
-			 
+
+
 			 if(StringUtils.isNotBlank(itemId)){
 				 //获取我的关注列表
 				 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
@@ -167,9 +170,9 @@ public class AppUserController  extends BaseController {
 					}
 				 }
 			 }
-			 
+
 			 UserMedal userMedal=new UserMedal();
-			 
+
 			 //获取我的勋章列表
 			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
 			 for (UserMedal userMedal2 : userMedals) {
@@ -187,19 +190,18 @@ public class AppUserController  extends BaseController {
 			 if(null != userMedals && userMedals.size() > 0){
 				 appUser.setUserMedals(userMedals);
 			 }
-			 
-			 
+
 			 returnObject.setData(appUser);
-			 
-			 
+
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}
+
 		return returnObject;
-		
+
 	}
-	
+
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据

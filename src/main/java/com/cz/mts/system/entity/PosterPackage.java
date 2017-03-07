@@ -184,6 +184,20 @@ public class PosterPackage  extends BaseEntity {
 	
 	private Integer lookNum;
 	
+	
+	private Integer isAtt;
+	
+	
+	
+	@Transient
+	public Integer getIsAtt() {
+		return isAtt;
+	}
+
+	public void setIsAtt(Integer isAtt) {
+		this.isAtt = isAtt;
+	}
+
 	@Transient
 	public Integer getLookNum() {
 		return lookNum;
