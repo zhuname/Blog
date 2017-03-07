@@ -248,7 +248,7 @@ public class MediaPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete/json")
-	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
+	public @ResponseBody ReturnDatas deletejson(HttpServletRequest request) throws Exception {
 
 			// 执行删除
 		try {

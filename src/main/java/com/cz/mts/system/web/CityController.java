@@ -230,7 +230,7 @@ public class CityController  extends BaseController {
 	 */
 	@RequestMapping("/getArea/json")
 	public @ResponseBody
-	ReturnDatas getArea(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
+	ReturnDatas getAreajson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		
 		Province province=new Province();

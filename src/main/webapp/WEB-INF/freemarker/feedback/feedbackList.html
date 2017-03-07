@@ -84,7 +84,7 @@ function deleteFeedback(){
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_content" >反馈内容</th>
-						<th id="th_userId" >用户id</th>
+						<th id="th_userId" >用户名称</th>
 						<th id="th_createTime" >创建时间</th>
                     </tr>
                     </thead>
@@ -156,7 +156,7 @@ function deleteFeedback(){
 								${(_data.content)!''}
 							</td>
 							<td >
-								${(_data.userId)!0}
+								${(_data.userName)!''}
 							</td>
 							<td >
 								<!--日期型-->

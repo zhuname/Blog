@@ -341,7 +341,7 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping("/snatch/json")
 	public @ResponseBody 
-	ReturnDatas snatch(HttpServletRequest request, Model model,String id,String userId){
+	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
 		
 		if(StringUtils.isBlank(id) || StringUtils.isBlank(userId)) {
 			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;
@@ -368,7 +368,7 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping("/update/json")
 	public @ResponseBody
-	ReturnDatas saveorupdateJson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdatejson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {

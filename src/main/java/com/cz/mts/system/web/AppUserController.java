@@ -209,7 +209,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/update/json")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdatejson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
@@ -252,21 +252,20 @@ public class AppUserController  extends BaseController {
 			}else{
 				if(StringUtils.isNotBlank(appUser.getPassword())){
 					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					
+					//判断该密码在密码表中是否存在
+					Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+					finder.setParam("mdBeforePass", appUser.getPassword());
+					List<Map<String, Object>> list = passwordService.queryForList(finder);
+					if(list.isEmpty()){
+						//向password表中插入数据
+						Password password = new Password();
+						password.setMdBeforePass(appUser.getPassword());
+						password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						passwordService.save(password);
+					}
 				}
 				appUserService.update(appUser,true);
-				
-				//判断该密码在密码表中是否存在
-				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
-				finder.setParam("mdBeforePass", appUser.getPassword());
-				List<Map<String, Object>> list = passwordService.queryForList(finder);
-				if(list.isEmpty()){
-					//向password表中插入数据
-					Password password = new Password();
-					password.setMdBeforePass(appUser.getPassword());
-					password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-					passwordService.save(password);
-				}
-				
 				returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 			}
 		} catch (Exception e) {
@@ -363,8 +362,6 @@ public class AppUserController  extends BaseController {
 			AppUser user = appUserService.queryForObject(appUserRecord);
 			if(null != user){
 				user.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-				appUserService.update(user);
-				
 				//判断该密码在密码表中是否存在
 				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
 				finder.setParam("mdBeforePass", appUser.getPassword());
@@ -377,6 +374,7 @@ public class AppUserController  extends BaseController {
 					passwordService.save(password);
 				}
 				
+				appUserService.update(user);
 				
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
@@ -509,7 +507,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/modifytel/json")
 	public @ResponseBody 
-	ReturnDatas modifytelJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+	ReturnDatas modifyteljson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
@@ -556,7 +554,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/modifynewtel/json")
 	public @ResponseBody 
-	ReturnDatas modifynewtelJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+	ReturnDatas modifynewteljson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
@@ -613,7 +611,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/changepwd/json")
 	public @ResponseBody 
-	ReturnDatas changepwdJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+	ReturnDatas changepwdjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		if(StringUtils.isBlank(appUser.getPassword()) || StringUtils.isBlank(appUser.getNewPwd()) || null == appUser.getId()){
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -671,7 +669,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/bindphone/json")
 	public @ResponseBody 
-	ReturnDatas bindPhone(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
+	ReturnDatas bindPhonejson(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		if(StringUtils.isBlank(appUser.getPhone()) || StringUtils.isBlank(content) || null == appUser.getId()){
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -716,7 +714,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/pay/json")
 	public @ResponseBody
-	ReturnDatas pay(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
+	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		
@@ -768,7 +766,7 @@ public class AppUserController  extends BaseController {
 	 */
 	@RequestMapping("/statics/json")
 	public @ResponseBody
-	ReturnDatas staticsJson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+	ReturnDatas staticsjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		if(null == appUser.getId()){
 			returnObject.setStatus(ReturnDatas.ERROR);
