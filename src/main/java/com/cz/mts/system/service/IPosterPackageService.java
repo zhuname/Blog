@@ -19,6 +19,16 @@ public interface IPosterPackageService extends IBaseSpringrainService {
 	 */
 	PosterPackage findPosterPackageById(Object id) throws Exception;
 	
+	/**
+	 * 抢红包
+	 * @param userId  抢红包人id
+	 * @param packageId 被抢红包id
+	 * @return
+	 * @throws Exception
+	 * @author wxy
+	 * @date 2017年3月6日
+	 */
+	Integer snatch(String userId,String packageId ) throws Exception ;
 	
 	
 }

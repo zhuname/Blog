@@ -9,9 +9,11 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -91,6 +93,7 @@ public class AppUser  extends BaseEntity {
 	/**
 	 * 创建时间
 	 */
+//	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
 	private java.util.Date createTime;
 	/**
 	 * 头像
@@ -342,7 +345,7 @@ public class AppUser  extends BaseEntity {
 	public void setCreateTime(java.util.Date value) {
 		this.createTime = value;
 	}
-	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:AppUser_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
