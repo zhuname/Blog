@@ -107,7 +107,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 					if(null != cd.getUserId()){
 						AppUser appUser = appUserService.findAppUserById(cd.getUserId());
 						if(null != appUser){
-							card.setAppUser(appUser);
+							cd.setAppUser(appUser);
 						}
 						UserMedal userMedal = new UserMedal();
 						userMedal.setUserId(cd.getUserId());
@@ -122,7 +122,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 									}
 								}
 							}
-							card.setUserMedals(userMedals);
+							cd.setUserMedals(userMedals);
 						}
 					}
 				}
