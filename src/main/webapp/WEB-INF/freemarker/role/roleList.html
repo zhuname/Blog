@@ -10,8 +10,8 @@ function deleteRole(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/role/delete?id="+id;
-		var listurl="${ctx}/role/list";
+		var _url="${ctx}/system/role/delete?id="+id;
+		var listurl="${ctx}/system/role/list";
 		mydelete(_url,listurl);
 	}
 }
@@ -27,7 +27,7 @@ function deleteRole(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/role/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/role/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -45,13 +45,13 @@ function deleteRole(){
 		</div>
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/role/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/role/list/export');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myexport('searchForm','${ctx}/system/role/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
 			    <@shiro.hasPermission name="/role/update" >
-				  <button onclick="myhref('${ctx}/role/update/pre');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myhref('${ctx}/system/role/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
@@ -108,11 +108,11 @@ function deleteRole(){
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/role/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/system/role/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/role/delete?id=${(_data.id)!''}','${ctx}/role/list');">
+                                                onclick="mydelete('${ctx}/system/role/delete?id=${(_data.id)!''}','${ctx}/system/role/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -124,7 +124,7 @@ function deleteRole(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/role/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/role/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -132,7 +132,7 @@ function deleteRole(){
 											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/role/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/role/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -141,7 +141,7 @@ function deleteRole(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/role/delete?id=${(_data.id)!''}','${ctx}/role/list');"
+                                                       href="javascript:mydelete('${ctx}/system/role/delete?id=${(_data.id)!''}','${ctx}/system/role/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
