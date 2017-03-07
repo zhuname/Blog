@@ -49,6 +49,10 @@
 			
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+	
+	
+	 <!--启用AspectJ自动代理-->
+	 <aop:aspectj-autoproxy/>
 	 
 	 
 	<!-- 只扫描Controller 注解 -->
