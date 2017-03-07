@@ -49,6 +49,8 @@
 			
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+	
+	
 	 
 	 
 	<!-- 只扫描Controller 注解 -->
@@ -121,6 +123,17 @@
 		<property name="uploadTempDir" value="/upload/" /> <!-- 上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
 		<property name="maxUploadSize" value="10485760" /> <!-- 最大文件大小，-1为无限止(-1) -->
 	</bean>
+
+<!-- 
+<mvc:interceptors>  
+    使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求  
+    <bean class="com.cz.mts.system.interceptor.ApiIntercepetor"/>  
+    <mvc:interceptor>  
+        <mvc:mapping path="/system/**/json"/>  
+        定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的  
+        <bean class="com.cz.mts.system.interceptor.ApiIntercepetor"/>  
+    </mvc:interceptor>  
+</mvc:interceptors>   -->
 
 <import resource="classpath*:mvc/applicationContext-mvc-share.xml" />
 
