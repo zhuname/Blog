@@ -86,7 +86,7 @@ public class AttentionController  extends BaseController {
 		/*// ==执行分页查询
 		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);*/
 		if(attention.getUserId()!=null){
-			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.userId = au.id WHERE att.userId= :id  order by att.id");
+			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id  order by att.id");
 			finder.setParam("id", attention.getUserId());
 			returnObject.setData(appUserService.queryForList(finder,page));
 		}else {
@@ -160,9 +160,13 @@ public class AttentionController  extends BaseController {
 				for (Attention AttentionD : datas) {
 					attentionService.deleteByEntity(AttentionD);
 				}
+				
+				returnObject.setData(0);
+				
 			}else {
 				attention.setIsUpdate(0);
 				attentionService.saveorupdate(attention);
+				returnObject.setData(1);
 			}
 			
 		} catch (Exception e) {

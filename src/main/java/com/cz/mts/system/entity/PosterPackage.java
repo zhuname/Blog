@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -184,6 +185,20 @@ public class PosterPackage  extends BaseEntity {
 	
 	private Integer lookNum;
 	
+	
+	private Integer isAtt;
+	
+	
+	
+	@Transient
+	public Integer getIsAtt() {
+		return isAtt;
+	}
+
+	public void setIsAtt(Integer isAtt) {
+		this.isAtt = isAtt;
+	}
+
 	@Transient
 	public Integer getLookNum() {
 		return lookNum;
@@ -367,6 +382,7 @@ public class PosterPackage  extends BaseEntity {
 		this.expTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="expTime=:PosterPackage_expTime")
 	public java.util.Date getExpTime() {
 		return this.expTime;
@@ -383,6 +399,7 @@ public class PosterPackage  extends BaseEntity {
 		this.createTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:PosterPackage_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
@@ -399,6 +416,7 @@ public class PosterPackage  extends BaseEntity {
 		this.payTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="payTime=:PosterPackage_payTime")
 	public java.util.Date getPayTime() {
 		return this.payTime;
@@ -415,6 +433,7 @@ public class PosterPackage  extends BaseEntity {
 		this.failTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="failTime=:PosterPackage_failTime")
 	public java.util.Date getFailTime() {
 		return this.failTime;
@@ -431,6 +450,7 @@ public class PosterPackage  extends BaseEntity {
 		this.succTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="succTime=:PosterPackage_succTime")
 	public java.util.Date getSuccTime() {
 		return this.succTime;
@@ -447,6 +467,7 @@ public class PosterPackage  extends BaseEntity {
 		this.endTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="endTime=:PosterPackage_endTime")
 	public java.util.Date getEndTime() {
 		return this.endTime;

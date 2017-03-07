@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -122,7 +124,7 @@ public class FwlogHistory2017  extends BaseEntity {
 	public void setStartDate(java.util.Date value) {
 		this.startDate = value;
 	}
-	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="startDate=:FwlogHistory2017_startDate")
 	public java.util.Date getStartDate() {
 		return this.startDate;
@@ -134,6 +136,7 @@ public class FwlogHistory2017  extends BaseEntity {
 		this.strDate = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="strDate=:FwlogHistory2017_strDate")
 	public java.lang.String getStrDate() {
 		return this.strDate;

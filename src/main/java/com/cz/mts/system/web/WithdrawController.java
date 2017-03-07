@@ -148,7 +148,7 @@ public class WithdrawController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Withdraw withdraw,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+//		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 			returnObject = withdrawService.applyWithdraw(withdraw);
 		} catch (Exception e) {
