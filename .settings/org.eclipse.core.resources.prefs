@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/appuser/appuserCru.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/appuser/appuserList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/index.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/system/index.html=UTF-8

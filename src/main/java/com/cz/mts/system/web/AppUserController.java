@@ -286,7 +286,7 @@ public class AppUserController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/appuser/appuserCru";
+		return "/appuser/appuserCru";
 	}
 	
 	/**

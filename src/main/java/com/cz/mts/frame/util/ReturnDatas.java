@@ -68,6 +68,7 @@ public class ReturnDatas implements Serializable{
 	}
 	public void setData(Object obj) {
 		this.data = JsonUtils.writeValueAsString(obj) ;
+		//this.data=obj;
 	}
 
 	public Page getPage() {

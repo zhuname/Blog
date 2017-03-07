@@ -27,7 +27,7 @@ function deleteAppUser(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/appuser/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/appuser/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -130,11 +130,11 @@ function deleteAppUser(){
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/appuser/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/system/appuser/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/appuser/delete?id=${(_data.id)!''}','${ctx}/appuser/list');">
+                                                onclick="mydelete('${ctx}/system/appuser/delete?id=${(_data.id)!''}','${ctx}/appuser/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
