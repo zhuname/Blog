@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -312,7 +313,7 @@ public class Card  extends BaseEntity {
 	public void setEndTime(java.util.Date value) {
 		this.endTime = value;
 	}
-	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="endTime=:Card_endTime")
 	public java.util.Date getEndTime() {
 		return this.endTime;
@@ -328,7 +329,7 @@ public class Card  extends BaseEntity {
 	public void setCreateTime(java.util.Date value) {
 		this.createTime = value;
 	}
-	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:Card_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;

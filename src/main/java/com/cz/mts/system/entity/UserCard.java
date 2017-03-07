@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -177,6 +179,7 @@ public class UserCard  extends BaseEntity {
 		this.createTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:UserCard_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
@@ -193,6 +196,7 @@ public class UserCard  extends BaseEntity {
 		this.changeTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="changeTime=:UserCard_changeTime")
 	public java.util.Date getChangeTime() {
 		return this.changeTime;
@@ -277,6 +281,7 @@ public class UserCard  extends BaseEntity {
 		this.expTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="expTime=:UserCard_expTime")
 	public java.util.Date getExpTime() {
 		return this.expTime;
@@ -293,6 +298,7 @@ public class UserCard  extends BaseEntity {
 		this.payTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="payTime=:UserCard_payTime")
 	public java.util.Date getPayTime() {
 		return this.payTime;
