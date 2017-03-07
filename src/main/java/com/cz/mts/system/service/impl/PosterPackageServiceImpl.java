@@ -2,10 +2,15 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.frame.cached.ICached;
 import com.cz.mts.frame.entity.IBaseEntity;
+import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
@@ -21,6 +26,8 @@ import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 @Service("posterPackageService")
 public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implements IPosterPackageService {
 
+//	@Autowired
+//	private ShiroRedisCacheManager cacheManager ;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -74,5 +81,16 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+
+	@Override
+	public Integer snatch(String userId, String packageId) throws Exception {
+		// TODO Auto-generated method stub
+//		ICached cached  = cacheManager.getCached() ;
+//		cached.getCached(userId.getBytes()) ;
+		
+		return null;
+	}
+		
+	
 
 }
