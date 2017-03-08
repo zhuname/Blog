@@ -346,7 +346,7 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping("/snatch/json")
 	public @ResponseBody 
-	ReturnDatas snatch(HttpServletRequest request, Model model,String id,String userId){
+	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
 		
 		if(StringUtils.isBlank(id) || StringUtils.isBlank(userId)) {
 			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;

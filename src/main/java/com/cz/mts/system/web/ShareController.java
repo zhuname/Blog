@@ -133,7 +133,7 @@ public class ShareController  extends BaseController {
 	 */
 	@RequestMapping("/update/json")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Share share,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdatejson(Model model,Share share,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {

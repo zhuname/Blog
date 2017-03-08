@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -52,11 +53,24 @@ public class Feedback  extends BaseEntity {
 	 * 创建时间
 	 */
 	private java.util.Date createTime;
+	
+	private String userName;
 	//columns END 数据库字段结束
+	
+	
 	
 	//concstructor
 
 	public Feedback(){
+	}
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public Feedback(

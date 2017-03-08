@@ -49,7 +49,7 @@ private byte[] getByteName(){
 @SuppressWarnings("unchecked")
 @Override
 public V get(K key) throws CacheException {
-	logger.debug("根据key从Redis中获取对象 key [" + key + "]");
+//	logger.debug("根据key从Redis中获取对象 key [" + key + "]");
 	try {
 		if (key == null) {
             return null;
@@ -65,7 +65,7 @@ public V get(K key) throws CacheException {
 
 @Override
 public V put(K key, V value) throws CacheException {
-	logger.debug("根据key从存储 key [" + key + "]");
+//	logger.debug("根据key从存储 key [" + key + "]");
 	 try {
 		 	cached.updateHashCached(getByteName(),getByteKey(key), SerializeUtil.serialize(value),null);
             return value;

@@ -67,7 +67,6 @@ public class ReturnDatas implements Serializable{
 		return data;
 	}
 	public void setData(Object obj) {
-		//this.data = JsonUtils.writeValueAsString(obj) ;
 		this.data=obj;
 	}
 
@@ -104,4 +103,5 @@ public class ReturnDatas implements Serializable{
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
+	
 }
