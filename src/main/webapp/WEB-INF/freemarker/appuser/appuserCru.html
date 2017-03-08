@@ -46,7 +46,7 @@ jQuery(document).ready(function(){
             success : function(data, status) {
             	console.log(data);
             	jQuery("#header").attr('src',data); 
-            	jQuery("#header").val(data); 
+            	jQuery("#header").attr('value',data); 
             },
             error : function(data, status, e) {
            		console.log(data);
@@ -144,7 +144,7 @@ jQuery(document).ready(function(){
 				
 				
 						<div class="site-demo-upload">
-  								<img  name="header" onclick="headOnc();" id="header" value="" src="${(returnDatas.data.header)!''}">
+  								<img  name="header" onclick="headOnc();" id="header" value="${(returnDatas.data.header)!''}" src="${(returnDatas.data.header)!''}">
    								 <input type="file" id="filed" name="filed" style="display:none">
 						</div>
 
