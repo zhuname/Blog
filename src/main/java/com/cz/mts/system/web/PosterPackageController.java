@@ -35,12 +35,14 @@ import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.Snatch;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.IRedCityService;
 
 
 /**
@@ -58,6 +60,9 @@ public class PosterPackageController  extends BaseController {
 	
 	private String listurl="/system/posterpackage/posterpackageList";
 	
+	
+	@Resource
+	private IRedCityService redCityService;
 	
 	@Resource
 	private IAppUserService appUserService;
@@ -368,7 +373,7 @@ public class PosterPackageController  extends BaseController {
 	 */
 	@RequestMapping("/update/json")
 	public @ResponseBody
-	ReturnDatas saveorupdatejson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdateJson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
@@ -396,6 +401,9 @@ public class PosterPackageController  extends BaseController {
 					
 				}
 				
+				
+				
+				
 				posterPackage.setStatus(0);
 				
 				posterPackage.setIsDel(0);
@@ -406,7 +414,17 @@ public class PosterPackageController  extends BaseController {
 				Long code=new Date().getTime();
 				posterPackage.setCode("P"+code);
 				
-				posterPackageService.save(posterPackage);
+				Object id=posterPackageService.save(posterPackage);
+				
+				String[] cityId=cityIds.split(",");
+				
+				for (String string : cityId) {
+					RedCity redCity=new RedCity();
+					redCity.setCityId(Integer.parseInt(string));
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(1);
+					redCityService.save(redCity);
+				}
 				
 			}else {
 				

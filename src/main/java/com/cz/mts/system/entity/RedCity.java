@@ -45,10 +45,30 @@ public class RedCity  extends BaseEntity {
 	private java.lang.Integer packageId;
 	//columns END 数据库字段结束
 	
+	
+	private Integer type;
+	
 	//concstructor
 
 	public RedCity(){
 	}
+
+	
+	
+	
+	public Integer getType() {
+		return type;
+	}
+
+
+
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+
+
 
 	public RedCity(
 		java.lang.Integer id

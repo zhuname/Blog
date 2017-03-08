@@ -55,7 +55,7 @@
  
 <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
       <constructor-arg ref="redisTemplate" />
-       <property name="defaultExpiration" value="1800" />
+       <property name="defaultExpiration" value="1800000" />
 </bean>
 	
 
@@ -65,7 +65,7 @@
 
 	<bean id="redisCached" class="com.cz.mts.frame.cached.RedisCachedImpl">
 		<property name="redisTemplate" ref="redisTemplate" />
-		<property name="expire" value="1800" />
+		<property name="expire" value="1800000" />
 	</bean>
 
 	<bean id="redisConnectionFactory"
