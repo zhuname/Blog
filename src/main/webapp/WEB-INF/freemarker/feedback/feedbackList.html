@@ -10,7 +10,7 @@ function deleteFeedback(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/system/feedback/delete?id="+id;
+		var _url="${ctx}/system/feedback/delete/more?id="+id;
 		var listurl="${ctx}/system/feedback/list";
 		mydelete(_url,listurl);
 	}
@@ -44,18 +44,18 @@ function deleteFeedback(){
 </form>
 		</div>
 		<div class="pull-right">
-			    <@shiro.hasPermission name="/system/feedback/list/export" >
+			    <@shiro.hasPermission name="/feedback/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/feedback/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
-			    <@shiro.hasPermission name="/system/feedback/update" >
+			    <@shiro.hasPermission name="/feedback/update" >
 				  <button onclick="myhref('${ctx}/system/feedback/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
-			    <@shiro.hasPermission name="/system/feedback/delete" >
+			    <@shiro.hasPermission name="/feedback/delete" >
 			    |
 				  <button onclick="deleteFeedback();" class="btn btn-sm btn-danger">
                         删除

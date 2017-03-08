@@ -20,6 +20,7 @@ import com.cz.mts.system.entity.SysParamBean;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -130,14 +131,31 @@ public class SysSysparamController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			java.lang.String code =sysSysparam.getCode();
-			if(StringUtils.isBlank(code)){
-			  sysSysparam.setCode(null);
-			}
+			String code=sysSysparam.getCode();
+			
+			Finder finder=Finder.getSelectFinder(SysSysparam.class).append(" where 1=1 ");
+			
+			Page page=new Page();
+			
+			page.setPageSize(1);
+			
+			SysSysparam sysparamR = new SysSysparam();
+
+			sysparamR.setCode(code);
+			
+			List<SysSysparam> sysSysparams=sysSysparamService.findListDataByFinder(finder, page, SysSysparam.class,sysparamR );
 		
-			sysSysparamService.saveorupdate(sysSysparam);
+			if(sysSysparams.size()>0){
+				
+				sysSysparams.get(0).setValue(sysSysparam.getValue());
+				
+				sysSysparamService.update(sysSysparams.get(0), true);
+				
+			}
+			
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -220,7 +238,12 @@ public class SysSysparamController  extends BaseController {
 	 */
 	@RequestMapping(value = "/update/register")
 	public String updateRegister(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
-		ReturnDatas returnObject = lookjson(model, request, response);
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","userRegisterProtocol");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/syssysparam/updateRegister";
 	}
