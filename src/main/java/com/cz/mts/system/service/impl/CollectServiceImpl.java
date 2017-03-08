@@ -120,6 +120,7 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 			returnObject.setMessage("参数缺失");
 		}else{
 			// ==执行分页查询
+			collect.setOsType(null);
 			List<Collect> datas = findListDataByFinder(null,page,Collect.class,collect);
 			if(null != datas && datas.size() > 0){
 				for (Collect ct : datas) {

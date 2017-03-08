@@ -31,7 +31,7 @@ function deleteFeedback(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
+			<!-- <label for="search_state"><b>反馈人xingmin:</b></label> 
 			 <select id="search_state" name="state" class="col-10" >
 				<option value="是">是</option>
 				<option value="否">否</option>
@@ -40,7 +40,7 @@ function deleteFeedback(){
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
-
+ -->
 </form>
 		</div>
 		<div class="pull-right">
@@ -105,10 +105,10 @@ function deleteFeedback(){
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
+                                       <!--  <button class="btn btn-xs btn-info"
                                                 onclick="myhref('${ctx}/system/feedback/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-xs btn-danger"
                                                 onclick="mydelete('${ctx}/system/feedback/delete?id=${(_data.id)!''}','${ctx}/system/feedback/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>

@@ -39,7 +39,7 @@ public class SysSysparamController  extends BaseController {
 	@Resource
 	private ISysSysparamService sysSysparamService;
 	
-	private String listurl="/system/syssysparam/syssysparamList";
+	private String listurl="/syssysparam/syssysparamList";
 	
 	
 	   
@@ -96,7 +96,7 @@ public class SysSysparamController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/syssysparam/syssysparamLook";
+		return "/syssysparam/syssysparamLook";
 	}
 
 	
@@ -154,7 +154,7 @@ public class SysSysparamController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/syssysparam/syssysparamCru";
+		return "/syssysparam/syssysparamCru";
 	}
 	
 	/**
@@ -207,7 +207,23 @@ public class SysSysparamController  extends BaseController {
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
-		
 	}
+	
+	/**
+	 * 修改注册协议
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/register")
+	public String updateRegister(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		ReturnDatas returnObject = lookjson(model, request, response);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateRegister";
+	}
+	
 
 }

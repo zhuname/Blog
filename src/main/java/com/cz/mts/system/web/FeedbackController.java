@@ -117,7 +117,7 @@ public class FeedbackController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/feedback/feedbackLook";
+		return "/feedback/feedbackLook";
 	}
 
 	
@@ -173,7 +173,7 @@ public class FeedbackController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/feedback/feedbackCru";
+		return "/feedback/feedbackCru";
 	}
 	
 	/**
