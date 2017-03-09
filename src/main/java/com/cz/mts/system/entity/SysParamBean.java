@@ -27,6 +27,15 @@ public class SysParamBean implements Serializable {
 	private String postImgAddress ;
 	private String postVideoAddress ;
 	private String userRegisterProtocol ;
+	private String cardCharge ;
+	
+	
+	public String getCardCharge() {
+		return cardCharge;
+	}
+	public void setCardCharge(String cardCharge) {
+		this.cardCharge = cardCharge;
+	}
 	public String getApkContent() {
 		return apkContent;
 	}

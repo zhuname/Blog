@@ -123,12 +123,12 @@ public class CollectController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
+	 * 收藏与取消收藏接口
 	 * 
 	 */
 	@RequestMapping("/update/json")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Collect collect,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdatejson(Model model,Collect collect,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {

@@ -30,20 +30,20 @@ public class SecurityAspect {
 			returning = "returnDatas")
 	public void securityAfter(ReturnDatas returnDatas){
 		
-		if(returnDatas != null && returnDatas.getData() != null){
-			//返回数据
-			String result = JsonUtils.writeValueAsString(returnDatas.getData()) ;
-			
-			String encodeData = null;
-			try {
-				encodeData = Des3.encode(result);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				returnDatas.setStatus(ReturnDatas.WARNING);
-				returnDatas.setMessage("加密失败！");
-			}
-			returnDatas.setData(encodeData);
-		}
+//		if(returnDatas != null && returnDatas.getData() != null){
+//			//返回数据
+//			String result = JsonUtils.writeValueAsString(returnDatas.getData()) ;
+//			
+//			String encodeData = null;
+//			try {
+//				encodeData = Des3.encode(result);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				returnDatas.setStatus(ReturnDatas.WARNING);
+//				returnDatas.setMessage("加密失败！");
+//			}
+//			returnDatas.setData(encodeData);
+//		}
 	}
 }

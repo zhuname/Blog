@@ -293,7 +293,7 @@ public class MoneyDetailController  extends BaseController {
 	
 	@RequestMapping("/statics/json")
 	public @ResponseBody
-	ReturnDatas staticsJson(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
+	ReturnDatas staticsjson(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Page page = newPage(request);
 		returnObject = moneyDetailService.statics(moneyDetail, page);

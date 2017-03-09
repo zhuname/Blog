@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Feedback;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IFeedbackService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -38,8 +40,10 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class FeedbackController  extends BaseController {
 	@Resource
 	private IFeedbackService feedbackService;
+	@Resource
+	private IAppUserService appUserService;
 	
-	private String listurl="/system/feedback/feedbackList";
+	private String listurl="/feedback/feedbackList";
 	
 	
 	   
@@ -77,7 +81,19 @@ public class FeedbackController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<Feedback> datas=feedbackService.findListDataByFinder(null,page,Feedback.class,feedback);
-			returnObject.setQueryBean(feedback);
+		if(null != datas && datas.size() > 0){
+			for (Feedback fb : datas) {
+				if(null != fb.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(fb.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getName())){
+							fb.setUserName(appUser.getName());
+						}
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(feedback);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -101,7 +117,7 @@ public class FeedbackController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/feedback/feedbackLook";
+		return "/feedback/feedbackLook";
 	}
 
 	
@@ -157,7 +173,7 @@ public class FeedbackController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/feedback/feedbackCru";
+		return "/feedback/feedbackCru";
 	}
 	
 	/**

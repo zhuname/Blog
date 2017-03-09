@@ -28,6 +28,7 @@ import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
@@ -37,6 +38,7 @@ import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
 
 
@@ -64,7 +66,8 @@ public class MediaPackageController  extends BaseController {
 	private ICollectService collectService;
 	@Resource
 	private IAttentionService attentionService;
-
+	@Resource
+	private IRedCityService redCityService;
 	@Resource
 	private ICategoryService categoryService;
 	
@@ -248,7 +251,7 @@ public class MediaPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete/json")
-	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
+	public @ResponseBody ReturnDatas deletejson(HttpServletRequest request) throws Exception {
 
 			// 执行删除
 		try {
@@ -309,18 +312,23 @@ public class MediaPackageController  extends BaseController {
 	 */
 	@RequestMapping("/update/json")
 	public @ResponseBody
-	ReturnDatas saveorupdatejson(Model model,MediaPackage mediaPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdatejson(Model model,MediaPackage mediaPackage,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
 			//新增
 			if(mediaPackage.getId()==null){
+				
 				//判断必传参数
 				if(mediaPackage.getCategoryId()==null||mediaPackage.getUserId()==null||mediaPackage.getNum()==null){
+					
 					returnObject.setStatus(ReturnDatas.ERROR);
+					
 					returnObject.setMessage("参数缺失");
+					
 					return returnObject;
+					
 				}
 				
 				if(mediaPackage.getCategoryId()!=null){
@@ -328,9 +336,13 @@ public class MediaPackageController  extends BaseController {
 					Category category=categoryService.findById(mediaPackage.getCategoryId(), Category.class);
 					
 					if(category==null){
+						
 						returnObject.setStatus(ReturnDatas.ERROR);
+						
 						returnObject.setMessage("分类不存在");
+						
 						return returnObject;
+						
 					}
 					
 				}
@@ -345,20 +357,39 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setNum(mediaPackage.getNum());
 				Object id=mediaPackageService.saveorupdate(mediaPackage);
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
+				
+				String[] cityId=cityIds.split(",");
+				
+				for (String string : cityId) {
+					RedCity redCity=new RedCity();
+					redCity.setCityId(Integer.parseInt(string));
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(1);
+					redCityService.save(redCity);
+				}
+				
 			}else{
+				
 				if(mediaPackage.getCategoryId()!=null){
 					
 					Category category=categoryService.findById(mediaPackage.getCategoryId(), Category.class);
 					
 					if(category==null){
+						
 						returnObject.setStatus(ReturnDatas.ERROR);
+						
 						returnObject.setMessage("分类不存在");
+						
 						return returnObject;
+						
 					}
 					
 				}
+				
 				Object id=mediaPackageService.update(mediaPackage,true);
+				
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
+				
 			}
 			
 		} catch (Exception e) {

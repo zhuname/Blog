@@ -68,6 +68,8 @@
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/layer-v3.0.3/**" location="/layer-v3.0.3/" />
+	<mvc:resources mapping="/layui/**" location="/layui/" />
 	<mvc:resources mapping="/ace/**" location="/ace/" />
 	<mvc:resources location="/upload/" mapping="/upload/**"/>
 	

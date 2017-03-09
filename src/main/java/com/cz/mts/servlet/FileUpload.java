@@ -76,7 +76,10 @@ public class FileUpload extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
-		Integer userId = Integer.parseInt(request.getParameter("userId").toString());
+		Integer userId = 0 ;
+		if(request.getParameter("userId")!=null){
+			userId = Integer.parseInt(request.getParameter("userId").toString());
+		}
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// 3. 判断是否是上传表单
 		boolean b = upload.isMultipartContent(request);
