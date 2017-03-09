@@ -42,7 +42,7 @@ jQuery(document).ready(function(){
 	
 //-->
 </SCRIPT>
-
+<link rel="stylesheet" href="//res.layui.com/layui/build/css/layui.css"  media="all">
 <div class="row">
 	<div class="col-xs-12">
 		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/syssysparam/update" > 
@@ -53,6 +53,7 @@ jQuery(document).ready(function(){
 		    	<script id="editor" type="text/plain" style="width:1024px;height:500px;">
 					${(returnDatas.data.value)!''}
 				</script>
+				
 			</div>
 		</form>
 		<div class="wizard-actions">
@@ -70,6 +71,8 @@ jQuery(document).ready(function(){
 
 <script>
 	var ue = UE.getEditor('editor');
+
 </script>
+
 
 </#escape>
