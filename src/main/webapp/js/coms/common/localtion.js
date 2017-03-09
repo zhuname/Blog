@@ -7,7 +7,7 @@ function initCity(localtion,provinceId,cityId){
 	$('#'+localtion+'').html("<div class=\"layui-form-item\"><div class=\"layui-input-inline\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div class=\"layui-input-inline\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
 	
 		$.ajax({
-			url : '/mts/system/city/getArea/json?level=1',
+			url : '/mts/system/city/getAreaAdmin/json?level=1',
 			secureuri : false,
 			dataType : 'json',
 			data : {},
@@ -24,7 +24,7 @@ function initCity(localtion,provinceId,cityId){
 				if(cityIdVal!=""){
 				
 					$.ajax({
-						url : '/mts/system/city/look/json?id='+cityIdVal,
+						url : '/mts/system/city/lookAdmin/json?id='+cityIdVal,
 						secureuri : false,
 						dataType : 'json',
 						data : {},
@@ -44,7 +44,7 @@ function initCity(localtion,provinceId,cityId){
 								
 							}
 							$.ajax({
-								url : '/mts/system/city/getArea/json?level=2&fatherId='+cityFatherId,
+								url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+cityFatherId,
 								secureuri : false,
 								dataType : 'json',
 								data : {},
@@ -98,7 +98,7 @@ $(document).on("change", "#province", function() {
 	var fatherId=jQuery("#province").val();
 
     $.ajax({
-        url : '/mts/system/city/getArea/json?level=2&fatherId='+fatherId,
+        url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+fatherId,
         secureuri : false,
         dataType : 'json',
         data : {},

@@ -119,20 +119,23 @@ public class PosterPackageController  extends BaseController {
 		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
-		if(StringUtils.isBlank(posterPackage.getTitle())){
+		if(StringUtils.isNotBlank(posterPackage.getTitle())){
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title ");
+			finder1.setParam("title", posterPackage.getTitle());
+			returnObject.setData(posterPackageService.queryForList(finder1,page));
+		} else {
 			if(posterPackage.getUserId()!=null){
 				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId = :userId");
 				finder1.setParam("userId", posterPackage.getUserId());
+				returnObject.setData(posterPackageService.queryForList(finder1,page));
+			}if(posterPackage.getStatus()!=null){
+				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id where p.status = :status");
+				finder1.setParam("status", posterPackage.getStatus());
 				returnObject.setData(posterPackageService.queryForList(finder1,page));
 			}else{
 				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id");
 				returnObject.setData(posterPackageService.queryForList(finder1,page));
 			}
-			
-		} else {
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title ");
-			finder1.setParam("title", posterPackage.getTitle());
-			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		}
 		
 		returnObject.setQueryBean(posterPackage);
@@ -382,6 +385,7 @@ public class PosterPackageController  extends BaseController {
 	ReturnDatas saveorupdateJson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		Object id= null;
 		try {
 			
 			
@@ -420,7 +424,7 @@ public class PosterPackageController  extends BaseController {
 				Long code=new Date().getTime();
 				posterPackage.setCode("P"+code);
 				
-				Object id=posterPackageService.save(posterPackage);
+				id=posterPackageService.save(posterPackage);
 				
 				String[] cityId=cityIds.split(",");
 				
@@ -431,6 +435,8 @@ public class PosterPackageController  extends BaseController {
 					redCity.setType(1);
 					redCityService.save(redCity);
 				}
+				
+				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
 			}else {
 				
@@ -447,12 +453,18 @@ public class PosterPackageController  extends BaseController {
 					
 				}
 				
-				Object id=posterPackageService.update(posterPackage, true);
+				id=posterPackageService.update(posterPackage, true);
 				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
 			}
 			
 		} catch (Exception e) {
+			
+			if(posterPackage.getId()==null){
+				posterPackageService.deleteById(id, PosterPackage.class);
+			}
+			
+			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);

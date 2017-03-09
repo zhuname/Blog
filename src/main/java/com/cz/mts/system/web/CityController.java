@@ -131,6 +131,28 @@ public class CityController  extends BaseController {
 		
 	}
 	
+	/**
+	 * 查看的Json格式数据,为APP端提供数据
+	 */
+	@RequestMapping(value = "/lookAdmin/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas lookAdminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+		  City city = cityService.findCityById(id);
+		   returnObject.setData(city);
+		}else{
+		returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		return returnObject;
+		
+	}
+	
+	
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
@@ -270,6 +292,51 @@ public class CityController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param city
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getAreaAdmin/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas getAreaAdminjson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		Province province=new Province();
+		
+		City city=new City();
+		
+		// ==构造分页请求
+		Page page = newPage(request);
+		page.setPageSize(10000);
+		// ==执行分页查询
+		if(level==1){
+			List<Province> datas=cityService.findListDataByFinder(null,page,Province.class,province);
+			returnObject.setQueryBean(province);
+			returnObject.setData(datas);
+		}else if(level==2){
+			if(fatherId!=null){
+				city.setFatherId(fatherId);
+			}else {
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatusCode(ReturnDatas.ERROR);
+				return returnObject;
+			}
+			List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
+			returnObject.setQueryBean(city);
+			returnObject.setData(datas);
+		}
+		
+		
+		returnObject.setPage(page);
+		return returnObject;
+	}
 	
 
 }

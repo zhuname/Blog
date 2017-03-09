@@ -33,12 +33,12 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Province
  */
 @Controller
-@RequestMapping(value="system/province")
+@RequestMapping(value="/system/province")
 public class ProvinceController  extends BaseController {
 	@Resource
 	private IProvinceService provinceService;
 	
-	private String listurl="/system/province/provinceList";
+	private String listurl="/province/provinceList";
 	
 	
 	   
