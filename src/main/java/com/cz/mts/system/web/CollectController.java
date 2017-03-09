@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.service.ICollectService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -70,6 +71,7 @@ public class CollectController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Collect collect) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -127,6 +129,7 @@ public class CollectController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,Collect collect,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -234,6 +237,7 @@ public class CollectController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/coll/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas colljson(HttpServletRequest request, Model model,Collect collect) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -260,6 +264,7 @@ public class CollectController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/statics/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas staticsjson(HttpServletRequest request, Model model,Collect collect) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

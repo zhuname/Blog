@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Province;
 import com.cz.mts.system.service.ICityService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -72,6 +73,7 @@ public class CityController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,City city) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -229,6 +231,7 @@ public class CityController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/getArea/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas getAreajson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

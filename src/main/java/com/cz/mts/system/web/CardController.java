@@ -39,6 +39,7 @@ import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.IUserService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -139,6 +140,7 @@ public class CardController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -275,6 +277,7 @@ public class CardController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,Card card,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -338,6 +341,7 @@ public class CardController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/payCard/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas payCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Integer num,Integer cardId,Integer userId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -420,6 +424,7 @@ public class CardController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/changeCardjson/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas changeCardjson(Model model,HttpServletRequest request,HttpServletResponse response,UserCard userCard,Integer userId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

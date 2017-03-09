@@ -21,6 +21,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Feedback;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IFeedbackService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -238,6 +239,7 @@ public class FeedbackController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,Feedback feedback,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

@@ -137,6 +137,7 @@ public class AppUserController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -210,6 +211,7 @@ public class AppUserController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -350,6 +352,7 @@ public class AppUserController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/forget/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas forgetjson(Model model,HttpServletRequest request,HttpServletResponse response,AppUser appUser) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -397,6 +400,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/login/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas loginjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -432,6 +436,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/loginS/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas loginSjson(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -508,6 +513,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/modifytel/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas modifyteljson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -555,6 +561,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/modifynewtel/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas modifynewteljson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -612,6 +619,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/changepwd/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas changepwdjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -670,6 +678,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/bindphone/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas bindPhonejson(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -715,6 +724,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/pay/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -767,6 +777,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/statics/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas staticsjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -70,6 +71,7 @@ public class MedalController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Medal medal) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -225,6 +227,7 @@ public class MedalController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/all/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas alljson(HttpServletRequest request, Model model,Medal medal) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

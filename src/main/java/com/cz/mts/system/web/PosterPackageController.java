@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.cached.ICached;
 import com.cz.mts.frame.cached.RedisCachedImpl;
 import com.cz.mts.frame.controller.BaseController;
@@ -106,6 +107,7 @@ public class PosterPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,PosterPackage posterPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -166,6 +168,7 @@ public class PosterPackageController  extends BaseController {
 	 * @author wml
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response,String appUserId) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -277,6 +280,7 @@ public class PosterPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete/json")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -345,6 +349,7 @@ public class PosterPackageController  extends BaseController {
 	 * @date 2017年2月28日
 	 */
 	@RequestMapping("/snatch/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
 		
@@ -372,6 +377,7 @@ public class PosterPackageController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdateJson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
