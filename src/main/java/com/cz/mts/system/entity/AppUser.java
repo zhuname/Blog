@@ -191,12 +191,44 @@ public class AppUser  extends BaseEntity {
 	
 	private List<UserMedal> userMedals;
 	
+	private Integer posterCount;
+	private Integer mediaCount;
+	private Integer cardCount;
+	
+	
+	
 	
 	//columns END 数据库字段结束
 	
 	//concstructor
 
-	
+	@Transient
+	public Integer getPosterCount() {
+		return posterCount;
+	}
+
+	public void setPosterCount(Integer posterCount) {
+		this.posterCount = posterCount;
+	}
+
+	@Transient
+	public Integer getMediaCount() {
+		return mediaCount;
+	}
+
+	public void setMediaCount(Integer mediaCount) {
+		this.mediaCount = mediaCount;
+	}
+
+	@Transient
+	public Integer getCardCount() {
+		return cardCount;
+	}
+
+	public void setCardCount(Integer cardCount) {
+		this.cardCount = cardCount;
+	}
+
 	@Transient
 	public List<UserMedal> getUserMedals() {
 		return userMedals;

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Province;
 import com.cz.mts.system.service.ICityService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -72,6 +73,7 @@ public class CityController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,City city) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -112,6 +114,7 @@ public class CityController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -134,6 +137,7 @@ public class CityController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,City city,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -167,6 +171,7 @@ public class CityController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -193,6 +198,7 @@ public class CityController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");
@@ -229,6 +235,7 @@ public class CityController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/getArea/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas getAreajson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

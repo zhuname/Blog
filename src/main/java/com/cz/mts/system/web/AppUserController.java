@@ -27,6 +27,7 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
@@ -137,6 +138,7 @@ public class AppUserController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -174,6 +176,7 @@ public class AppUserController  extends BaseController {
 			 }
 
 			 UserMedal userMedal=new UserMedal();
+			 userMedal.setUserId(id);
 
 			 //获取我的勋章列表
 			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
@@ -210,6 +213,7 @@ public class AppUserController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -294,6 +298,7 @@ public class AppUserController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -320,6 +325,7 @@ public class AppUserController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");
@@ -350,6 +356,7 @@ public class AppUserController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/forget/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas forgetjson(Model model,HttpServletRequest request,HttpServletResponse response,AppUser appUser) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -397,6 +404,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/login/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas loginjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -432,6 +440,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/loginS/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas loginSjson(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -508,6 +517,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/modifytel/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas modifyteljson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -555,6 +565,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/modifynewtel/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas modifynewteljson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -612,6 +623,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/changepwd/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas changepwdjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -670,6 +682,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/bindphone/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas bindPhonejson(HttpServletRequest request, Model model,AppUser appUser,String content) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -715,6 +728,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/pay/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -767,6 +781,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/statics/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas staticsjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -781,5 +796,28 @@ public class AppUserController  extends BaseController {
 		}
 		return returnObject;
 	}
+	
+	
+	/**
+	 * 我的发布数量接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param collect
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/publish/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas publishjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		returnObject = appUserService.getStatics(appUser, page);
+		return returnObject;
+	}
+	
+	
 
 }

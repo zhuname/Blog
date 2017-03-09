@@ -25,6 +25,7 @@ import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IWithdrawService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -145,6 +146,7 @@ public class WithdrawController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Withdraw withdraw,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

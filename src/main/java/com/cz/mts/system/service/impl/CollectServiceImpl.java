@@ -236,7 +236,7 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 			returnObject.setMessage("参数缺失");
 		}else{
 			//查询海报数量
-			Finder posterFinder = new Finder("SELECT * FROM t_collect WHERE userId=:userId AND type=1 ;");
+			Finder posterFinder = new Finder("SELECT id FROM t_collect WHERE userId=:userId AND type=1 ;");
 			posterFinder.setParam("userId", collect.getUserId());
 			List posterList = queryForList(posterFinder);
 			if(null != posterList && posterList.size() > 0){
@@ -245,7 +245,7 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 				collect.setPosterCount(0);
 			}
 			//查询视频数量
-			Finder mediaFinder = new Finder("SELECT * FROM t_collect WHERE userId=:userId AND type=2 ;");
+			Finder mediaFinder = new Finder("SELECT id FROM t_collect WHERE userId=:userId AND type=2 ;");
 			mediaFinder.setParam("userId", collect.getUserId());
 			List mediaList = queryForList(mediaFinder);
 			if(null != mediaList && mediaList.size() > 0){
@@ -255,7 +255,7 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 			}
 			
 			//查询卡券数量
-			Finder cardFinder = new Finder("SELECT * FROM t_collect WHERE userId=:userId AND type=3 ;");
+			Finder cardFinder = new Finder("SELECT id FROM t_collect WHERE userId=:userId AND type=3 ;");
 			cardFinder.setParam("userId", collect.getUserId());
 			List cardList = queryForList(cardFinder);
 			if(null != cardList && cardList.size() > 0){

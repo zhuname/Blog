@@ -23,6 +23,7 @@ import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.LunboPic;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -78,6 +79,7 @@ public class AttentionController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Attention attention) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -124,6 +126,7 @@ public class AttentionController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -146,6 +149,7 @@ public class AttentionController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,Attention attention,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -193,6 +197,7 @@ public class AttentionController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -219,6 +224,7 @@ public class AttentionController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");
@@ -255,6 +261,7 @@ public class AttentionController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/atten/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas attenjson(HttpServletRequest request, Model model,Attention attention) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

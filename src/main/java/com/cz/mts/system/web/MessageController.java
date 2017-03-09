@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Message;
 import com.cz.mts.system.service.IMessageService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -33,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Message
  */
 @Controller
-@RequestMapping(value="/message")
+@RequestMapping(value="/system/message")
 public class MessageController  extends BaseController {
 	@Resource
 	private IMessageService messageService;
@@ -60,8 +61,8 @@ public class MessageController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
-	 * 
+	 * 消息列表
+	 * @author wj
 	 * @param request
 	 * @param model
 	 * @param message
@@ -69,6 +70,7 @@ public class MessageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Message message) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
