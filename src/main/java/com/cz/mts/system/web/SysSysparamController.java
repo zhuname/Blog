@@ -248,5 +248,26 @@ public class SysSysparamController  extends BaseController {
 		return "/syssysparam/updateRegister";
 	}
 	
+	/**
+	 * 修改app简介
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/appIntroduce")
+	public String updateAppIntroduce(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","appIntroduce");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateIntroduce";
+	}
+	
 
 }
