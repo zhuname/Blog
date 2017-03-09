@@ -27,6 +27,7 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
@@ -175,6 +176,7 @@ public class AppUserController  extends BaseController {
 			 }
 
 			 UserMedal userMedal=new UserMedal();
+			 userMedal.setUserId(id);
 
 			 //获取我的勋章列表
 			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
@@ -794,5 +796,28 @@ public class AppUserController  extends BaseController {
 		}
 		return returnObject;
 	}
+	
+	
+	/**
+	 * 我的发布数量接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param collect
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/publish/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas publishjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		returnObject = appUserService.getStatics(appUser, page);
+		return returnObject;
+	}
+	
+	
 
 }

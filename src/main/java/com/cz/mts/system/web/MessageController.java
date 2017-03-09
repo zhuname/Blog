@@ -34,7 +34,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Message
  */
 @Controller
-@RequestMapping(value="/message")
+@RequestMapping(value="/system/message")
 public class MessageController  extends BaseController {
 	@Resource
 	private IMessageService messageService;
@@ -61,8 +61,8 @@ public class MessageController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
-	 * 
+	 * 消息列表
+	 * @author wj
 	 * @param request
 	 * @param model
 	 * @param message

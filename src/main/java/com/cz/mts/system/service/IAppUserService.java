@@ -1,5 +1,7 @@
 package com.cz.mts.system.service;
 
+import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
@@ -42,5 +44,15 @@ public interface IAppUserService extends IBaseSpringrainService {
 	 * @author wml
 	 */
 	Integer alipay(String code,Integer type,Double money,String wxCode,Integer payType  )throws Exception;
+	
+	/**
+	 * 我的发布接口
+	 * @author wj
+	 * @param appUser
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	ReturnDatas getStatics(AppUser appUser,Page page) throws Exception;
 	
 }
