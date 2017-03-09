@@ -23,10 +23,10 @@ import com.cz.mts.frame.util.ReturnDatas;
 @Aspect
 public class SecurityAspect {
 
-	@Pointcut("")
+	@Pointcut("@annotation(com.cz.mts.frame.annotation.SecurityApi)")
 	public void securityAop(){}
 	
-	@AfterReturning(pointcut = "execution(* com.cz.mts.system.web.*Controller.*json(..))",
+	@AfterReturning(pointcut = "securityAop()",
 			returning = "returnDatas")
 	public void securityAfter(ReturnDatas returnDatas){
 		
