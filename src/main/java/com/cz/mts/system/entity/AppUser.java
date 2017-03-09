@@ -175,6 +175,8 @@ public class AppUser  extends BaseEntity {
 	private Integer fansNum;
 	
 	
+	private Integer cityId;
+	
 	/**
 	 * 是否是黑名单 0否 1是
 	 */
@@ -225,6 +227,16 @@ public class AppUser  extends BaseEntity {
 	@WhereSQL(sql="wxPhone=:AppUser_wxPhone")
 	public java.lang.String getWxPhone() {
 		return wxPhone;
+	}
+
+	
+	@WhereSQL(sql="cityId=:AppUser_cityId")
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setWxPhone(java.lang.String wxPhone) {
