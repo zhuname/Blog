@@ -75,6 +75,7 @@ public class FeedbackController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Feedback feedback) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -126,6 +127,7 @@ public class FeedbackController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -148,6 +150,7 @@ public class FeedbackController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Feedback feedback,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -181,6 +184,7 @@ public class FeedbackController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -207,6 +211,7 @@ public class FeedbackController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");
