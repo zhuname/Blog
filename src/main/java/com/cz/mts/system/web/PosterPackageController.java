@@ -130,21 +130,25 @@ public class PosterPackageController  extends BaseController {
 				finder1.append(" and p.userId = :userId");
 				
 				finder1.setParam("userId", posterPackage.getUserId());
+				
 			}
+			
 			if(posterPackage.getStatus()!=null){
 				
-				finder1.append(" p.status = :status");
+				finder1.append(" and p.status = :status");
 				
 				finder1.setParam("status", posterPackage.getStatus());
 			}
+			
 			if(posterPackage.getCategoryId()!=null){
 				
-				finder1.append(" p.categoryId = :categoryId");
+				finder1.append(" and p.categoryId = :categoryId");
 				
 				finder1.setParam("categoryId", posterPackage.getCategoryId());
+				
 			}
 
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
+			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		}
 		
 		returnObject.setQueryBean(posterPackage);

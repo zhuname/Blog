@@ -41,6 +41,7 @@ import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.sun.tools.javac.util.Assert;
 
 
 /**
@@ -321,7 +322,7 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
+			
 			//新增
 			if(mediaPackage.getId()==null){
 				
@@ -349,7 +350,7 @@ public class MediaPackageController  extends BaseController {
 						return returnObject;
 						
 					}
-					
+			    
 				}
 				
 				//生成验证码
@@ -388,7 +389,7 @@ public class MediaPackageController  extends BaseController {
 						return returnObject;
 						
 					}
-					
+				
 				}
 				
 				Object id=mediaPackageService.update(mediaPackage,true);
