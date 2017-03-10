@@ -15,6 +15,39 @@ function deleteProvince(){
 		mydelete(_url,listurl);
 	}
 }
+
+
+	
+
+	
+	function trClick(id) {
+	
+		var provinceClass="province"+id;
+		
+		if($('#'+id+'').next().hasClass(provinceClass)){
+			$('.'+provinceClass+'').remove();
+		}else{
+			 $.ajax({
+		        url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+id,
+		        secureuri : false,
+		        dataType : 'json',
+		        data : {},
+		        success : function(data, status) {
+		        	var obj1 = eval(data.data);
+		        	
+		        	for (var int = 0; int < obj1.length; int++) {
+						$($('#'+id+'')).after("<tr class=\"province"+id+"\"><td class=\"center\"> <label class=\"position-relative\"> <input name=\"check_li\" value=\"cityId\" class=\"ace\" type=\"checkbox\"><span class=\"lbl\"></span></label></td> <td><div class=\"hidden-sm hidden-xs btn-group\"></div> <div class=\"hidden-md hidden-lg\"><div class=\"inline position-relative\"><button class=\"btn btn-minier btn-primary dropdown-toggle\" data-toggle=\"dropdown\" data-position=\"auto\"><i class=\"ace-icon fa fa-cog icon-only bigger-110\"></i></button><ul class=\"dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close\"><li><a  href=\"javascript:myhref('${ctx}/province/look?id=cityId');\"  class=\"tooltip-info\" data-rel=\"tooltip\" title=\"View\"><span class=\"blue\"><i class=\"ace-icon fa fa-search-plus bigger-120\"></i></span></a> </li><li><span class=\"green\"><i class=\"ace-icon fa fa-pencil-square-o bigger-120\"></i></span></a></li><li><span class=\"red\"><i class=\"ace-icon fa fa-trash-o bigger-120\"></i></span></a></li></ul></div></div></td><!--end_no_export--><td ></td><td >"+obj1[int].name+"</td><td >"+obj1[int].open+"</td><td >"+obj1[int].capital+"</td></tr>");
+					}
+		        	
+		        }
+		    })
+		
+		
+		}
+	
+	}
+
+
 </script>
 
 
@@ -83,7 +116,8 @@ function deleteProvince(){
                         </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_name" >name</th>
+						<th id="th_name" >名称</th>
+						<th id="th_city" >市</th>
 						<th id="th_open" >省是否开通(1是0否)</th>
 						<th id="th_capital" >拼音</th>
                     </tr>
@@ -96,7 +130,7 @@ function deleteProvince(){
 				   <#if (returnDatas.data??)&&(returnDatas.data?size>0)>
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
-                            <tr class="">
+                            <tr class="" onclick="trClick(${_data.id});" id="${_data.id}">
                                 <td class="center">
                                     <label class="position-relative">
                                         <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
@@ -154,6 +188,9 @@ function deleteProvince(){
 
 							<td >
 								${(_data.name)!''}
+							</td>
+							<td >
+								
 							</td>
 							<td >
 								${(_data.open)!0}

@@ -135,7 +135,6 @@ public class CityController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/lookAdmin/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookAdminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -303,7 +302,6 @@ public class CityController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/getAreaAdmin/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas getAreaAdminjson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

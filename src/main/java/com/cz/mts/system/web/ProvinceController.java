@@ -74,6 +74,9 @@ public class ProvinceController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(10000);
+		page.setOrder("id");
+		page.setSort("asc");
 		// ==执行分页查询
 		List<Province> datas=provinceService.findListDataByFinder(null,page,Province.class,province);
 			returnObject.setQueryBean(province);

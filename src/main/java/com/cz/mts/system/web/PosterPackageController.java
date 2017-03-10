@@ -124,18 +124,27 @@ public class PosterPackageController  extends BaseController {
 			finder1.setParam("title", posterPackage.getTitle());
 			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		} else {
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE 1=1");
 			if(posterPackage.getUserId()!=null){
-				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId = :userId");
+				
+				finder1.append(" and p.userId = :userId");
+				
 				finder1.setParam("userId", posterPackage.getUserId());
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
-			}if(posterPackage.getStatus()!=null){
-				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id where p.status = :status");
-				finder1.setParam("status", posterPackage.getStatus());
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
-			}else{
-				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id");
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
 			}
+			if(posterPackage.getStatus()!=null){
+				
+				finder1.append(" p.status = :status");
+				
+				finder1.setParam("status", posterPackage.getStatus());
+			}
+			if(posterPackage.getCategoryId()!=null){
+				
+				finder1.append(" p.categoryId = :categoryId");
+				
+				finder1.setParam("categoryId", posterPackage.getCategoryId());
+			}
+
+				returnObject.setData(posterPackageService.queryForList(finder1,page));
 		}
 		
 		returnObject.setQueryBean(posterPackage);
@@ -419,6 +428,8 @@ public class PosterPackageController  extends BaseController {
 				posterPackage.setIsDel(0);
 				
 				posterPackage.setCreateTime(new Date());
+				
+				posterPackage.setBalance(posterPackage.getSumMoney());
 				
 				//生成验证码
 				Long code=new Date().getTime();
