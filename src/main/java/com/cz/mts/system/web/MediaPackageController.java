@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -104,6 +105,7 @@ public class MediaPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -145,6 +147,7 @@ public class MediaPackageController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -251,6 +254,7 @@ public class MediaPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete/json")
+	@SecurityApi
 	public @ResponseBody ReturnDatas deletejson(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -311,6 +315,7 @@ public class MediaPackageController  extends BaseController {
 	 * @author wwwwwwwwwwwwwwwwwmmmmmmmmmmmmmmmmmmmmmmllllllllllllllllll
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdatejson(Model model,MediaPackage mediaPackage,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

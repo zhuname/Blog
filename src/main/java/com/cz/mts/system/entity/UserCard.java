@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -123,6 +124,17 @@ public class UserCard  extends BaseEntity {
 	//columns END 数据库字段结束
 	
 	//concstructor
+	
+	private Card card;
+	
+	@Transient
+	public Card getCard() {
+		return card;
+	}
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
 
 	public UserCard(){
 	}

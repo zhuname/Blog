@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -81,6 +82,7 @@ public class MoneyDetailController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -232,6 +234,7 @@ public class MoneyDetailController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/money/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas moneyjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -273,6 +276,7 @@ public class MoneyDetailController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/listuser/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listuserjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -292,6 +296,7 @@ public class MoneyDetailController  extends BaseController {
 	}
 	
 	@RequestMapping("/statics/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas staticsjson(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

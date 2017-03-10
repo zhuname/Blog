@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
@@ -371,6 +372,47 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					break;
 				}
 		return null;
+	}
+	
+	@Override
+	public ReturnDatas getStatics(AppUser appUser,Page page) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		if(null == appUser.getId()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			//查询海报数量
+			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId AND isDel=0");
+			posterFinder.setParam("userId", appUser.getId());
+			List posterList = queryForList(posterFinder);
+			if(null != posterList && posterList.size() > 0){
+				appUser.setPosterCount(posterList.size());
+			}else{
+				appUser.setPosterCount(0);
+			}
+			//查询视频数量
+			Finder mediaFinder = new Finder("SELECT id FROM t_media_package WHERE userId=:userId AND isDel=0");
+			mediaFinder.setParam("userId", appUser.getId());
+			List mediaList = queryForList(mediaFinder);
+			if(null != mediaList && mediaList.size() > 0){
+				appUser.setMediaCount(mediaList.size());
+			}else{
+				appUser.setMediaCount(0);
+			}
+			
+			//查询卡券数量
+			Finder cardFinder = new Finder("SELECT id FROM t_card WHERE userId=:userId AND isDel=0");
+			cardFinder.setParam("userId", appUser.getId());
+			List cardList = queryForList(cardFinder);
+			if(null != cardList && cardList.size() > 0){
+				appUser.setCardCount(cardList.size());
+			}else{
+				appUser.setCardCount(0);
+			}
+			
+			returnObject.setData(appUser);
+		}
+		return returnObject;
 	}
 
 }

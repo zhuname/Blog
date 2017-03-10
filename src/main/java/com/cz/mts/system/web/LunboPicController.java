@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.LunboPic;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.service.ILunboPicService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -72,6 +73,7 @@ public class LunboPicController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,LunboPic lunboPic) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -119,6 +121,7 @@ public class LunboPicController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -141,6 +144,7 @@ public class LunboPicController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,LunboPic lunboPic,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

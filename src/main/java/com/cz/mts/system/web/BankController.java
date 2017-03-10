@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Bank;
 import com.cz.mts.system.service.IBankService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -70,6 +71,7 @@ public class BankController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Bank bank) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -108,6 +110,7 @@ public class BankController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -130,6 +133,7 @@ public class BankController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Bank bank,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -163,6 +167,7 @@ public class BankController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -189,6 +194,7 @@ public class BankController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");

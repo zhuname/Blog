@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.SysParamBean;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.service.ISysSysparamService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -71,6 +72,7 @@ public class SysSysparamController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,SysSysparam sysSysparam) throws Exception{
 		SysParamBean datas = sysSysparamService.findParamBean();
@@ -246,6 +248,132 @@ public class SysSysparamController  extends BaseController {
 		returnObject.setData(sysparams.get(0));
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/syssysparam/updateRegister";
+	}
+	
+	/**
+	 * 修改app简介
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/appIntroduce")
+	public String updateAppIntroduce(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","appIntroduce");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateIntroduce";
+	}
+	
+	/**
+	 * 修改加盟热线
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/businessphone")
+	public String updateBusinessPhone(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","businessPhone");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateBusiness";
+	}
+	
+	/**
+	 * 修改客服热线
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/kefuphone")
+	public String updateKefuPhone(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","kefuphone");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateKefu";
+	}
+	
+	/**
+	 * 修改卡券手续费
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/cardCharge")
+	public String updateCardCharge(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","cardCharge");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateCardCharge";
+	}
+	
+	/**
+	 * 修改提现手续百分比
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/chargePercent")
+	public String updateChargePercent(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","chargePercent");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateChargePercent";
+	}
+	
+	/**
+	 * 修改最低手续费
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/minimumCharge")
+	public String updateMinimumCharge(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","minimumCharge");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateMinimumCharge";
 	}
 	
 

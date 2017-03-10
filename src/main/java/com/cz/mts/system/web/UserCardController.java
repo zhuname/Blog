@@ -16,8 +16,17 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.UserCard;
+import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IUserCardService;
+import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -38,6 +47,18 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class UserCardController  extends BaseController {
 	@Resource
 	private IUserCardService userCardService;
+	
+	@Resource
+	private ICardService cardService;
+	
+	@Resource
+	private IAppUserService appUserService;
+	
+	@Resource
+	private IUserMedalService userMedalService;
+	
+	@Resource
+	private IMedalService medalService;
 	
 	private String listurl="/system/usercard/usercardList";
 	
@@ -70,6 +91,7 @@ public class UserCardController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,UserCard userCard) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -81,6 +103,38 @@ public class UserCardController  extends BaseController {
 		page.setSort("asc");
 		// ==执行分页查询
 		List<UserCard> datas=userCardService.findListDataByFinder(finder,page,UserCard.class,userCard);
+		
+		if(datas.size()>0){
+			
+			for (UserCard userCard2 : datas) {
+				Card card = cardService.findCardById(userCard2.getCardId());
+				 if(null != card.getUserId()){
+					 AppUser appUser = appUserService.findAppUserById(card.getUserId());
+					 if(null != appUser){
+						 card.setAppUser(appUser);
+					 }
+					 
+					 //查询勋章列表
+					 Page page1 = new Page();
+					 UserMedal userMedal = new UserMedal();
+					 userMedal.setUserId(card.getUserId());
+					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page1, UserMedal.class, userMedal);
+					if(null != userMedals && userMedals.size() > 0){
+						for (UserMedal um : userMedals) {
+							if(null != um.getMedalId()){
+								Medal medal = medalService.findMedalById(um.getMedalId());
+								if(null != medal){
+									um.setMedal(medal);
+								}
+							}
+						}
+						card.setUserMedals(userMedals);
+					}
+				 }
+				userCard2.setCard(card);
+			}
+		}
+		
 			returnObject.setQueryBean(userCard);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -218,6 +219,7 @@ public class SmsController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/content/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas contentjson(Model model,HttpServletRequest request,HttpServletResponse response,Sms sms) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

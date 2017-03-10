@@ -33,12 +33,12 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Province
  */
 @Controller
-@RequestMapping(value="system/province")
+@RequestMapping(value="/system/province")
 public class ProvinceController  extends BaseController {
 	@Resource
 	private IProvinceService provinceService;
 	
-	private String listurl="/system/province/provinceList";
+	private String listurl="/province/provinceList";
 	
 	
 	   
@@ -74,6 +74,9 @@ public class ProvinceController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(10000);
+		page.setOrder("id");
+		page.setSort("asc");
 		// ==执行分页查询
 		List<Province> datas=provinceService.findListDataByFinder(null,page,Province.class,province);
 			returnObject.setQueryBean(province);

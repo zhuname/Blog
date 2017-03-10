@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.cached.ICached;
 import com.cz.mts.frame.cached.RedisCachedImpl;
 import com.cz.mts.frame.controller.BaseController;
@@ -106,6 +107,7 @@ public class PosterPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,PosterPackage posterPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -117,20 +119,32 @@ public class PosterPackageController  extends BaseController {
 		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
-		if(StringUtils.isBlank(posterPackage.getTitle())){
-			if(posterPackage.getUserId()!=null){
-				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId = :userId");
-				finder1.setParam("userId", posterPackage.getUserId());
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
-			}else{
-				Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id");
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
-			}
-			
-		} else {
+		if(StringUtils.isNotBlank(posterPackage.getTitle())){
 			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title ");
 			finder1.setParam("title", posterPackage.getTitle());
 			returnObject.setData(posterPackageService.queryForList(finder1,page));
+		} else {
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE 1=1");
+			if(posterPackage.getUserId()!=null){
+				
+				finder1.append(" and p.userId = :userId");
+				
+				finder1.setParam("userId", posterPackage.getUserId());
+			}
+			if(posterPackage.getStatus()!=null){
+				
+				finder1.append(" p.status = :status");
+				
+				finder1.setParam("status", posterPackage.getStatus());
+			}
+			if(posterPackage.getCategoryId()!=null){
+				
+				finder1.append(" p.categoryId = :categoryId");
+				
+				finder1.setParam("categoryId", posterPackage.getCategoryId());
+			}
+
+				returnObject.setData(posterPackageService.queryForList(finder1,page));
 		}
 		
 		returnObject.setQueryBean(posterPackage);
@@ -166,6 +180,7 @@ public class PosterPackageController  extends BaseController {
 	 * @author wml
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response,String appUserId) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -277,6 +292,7 @@ public class PosterPackageController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete/json")
+	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -341,6 +357,7 @@ public class PosterPackageController  extends BaseController {
 	 * @date 2017年2月28日
 	 */
 	@RequestMapping("/snatch/json")
+	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
 		
@@ -374,10 +391,12 @@ public class PosterPackageController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdateJson(Model model,PosterPackage posterPackage,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		Object id= null;
 		try {
 			
 			
@@ -412,11 +431,13 @@ public class PosterPackageController  extends BaseController {
 				
 				posterPackage.setCreateTime(new Date());
 				
+				posterPackage.setBalance(posterPackage.getSumMoney());
+				
 				//生成验证码
 				Long code=new Date().getTime();
 				posterPackage.setCode("P"+code);
 				
-				Object id=posterPackageService.save(posterPackage);
+				id=posterPackageService.save(posterPackage);
 				
 				String[] cityId=cityIds.split(",");
 				
@@ -427,6 +448,8 @@ public class PosterPackageController  extends BaseController {
 					redCity.setType(1);
 					redCityService.save(redCity);
 				}
+				
+				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
 			}else {
 				
@@ -443,12 +466,18 @@ public class PosterPackageController  extends BaseController {
 					
 				}
 				
-				Object id=posterPackageService.update(posterPackage, true);
+				id=posterPackageService.update(posterPackage, true);
 				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
 			}
 			
 		} catch (Exception e) {
+			
+			if(posterPackage.getId()==null){
+				posterPackageService.deleteById(id, PosterPackage.class);
+			}
+			
+			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);

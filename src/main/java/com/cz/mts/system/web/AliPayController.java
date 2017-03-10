@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.system.service.IAppUserService;
 import com.thoughtworks.xstream.XStream;
@@ -38,6 +39,7 @@ public class AliPayController extends BaseController {
 	}
 
 	@RequestMapping("/getzfb/json")
+	@SecurityApi
 	public @ResponseBody String getzfb(HttpServletRequest request) throws Exception {
 		log.info("************支付宝回调**************");
 
