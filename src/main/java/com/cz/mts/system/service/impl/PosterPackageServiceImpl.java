@@ -1,19 +1,34 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Service;
 
-import com.cz.mts.system.entity.PosterPackage;
-import com.cz.mts.system.service.IPosterPackageService;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 import com.cz.mts.frame.cached.ICached;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.SerializeUtil;
+import com.cz.mts.system.entity.ConfigBean;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.IPosterPackageService;
 
 
 /**
@@ -26,8 +41,10 @@ import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 @Service("posterPackageService")
 public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implements IPosterPackageService {
 
-//	@Autowired
-//	private ShiroRedisCacheManager cacheManager ;
+	@Autowired
+	private RedisCacheManager cacheManager ;
+	@Autowired
+	private RedisConnectionFactory redisConnectionFactory ;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -81,12 +98,33 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+		
 
+		
 	@Override
 	public Integer snatch(String userId, String packageId) throws Exception {
 		// TODO Auto-generated method stub
-//		ICached cached  = cacheManager.getCached() ;
-//		cached.getCached(userId.getBytes()) ;
+		//框架本身写法
+//		Cache<Object, Object> cached  = cacheManager.getCache(GlobalStatic.cacheKey);
+//		Cache cache = cacheManager.getCache(GlobalStatic.cacheKey);
+		
+		//获取jedis客户端
+		Jedis jedis = (Jedis) redisConnectionFactory.getConnection().getNativeConnection() ;
+		//判断是否有这个红包
+//		if(jedis.exists(GlobalStatic.posterPackageL+packageId)){
+//			
+//		}
+//		//载入lua脚本
+		String sha = jedis.scriptLoad(GlobalStatic.luaScript);
+//		//入参:待抢小红包列表，已抢小红包列表，已抢人map，抢包人id
+//		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL+packageId, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
+		HashMap<String, String> map = new HashMap<>() ;
+		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageL+packageId) ;  //待抢小红包
+		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedList +packageId) ;  //已抢小红包List
+		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedMap +packageId) ;  //已抢小红包Map
+		
+		
+		
 		
 		return null;
 	}
