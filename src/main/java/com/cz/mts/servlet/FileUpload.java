@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ProgressListener;
@@ -81,6 +83,7 @@ public class FileUpload extends HttpServlet {
 			userId = Integer.parseInt(request.getParameter("userId").toString());
 		}
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		List<String> urlList = new ArrayList<String>();
 		// 3. 判断是否是上传表单
 		boolean b = upload.isMultipartContent(request);
 		if (!b) { // 不是文件上传
@@ -152,7 +155,8 @@ public class FileUpload extends HttpServlet {
 				file.createNewFile();
 			}
 		
-			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+";";
+//			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+";";
+			urlList.add(httppath+"/"+userId+"/"+filename);
 			// 获得流，读取数据写入文件
 			InputStream in = item.getInputStream();
 			FileOutputStream fos = new FileOutputStream(file);
@@ -168,24 +172,19 @@ public class FileUpload extends HttpServlet {
 			item.delete(); // 删除临时文件
 		}
 		
-		if(allhttpfile.endsWith(";")){
-			allhttpfile=allhttpfile.substring(0, allhttpfile.length()-1);
-		}
-//		allhttpfile=URLEncoder.encode(allhttpfile);
-		
-//		if(callbackurl.contains("?")){
-//			callbackurl=callbackurl+"&filename="+allhttpfile;
-//		}else{
-//			callbackurl=callbackurl+"?filename="+allhttpfile;
+//		if(allhttpfile.endsWith(";")){
+//			allhttpfile=allhttpfile.substring(0, allhttpfile.length()-1);
 //		}
-		//跳转到第三方路径
-//		response.sendRedirect(callbackurl);
-		  out.print(allhttpfile);
+//		  out.print(allhttpfile);
 //		returnObject.setData(allhttpfile);
 //		JSONObject json = JSONObject.fromObject(returnObject);//将java对象转换为json对象
 //		String str = json.toString();//将json对象转换为字符串
 //		out.print(str);
-	    System.out.println(allhttpfile);		        
+//		out.print("{" +allhttpfile+"}");
+		JSONObject json = new JSONObject();
+		json.put("url",urlList);
+		out.print(json.toString());
+	    System.out.println(json.toString());
 	}
 
 }
