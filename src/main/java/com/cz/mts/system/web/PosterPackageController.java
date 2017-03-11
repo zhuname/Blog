@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.cached.ICached;
-import com.cz.mts.frame.cached.RedisCachedImpl;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
-import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -59,7 +54,7 @@ public class PosterPackageController  extends BaseController {
 	@Resource
 	private IPosterPackageService posterPackageService;
 	
-	private String listurl="/system/posterpackage/posterpackageList";
+	private String listurl="/posterpackage/posterpackageList";
 	
 	
 	@Resource
@@ -92,7 +87,7 @@ public class PosterPackageController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,PosterPackage posterPackage) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, posterPackage);
+		ReturnDatas returnObject = listAminJson(request, model, posterPackage);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -120,31 +115,35 @@ public class PosterPackageController  extends BaseController {
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
 		if(StringUtils.isNotBlank(posterPackage.getTitle())){
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title ");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
 			finder1.setParam("title", posterPackage.getTitle());
 			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		} else {
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE 1=1");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
 			if(posterPackage.getUserId()!=null){
 				
 				finder1.append(" and p.userId = :userId");
 				
 				finder1.setParam("userId", posterPackage.getUserId());
+				
 			}
+			
 			if(posterPackage.getStatus()!=null){
 				
-				finder1.append(" p.status = :status");
+				finder1.append(" and p.status = :status");
 				
 				finder1.setParam("status", posterPackage.getStatus());
 			}
+			
 			if(posterPackage.getCategoryId()!=null){
 				
-				finder1.append(" p.categoryId = :categoryId");
+				finder1.append(" and p.categoryId = :categoryId");
 				
 				finder1.setParam("categoryId", posterPackage.getCategoryId());
+				
 			}
 
-				returnObject.setData(posterPackageService.queryForList(finder1,page));
+			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		}
 		
 		returnObject.setQueryBean(posterPackage);
@@ -439,15 +438,20 @@ public class PosterPackageController  extends BaseController {
 				
 				id=posterPackageService.save(posterPackage);
 				
-				String[] cityId=cityIds.split(",");
-				
-				for (String string : cityId) {
-					RedCity redCity=new RedCity();
-					redCity.setCityId(Integer.parseInt(string));
-					redCity.setPackageId(Integer.parseInt(id.toString()));
-					redCity.setType(1);
-					redCityService.save(redCity);
+				if(cityIds!=null){
+					
+					String[] cityId=cityIds.split(",");
+					
+					for (String string : cityId) {
+						RedCity redCity=new RedCity();
+						redCity.setCityId(Integer.parseInt(string));
+						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setType(1);
+						redCityService.save(redCity);
+					}
+					
 				}
+				
 				
 				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
@@ -485,6 +489,69 @@ public class PosterPackageController  extends BaseController {
 		}
 		return returnObject;
 	
+	}
+	
+	/**
+	 * 后台展示列表
+	 * @param request
+	 * @param model
+	 * @param posterPackage
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listAdmin/json")
+	public @ResponseBody
+	ReturnDatas listAminJson(HttpServletRequest request, Model model,PosterPackage posterPackage) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		posterPackage.setIsDel(0);
+		List<PosterPackage> datas = posterPackageService.findListDataByFinder(null,page,PosterPackage.class,posterPackage);
+		if(null != datas && datas.size() > 0){
+			for (PosterPackage pc : datas) {
+				if(StringUtils.isNotBlank(pc.getImage())){
+					String[] image = pc.getImage().split(";");
+					pc.setImage(image[0]);
+				}
+				
+				//获取分类名称
+				if(null != pc.getCategoryId()){
+					Category category = categoryService.findCategoryById(pc.getCategoryId());
+					if(null != category){
+						if(StringUtils.isNotBlank(category.getName())){
+							pc.setCategoryName(category.getName());
+						}
+					}
+				}
+				//获取用户名称
+				if(null != pc.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(pc.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getName())){
+							pc.setAppUserName(appUser.getName());
+						}
+					}
+				}
+				
+				if(null != pc.getPayType()){
+					if(1 == pc.getPayType()){
+						pc.setPayName("支付宝");
+					}
+					if(2 == pc.getPayType()){
+						pc.setPayName("微信");
+					}
+					if(3 == pc.getPayType()){
+						pc.setPayName("余额支付");
+					}
+				}
+				
+				
+			}
+		}
+		returnObject.setQueryBean(posterPackage);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject; 
 	}
 
 }

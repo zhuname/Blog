@@ -42,7 +42,7 @@ public class LunboPicController  extends BaseController {
 	@Resource
 	private ILunboPicService lunboPicService;
 	
-	private String listurl="/system/lunbopic/lunbopicList";
+	private String listurl="/lunbopic/lunbopicList";
 	
 	
 	   
@@ -228,5 +228,5 @@ public class LunboPicController  extends BaseController {
 		
 		
 	}
-
+	
 }

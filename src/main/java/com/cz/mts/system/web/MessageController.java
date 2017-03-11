@@ -215,5 +215,34 @@ public class MessageController  extends BaseController {
 		
 		
 	}
+	
+	/**
+	 * 将未读置为已读
+	 * @author wj
+	 */
+	@RequestMapping(value="/updatestatus/json")
+	@SecurityApi
+	public @ResponseBody ReturnDatas updateStatus(HttpServletRequest request) throws Exception {
+
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+			 Message message = messageService.findMessageById(id);
+			 if(null != message){
+				 message.setIsRead(1);
+				 messageService.update(message,true);
+			 }
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,
+						"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+	}
+	
 
 }

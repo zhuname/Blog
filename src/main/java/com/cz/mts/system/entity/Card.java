@@ -87,7 +87,7 @@ public class Card  extends BaseEntity {
 	/**
 	 * 兑换数量
 	 */
-	private java.lang.Double convertNum;
+	private java.lang.Integer convertNum;
 	/**
 	 * 领取地址
 	 */
@@ -134,8 +134,21 @@ public class Card  extends BaseEntity {
 	private java.lang.Integer isDel;
 	
 	private java.lang.Integer status;
-	//columns END 数据库字段结束
 	
+	
+	private java.lang.String location;
+	
+	
+	//columns END 数据库字段结束
+	@WhereSQL(sql="location=:Card_location")
+	public java.lang.String getLocation() {
+		return location;
+	}
+
+	public void setLocation(java.lang.String location) {
+		this.location = location;
+	}
+
 	private AppUser appUser;
 	private List<UserMedal> userMedals;
 	
@@ -256,12 +269,12 @@ public class Card  extends BaseEntity {
 	public java.lang.Double getConvertMoney() {
 		return this.convertMoney;
 	}
-	public void setConvertNum(java.lang.Double value) {
+	public void setConvertNum(java.lang.Integer value) {
 		this.convertNum = value;
 	}
 	
      @WhereSQL(sql="convertNum=:Card_convertNum")
-	public java.lang.Double getConvertNum() {
+	public java.lang.Integer getConvertNum() {
 		return this.convertNum;
 	}
 	public void setAddress(java.lang.String value) {
@@ -416,6 +429,7 @@ public class Card  extends BaseEntity {
 			.append("剩余兑换次数[").append(getNum()).append("],")
 			.append("是否删除： 0否 1是[").append(getIsDel()).append("],")
 			.append("状态：[").append(getStatus()).append("],")
+			.append("定位地址：[").append(getLocation()).append("],")
 			.toString();
 	}
 	

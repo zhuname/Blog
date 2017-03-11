@@ -39,13 +39,12 @@ public class CategoryController  extends BaseController {
 	@Resource
 	private ICategoryService categoryService;
 	
-	private String listurl="/system/category/categoryList";
+	private String listurl="/category/categoryList";
 	
 	
 	   
 	/**
-	 * 列表数据,调用listjson方法,保证和app端数据统一
-	 * 
+	 * 列表数据,调用listjson方法,保证和app端数据统一 
 	 * @param request
 	 * @param model
 	 * @param category
@@ -55,9 +54,70 @@ public class CategoryController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, category);
+		category.setType(1);
+		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	/**
+	 * 列表数据,调用listjson方法,保证和app端数据统一
+	 * 
+	 * @param request
+	 * @param model
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list1")
+	public String list1(HttpServletRequest request, Model model,Category category) 
+			throws Exception {
+		category.setType(2);
+		ReturnDatas returnObject = listadminjson(request, model, category);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return listurl;
+	}
+	
+	/**
+	 * 列表数据,调用listjson方法,保证和app端数据统一
+	 * 
+	 * @param request
+	 * @param model
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list2")
+	public String list2(HttpServletRequest request, Model model,Category category) 
+			throws Exception {
+		category.setType(3);
+		ReturnDatas returnObject = listadminjson(request, model, category);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return listurl;
+	}
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listAdmin/json")
+	public @ResponseBody
+	ReturnDatas listadminjson(HttpServletRequest request, Model model,Category category) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		page.setPageSize(10000);
+		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
+			returnObject.setQueryBean(category);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 	/**
