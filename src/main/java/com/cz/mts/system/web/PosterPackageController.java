@@ -436,15 +436,20 @@ public class PosterPackageController  extends BaseController {
 				
 				id=posterPackageService.save(posterPackage);
 				
-				String[] cityId=cityIds.split(",");
-				
-				for (String string : cityId) {
-					RedCity redCity=new RedCity();
-					redCity.setCityId(Integer.parseInt(string));
-					redCity.setPackageId(Integer.parseInt(id.toString()));
-					redCity.setType(1);
-					redCityService.save(redCity);
+				if(cityIds!=null){
+					
+					String[] cityId=cityIds.split(",");
+					
+					for (String string : cityId) {
+						RedCity redCity=new RedCity();
+						redCity.setCityId(Integer.parseInt(string));
+						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setType(1);
+						redCityService.save(redCity);
+					}
+					
 				}
+				
 				
 				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
