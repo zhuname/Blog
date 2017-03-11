@@ -103,7 +103,7 @@ public class MediaPackage  extends BaseEntity {
 	/**
 	 * 领取次数
 	 */
-	private java.lang.Integer getNum;
+	private java.lang.Integer lqNum;
 	/**
 	 * 最高金额
 	 */
@@ -209,8 +209,29 @@ public class MediaPackage  extends BaseEntity {
 	private String header;
 	private String sign;
 	
+	private String categoryName;
+	private String payName;
 	
 	
+	
+	@Transient
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	@Transient
+	public String getPayName() {
+		return payName;
+	}
+
+	public void setPayName(String payName) {
+		this.payName = payName;
+	}
+
 	@Transient
 	public String getName() {
 		return name;
@@ -406,13 +427,13 @@ public class MediaPackage  extends BaseEntity {
 	public java.lang.Double getSumMoney() {
 		return this.sumMoney;
 	}
-	public void setGetNum(java.lang.Integer value) {
-		this.getNum = value;
+	public void setLqNum(java.lang.Integer value) {
+		this.lqNum = value;
 	}
 	
-     @WhereSQL(sql="getNum=:MediaPackage_getNum")
-	public java.lang.Integer getGetNum() {
-		return this.getNum;
+     @WhereSQL(sql="lqNum=:MediaPackage_lqNum")
+	public java.lang.Integer getLqNum() {
+		return this.lqNum;
 	}
 	public void setTopPrice(java.lang.Double value) {
 		this.topPrice = value;
@@ -657,7 +678,7 @@ public class MediaPackage  extends BaseEntity {
 			.append("是否加密:0否1是[").append(getEncrypt()).append("],")
 			.append("加密口令[").append(getCommand()).append("],")
 			.append("红包金额[").append(getSumMoney()).append("],")
-			.append("领取次数[").append(getGetNum()).append("],")
+			.append("领取次数[").append(getLqNum()).append("],")
 			.append("最高金额[").append(getTopPrice()).append("],")
 			.append("支付金额[").append(getPayMoney()).append("],")
 			.append("状态：0未支付 1支付 2失败 3通过 4抢完5过期[").append(getStatus()).append("],")

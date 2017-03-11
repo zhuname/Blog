@@ -17,20 +17,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
-import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.RedCity;
-import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
@@ -41,7 +37,6 @@ import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
-import com.sun.tools.javac.util.Assert;
 
 
 /**
@@ -74,7 +69,7 @@ public class MediaPackageController  extends BaseController {
 	private ICategoryService categoryService;
 	
 	
-	private String listurl="/system/mediapackage/mediapackageList";
+	private String listurl="/mediapackage/mediapackageList";
 	
 	
 	   
@@ -90,7 +85,7 @@ public class MediaPackageController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,MediaPackage mediaPackage) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, mediaPackage);
+		ReturnDatas returnObject = listAdminJson(request, model, mediaPackage);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -327,7 +322,7 @@ public class MediaPackageController  extends BaseController {
 			if(mediaPackage.getId()==null){
 				
 				//判断必传参数
-				if(mediaPackage.getCategoryId()==null||mediaPackage.getUserId()==null||mediaPackage.getNum()==null){
+				if(mediaPackage.getCategoryId()==null||mediaPackage.getUserId()==null||mediaPackage.getLqNum()==null){
 					
 					returnObject.setStatus(ReturnDatas.ERROR);
 					
@@ -360,7 +355,7 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setStatus(0);
 				mediaPackage.setScanNum(0);
 				mediaPackage.setCreateTime(new Date());
-				mediaPackage.setNum(mediaPackage.getNum());
+				mediaPackage.setNum(mediaPackage.getLqNum());
 				Object id=mediaPackageService.saveorupdate(mediaPackage);
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				
@@ -406,6 +401,55 @@ public class MediaPackageController  extends BaseController {
 		}
 		return returnObject;
 	
+	}
+	
+	@RequestMapping("/listadmin/json")
+	public @ResponseBody
+	ReturnDatas listAdminJson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		mediaPackage.setIsDel(0);
+		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
+		if(null != datas && datas.size() > 0){
+			for (MediaPackage mp : datas) {
+				//获取用户名称
+				if(null != mp.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(mp.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getName())){
+							mp.setName(appUser.getName());
+						}
+					}
+				}
+				
+				//获取分类名称
+				if(null != mp.getCategoryId()){
+					Category category = categoryService.findCategoryById(mp.getCategoryId());
+					if(null != category){
+						if(StringUtils.isNotBlank(category.getName())){
+							mp.setCategoryName(category.getName());
+						}
+					}
+				}
+				
+				if(null != mp.getPayType()){
+					if(1 == mp.getPayType()){
+						mp.setPayName("支付宝");
+					}
+					if(2 == mp.getPayType()){
+						mp.setPayName("微信");
+					}
+					if(3 == mp.getPayType()){
+						mp.setPayName("余额支付");
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(mediaPackage);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 
 }

@@ -10,11 +10,28 @@ function deleteMediaPackage(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/mediapackage/delete?id="+id;
-		var listurl="${ctx}/mediapackage/list";
+		var _url="${ctx}/system/mediapackage/delete/json?id="+id;
+		var listurl="${ctx}/system/mediapackage/list";
 		mydelete(_url,listurl);
 	}
 }
+
+function playMedia(){
+	var a = $("#mediaUrl")[0].src;
+	//iframe层-多媒体
+	layer.open({
+	  type: 2,
+	  title: false,
+	  area: ['630px', '360px'],
+	  shade: 0.8,
+	  closeBtn: 0,
+	  shadeClose: true,
+	  content: a
+	});
+	layer.msg('点击任意处关闭');
+}
+
+
 </script>
 
 
@@ -27,7 +44,7 @@ function deleteMediaPackage(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/mediapackage/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/mediapackage/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -45,13 +62,13 @@ function deleteMediaPackage(){
 		</div>
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/mediapackage/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/mediapackage/list/export');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myexport('searchForm','${ctx}/system/mediapackage/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
 			    <@shiro.hasPermission name="/mediapackage/update" >
-				  <button onclick="myhref('${ctx}/mediapackage/update/pre');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myhref('${ctx}/system/mediapackage/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
@@ -83,19 +100,15 @@ function deleteMediaPackage(){
                         </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >用户id</th>
-						<th id="th_categoryId" >分类id</th>
+						<th id="th_userId" >用户名称</th>
+						<th id="th_categoryId" >分类名称</th>
 						<th id="th_title" >主题</th>
 						<th id="th_descr" >简介</th>
-						<th id="th_encrypt" >是否加密:0否1是</th>
+						<th id="th_encrypt" >是否加密</th>
 						<th id="th_command" >加密口令</th>
 						<th id="th_sumMoney" >红包金额</th>
-						<th id="th_getNum" >领取次数</th>
-						<th id="th_topPrice" >最高金额</th>
-						<th id="th_payMoney" >支付金额</th>
-						<th id="th_status" >状态：0未支付 1支付 2失败 3通过 4抢完5过期</th>
-						<th id="th_payType" >支付类型：1支付宝 2微信 3余额支付</th>
-						<th id="th_expTime" >到期时间</th>
+						<th id="th_status" >状态</th>
+						<th id="th_payType" >支付类型</th>
 						<th id="th_createTime" >创建时间</th>
 						<th id="th_payTime" >支付时间</th>
 						<th id="th_failTime" >失败时间</th>
@@ -105,12 +118,8 @@ function deleteMediaPackage(){
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_num" >剩余待抢次数</th>
 						<th id="th_code" >订单编号</th>
-						<th id="th_wxCode" >微信交易流水号</th>
-						<th id="th_tradeNo" >交易流水号</th>
 						<th id="th_mediaUrl" >视频url</th>
 						<th id="th_mediaImage" >视频图片</th>
-						<th id="th_scanNum" >浏览次数</th>
-						<th id="th_isDel" >是否删除: 0否 1是</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -131,11 +140,11 @@ function deleteMediaPackage(){
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/mediapackage/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/system/mediapackage/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/mediapackage/delete?id=${(_data.id)!''}','${ctx}/mediapackage/list');">
+                                                onclick="mydelete('${ctx}/system/mediapackage/delete/json?id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -147,7 +156,7 @@ function deleteMediaPackage(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/mediapackage/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/mediapackage/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -155,7 +164,7 @@ function deleteMediaPackage(){
 											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/mediapackage/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/mediapackage/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -164,7 +173,7 @@ function deleteMediaPackage(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/mediapackage/delete?id=${(_data.id)!''}','${ctx}/mediapackage/list');"
+                                                       href="javascript:mydelete('${ctx}/system/mediapackage/delete/json?id=${(_data.id)!''}','${ctx}/system/mediapackage/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -178,10 +187,10 @@ function deleteMediaPackage(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.userId)!0}
+								${(_data.name)!''}
 							</td>
 							<td >
-								${(_data.categoryId)!0}
+								${(_data.categoryName)!''}
 							</td>
 							<td >
 								${(_data.title)!''}
@@ -190,7 +199,12 @@ function deleteMediaPackage(){
 								${(_data.descr)!''}
 							</td>
 							<td >
-								${(_data.encrypt)!0}
+								<#if (_data.encrypt) == 0 >
+									不加密
+								</#if>
+								<#if (_data.encrypt) == 1 >
+									加密
+								</#if>
 							</td>
 							<td >
 								${(_data.command)!''}
@@ -199,16 +213,21 @@ function deleteMediaPackage(){
 								${(_data.sumMoney)!0}
 							</td>
 							<td >
-								${(_data.getNum)!0}
-							</td>
-							<td >
-								${(_data.topPrice)!0}
-							</td>
-							<td >
-								${(_data.payMoney)!0}
-							</td>
-							<td >
-								${(_data.status)!0}
+								<#if (_data.status) == 0 >
+									未支付
+								</#if>
+								<#if (_data.status) == 1 >
+									已支付
+								</#if>
+								<#if (_data.status) == 2 >
+									失败
+								</#if>
+								<#if (_data.status) == 3 >
+									通过
+								</#if>
+								<#if (_data.status) == 4 >
+									已抢完
+								</#if>
 							</td>
 							<td >
 								${(_data.payType)!0}
@@ -234,10 +253,6 @@ function deleteMediaPackage(){
 							${((_data.succTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
-								<!--日期型-->
-							${((_data.endTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
 								${(_data.failReason)!''}
 							</td>
 							<td >
@@ -250,22 +265,12 @@ function deleteMediaPackage(){
 								${(_data.code)!''}
 							</td>
 							<td >
-								${(_data.wxCode)!''}
+									<!--  -->
+								<video poster="" width='200px' src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="playMedia()"></video>
+								
 							</td>
 							<td >
-								${(_data.tradeNo)!''}
-							</td>
-							<td >
-								${(_data.mediaUrl)!''}
-							</td>
-							<td >
-								${(_data.mediaImage)!''}
-							</td>
-							<td >
-								${(_data.scanNum)!0}
-							</td>
-							<td >
-								${(_data.isDel)!0}
+								<img src="${(_data.mediaImage)!''}" height="100px;" width="200px;"/>
 							</td>
 						</tr>
 					</#list>
