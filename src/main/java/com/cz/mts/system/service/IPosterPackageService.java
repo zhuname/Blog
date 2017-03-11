@@ -23,12 +23,12 @@ public interface IPosterPackageService extends IBaseSpringrainService {
 	 * 抢红包
 	 * @param userId  抢红包人id
 	 * @param packageId 被抢红包id
-	 * @return
+	 * @return 抢红包的详情 （{}）
 	 * @throws Exception
 	 * @author wxy
 	 * @date 2017年3月6日
 	 */
-	Integer snatch(String userId,String packageId ) throws Exception ;
+	Object snatch(String userId,String packageId ) throws Exception ;
 	
 	
 }

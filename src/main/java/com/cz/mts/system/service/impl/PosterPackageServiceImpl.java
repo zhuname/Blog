@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -102,8 +104,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 
 		
 	@Override
-	public Integer snatch(String userId, String packageId) throws Exception {
+	public Object snatch(String userId, String packageId) throws Exception {
 		// TODO Auto-generated method stub
+		
 		//框架本身写法
 //		Cache<Object, Object> cached  = cacheManager.getCache(GlobalStatic.cacheKey);
 //		Cache cache = cacheManager.getCache(GlobalStatic.cacheKey);
@@ -111,22 +114,38 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		//获取jedis客户端
 		Jedis jedis = (Jedis) redisConnectionFactory.getConnection().getNativeConnection() ;
 		//判断是否有这个红包
-//		if(jedis.exists(GlobalStatic.posterPackageL+packageId)){
-//			
-//		}
+		if(jedis.exists(GlobalStatic.posterPackageL+packageId)){
+			return null ;
+		}
 //		//载入lua脚本
 		String sha = jedis.scriptLoad(GlobalStatic.luaScript);
 //		//入参:待抢小红包列表，已抢小红包列表，已抢人map，抢包人id
-//		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL+packageId, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
-		HashMap<String, String> map = new HashMap<>() ;
-		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageL+packageId) ;  //待抢小红包
-		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedList +packageId) ;  //已抢小红包List
-		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedMap +packageId) ;  //已抢小红包Map
+		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL+packageId, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
+		if(object != null){  //代表抢成功
+			synchronized (object) {
+				//实现其他逻辑
+			}
+		}
+		return object;
+//		HashMap<String, String> map = new HashMap<>() ;
+//		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageL+packageId) ;  //待抢小红包
+//		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedList +packageId) ;  //已抢小红包List
+//		jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedMap +packageId) ;  //已抢小红包Map
+//		
+//		JSONObject json1 = new JSONObject() ;
+//		JSONObject json2 = new JSONObject() ;
+//		JSONObject json3 = new JSONObject() ;
+//		json1.put("userId", "") ;
+//		json1.put("money", 2.0) ;
+//		json2.put("userId", null);
+//		json2.put("money", 4.0) ;
+//		json3.put("userId", null);
+//		json3.put("money", 6.0) ;
+//		
+//		jedis.lpush(GlobalStatic.posterPackageL+packageId, json1.toString(),json2.toString(),json3.toString()) ;
 		
 		
-		
-		
-		return null;
+	
 	}
 		
 	

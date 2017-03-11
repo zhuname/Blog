@@ -357,7 +357,7 @@ public class PosterPackageController  extends BaseController {
 	 * @date 2017年2月28日
 	 */
 	@RequestMapping("/snatch/json")
-	@SecurityApi
+//	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
 		
