@@ -287,27 +287,28 @@ public class MediaPackageController  extends BaseController {
 			 return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);
 		}
+		
 		String[] rs = records.split(",");
+		
 		if (rs == null || rs.length < 1) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_NULL_FAIL);
 		}
+		
 		try {
 			List<String> ids = Arrays.asList(rs);
 			mediaPackageService.deleteByIds(ids,MediaPackage.class);
 		} catch (Exception e) {
-			return new ReturnDatas(ReturnDatas.ERROR,
-					MessageUtils.DELETE_ALL_FAIL);
+			return new ReturnDatas(ReturnDatas.ERROR,MessageUtils.DELETE_ALL_FAIL);
 		}
-		return new ReturnDatas(ReturnDatas.SUCCESS,
-				MessageUtils.DELETE_ALL_SUCCESS);
 		
+		return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_ALL_SUCCESS);
 		
 	}
 	
 	/**
 	 * 新增视频红包
-	 * 新增/修改 操作吗,返回json格式数据
+	 * 新增/修改操作吗,返回json格式数据
 	 * @author wwwwwwwwwwwwwwwwwmmmmmmmmmmmmmmmmmmmmmmllllllllllllllllll
 	 */
 	@RequestMapping("/update/json")
@@ -399,6 +400,7 @@ public class MediaPackageController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
+		
 		return returnObject;
 	
 	}

@@ -4,6 +4,7 @@ encoding//src/main/resources=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/appuser/appuserCru.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/appuser/appuserList.html=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/category/categoryList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/index.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/province/provinceList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/system/index.html=UTF-8

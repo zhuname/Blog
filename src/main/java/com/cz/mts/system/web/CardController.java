@@ -290,7 +290,7 @@ public class CardController  extends BaseController {
 			//新增
 			if(card.getId()==null){
 				//判断必传参数
-				if(card.getCatergoryId()==null||card.getUserId()==null||card.getNum()==null){
+				if(card.getCatergoryId()==null||card.getUserId()==null||card.getConvertNum()==null){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("参数缺失");
 					return returnObject;
@@ -308,7 +308,7 @@ public class CardController  extends BaseController {
 					
 				}
 				
-				card.setNum(card.getNum());
+				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
 				Object id=cardService.saveorupdate(card);
 				returnObject.setData(cardService.findCardById(id));

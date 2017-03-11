@@ -4,16 +4,21 @@ import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Service;
 
-import com.cz.mts.system.entity.PosterPackage;
-import com.cz.mts.system.service.IPosterPackageService;
-import com.cz.mts.frame.cached.ICached;
+import redis.clients.jedis.Jedis;
+
 import com.cz.mts.frame.entity.IBaseEntity;
-import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.system.entity.ConfigBean;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.IPosterPackageService;
 
 
 /**
@@ -82,11 +87,24 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
 
+		
+		@Autowired
+		private RedisCacheManager cacheManager ;
+		
+		@Autowired
+		private RedisConnectionFactory connectionFactory ;
 	@Override
 	public Integer snatch(String userId, String packageId) throws Exception {
 		// TODO Auto-generated method stub
 //		ICached cached  = cacheManager.getCached() ;
 //		cached.getCached(userId.getBytes()) ;
+		Cache cache = cacheManager.getCache(GlobalStatic.cacheKey) ;
+		ConfigBean c = cache.get("ConfigData", ConfigBean.class) ; 
+		
+		
+		Jedis jedis = (Jedis) connectionFactory.getConnection().getNativeConnection() ;
+		
+//		jedis.
 		
 		return null;
 	}

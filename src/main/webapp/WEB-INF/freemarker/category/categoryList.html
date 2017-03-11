@@ -18,7 +18,7 @@ function deleteCategory(){
 </script>
 
 
-	
+
 
 <!-- /.page-header -->
 
@@ -27,12 +27,12 @@ function deleteCategory(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/category/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/category/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
 			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
+			<select id="search_state" name="state" class="col-10" >
 				<option value="是">是</option>
 				<option value="否">否</option>
 			</select>
@@ -86,7 +86,6 @@ function deleteCategory(){
 						<th id="th_name" >分类名称</th>
 						<th id="th_type" >类型：1海报红包 2视频红包 3卡券</th>
 						<th id="th_image" >分类图片</th>
-						<th id="th_isDel" >0否1是</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -107,11 +106,11 @@ function deleteCategory(){
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/category/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/system/category/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/category/delete?id=${(_data.id)!''}','${ctx}/category/list');">
+                                                onclick="mydelete('${ctx}/system/category/delete?id=${(_data.id)!''}','${ctx}/system/category/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -123,7 +122,7 @@ function deleteCategory(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/category/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/category/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -131,7 +130,7 @@ function deleteCategory(){
 											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/category/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/category/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -140,7 +139,7 @@ function deleteCategory(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/category/delete?id=${(_data.id)!''}','${ctx}/category/list');"
+                                                       href="javascript:mydelete('${ctx}/system/category/delete?id=${(_data.id)!''}','${ctx}/system/category/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -156,14 +155,11 @@ function deleteCategory(){
 							<td >
 								${(_data.name)!''}
 							</td>
-							<td >
+							<td>
 								${(_data.type)!0}
 							</td>
 							<td >
-								${(_data.image)!''}
-							</td>
-							<td >
-								${(_data.isDel)!0}
+							<img alt="" src="${(_data.image)!''}">
 							</td>
 						</tr>
 					</#list>

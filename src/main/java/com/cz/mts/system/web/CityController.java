@@ -336,5 +336,38 @@ public class CityController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	
+	
+	
+	/**
+	 * 删除操作
+	 */
+	@RequestMapping(value="/open/json")
+	public @ResponseBody ReturnDatas openJosn(HttpServletRequest request,Integer id) throws Exception {
+
+			// 执行删除
+		try {
+		 City city=cityService.findCityById(id);
+		 
+		 if(city!=null){
+			 if(city.getOpen()==1){
+				 city.setOpen(0);
+			 }else {
+				city.setOpen(1);
+			}
+			 
+			 cityService.update(city, true);
+			 
+		 }
+		 
+		 
+		 
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+	}
+	
 
 }
