@@ -3,6 +3,7 @@ package  com.cz.mts.system.web;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.cz.mts.system.entity.Province;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -368,6 +370,32 @@ public class CityController  extends BaseController {
 		}
 		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 	}
+	
+	/**
+	 * 根据城市名称查询城市bean
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+//	@RequestMapping(value = "/showDetail/json")
+//	@SecurityApi
+//	public @ResponseBody
+//	ReturnDatas showDetailjson(Model model,HttpServletRequest request,HttpServletResponse response,City city) throws Exception {
+//		 ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+//		 if(StringUtils.isNotBlank(city.getName())){
+//			 Finder finder = new Finder("select * from t_city where name like '%:name%'");
+//			 finder.setParam("name", city.getName());
+//			 List<Map<String, Object>> list = cityService.queryForList(finder);
+//			 returnObject.setData(list);
+//		 }else{
+//			 returnObject.setMessage("参数缺失");
+//			 returnObject.setStatus(ReturnDatas.ERROR);
+//		 }
+//		 return returnObject;
+//		
+//	}
 	
 
 }
