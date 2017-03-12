@@ -379,23 +379,22 @@ public class CityController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-//	@RequestMapping(value = "/showDetail/json")
-//	@SecurityApi
-//	public @ResponseBody
-//	ReturnDatas showDetailjson(Model model,HttpServletRequest request,HttpServletResponse response,City city) throws Exception {
-//		 ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-//		 if(StringUtils.isNotBlank(city.getName())){
-//			 Finder finder = new Finder("select * from t_city where name like '%:name%'");
-//			 finder.setParam("name", city.getName());
-//			 List<Map<String, Object>> list = cityService.queryForList(finder);
-//			 returnObject.setData(list);
-//		 }else{
-//			 returnObject.setMessage("参数缺失");
-//			 returnObject.setStatus(ReturnDatas.ERROR);
-//		 }
-//		 return returnObject;
-//		
-//	}
+	@RequestMapping(value = "/showDetail/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas showDetailjson(Model model,HttpServletRequest request,HttpServletResponse response,City city) throws Exception {
+		 ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		 if(StringUtils.isNotBlank(city.getName())){
+			 Finder finder = Finder.getSelectFinder(City.class).append("where INSTR(`name`,:name)>0 ");
+			 finder.setParam("name", city.getName());
+			 List<Map<String, Object>> list = cityService.queryForList(finder);
+			 returnObject.setData(list);
+		 }else{
+			 returnObject.setMessage("参数缺失");
+			 returnObject.setStatus(ReturnDatas.ERROR);
+		 }
+		 return returnObject;
+	}
 	
 
 }
