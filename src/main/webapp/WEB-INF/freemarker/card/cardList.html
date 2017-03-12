@@ -10,8 +10,8 @@ function deleteCard(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/card/delete?id="+id;
-		var listurl="${ctx}/card/list";
+		var _url="${ctx}/system/card/delete?id="+id;
+		var listurl="${ctx}/system/card/list";
 		mydelete(_url,listurl);
 	}
 }
@@ -27,7 +27,7 @@ function deleteCard(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/card/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/card/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -45,13 +45,13 @@ function deleteCard(){
 		</div>
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/card/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/card/list/export');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myexport('searchForm','${ctx}/system/card/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
 			    <@shiro.hasPermission name="/card/update" >
-				  <button onclick="myhref('${ctx}/card/update/pre');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myhref('${ctx}/system/card/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
@@ -84,15 +84,13 @@ function deleteCard(){
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_images" >图片地址</th>
-						<th id="th_catergoryId" >分类id</th>
-						<th id="th_userId" >用户id</th>
+						<th id="th_catergoryId" >分类名称</th>
+						<th id="th_userId" >用户名称</th>
 						<th id="th_title" >标题</th>
 						<th id="th_descr" >简介</th>
 						<th id="th_convertMoney" >兑换金额</th>
 						<th id="th_convertNum" >兑换数量</th>
 						<th id="th_address" >领取地址</th>
-						<th id="th_lat" >纬度</th>
-						<th id="th_lot" >经度</th>
 						<th id="th_phone" >联系电话</th>
 						<th id="th_endTime" >到期时间</th>
 						<th id="th_createTime" >创建时间</th>
@@ -100,7 +98,6 @@ function deleteCard(){
 						<th id="th_succTime" >通过时间</th>
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_num" >剩余兑换次数</th>
-						<th id="th_isDel" >是否删除： 0否 1是</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -121,11 +118,11 @@ function deleteCard(){
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/card/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/system/card/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/card/delete?id=${(_data.id)!''}','${ctx}/card/list');">
+                                                onclick="mydelete('${ctx}/system/card/delete?id=${(_data.id)!''}','${ctx}/system/card/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -137,7 +134,7 @@ function deleteCard(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/card/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/card/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -145,7 +142,7 @@ function deleteCard(){
 											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/card/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/card/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -154,7 +151,7 @@ function deleteCard(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/card/delete?id=${(_data.id)!''}','${ctx}/card/list');"
+                                                       href="javascript:mydelete('${ctx}/system/card/delete?id=${(_data.id)!''}','${ctx}/system/card/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -168,13 +165,13 @@ function deleteCard(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.images)!''}
+								<img src="${(_data.images)!''}" height="100px;" width="200px;"/>
 							</td>
 							<td >
-								${(_data.catergoryId)!0}
+								${(_data.categoryName)!''}
 							</td>
 							<td >
-								${(_data.userId)!0}
+								${(_data.userName)!''}
 							</td>
 							<td >
 								${(_data.title)!''}
@@ -190,12 +187,6 @@ function deleteCard(){
 							</td>
 							<td >
 								${(_data.address)!''}
-							</td>
-							<td >
-								${(_data.lat)!0}
-							</td>
-							<td >
-								${(_data.lot)!0}
 							</td>
 							<td >
 								${(_data.phone)!''}
@@ -221,9 +212,6 @@ function deleteCard(){
 							</td>
 							<td >
 								${(_data.num)!0}
-							</td>
-							<td >
-								${(_data.isDel)!0}
 							</td>
 						</tr>
 					</#list>

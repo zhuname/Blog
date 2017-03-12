@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,9 +17,15 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.LunboPic;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.User;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ILunboPicService;
+import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -41,6 +48,12 @@ import com.sun.tools.classfile.Annotation.element_value;
 public class LunboPicController  extends BaseController {
 	@Resource
 	private ILunboPicService lunboPicService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ICardService cardService;
 	
 	private String listurl="/lunbopic/lunbopicList";
 	
@@ -58,7 +71,7 @@ public class LunboPicController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,LunboPic lunboPic) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, lunboPic);
+		ReturnDatas returnObject = listadminjson(request, model, lunboPic);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -113,7 +126,7 @@ public class LunboPicController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/lunbopic/lunbopicLook";
+		return "/lunbopic/lunbopicLook";
 	}
 
 	
@@ -150,9 +163,12 @@ public class LunboPicController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			lunboPicService.saveorupdate(lunboPic);
+			if(null == lunboPic.getId()){
+				lunboPic.setCreateTime(new Date());
+				lunboPicService.saveorupdate(lunboPic);
+			}else{
+				lunboPicService.update(lunboPic,true);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -171,7 +187,7 @@ public class LunboPicController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/lunbopic/lunbopicCru";
+		return "/lunbopic/lunbopicCru";
 	}
 	
 	/**
@@ -227,6 +243,65 @@ public class LunboPicController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 后台轮播图列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param lunboPic
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listadmin/json")
+	public @ResponseBody
+	ReturnDatas listadminjson(HttpServletRequest request, Model model,LunboPic lunboPic) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
+		if(null != datas && datas.size() > 0){
+			for (LunboPic lp : datas) {
+				if(null != lp.getItemId()){
+					//1红包 2视频 3卡券 4广告位
+					if(null != lp.getPosition()){
+						if(1 == lp.getPosition()){
+							PosterPackage posterPackage = posterPackageService.findPosterPackageById(lp.getItemId());
+							if(null != posterPackage){
+								if(StringUtils.isNotBlank(posterPackage.getTitle())){
+									lp.setItemName(posterPackage.getTitle());
+								}
+							}
+						}
+						
+						if(2 == lp.getPosition()){
+							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(lp.getItemId());
+							if(null != mediaPackage){
+								if(StringUtils.isNotBlank(mediaPackage.getTitle())){
+									lp.setItemName(mediaPackage.getTitle());
+								}
+							}
+						}
+						
+						if(3 == lp.getPosition()){
+							Card card = cardService.findCardById(lp.getItemId());
+							if(null != card){
+								if(StringUtils.isNotBlank(card.getTitle())){
+									lp.setItemName(card.getTitle());
+								}
+							}
+						}
+						
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(lunboPic);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 }

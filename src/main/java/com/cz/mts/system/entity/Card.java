@@ -138,7 +138,27 @@ public class Card  extends BaseEntity {
 	
 	private java.lang.String location;
 	
+	private String categoryName;
+	private String userName;
 	
+	@Transient
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	//columns END 数据库字段结束
 	@WhereSQL(sql="location=:Card_location")
 	public java.lang.String getLocation() {

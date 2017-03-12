@@ -27,51 +27,182 @@ jQuery(document).ready(function(){
 	
 	
 //-->
+
+function lunboImages(){
+	jQuery("#filed").click();
+}
+	
+	
+	$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	jQuery("#lunboI").attr('src',data); 
+            	jQuery("#lunboI").attr('value',data); 
+            	jQuery("#lunboImg").attr('value',data); 
+            },
+            error : function(data, status, e) {
+            	myalert("上传出错");
+            }
+        })
+
+        return false;
+
+
+	});
+	
+	
+	initCity("localtion",null,"cityId");
+	
+	if($("#id").val() != "" || $("#id").val() != null){
+		$("#createDiv").hide();
+	}
+	
+	var type = $("#inputType").val();
+	$("#type").on('change',function(){
+		if(1 == $("#type").val()){
+			$("#itemIdDiv").hide();
+			$("#urlDiv").show();
+		}else{
+			$("#itemIdDiv").show();
+			$("#urlDiv").hide();
+		}
+	});
+	
+	//修改跳转类型下拉框默认选中
+	var type1 = $("#type1").val();
+	var type2 = $("#type2").val();
+	var type3 = $("#type3").val();
+	var type4 = $("#type4").val();
+	if(type1 == type){
+		$("#type1").attr("selected","selected");
+	}
+	if(type2 == type){
+		$("#type2").attr("selected","selected");
+	}
+	if(type3 == type){
+		$("#type3").attr("selected","selected");
+	}
+	if(type4 == type){
+		$("#type4").attr("selected","selected");
+	}
+	
+	//修改展示位置默认选中
+	var position = $("#inputPosition").val();
+	var position1 = $("#position1").val();
+	var position2 = $("#position2").val();
+	var position3 = $("#position3").val();
+	var position4 = $("#position4").val();
+	
+	$("#position").on('change',function(){
+		if(4 == $("#position").val()){
+			$("#itemIdDiv").hide();
+			$("#urlDiv").hide();
+		}else{
+			$("#itemIdDiv").show();
+			$("#urlDiv").hide();
+		}
+	});
+	if(position1 == position){
+		$("#position1").attr("selected","selected");
+	}
+	if(position2 == position){
+		$("#position2").attr("selected","selected");
+	}
+	if(position3 == position){
+		$("#position3").attr("selected","selected");
+	}
+	if(position4 == position){
+		$("#position4").attr("selected","selected");
+	}
+	
+	jQuery("#inputPosition").attr('value',$("#position").val()); 
+	console.log($("#position").val()+"---"+$("#inputPosition").val());
+	jQuery("#inputType").attr('value',$("#type").val()); 
+	console.log($("#type").val()+"---"+$("#inputType").val());
+	
+	jQuery("#cityId").attr('value',$("#city").val()); 
+	console.log($("#city").val());
+
 </SCRIPT>
 
 
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/lunbopic/update" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/lunbopic/update" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
 				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
-					</div><div class="help-block" for="image"></div>
+					<div class="site-demo-upload">
+							<img  name="lunboI" onclick="lunboImages();" id="lunboI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
+ 							<input type="file" id="filed" name="filed" style="display:none">
+ 							<input name="lunboImage" class="col-xs-12 col-sm-6" id="lunboImg" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+					</div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
+	        
+	         
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >1.url 2红包 3视频 4卡券</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityName" >城市名称 </label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="type" class="col-xs-12 col-sm-6" id="type" value="${(returnDatas.data.type)!''}"  type="text" />
+					
+					
+					  <div class="layui-form-item" id="localtion">
+					  </div>
+					
+					 <input name="cityId" class="col-xs-12 col-sm-6" id="cityId" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
+					
+					</div><div class="help-block" for="cityId"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+	        
+	        <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="position" >展示位置</label>
+				<input type="hidden" id="inputPosition" value="${(returnDatas.data.position)!''}"/>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<select id="position">
+							<option value="1" id="position1">红包</option>
+							<option value="2" id="position2">视频</option>
+							<option value="3" id="position3">卡券</option>
+							<option value="4" id="position4">广告位</option>
+						</select>
+					</div><div class="help-block" for="position"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+	        
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >跳转类型</label>
+				<input type="hidden" value="${(returnDatas.data.type)!''}" id="inputType"/>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<select id="type">
+							<option value="1" id="type1">url</option>
+							<option value="2" id="type2">红包</option>
+							<option value="3" id="type3">视频</option>
+							<option value="4" id="type4">卡券</option>
+						</select>
 					</div><div class="help-block" for="type"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >createTime</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="createTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="itemId" >对应的项目id，如type=1则会在商品列表内获取</label>
+			
+	        
+	        <div class="form-group" id="itemIdDiv">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="itemId" >链接目标</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<input name="itemId" class="col-xs-12 col-sm-6" id="itemId" value="${(returnDatas.data.itemId)!''}"  type="text" />
@@ -79,17 +210,9 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="position" >1红包 2视频 3卡券</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="position" class="col-xs-12 col-sm-6" id="position" value="${(returnDatas.data.position)!''}"  type="text" />
-					</div><div class="help-block" for="position"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="url" >url</label>
+	        
+			<div class="form-group" id="urlDiv">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="url" >链接url</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<input name="url" class="col-xs-12 col-sm-6" id="url" value="${(returnDatas.data.url)!''}"  type="text" />
@@ -97,18 +220,10 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityIds" >如果为空，则是全国，","区分</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}"  type="text" />
-					</div><div class="help-block" for="cityIds"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
+	       
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/lunbopic/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/lunbopic/list');">
 				保存
 			</button>
 		</div>
