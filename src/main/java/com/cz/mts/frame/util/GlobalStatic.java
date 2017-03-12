@@ -29,28 +29,6 @@ public class GlobalStatic {
 	public static final String pageurlName="pageurlName";
 	public static final String returnDatas="returnDatas";
 	
-//  -- 函数：尝试获得红包，如果成功，则返回json字符串，如果不成功，则返回空  
-//  -- 参数：红包队列名， 已消费的队列名，去重的Map名，用户ID  
-//  -- 返回值：nil 或者 json字符串，包含用户ID：userId，红包ID：id，红包金额：money
-	public static final String luaScript = 
-//			 "local bConsumed = redis.call('hexists', KEYS[3], KEYS[4]);\n"  
-//          + "print('bConsumed:' ,bConsumed);\n"  
-            "if redis.call('hexists', KEYS[3], KEYS[4]) ~= 0 then\n"  
-            + "return nil\n"  
-            + "else\n"  
-            + "local hongBao = redis.call('rpop', KEYS[1]);\n"  
-//          + "print('hongBao:', hongBao);\n"  
-            + "if hongBao then\n"  
-            + "local x = cjson.decode(hongBao);\n"  
-            + "x['userId'] = KEYS[4];\n"  
-            + "local re = cjson.encode(x);\n"  
-            + "redis.call('hset', KEYS[3], KEYS[4], KEYS[4]);\n"  
-            + "redis.call('lpush', KEYS[2], re);\n"  
-            + "return re;\n"  
-            + "end\n"  
-            + "end\n"  
-            + "return nil";  
-	
 
 	//认证
 	//public static final String reloginsession="shiro-reloginsession";
@@ -97,6 +75,45 @@ public class GlobalStatic {
 	}
 	
 	
+	/**
+	 * 红包内容
+	 * *************** begin*****************
+	 */
+	
+	//海报红包
+	public static final String posterPackage = "posterPackage" ;
+	//待抢小红包队列（剩余待抢的红包队列），后边append大红包的id
+	public static final String posterPackageL = "pPackageL_" ;
+	//已消费队列，后边append大红包的id
+	public static final String posterPackageConsumedList = "pPackageCL_" ;
+	//已抢到红包的用户map，后边append大红包的id
+	public static final String posterPackageConsumedMap = "pPackageCM_" ;
+	
+//  -- 函数：尝试获得红包，如果成功，则返回json字符串，如果不成功，则返回空  
+//  -- 参数：红包队列名， 已消费的队列名，去重的Map名，用户ID  
+//  -- 返回值：nil 或者 json字符串，包含用户ID：userId，红包ID：id，红包金额：money
+	public static final String luaScript = 
+//			 "local bConsumed = redis.call('hexists', KEYS[3], KEYS[4]);\n"  
+//          + "print('bConsumed:' ,bConsumed);\n"  
+            "if redis.call('hexists', KEYS[3], KEYS[4]) ~= 0 then\n"  
+            + "return nil\n"  
+            + "else\n"  
+            + "local hongBao = redis.call('rpop', KEYS[1]);\n"  
+//          + "print('hongBao:', hongBao);\n"  
+            + "if hongBao then\n"  
+            + "local x = cjson.decode(hongBao);\n"   //解析json字符串为对象
+            + "x['userId'] = KEYS[4];\n"  
+            + "local re = cjson.encode(x);\n"  //对象转为json字符串
+            + "redis.call('hset', KEYS[3], KEYS[4], KEYS[4]);\n"  
+            + "redis.call('lpush', KEYS[2], re);\n"  
+            + "return re;\n"  
+            + "end\n"  
+            + "end\n"  
+            + "return nil";  
+	
+	/**
+	 * ******************** end *********************
+	 */
 	
 
 }

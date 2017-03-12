@@ -48,13 +48,13 @@
 		class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO" />
 
 	<!-- 单机session -->
-	<!-- <bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" /> -->
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
 
 	<!-- session 集群 -->
 	
-	<bean id="shiroCacheManager" class="com.cz.mts.frame.shiro.ShiroRedisCacheManager"> 
+	<!-- <bean id="shiroCacheManager" class="com.cz.mts.frame.shiro.ShiroRedisCacheManager"> 
 		<property name="cached" ref="redisCached" /> 
-	</bean>
+	</bean> -->
 	
 
 	<!-- shiro的主过滤器,beanId 和web.xml中配置的filter name需要保持一致 -->

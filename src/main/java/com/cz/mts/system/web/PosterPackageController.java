@@ -344,10 +344,6 @@ public class PosterPackageController  extends BaseController {
 		
 	}
 	
-	@Autowired
-	private ICached cached ;
-	@Autowired
-	private ShiroRedisCacheManager cacheManager ;
 	
 	/**
 	 * 抢红包
@@ -360,7 +356,7 @@ public class PosterPackageController  extends BaseController {
 	 * @date 2017年2月28日
 	 */
 	@RequestMapping("/snatch/json")
-	@SecurityApi
+//	@SecurityApi
 	public @ResponseBody 
 	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
 		
@@ -368,9 +364,15 @@ public class PosterPackageController  extends BaseController {
 			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;
 		}else {
 			
-			ICached cached = cacheManager.getCached() ;
+//			ICached cached = cacheManager.getCached() ;
+//			try {
+//				AppUser user = (AppUser) cached.getCached(userId.getBytes()) ;
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			try {
-				AppUser user = (AppUser) cached.getCached(userId.getBytes()) ;
+				posterPackageService.snatch(userId, id) ;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
