@@ -1,8 +1,162 @@
 <#escape x as x?html>
 
-<script type="text/javascript" src="${ctx}/js/appuser/appuser.js"></script>
+<script type="text/javascript" src="${ctx}/js/system/appuser/appuser.js"></script>
 
 <script type="text/javascript">
+var medalMultiSelectSetting = {
+		expandAll:true,
+		check: {
+			enable: true,
+			chkStyle: "checkbox",
+			//chkboxType:  { "Y" : "", "N" : "" }
+			chkboxType: { "Y" : "ps", "N" : "ps" }
+		},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "id",
+				pIdKey : "pid",
+				rootPId : "null"
+			}
+		}
+	};
+	
+	
+/* jQuery(document).ready(function(){
+	$(".widget-main tbody tr").click(function() {
+		$(".sub_left_menu tbody tr.active").removeClass("active");
+		$(this).attr("class", "active");
+		var _url=ctx + "/system/appuser/lookmedal/json?id="+ $(this).attr("mainId");
+	
+		jQuery.ajax({
+			url : _url,
+			type : "post",
+			dataType : "json",
+			success : function(_json) {
+				if(_json.status=="success"){
+					showdata(_json);
+				}
+			}
+		});
+		return false;
+	})
+}); */
+
+function showdata(result) {
+	for (var s in result.data) {
+		set_val(s, result.data[s]);
+	}
+}	
+	
+
+
+
+
+var medalMultiSelectTree;
+function showZtreeMedal(userId){
+	/* if(!medalMultiSelectTree){ */
+		jQuery.post("${ctx}/system/medal/list/json",
+				function(_json) {
+					if (_json.status == "success") {
+						var zTree_Menu = $.fn.zTree.init($("#medalMultiSelectTree"), medalMultiSelectSetting,_json.data);
+						 medalMultiSelectTree =$.fn.zTree.getZTreeObj("medalMultiSelectTree");
+						//zTree.expandAll(true);
+						checkedZtreeNodes(jQuery("#medalIds").val(),"medalMultiSelectTree");
+						
+						
+						var _url=ctx + "/system/appuser/lookmedal/json?id="+ userId;
+						jQuery.ajax({
+							url : _url,
+							type : "post",
+							dataType : "json",
+							success : function(_json) {
+								if(_json.status=="success"){
+									
+									var datas = _json.data.medals;
+									var allNodes = zTree_Menu.getNodes();//获取所有节点
+							        var nodes = zTree_Menu.transformToArray(allNodes); //转变为数组
+							        
+							        //从数据库中获取选中
+							        $.each(nodes, function( index,node) {
+							        	console.log(datas);
+							        	for(var i=0;i<datas.length;i++){
+							                if (node.id == datas[i].id) {
+							                    node.checked = true;  //设为选中
+							                    zTree_Menu.updateNode(node);//更新状态
+							                }
+							        	}
+							        });
+							        
+							        
+							        
+								}
+							}
+						});
+						
+						
+						
+						
+					} else {
+						myalert(_json.message);
+						return false;
+					}
+				});
+		
+	/* }else{
+		checkedZtreeNodes(jQuery("#medalIds").val(),"medalMultiSelectTree");
+	} */
+	
+	//页面层-自定义
+	layer.open({
+	  shadeClose:true,
+	  type: 1,
+	  title: "选择勋章",
+	  skin: 'layui-layer-rim', //加上边框
+	  area: ['600px', '400px'], //宽高
+	  content: $("#div_medalMultiSelectTree"),
+	  closeBtn: 1,
+	  btn: ['确定'], //按钮
+	  yes:function(index, layero){
+		    selectZtreeMedal(userId);
+		    layer.close(index); //如果设定了yes回调，需进行手工关闭
+		  }
+	});
+	
+	
+	return false;
+}
+
+function selectZtreeMedal(userId){
+	var nodes = medalMultiSelectTree.getCheckedNodes(true);
+	var medalNames="";
+	var medalIds="";
+	jQuery(nodes).each(function(i,obj){
+		medalNames=medalNames+obj.name+",";
+		medalIds=medalIds+obj.id+",";
+	});
+	
+	
+	jQuery("#medalNames").val(medalNames);
+	jQuery("#medalIds").val(medalIds);
+	jQuery.post("${ctx}/system/appuser/award/json",{ medalIds: medalIds, userId: userId },
+			function(_json) {
+				if (_json.status == "success") {
+					myalert("勋章赋予成功");
+					myhref("${ctx}/system/appuser/list")
+					return false;
+				} else {
+					myalert("勋章赋予失败");
+					return false;
+				}
+	});
+	
+}
+
+
+
+
+
+
 
 function deleteAppUser(){
 	var id=jQuery("#id").val();
@@ -10,11 +164,16 @@ function deleteAppUser(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/appuser/delete?id="+id;
-		var listurl="${ctx}/appuser/list";
+		var _url="${ctx}/system/appuser/delete?id="+id;
+		var listurl="${ctx}/system/appuser/list";
 		mydelete(_url,listurl);
 	}
 }
+
+
+
+
+
 </script>
 
 
@@ -119,6 +278,7 @@ function deleteAppUser(){
            
 				   <#if (returnDatas.data??)&&(returnDatas.data?size>0)>
 					 <#list returnDatas.data as _data>
+					 
                             <!--start_no_export-->
                             <tr class="">
                                 <td class="center">
@@ -129,14 +289,26 @@ function deleteAppUser(){
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
+                                        <button class="btn btn-xs btn-info" title="编辑"
                                                 onclick="myhref('${ctx}/system/appuser/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
-                                        <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/appuser/delete?id=${(_data.id)!''}','${ctx}/appuser/list');">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                        <button class="btn btn-xs btn-danger" title="删除"
+                                                onclick="mydelete('${ctx}/system/appuser/delete?id=${(_data.id)!''}','${ctx}/system/appuser/list');">
+                                            <i class="ace-icon fa  fa-trash-o bigger-120"></i>
                                         </button>
+                                        
+                                        <!-- 赋予勋章 -->
+                                         <button class="btn btn-xs btn-pink" title="赋予勋章"
+                                                onclick="showZtreeMedal(${(_data.id)!''});">
+                                             <input name="medalNames" class="form-control val" id="medalNames" type="hidden"/>
+											 <input name="medalIds"  id="medalIds" type="hidden"  />
+											  <input type="hidden" name="mainid" id="mainid" value="${(_data.id)!''}"/>
+                                            <i class="ace-icon fa fa-certificate bigger-120"></i>
+                                        </button>
+                                        
+                                        
+                                        
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">
@@ -170,11 +342,19 @@ function deleteAppUser(){
 																		</span>
                                                     </a>
                                                 </li>
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
                                             </ul>
                                         </div>
                                     </div>
                                 </td>
                                 <!--end_no_export-->
+                                
 
 							<td >
 								${(_data.name)!''}
@@ -273,4 +453,10 @@ function deleteAppUser(){
     </div>
 </div>
 <!-- /.main-container -->
+
+<div id="div_medalMultiSelectTree" style="display: none;">
+	<ul id="medalMultiSelectTree" class="ztree"></ul>
+</div>
+
+
 </#escape>

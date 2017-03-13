@@ -78,9 +78,21 @@ public class ApplyMedal  extends BaseEntity {
 	 * 类型：1图片 2视频
 	 */
 	private java.lang.Integer type;
+	
+	private java.lang.String mediaFirstImg;
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
+	 @WhereSQL(sql="mediaFirstImg=:ApplyMedal_mediaFirstImg")
+	public java.lang.String getMediaFirstImg() {
+		return mediaFirstImg;
+	}
+
+	public void setMediaFirstImg(java.lang.String mediaFirstImg) {
+		this.mediaFirstImg = mediaFirstImg;
+	}
 
 	public ApplyMedal(){
 	}
@@ -200,6 +212,7 @@ public class ApplyMedal  extends BaseEntity {
 			.append("失败原因[").append(getReason()).append("],")
 			.append("多媒体地址（图片以分号分开）[").append(getMultiAddress()).append("],")
 			.append("类型：1图片 2视频[").append(getType()).append("],")
+			.append("视频第一帧图片").append(getMediaFirstImg()).append("],")
 			.toString();
 	}
 	

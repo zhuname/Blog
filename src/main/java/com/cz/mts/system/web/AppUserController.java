@@ -29,6 +29,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.Menu;
 import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
@@ -818,6 +819,74 @@ public class AppUserController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	/**
+	 * 赋予勋章
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param userMedal
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/award/json")
+	public @ResponseBody 
+	ReturnDatas awardMedalJson(HttpServletRequest request,Model model,UserMedal userMedal) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String str_medalIds=request.getParameter("medalIds");
+		String userId = request.getParameter("userId");
+		if(StringUtils.isBlank(str_medalIds)){
+			userMedal.setMedalId(null);
+		}else{
+			String[] medalIds = str_medalIds.split(",");
+			if(medalIds != null && medalIds.length > 0 ){
+				for(String s:medalIds){
+					if(StringUtils.isBlank(s)){
+						continue;
+					}else{
+						userMedal.setMedalId(Integer.parseInt(s));
+						if(StringUtils.isNotBlank(userId)){
+							userMedal.setUserId(Integer.parseInt(userId));
+							//判断该用户是否申请过该勋章
+							Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId AND medalId=:medalId");
+							finder.setParam("userId", Integer.parseInt(userId));
+							finder.setParam("medalId", Integer.parseInt(s));
+							List list = userMedalService.queryForList(finder);
+							if(list.isEmpty()){
+								userMedal.setCreateTime(new Date());
+								userMedalService.save(userMedal);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return returnObject;
+	}
+	
+	/**
+	 * 查询勋章赋予详情
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/lookmedal/json")
+	public @ResponseBody 
+	ReturnDatas lookmedalJson(HttpServletRequest request,Model model) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		if (StringUtils.isNotBlank(id)) {
+			AppUser appUser = appUserService.findUserAndMedal(id);
+			returnObject.setData(appUser);
+		}else{
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		
+		return returnObject;
+	}
 	
 
 }
