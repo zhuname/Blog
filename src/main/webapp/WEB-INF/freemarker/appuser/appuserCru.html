@@ -62,8 +62,13 @@ jQuery(document).ready(function(){
 	
 	
 	initCity("localtion",null,"cityId");
-	
+
+	$(document).on("change", "#city", function() {
+		var cityId=jQuery("#city").val();
+
+		jQuery("#cityId").val(cityId);
 		
+	});
 
 </SCRIPT>
 

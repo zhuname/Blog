@@ -304,4 +304,42 @@ public class LunboPicController  extends BaseController {
 		return returnObject;
 	}
 	
+	/**
+	 * 获取链接目标列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param lunboPic
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/position/list")
+	public @ResponseBody
+	ReturnDatas positionList(HttpServletRequest request, Model model,LunboPic lunboPic) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String position = request.getParameter("position");
+		if(StringUtils.isNotBlank(position)){
+			//1.海报    2.视频   3.卡券
+			if("1".equals(position)){
+				//查询海报
+				Finder finder = new Finder("SELECT * FROM t_poster_package WHERE isDel=0");
+				List<PosterPackage> posterPackages = posterPackageService.queryForList(finder,PosterPackage.class);
+				returnObject.setData(posterPackages);
+			}
+			if("2".equals(position)){
+				//查询视频
+				Finder finder = new Finder("SELECT * FROM t_media_package WHERE isDel=0");
+				List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder,MediaPackage.class);
+				returnObject.setData(mediaPackages);
+			}
+			if("3".equals(position)){
+				//查询卡券
+				Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0");
+				List<Card> cards = cardService.queryForList(finder,Card.class);
+				returnObject.setData(cards);
+			}
+		}
+		return returnObject;
+	}
+	
 }

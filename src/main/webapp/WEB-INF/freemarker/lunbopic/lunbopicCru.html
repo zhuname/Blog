@@ -21,7 +21,7 @@ jQuery(document).ready(function(){
 		});
 	*/
 	
-	if(1 == $("#type").val()){
+	if(1 == $("#inputType").val()){
 		$("#itemIdDiv").hide();
 		$("#urlDiv").show();
 	}else{
@@ -30,7 +30,7 @@ jQuery(document).ready(function(){
 	}
 	
 	
-	if(4 == $("#position").val()){
+	if(4 == $("#inputPosition").val()){
 		$("#itemIdDiv").hide();
 		$("#urlDiv").hide();
 	}else{
@@ -38,6 +38,7 @@ jQuery(document).ready(function(){
 		$("#urlDiv").hide();
 	}
 	
+	console.log($("#inputPosition").val());
 	
 	
 	});
@@ -63,8 +64,7 @@ function lunboImages(){
             	
             	jQuery("#lunboI").attr('src',data); 
             	jQuery("#lunboI").attr('value',data); 
-            	jQuery("#lunboImg").attr('value',data); 
-            	console.log(data);
+            	jQuery("#image").attr('value',data); 
             },
             error : function(data, status, e) {
             	myalert("上传出错");
@@ -77,11 +77,20 @@ function lunboImages(){
 	});
 	
 	
-	initCity("localtion",null,"cityId");
+	initCity("localtion",null,"cityIds");
+
+	$(document).on("change", "#city", function() {
+		var cityId=jQuery("#city").val();
+
+		jQuery("#cityIds").val(cityId);
+		
+	});
 	
-	var type = $("#inputType").val();
-	$("#type").on('change',function(){
-		if(1 == $("#type").val()){
+	
+	
+	var type = $("#type").val();
+	$("#inputType").on('change',function(){
+		if(1 == $("#inputType").val()){
 			$("#itemIdDiv").hide();
 			$("#urlDiv").show();
 		}else{
@@ -89,8 +98,7 @@ function lunboImages(){
 			$("#urlDiv").hide();
 		}
 		
-		jQuery("#inputType").attr('value',$("#type").val());
-		console.log($("#inputType").val());
+		jQuery("#type").attr('value',$("#inputType").val());
 	});
 	
 	//修改跳转类型下拉框默认选中
@@ -112,22 +120,40 @@ function lunboImages(){
 	}
 	
 	//修改展示位置默认选中
-	var position = $("#inputPosition").val();
+	var position = $("#position").val();
 	var position1 = $("#position1").val();
 	var position2 = $("#position2").val();
 	var position3 = $("#position3").val();
 	var position4 = $("#position4").val();
 	
-	$("#position").on('change',function(){
-		if(4 == $("#position").val()){
+	$("#inputPosition").on('change',function(){
+		if(4 == $("#inputPosition").val()){
 			$("#itemIdDiv").hide();
 			$("#urlDiv").hide();
 		}else{
 			$("#itemIdDiv").show();
 			$("#urlDiv").hide();
 		}
-		jQuery("#inputPosition").attr('value',$("#position").val());
-		console.log($("#inputPosition").val());
+		jQuery("#position").attr('value',$("#inputPosition").val());
+		
+		//加载链接目标
+		jQuery.ajax({
+			url : ctx+"/system/lunbopic/position/list?position="+$("#inputPosition").val(),
+			type : "post",
+			dataType : "json",
+			success : function(_json) {
+				if(_json.status=="error"){
+					return;
+				}
+				
+				jQuery(_json.data).each(function(i,_obj){
+					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+_obj.title+"</option>");
+				});
+				
+				jQuery("#itemId").select2();
+			}
+		});
+		
 	});
 	if(position1 == position){
 		$("#position1").attr("selected","selected");
@@ -142,16 +168,33 @@ function lunboImages(){
 		$("#position4").attr("selected","selected");
 	}
 	
+	//加载链接目标
+	jQuery.ajax({
+		url : ctx+"/system/lunbopic/position/list?position="+$("#inputPosition").val(),
+		type : "post",
+		dataType : "json",
+		success : function(_json) {
+			if(_json.status=="error"){
+				return;
+			}
+			
+			jQuery(_json.data).each(function(i,_obj){
+				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+_obj.title+"</option>");
+			});
+			
+			jQuery("#itemId").select2();
+		}
+	});
 	
-	//给选择框赋值
-	console.log($("#cityId").val());
+	
+	
 </SCRIPT>
 
 
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/lunbopic/update" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
 			<div class="form-group">
@@ -160,7 +203,7 @@ function lunboImages(){
 					<div class="site-demo-upload">
 							<img  name="lunboI" onclick="lunboImages();" id="lunboI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
  							<input type="file" id="filed" name="filed" style="display:none">
- 							<input name="lunboImage" class="col-xs-12 col-sm-6" id="lunboImg" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+ 							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					</div>
 				</div>
 			</div>
@@ -176,7 +219,7 @@ function lunboImages(){
 					  <div class="layui-form-item" id="localtion">
 					  </div>
 					
-					 <input name="cityId" class="col-xs-12 col-sm-6" id="cityId" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
+					 <input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
 					
 					</div><div class="help-block" for="cityId"></div>
 				</div>
@@ -185,10 +228,10 @@ function lunboImages(){
 	        
 	        <div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="position" >展示位置</label>
-				<input type="text" id="inputPosition" value="${(returnDatas.data.position)!''}" style="display: none;"/>
+				<input type="text" id="position" name="position" class="col-xs-12 col-sm-6" value="${(returnDatas.data.position)!''}" style="display: none;"/>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<select id="position">
+						<select id="inputPosition">
 							<option value="1" id="position1">红包</option>
 							<option value="2" id="position2">视频</option>
 							<option value="3" id="position3">卡券</option>
@@ -201,10 +244,10 @@ function lunboImages(){
 	        
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >跳转类型</label>
-				<input type="text" value="${(returnDatas.data.type)!''}" id="inputType" style="display: none;"/>
+				<input type="text" class="col-xs-12 col-sm-6" value="${(returnDatas.data.type)!''}" id="type" name="type" style="display: none;"/>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<select id="type">
+						<select id="inputType">
 							<option value="1" id="type1">url</option>
 							<option value="2" id="type2">红包</option>
 							<option value="3" id="type3">视频</option>
@@ -216,15 +259,15 @@ function lunboImages(){
 	        <div class="space-2"></div>
 			
 	        
-	        <div class="form-group" id="itemIdDiv">
+	       <!--  <div class="form-group" id="itemIdDiv">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="itemId" >链接目标</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<input name="itemId" class="col-xs-12 col-sm-6" id="itemId" value="${(returnDatas.data.itemId)!''}"  type="text" />
 					</div><div class="help-block" for="itemId"></div>
 				</div>
-			</div>
-	        <div class="space-2"></div>
+			</div> -->
+	        <div class="space-2"></div> 
 	        
 			<div class="form-group" id="urlDiv">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="url" >链接url</label>
@@ -234,6 +277,17 @@ function lunboImages(){
 					</div><div class="help-block" for="url"></div>
 				</div>
 			</div>
+			
+			
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right" for="itemId"> 链接目标</label>
+				<div class="col-sm-9">
+					<select  id="itemId" name="itemId"   class="form-control">
+					</select>
+				</div>
+			</div>
+			
+			
 	        <div class="space-2"></div>
 	       
 		</form>
