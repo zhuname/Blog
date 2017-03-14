@@ -141,7 +141,16 @@ public class Card  extends BaseEntity {
 	private String categoryName;
 	private String userName;
 	
-	
+	private List<RedCity> redCities;
+	@Transient
+	public List<RedCity> getRedCities() {
+		return redCities;
+	}
+
+	public void setRedCities(List<RedCity> redCities) {
+		this.redCities = redCities;
+	}
+
 	private java.lang.String osType;
 	
 	 @WhereSQL(sql="osType=:MediaPackage_osType")

@@ -28,16 +28,20 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
@@ -69,6 +73,10 @@ public class CardController  extends BaseController {
 	private IMedalService medalService;
 	@Resource
 	private ICategoryService categoryService;
+	@Resource
+	private IRedCityService redCityService;
+	@Resource
+	private ICityService cityService;
 	
 	
 	private String listurl="/card/cardList";
@@ -170,6 +178,34 @@ public class CardController  extends BaseController {
 					card.setUserMedals(userMedals);
 				}
 			 }
+			 
+			 //返回分类名称
+			 if(card != null && card.getCatergoryId() != null){
+				 Category category = categoryService.findCategoryById(card.getCatergoryId());
+				 if(category != null){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 card.setCategoryName(category.getName());
+					 }
+				 }
+			 }
+			 
+			 
+			 //返回城市名称
+			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=3");
+			 finder.setParam("id", Integer.parseInt(strId));
+			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+			 if(null != redCities && redCities.size() > 0){
+				 for (RedCity redCity : redCities) {
+					if(null != redCity.getCityId()){
+						City city = cityService.findCityById(redCity.getCityId());
+						if(StringUtils.isNotBlank(city.getName())){
+							redCity.setCityName(city.getName());
+						}
+					}
+				}
+				 card.setRedCities(redCities);
+			 }
+			 
 			 returnObject.setData(card);
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
