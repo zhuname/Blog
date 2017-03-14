@@ -591,6 +591,52 @@ public class CardController  extends BaseController {
 		return returnObject;
 	}
 	
+	/**
+	 * 审核通过
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/confirm")
+	public @ResponseBody
+	ReturnDatas checkConfirm(HttpServletRequest request,Model model,Card card) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		card = cardService.findCardById(Integer.parseInt(id));
+		if(null != card){
+			card.setStatus(2);
+			card.setSuccTime(new Date());
+			cardService.update(card,true);
+		}
+		return returnObject;
+	}
+	
+	/**
+	 * 审核拒绝
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param card
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/refuse")
+	public @ResponseBody
+	ReturnDatas checkRefuse(HttpServletRequest request,Model model,Card card) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		String refuseReason = request.getParameter("reason");
+		card = cardService.findCardById(Integer.parseInt(id));
+		if(null != card){
+			card.setStatus(3);
+			card.setFailTime(new Date());
+			card.setFailReason(refuseReason);
+			cardService.update(card,true);
+		}
+		return returnObject;
+	}
 	
 	
 
