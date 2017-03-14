@@ -40,7 +40,7 @@ public class ApplyMedalController  extends BaseController {
 	@Resource
 	private IApplyMedalService applyMedalService;
 	
-	private String listurl="/system/applymedal/applymedalList";
+	private String listurl="/applymedal/applymedalList";
 	
 	
 	   

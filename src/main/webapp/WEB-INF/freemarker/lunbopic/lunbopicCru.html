@@ -21,6 +21,23 @@ jQuery(document).ready(function(){
 		});
 	*/
 	
+	if(1 == $("#type").val()){
+		$("#itemIdDiv").hide();
+		$("#urlDiv").show();
+	}else{
+		$("#itemIdDiv").show();
+		$("#urlDiv").hide();
+	}
+	
+	
+	if(4 == $("#position").val()){
+		$("#itemIdDiv").hide();
+		$("#urlDiv").hide();
+	}else{
+		$("#itemIdDiv").show();
+		$("#urlDiv").hide();
+	}
+	
 	
 	
 	});
@@ -43,9 +60,11 @@ function lunboImages(){
             dataType : 'text',
             data : {},
             success : function(data, status) {
+            	
             	jQuery("#lunboI").attr('src',data); 
             	jQuery("#lunboI").attr('value',data); 
             	jQuery("#lunboImg").attr('value',data); 
+            	console.log(data);
             },
             error : function(data, status, e) {
             	myalert("上传出错");
@@ -60,10 +79,6 @@ function lunboImages(){
 	
 	initCity("localtion",null,"cityId");
 	
-	if($("#id").val() != "" || $("#id").val() != null){
-		$("#createDiv").hide();
-	}
-	
 	var type = $("#inputType").val();
 	$("#type").on('change',function(){
 		if(1 == $("#type").val()){
@@ -73,6 +88,9 @@ function lunboImages(){
 			$("#itemIdDiv").show();
 			$("#urlDiv").hide();
 		}
+		
+		jQuery("#inputType").attr('value',$("#type").val());
+		console.log($("#inputType").val());
 	});
 	
 	//修改跳转类型下拉框默认选中
@@ -108,6 +126,8 @@ function lunboImages(){
 			$("#itemIdDiv").show();
 			$("#urlDiv").hide();
 		}
+		jQuery("#inputPosition").attr('value',$("#position").val());
+		console.log($("#inputPosition").val());
 	});
 	if(position1 == position){
 		$("#position1").attr("selected","selected");
@@ -122,21 +142,16 @@ function lunboImages(){
 		$("#position4").attr("selected","selected");
 	}
 	
-	jQuery("#inputPosition").attr('value',$("#position").val()); 
-	console.log($("#position").val()+"---"+$("#inputPosition").val());
-	jQuery("#inputType").attr('value',$("#type").val()); 
-	console.log($("#type").val()+"---"+$("#inputType").val());
 	
-	jQuery("#cityId").attr('value',$("#city").val()); 
-	console.log($("#city").val());
-
+	//给选择框赋值
+	console.log($("#cityId").val());
 </SCRIPT>
 
 
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/lunbopic/update" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
 			<div class="form-group">
@@ -170,7 +185,7 @@ function lunboImages(){
 	        
 	        <div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="position" >展示位置</label>
-				<input type="hidden" id="inputPosition" value="${(returnDatas.data.position)!''}"/>
+				<input type="text" id="inputPosition" value="${(returnDatas.data.position)!''}" style="display: none;"/>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<select id="position">
@@ -186,7 +201,7 @@ function lunboImages(){
 	        
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >跳转类型</label>
-				<input type="hidden" value="${(returnDatas.data.type)!''}" id="inputType"/>
+				<input type="text" value="${(returnDatas.data.type)!''}" id="inputType" style="display: none;"/>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<select id="type">

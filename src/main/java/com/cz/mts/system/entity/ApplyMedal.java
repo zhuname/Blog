@@ -81,9 +81,20 @@ public class ApplyMedal  extends BaseEntity {
 	
 	private java.lang.String mediaFirstImg;
 	
+	private java.lang.String introduction;
+	
+	
 	
 	//columns END 数据库字段结束
-	
+	 @WhereSQL(sql="introduction=:ApplyMedal_introduction")
+	public java.lang.String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(java.lang.String introduction) {
+		this.introduction = introduction;
+	}
+
 	//concstructor
 	 @WhereSQL(sql="mediaFirstImg=:ApplyMedal_mediaFirstImg")
 	public java.lang.String getMediaFirstImg() {
