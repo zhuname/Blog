@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.Resource;
@@ -146,8 +147,27 @@ public class PosterPackageController  extends BaseController {
 				finder1.setParam("categoryId", posterPackage.getCategoryId());
 				
 			}
-
-			returnObject.setData(posterPackageService.queryForList(finder1,page));
+			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
+			if(null != list && list.size() > 0){
+				for (Map<String, Object> map : list) {
+					 //返回城市名称
+					 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=1");
+					 finder.setParam("id", Integer.parseInt(map.get("id").toString()));
+					 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+					 if(null != redCities && redCities.size() > 0){
+						 for (RedCity redCity : redCities) {
+							if(null != redCity.getCityId()){
+								City city = cityService.findCityById(redCity.getCityId());
+								if(StringUtils.isNotBlank(city.getName())){
+									redCity.setCityName(city.getName());
+								}
+							}
+						}
+						 map.put("redCities", redCities);
+					 }
+				}
+			}
+			returnObject.setData(list);
 		}
 		
 		returnObject.setQueryBean(posterPackage);
