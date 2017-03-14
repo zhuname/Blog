@@ -105,6 +105,19 @@ public class Withdraw  extends BaseEntity {
 	private java.lang.Integer withdrawType;
 	
 	private String bankName;
+	
+	private java.lang.String osType;
+	
+	@WhereSQL(sql="osType=:MediaPackage_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -291,6 +304,7 @@ public class Withdraw  extends BaseEntity {
 			.append("户主手机号[").append(getOwnerPhone()).append("],")
 			.append("卡号/支付宝账号[").append(getCardNum()).append("],")
 			.append("1银行 2支付宝[").append(getWithdrawType()).append("],")
+			.append("操作系统").append(getOsType()).append("],")
 			.toString();
 	}
 	

@@ -194,7 +194,16 @@ public class PosterPackage  extends BaseEntity {
 	
 	private String payName;
 	
+	private java.lang.String osType;
 	
+	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
 	
 	@Transient
 	public String getPayName() {
@@ -603,6 +612,7 @@ public class PosterPackage  extends BaseEntity {
 			.append("微信交易流水号[").append(getWxCode()).append("],")
 			.append("交易流水号[").append(getTradeNo()).append("],")
 			.append("是否删除: 0否 1是[").append(getIsDel()).append("],")
+			.append("操作系统").append(getOsType()).append("],")
 			.toString();
 	}
 	

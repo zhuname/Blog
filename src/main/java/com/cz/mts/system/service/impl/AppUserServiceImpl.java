@@ -425,7 +425,6 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 	
 	
 	@Override
-	@Cacheable(value = GlobalStatic.qxCacheKey, key = "'findUserAndMedal_'+#userId")
 	public AppUser findUserAndMedal(String userId) throws Exception {
 		if (StringUtils.isBlank(userId)) {
 			return null;
@@ -442,7 +441,6 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 	
 	
 	@Override
-	@Cacheable(value = GlobalStatic.qxCacheKey, key = "'findMedalByUserId_'+#userId")
 	public List<Medal> findMedalByUserId(String userId) throws Exception{
 		if(StringUtils.isBlank(userId)){
 			return null;

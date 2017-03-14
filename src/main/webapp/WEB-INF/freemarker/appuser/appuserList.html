@@ -22,25 +22,6 @@ var medalMultiSelectSetting = {
 	};
 	
 	
-/* jQuery(document).ready(function(){
-	$(".widget-main tbody tr").click(function() {
-		$(".sub_left_menu tbody tr.active").removeClass("active");
-		$(this).attr("class", "active");
-		var _url=ctx + "/system/appuser/lookmedal/json?id="+ $(this).attr("mainId");
-	
-		jQuery.ajax({
-			url : _url,
-			type : "post",
-			dataType : "json",
-			success : function(_json) {
-				if(_json.status=="success"){
-					showdata(_json);
-				}
-			}
-		});
-		return false;
-	})
-}); */
 
 function showdata(result) {
 	for (var s in result.data) {

@@ -55,6 +55,18 @@ public class Feedback  extends BaseEntity {
 	private java.util.Date createTime;
 	
 	private String userName;
+	
+	private java.lang.String osType;
+	
+	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
+	
 	//columns END 数据库字段结束
 	
 	
@@ -131,6 +143,7 @@ public class Feedback  extends BaseEntity {
 			.append("反馈内容[").append(getContent()).append("],")
 			.append("用户id[").append(getUserId()).append("],")
 			.append("创建时间[").append(getCreateTime()).append("],")
+			.append("操作系统").append(getOsType()).append("],")
 			.toString();
 	}
 	

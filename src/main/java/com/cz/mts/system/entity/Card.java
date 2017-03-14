@@ -141,6 +141,18 @@ public class Card  extends BaseEntity {
 	private String categoryName;
 	private String userName;
 	
+	
+	private java.lang.String osType;
+	
+	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
+	
 	@Transient
 	public String getCategoryName() {
 		return categoryName;
@@ -450,6 +462,7 @@ public class Card  extends BaseEntity {
 			.append("是否删除： 0否 1是[").append(getIsDel()).append("],")
 			.append("状态：[").append(getStatus()).append("],")
 			.append("定位地址：[").append(getLocation()).append("],")
+			.append("操作系统").append(getOsType()).append("],")
 			.toString();
 	}
 	
