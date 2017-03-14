@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
 	$(".sub_left_menu tbody tr").click(function() {
 			$(".sub_left_menu tbody tr").removeClass("active");
 			$(this).attr("class", "active");
-			var _url=ctx + "/category/look/json?id="+ $(this).attr("id");
+			var _url=ctx + "/system/category/lookadmin/json?id="+ $(this).attr("id");
 		
 			jQuery.ajax({
 				url : _url,
@@ -43,45 +43,111 @@ function showdata(result) {
 }
 
 
+	var url=window.location.href;
+	var types = url.split("");
+	var type = types[types.length-1];
 
 
-
-
-var listurl="${ctx}/category/list";
+var listurl="${ctx}/system/category/list";
 function deleteCategory(){
 	var id=jQuery("#id").val();
+	
+	
+	
 	if(!id||id==""){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/category/delete?id="+id;
+		var _url="${ctx}/system/category/delete?id="+id;
 		mydelete(_url,listurl);
 	}
 }
 
-function updateCategory(){
+function updateCategory(type){
     var id=jQuery("#id").val();
+    
+    if(type=="t"){
+    	 $("#type").val(1);
+    }
+    
+     if(type==1){
+    	 $("#type").val(2);
+    }
+     if(type==2){
+    	 $("#type").val(3);
+    }
+   
 	if(!id||id==""){
 		myalert("请选择你要更新的记录");
 		return;
 	}else{
-		var _url="${ctx}/category/update?id="+id;
-		commonUpdateForm("updateForm",_url,listurl);
+		var _url="${ctx}/system/category/update?id="+id;
+		commonUpdateForm("updateForm",listurl);
 	}
 
 }
 
 function saveCategory(){
+	 if(type=="t"){
+    	 $("#type").val(1);
+    }
+    
+     if(type==1){
+    	 $("#type").val(2);
+    }
+     if(type==2){
+    	 $("#type").val(3);
+    }
 	commonUpdateForm("updateForm",listurl);
 }
 
+
+
+function headOnc(){
+		jQuery("#filed").click();
+	}
+	
+	
+	$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	console.log(data);
+            	jQuery("#imageI").attr('src',data);
+            	jQuery("#imageI").attr('value',data);
+            	jQuery("#image").attr('value',data);
+            },
+            error : function(data, status, e) {
+           		console.log(data);
+                alert('上传出错');
+            }
+        })
+
+        return false;
+
+
+	});
+
+	$(document).on("change", "#image", function() {
+    //...
+		jQuery("#imageI").attr('src',jQuery("#image").val()); 
+        jQuery("#imageI").attr('value',jQuery("#image").val()); 
+
+	});
+	
 </script>
 
 <div class="operate panel panel-default" style="height: 65px;">
 	<div class="panel-body">
 	
 		<div class="pull-left">
-			<form class="form-horizontal" method="post"  action="${ctx}/category/list" name="searchForm" id="searchForm" onkeydown="if(event.keyCode==13)return false;">
+			<form class="form-horizontal" method="post"  action="${ctx}/system/category/list" name="searchForm" id="searchForm" onkeydown="if(event.keyCode==13)return false;">
 				 <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
 				 <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
 				 <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -92,19 +158,16 @@ function saveCategory(){
 				 <select id="search_state" name="state">
 					<option value="是">是</option>
 					<option value="否">否</option>
-				</select> 
+				</select>
 				<a href="javascript:mySubmitForm('searchForm');" class="btn btn-purple btn-sm"> 
 				    查询 
-					<iclass="ace-icon fa fa-search icon-on-right bigger-10"></i>
+					<i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
-
 			</form>
 		</div>
 
-
-
 		<div class="pull-right">
-			 <@shiro.hasPermission name="/category/update" >
+			 <@shiro.hasPermission name="/system/category/update" >
 				<a id="btn_reload" href="javascript:location.reload();" class="btn  btn-sm  btn-primary " style="display: none;"> 
 					跳转至新增>>
 				</a>
@@ -117,7 +180,7 @@ function saveCategory(){
 				 <a id="btn_update" href="javascript:updateCategory();" class="btn  btn-sm  btn-primary " style="display: none;">
 				    <img src="${ctx}/images/btn_save.png" style="vertical-align: middle;" />
 				  	保存修改
-				 </a> 
+				 </a>
 			 </@shiro.hasPermission> 
 			
 			 <@shiro.hasPermission name="/category/delete" > 
@@ -157,9 +220,7 @@ function saveCategory(){
 										 <!--first_start_no_export-->
 										 <!--first_end_no_export-->
 												<th id="th_name" >分类名称</th>
-												<th id="th_type" >类型：1海报红包 2视频红包 3卡券</th>
 												<th id="th_image" >分类图片</th>
-												<th id="th_isDel" >0否1是</th>
 
 										</tr>
 									</thead>
@@ -182,15 +243,8 @@ function saveCategory(){
 													${(_data.name)!''}
 											</td>
 											<td >
-													${(_data.type)!0}
-											</td>
-											<td >
 													${(_data.image)!''}
 											</td>
-											<td >
-													${(_data.isDel)!0}
-											</td>
-											
 										</tr>
 										
 									</#list>
@@ -209,7 +263,7 @@ function saveCategory(){
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">
-								<form class="form-horizontal clearfix" method="post" action="${ctx}/category/update"  name="updateForm" id="updateForm">
+								<form class="form-horizontal clearfix" method="post" action="${ctx}/system/category/update"  name="updateForm" id="updateForm">
 								
 										<input type="hidden" id="id" name="id" value=""/>	
 									
@@ -224,23 +278,18 @@ function saveCategory(){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="type" >类型：1海报红包 2视频红包 3卡券</label>
-												 <div class="col-sm-9">
-													<input name="type"  id="type" value="" placeholder="类型：1海报红包 2视频红包 3卡券" class="form-control"  type="text" />
-												 </div> 
-										</div>
-										
-										<div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="image" >分类图片</label>
-												 <div class="col-sm-9">
-													<input name="image"  id="image" value="" placeholder="分类图片" class="form-control"  type="text" />
-												 </div> 
+					  								<img  name="imageI" onclick="headOnc();" style="width:100px;height: 100px;" id="imageI" src="">
+					   								 <input type="file" id="filed" name="filed" style="display:none">
+					   								 <input name="image" class="form-control" id="image" style="display:none"  type="text" />
 										</div>
 										
 										<div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="isDel" >0否1是</label>
 												 <div class="col-sm-9">
 													<input name="isDel"  id="isDel" value="" placeholder="0否1是" class="form-control"  type="text" />
+													
+													<input name="type"  id="type" value="" class="form-control"  type="text" style="display: none;"/>
 												 </div> 
 										</div>
 																		

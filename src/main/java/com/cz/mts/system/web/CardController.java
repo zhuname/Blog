@@ -27,6 +27,7 @@ import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserCard;
@@ -35,6 +36,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
@@ -72,7 +74,8 @@ public class CardController  extends BaseController {
 	private IUserMedalService userMedalService;
 	@Resource
 	private IMedalService medalService;
-	
+	@Resource
+	private IRedCityService redCityService;
 	
 	private String listurl="/system/card/cardList";
 	
@@ -282,7 +285,7 @@ public class CardController  extends BaseController {
 	@RequestMapping("/update/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas saveorupdatejson(Model model,Card card,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdatejson(Model model,Card card,HttpServletRequest request,HttpServletResponse response,String cityIds) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
@@ -308,9 +311,24 @@ public class CardController  extends BaseController {
 					
 				}
 				
+				
+				card.setIsDel(0);
 				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
 				Object id=cardService.saveorupdate(card);
+				if(cityIds!=null){
+					
+					String[] cityId=cityIds.split(",");
+					
+					for (String string : cityId) {
+						RedCity redCity=new RedCity();
+						redCity.setCityId(Integer.parseInt(string));
+						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setType(1);
+						redCityService.save(redCity);
+					}
+					
+				}
 				returnObject.setData(cardService.findCardById(id));
 			}else{
 				if(card.getCatergoryId()!=null){

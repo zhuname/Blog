@@ -39,7 +39,7 @@ public class CategoryController  extends BaseController {
 	@Resource
 	private ICategoryService categoryService;
 	
-	private String listurl="/category/categoryList";
+	private String listurl="/categoryList";
 	
 	
 	   
@@ -188,22 +188,38 @@ public class CategoryController  extends BaseController {
 		
 	}
 	
+	/**
+	 * 查看的Json格式数据,为APP端提供数据
+	 */
+	@RequestMapping(value = "/lookadmin/json")
+	public @ResponseBody
+	ReturnDatas lookadminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+		  Category category = categoryService.findCategoryById(id);
+		   returnObject.setData(category);
+		}else{
+		returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		return returnObject;
+		
+	}
+	
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
 	@RequestMapping("/update")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Category category,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
 			categoryService.saveorupdate(category);
-			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -211,17 +227,17 @@ public class CategoryController  extends BaseController {
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
 		return returnObject;
-	
 	}
+	
 	
 	/**
 	 * 进入修改页面,APP端可以调用 lookjson 获取json格式数据
 	 */
 	@RequestMapping(value = "/update/pre")
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
-		ReturnDatas returnObject = lookjson(model, request, response);
+		ReturnDatas returnObject = lookadminjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/category/categoryCru";
+		return "/category/categoryCru";
 	}
 	
 	/**

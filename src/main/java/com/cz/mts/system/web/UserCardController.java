@@ -98,7 +98,7 @@ public class UserCardController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		
-		Finder finder=Finder.getSelectFinder(UserCard.class).append("where 1=1 ");
+		Finder finder=Finder.getSelectFinder(UserCard.class).append("where status!=0 ");
 		page.setOrder("status,expTime");
 		page.setSort("asc");
 		// ==执行分页查询
