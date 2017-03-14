@@ -2,6 +2,7 @@ package com.cz.mts.system.entity;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -48,7 +49,26 @@ public class RedCity  extends BaseEntity {
 	
 	private Integer type;
 	
+	private java.lang.String cityName;
+	
+	
+	
 	//concstructor
+
+	@Transient
+	public java.lang.String getCityName() {
+		return cityName;
+	}
+
+
+
+
+	public void setCityName(java.lang.String cityName) {
+		this.cityName = cityName;
+	}
+
+
+
 
 	public RedCity(){
 	}

@@ -29,6 +29,7 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
@@ -36,6 +37,7 @@ import com.cz.mts.system.entity.Snatch;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
@@ -53,6 +55,8 @@ import com.cz.mts.system.service.IRedCityService;
 public class PosterPackageController  extends BaseController {
 	@Resource
 	private IPosterPackageService posterPackageService;
+	@Resource
+	private ICityService cityService;
 	
 	private String listurl="/posterpackage/posterpackageList";
 	
@@ -115,11 +119,11 @@ public class PosterPackageController  extends BaseController {
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
 		if(StringUtils.isNotBlank(posterPackage.getTitle())){
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum,p.status  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
 			finder1.setParam("title", posterPackage.getTitle());
 			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		} else {
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum,p.status  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
 			if(posterPackage.getUserId()!=null){
 				
 				finder1.append(" and p.userId = :userId");
@@ -189,10 +193,12 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
-			 if(posterPackage.getLookNum()==null){
-				 posterPackage.setLookNum(1);
-			 }else{
-				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
+			 if(StringUtils.isNotBlank(appUserId)){
+				 if(posterPackage.getLookNum()==null){
+					 posterPackage.setLookNum(1);
+				 }else{
+					 posterPackage.setLookNum(posterPackage.getLookNum()+1);
+				 }
 			 }
 			 
 			 posterPackageService.update(posterPackage);
@@ -238,6 +244,32 @@ public class PosterPackageController  extends BaseController {
 					}
 			 }
 			 
+			 //返回分类名称
+			 if(posterPackage != null && posterPackage.getCategoryId() != null){
+				 Category category = categoryService.findCategoryById(posterPackage.getCategoryId());
+				 if(category != null){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 posterPackage.setCategoryName(category.getName());
+					 }
+				 }
+			 }
+			 
+			 
+			 //返回城市名称
+			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=1");
+			 finder.setParam("id", Integer.parseInt(strId));
+			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+			 if(null != redCities && redCities.size() > 0){
+				 for (RedCity redCity : redCities) {
+					if(null != redCity.getCityId()){
+						City city = cityService.findCityById(redCity.getCityId());
+						if(StringUtils.isNotBlank(city.getName())){
+							redCity.setCityName(city.getName());
+						}
+					}
+				}
+				 posterPackage.setRedCities(redCities);
+			 }
 			 
 			 returnObject.setData(posterPackage);
 		}else{

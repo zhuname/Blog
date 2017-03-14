@@ -214,6 +214,17 @@ public class MediaPackage  extends BaseEntity {
 	
 	private java.lang.String osType;
 	
+	private List<RedCity> redCities;
+	
+	@Transient
+	 public List<RedCity> getRedCities() {
+		return redCities;
+	}
+
+	public void setRedCities(List<RedCity> redCities) {
+		this.redCities = redCities;
+	}
+	
 	 @WhereSQL(sql="osType=:MediaPackage_osType")
 	public java.lang.String getOsType() {
 		return osType;

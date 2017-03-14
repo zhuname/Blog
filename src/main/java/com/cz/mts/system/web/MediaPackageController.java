@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
@@ -31,6 +33,7 @@ import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
@@ -67,6 +70,8 @@ public class MediaPackageController  extends BaseController {
 	private IRedCityService redCityService;
 	@Resource
 	private ICategoryService categoryService;
+	@Resource
+	private ICityService cityService;
 	
 	
 	private String listurl="/mediapackage/mediapackageList";
@@ -194,11 +199,40 @@ public class MediaPackageController  extends BaseController {
 						mediaPackage.setIsLook(0);
 					}
 			 }
-			 if(null == mediaPackage.getScanNum()){
-				 mediaPackage.setScanNum(0);
+			 if(StringUtils.isNotBlank(appUserId)){
+				 if(null == mediaPackage.getScanNum()){
+					 mediaPackage.setScanNum(0);
+				 }
+				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
+				 mediaPackageService.update(mediaPackage);
 			 }
-			 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
-			 mediaPackageService.update(mediaPackage);
+			 
+			 //返回分类名称
+			 if(mediaPackage != null && mediaPackage.getCategoryId() != null){
+				 Category category = categoryService.findCategoryById(mediaPackage.getCategoryId());
+				 if(category != null){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 mediaPackage.setCategoryName(category.getName());
+					 }
+				 }
+			 }
+			 
+			//返回城市名称
+			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=2");
+			 finder.setParam("id", Integer.parseInt(strId));
+			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+			 if(null != redCities && redCities.size() > 0){
+				 for (RedCity redCity : redCities) {
+					if(null != redCity.getCityId()){
+						City city = cityService.findCityById(redCity.getCityId());
+						if(StringUtils.isNotBlank(city.getName())){
+							redCity.setCityName(city.getName());
+						}
+					}
+				}
+				 mediaPackage.setRedCities(redCities);
+			 }
+			 
 		   returnObject.setData(mediaPackage);
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);

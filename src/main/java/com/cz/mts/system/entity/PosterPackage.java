@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -196,7 +197,18 @@ public class PosterPackage  extends BaseEntity {
 	
 	private java.lang.String osType;
 	
-	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	private List<RedCity> redCities;
+	
+	@Transient
+	 public List<RedCity> getRedCities() {
+		return redCities;
+	}
+
+	public void setRedCities(List<RedCity> redCities) {
+		this.redCities = redCities;
+	}
+
+	@WhereSQL(sql="osType=:MediaPackage_osType")
 	public java.lang.String getOsType() {
 		return osType;
 	}

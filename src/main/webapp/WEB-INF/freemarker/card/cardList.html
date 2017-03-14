@@ -15,6 +15,28 @@ function deleteCard(){
 		mydelete(_url,listurl);
 	}
 }
+
+
+function checkRefuse(id){
+	var reason = prompt("请填写拒绝原因:","");
+	if(reason == null || reason == ""){
+		myalert("请输入拒绝原因");
+		return;
+	}
+	jQuery.post("${ctx}/system/card/check/refuse",{ id: id, reason: reason },
+			function(_json) {
+				if (_json.status == "success") {
+					myalert("审核成功");
+					myhref("${ctx}/system/card/list")
+					return false;
+				} else {
+					myalert("审核失败");
+					return false;
+				}
+	});
+	
+}
+
 </script>
 
 
@@ -87,13 +109,12 @@ function deleteCard(){
 						<th id="th_catergoryId" >分类名称</th>
 						<th id="th_userId" >用户名称</th>
 						<th id="th_title" >标题</th>
-						<th id="th_descr" >简介</th>
+						<th id="th_descr" >状态</th>
 						<th id="th_convertMoney" >兑换金额</th>
 						<th id="th_convertNum" >兑换数量</th>
 						<th id="th_address" >领取地址</th>
 						<th id="th_phone" >联系电话</th>
 						<th id="th_endTime" >到期时间</th>
-						<th id="th_createTime" >创建时间</th>
 						<th id="th_failTime" >失败时间</th>
 						<th id="th_succTime" >通过时间</th>
 						<th id="th_failReason" >失败原因</th>
@@ -117,14 +138,27 @@ function deleteCard(){
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
+                                        <button class="btn btn-xs btn-info" title="编辑"
                                                 onclick="myhref('${ctx}/system/card/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
-                                        <button class="btn btn-xs btn-danger"
+                                        <button class="btn btn-xs btn-danger" title="删除"
                                                 onclick="mydelete('${ctx}/system/card/delete?id=${(_data.id)!''}','${ctx}/system/card/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
+                                        
+                                         <#if (_data.status) == 1>
+                                            <button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="mydelete('${ctx}/system/card/check/confirm?id=${(_data.id)!''}','${ctx}/system/card/list');">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
+                                        
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">
@@ -158,6 +192,8 @@ function deleteCard(){
 																		</span>
                                                     </a>
                                                 </li>
+                                                
+                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -177,7 +213,18 @@ function deleteCard(){
 								${(_data.title)!''}
 							</td>
 							<td >
-								${(_data.descr)!''}
+								<#if (_data.status) == 1>
+									申请中
+								</#if>
+								<#if (_data.status) == 2>
+									审核成功
+								</#if>
+								<#if (_data.status) == 3>
+									审核失败
+								</#if>
+								<#if (_data.status) == 4>
+									已过期
+								</#if>
 							</td>
 							<td >
 								${(_data.convertMoney)!0}
@@ -194,10 +241,6 @@ function deleteCard(){
 							<td >
 								<!--日期型-->
 							${((_data.endTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
 								<!--日期型-->
