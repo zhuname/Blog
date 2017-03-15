@@ -391,6 +391,7 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setScanNum(0);
 				mediaPackage.setCreateTime(new Date());
 				mediaPackage.setNum(mediaPackage.getLqNum());
+				mediaPackage.setIsDel(0);
 				Object id=mediaPackageService.saveorupdate(mediaPackage);
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				

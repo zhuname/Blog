@@ -7,7 +7,7 @@ jQuery(document).ready(function(){
 	//回选 下拉框
 	//jQuery("#search_state option[value='是']").prop("selected",true);
 	
-	/*
+	
 	$('.date-picker').datepicker({
 		    autoclose: true,
 		    format: 'yyyy-mm-dd',
@@ -19,26 +19,6 @@ jQuery(document).ready(function(){
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-	*/
-	
-	
-	//加载分类
-	/* jQuery.ajax({
-		url : ctx+"/system/category/category/json?type=1&isDel=0",
-		type : "post",
-		dataType : "json",
-		success : function(_json) {
-			if(_json.status=="error"){
-				return;
-			}
-			
-			jQuery(_json.data).each(function(i,_obj){
-				jQuery("#categoryId").append("<option value='"+_obj.id+"'>"+_obj.name+"</option>");
-			});
-			
-			jQuery("#categoryId").select2();
-		}
-	}); */
 	
 	
 	
