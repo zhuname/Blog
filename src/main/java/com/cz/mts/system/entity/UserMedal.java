@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -57,8 +58,20 @@ public class UserMedal  extends BaseEntity {
 	
 	private Medal medal;
 	
+	private List<Medal> medals;
 	
 	
+	
+	
+	@Transient
+	public List<Medal> getMedals() {
+		return medals;
+	}
+
+	public void setMedals(List<Medal> medals) {
+		this.medals = medals;
+	}
+
 	//concstructor
 	@Transient
 	public Medal getMedal() {

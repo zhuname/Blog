@@ -212,8 +212,28 @@ public class MediaPackage  extends BaseEntity {
 	private String categoryName;
 	private String payName;
 	
+	private java.lang.String osType;
 	
+	private List<RedCity> redCities;
 	
+	@Transient
+	 public List<RedCity> getRedCities() {
+		return redCities;
+	}
+
+	public void setRedCities(List<RedCity> redCities) {
+		this.redCities = redCities;
+	}
+	
+	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
+
 	@Transient
 	public String getCategoryName() {
 		return categoryName;
@@ -699,6 +719,7 @@ public class MediaPackage  extends BaseEntity {
 			.append("视频图片[").append(getMediaImage()).append("],")
 			.append("浏览次数[").append(getScanNum()).append("],")
 			.append("是否删除: 0否 1是[").append(getIsDel()).append("],")
+			.append("操作系统").append(getOsType()).append("],")
 			.toString();
 	}
 	

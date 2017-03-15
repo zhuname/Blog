@@ -1,8 +1,11 @@
 package com.cz.mts.system.service;
 
+import java.util.List;
+
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.service.IBaseSpringrainService;
 /**
  * TODO 在此加入类描述
@@ -54,5 +57,23 @@ public interface IAppUserService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	ReturnDatas getStatics(AppUser appUser,Page page) throws Exception;
+	
+	
+	/**
+	 * 查询该用户拥有的勋章列表
+	 * @author wj
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	List<Medal> findMedalByUserId(String userId) throws Exception;
+	
+	/**
+	 * 返回用户的信息
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	AppUser findUserAndMedal(String userId) throws Exception;
 	
 }

@@ -26,6 +26,7 @@ var menuMultiSelectSetting = {
 
 
 jQuery(document).ready(function(){
+	console.log(111);
 	$(".widget-main tbody tr").click(function() {
 		$(".sub_left_menu tbody tr.active").removeClass("active");
 		$(this).attr("class", "active");
@@ -58,6 +59,7 @@ function showdata(result) {
     $("#btn_reload").show();
 	for (var s in result.data) {
 		set_val(s, result.data[s]);
+		console.log(result.data[s]);
 	}
 	
 	var menuNames="";

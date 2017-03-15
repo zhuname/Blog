@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -74,7 +75,28 @@ public class LunboPic  extends BaseEntity {
 	private java.lang.String cityIds;
 	//columns END 数据库字段结束
 	
+	private String cityName;
+	
+	private String itemName;
+	
+	@Transient
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
 	//concstructor
+	@Transient
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
 
 	public LunboPic(){
 	}

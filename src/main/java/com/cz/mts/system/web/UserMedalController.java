@@ -38,7 +38,7 @@ public class UserMedalController  extends BaseController {
 	@Resource
 	private IUserMedalService userMedalService;
 	
-	private String listurl="/system/usermedal/usermedalList";
+	private String listurl="/usermedal/usermedalList";
 	
 	
 	   
@@ -100,7 +100,7 @@ public class UserMedalController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/usermedal/usermedalLook";
+		return "/usermedal/usermedalLook";
 	}
 
 	

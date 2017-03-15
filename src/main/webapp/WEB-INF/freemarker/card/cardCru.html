@@ -24,24 +24,52 @@ jQuery(document).ready(function(){
 	
 	
 	});
-	
-	
 //-->
+
+
+$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	console.log(data);
+            	jQuery("#imagesI").attr('src',data); 
+            	jQuery("#imagesI").attr('value',data); 
+            	jQuery("#images").attr('value',data); 
+            },
+            error : function(data, status, e) {
+           		console.log(data);
+                alert('上传出错');
+            }
+        })
+
+        return false;
+
+
+	});
+
+
+
 </SCRIPT>
 
 
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/card/update" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/card/update" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="images" >图片地址</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}"  type="text" />
-					</div><div class="help-block" for="images"></div>
+				<div class="site-demo-upload">
+  						<img  name="imagesI" onclick="headOnc();" id="imagesI" value="${(returnDatas.data.images)!''}" src="${(returnDatas.data.images)!''}">
+   						<input type="file" id="filed" name="filed" style="display:none">
+   						<input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}" style="display:none"  type="text" />
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -141,70 +169,13 @@ jQuery(document).ready(function(){
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="endTime"  class="form-control date-picker"  id="endTime" readonly="readonly" value="${(returnDatas.data.endTime)!''}"  type="text" />
+						<input name="endTime"  class="form-control date-picker" readonly="readonly"  id="endTime" value="${(returnDatas.data.endTime)!''}"  type="text" />
 					        <span class="input-group-addon">
 								<i class="fa fa-calendar bigger-110"></i>
 							</span>
 					   </div>
 					
 					</div><div class="help-block" for="endTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="createTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failTime" >失败时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="failTime"  class="form-control date-picker"  id="failTime" readonly="readonly" value="${(returnDatas.data.failTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="failTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="succTime" >通过时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="succTime"  class="form-control date-picker"  id="succTime" readonly="readonly" value="${(returnDatas.data.succTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="succTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failReason" >失败原因</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="failReason" class="col-xs-12 col-sm-6" id="failReason" value="${(returnDatas.data.failReason)!''}"  type="text" />
-					</div><div class="help-block" for="failReason"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -217,18 +188,9 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isDel" >是否删除： 0否 1是</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="isDel" class="col-xs-12 col-sm-6" id="isDel" value="${(returnDatas.data.isDel)!''}"  type="text" />
-					</div><div class="help-block" for="isDel"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/card/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/card/list');">
 				保存
 			</button>
 		</div>

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,31 +15,9 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Card;
-import com.cz.mts.system.entity.Category;
-import com.cz.mts.system.entity.Medal;
-import com.cz.mts.system.entity.MoneyDetail;
-import com.cz.mts.system.entity.RedCity;
-import com.cz.mts.system.entity.SysSysparam;
-import com.cz.mts.system.entity.User;
-import com.cz.mts.system.entity.UserCard;
-import com.cz.mts.system.entity.UserMedal;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.ICardService;
-import com.cz.mts.system.service.IMedalService;
-import com.cz.mts.system.service.IMoneyDetailService;
-import com.cz.mts.system.service.IRedCityService;
-import com.cz.mts.system.service.ISysSysparamService;
-import com.cz.mts.system.service.IUserCardService;
-import com.cz.mts.system.service.IUserMedalService;
-import com.cz.mts.system.service.IUserService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -48,6 +25,26 @@ import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.City;
+import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.RedCity;
+import com.cz.mts.system.entity.SysSysparam;
+import com.cz.mts.system.entity.UserCard;
+import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICityService;
+import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IRedCityService;
+import com.cz.mts.system.service.ISysSysparamService;
+import com.cz.mts.system.service.IUserCardService;
+import com.cz.mts.system.service.IUserMedalService;
 
 
 /**
@@ -75,9 +72,14 @@ public class CardController  extends BaseController {
 	@Resource
 	private IMedalService medalService;
 	@Resource
+	private ICategoryService categoryService;
+	@Resource
 	private IRedCityService redCityService;
+	@Resource
+	private ICityService cityService;
 	
-	private String listurl="/system/card/cardList";
+	
+	private String listurl="/card/cardList";
 	
 	
 	   
@@ -93,7 +95,7 @@ public class CardController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Card card) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, card);
+		ReturnDatas returnObject = listAminJson(request, model, card);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -136,7 +138,7 @@ public class CardController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/card/cardLook";
+		return "/card/cardLook";
 	}
 
 	
@@ -176,6 +178,34 @@ public class CardController  extends BaseController {
 					card.setUserMedals(userMedals);
 				}
 			 }
+			 
+			 //返回分类名称
+			 if(card != null && card.getCatergoryId() != null){
+				 Category category = categoryService.findCategoryById(card.getCatergoryId());
+				 if(category != null){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 card.setCategoryName(category.getName());
+					 }
+				 }
+			 }
+			 
+			 
+			 //返回城市名称
+			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=3");
+			 finder.setParam("id", Integer.parseInt(strId));
+			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+			 if(null != redCities && redCities.size() > 0){
+				 for (RedCity redCity : redCities) {
+					if(null != redCity.getCityId()){
+						City city = cityService.findCityById(redCity.getCityId());
+						if(StringUtils.isNotBlank(city.getName())){
+							redCity.setCityName(city.getName());
+						}
+					}
+				}
+				 card.setRedCities(redCities);
+			 }
+			 
 			 returnObject.setData(card);
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -196,10 +226,11 @@ public class CardController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			cardService.saveorupdate(card);
-			
+			if(card.getId()==null){
+				cardService.saveorupdate(card);
+			}else{
+				cardService.update(card,true);
+			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -217,7 +248,7 @@ public class CardController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/card/cardCru";
+		return "/card/cardCru";
 	}
 	
 	/**
@@ -229,21 +260,23 @@ public class CardController  extends BaseController {
 
 			// 执行删除
 		try {
-		  String  strId=request.getParameter("id");
-		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
-				cardService.deleteById(id,Card.class);
-				return new ReturnDatas(ReturnDatas.SUCCESS,
-						MessageUtils.DELETE_SUCCESS);
-			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+			  String  strId=request.getParameter("id");
+			  java.lang.Integer id=null;
+			  if(StringUtils.isNotBlank(strId)){
+				 id= java.lang.Integer.valueOf(strId.trim());
+					Card card = cardService.findCardById(id);
+					if(null != card){
+						card.setIsDel(1);
+						cardService.update(card,true);
+					}
+					return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+				} else {
+					return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
 			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+			return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 	}
 	
 	/**
@@ -566,6 +599,96 @@ public class CardController  extends BaseController {
 	
 	}
 	
+	/**
+	 * 后台展示列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param card
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listAdmin/json")
+	public @ResponseBody
+	ReturnDatas listAminJson(HttpServletRequest request, Model model,Card card) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		card.setIsDel(0);
+		List<Card> datas = cardService.findListDataByFinder(null,page,Card.class,card);
+		if(null != datas && datas.size() > 0){
+			for (Card cd : datas) {
+				if(null != cd.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(cd.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getName())){
+							cd.setUserName(appUser.getName());
+						}
+					}
+				}
+				
+				if(null != cd.getCatergoryId()){
+					Category category = categoryService.findCategoryById(cd.getCatergoryId());
+					if(null != category){
+						if(StringUtils.isNotBlank(category.getName())){
+							cd.setCategoryName(category.getName());
+						}
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(card);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
+	
+	/**
+	 * 审核通过
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/confirm")
+	public @ResponseBody
+	ReturnDatas checkConfirm(HttpServletRequest request,Model model,Card card) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		card = cardService.findCardById(Integer.parseInt(id));
+		if(null != card){
+			card.setStatus(2);
+			card.setSuccTime(new Date());
+			cardService.update(card,true);
+		}
+		return returnObject;
+	}
+	
+	/**
+	 * 审核拒绝
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param card
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/refuse")
+	public @ResponseBody
+	ReturnDatas checkRefuse(HttpServletRequest request,Model model,Card card) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		String refuseReason = request.getParameter("reason");
+		card = cardService.findCardById(Integer.parseInt(id));
+		if(null != card){
+			card.setStatus(3);
+			card.setFailTime(new Date());
+			card.setFailReason(refuseReason);
+			cardService.update(card,true);
+		}
+		return returnObject;
+	}
 	
 	
 

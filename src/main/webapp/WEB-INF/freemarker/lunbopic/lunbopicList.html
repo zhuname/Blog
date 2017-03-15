@@ -44,19 +44,17 @@ function deleteLunboPic(){
 </form>
 		</div>
 		<div class="pull-right">
-			    <@shiro.hasPermission name="/lunbopic/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/system/lunbopic/list/export');" class="btn  btn-sm  btn-primary">
-                      
-                        导出
-                    </button>
-		    	</@shiro.hasPermission>
-			    <@shiro.hasPermission name="/lunbopic/update" >
-				  <button onclick="myhref('${ctx}/system/lunbopic/update/pre');" class="btn  btn-sm  btn-primary">
-                        添加
-                    </button>
+		    	
+			    <@shiro.hasPermission name="/system/lunbopic/update" >
+				  <a id="btn_reload" href="javascript:location.reload();"
+				class="btn  btn-sm  btn-primary " style="display: none;" >
+				跳转至新增 >>
+				</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
 			    </@shiro.hasPermission>
+			    
 			    <@shiro.hasPermission name="/lunbopic/delete" >
-			    |
 				  <button onclick="deleteLunboPic();" class="btn btn-sm btn-danger">
                         删除
                     </button>
@@ -84,12 +82,11 @@ function deleteLunboPic(){
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_image" >图片</th>
-						<th id="th_type" >类型</th>
-						<th id="th_createTime" >createTime</th>
+						<th id="th_type" >跳转类型</th>
+						<th id="th_createTime" >创建时间</th>
 						<th id="th_itemId" >对应的目标</th>
-						<th id="th_position" >跳转类型</th>
+						<th id="th_position" >展示位置</th>
 						<th id="th_url" >url</th>
-						<th id="th_cityIds" >城市</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -157,27 +154,45 @@ function deleteLunboPic(){
                                 <!--end_no_export-->
 
 							<td >
-								<!-- <img src="${(_data.image)!''}" height="100px;" width="200px;"/> -->
-								${(_data.image)!''}
+								<img src="${(_data.image)!''}" height="100px;" width="200px;"/>
 							</td>
 							<td >
-								${(_data.type)!0}
+								<#if (_data.type) == 1 >
+									url
+								</#if>
+								<#if (_data.type) == 2 >
+									红包
+								</#if>
+								<#if (_data.type) == 3 >
+									视频
+								</#if>
+								<#if (_data.type) == 4 >
+									卡券
+								</#if>
 							</td>
 							<td >
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
-								${(_data.itemId)!0}
+								${(_data.itemName)!''}
 							</td>
 							<td >
-								${(_data.position)!0}
+								<#if (_data.position) == 1 >
+									红包
+								</#if>
+								<#if (_data.position) == 2 >
+									视频
+								</#if>
+								<#if (_data.position) == 3 >
+									卡券
+								</#if>
+								<#if (_data.position) == 4 >
+									广告位
+								</#if>
 							</td>
 							<td >
 								${(_data.url)!''}
-							</td>
-							<td >
-								${(_data.cityIds)!''}
 							</td>
 						</tr>
 					</#list>

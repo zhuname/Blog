@@ -40,7 +40,7 @@ public class MedalController  extends BaseController {
 	@Resource
 	private IMedalService medalService;
 	
-	private String listurl="/system/medal/medalList";
+	private String listurl="/medal/medalList";
 	
 	
 	   
@@ -71,7 +71,6 @@ public class MedalController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Medal medal) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -80,7 +79,7 @@ public class MedalController  extends BaseController {
 		// ==执行分页查询
 		List<Medal> datas=medalService.findListDataByFinder(null,page,Medal.class,medal);
 			returnObject.setQueryBean(medal);
-		returnObject.setPage(page);
+//		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}

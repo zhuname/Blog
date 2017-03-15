@@ -16,21 +16,26 @@ function deleteMediaPackage(){
 	}
 }
 
-function playMedia(){
-	var a = $("#mediaUrl")[0].src;
-	//iframe层-多媒体
-	layer.open({
-	  type: 2,
-	  title: false,
-	  area: ['630px', '360px'],
-	  shade: 0.8,
-	  closeBtn: 0,
-	  shadeClose: true,
-	  content: a
+//点击播放视频
+$(document).on("click", ".vid", function() {
+    	var a = $(this).attr("src");
+    	if(a != ""){
+    		//iframe层-多媒体
+        	layer.open({
+        	  type: 2,
+        	  title: false,
+        	  area: ['630px', '360px'],
+        	  shade: 0.8,
+        	  closeBtn: 0,
+        	  shadeClose: true,
+        	  content: a
+        	});
+        	layer.msg('点击任意处关闭');
+    	}else{
+    		myalert("暂无可播放的视频");
+    	}
 	});
-	layer.msg('点击任意处关闭');
-}
-
+	
 
 </script>
 
@@ -230,7 +235,7 @@ function playMedia(){
 								</#if>
 							</td>
 							<td >
-								${(_data.payType)!0}
+								${(_data.payName)!''}
 							</td>
 							<td >
 								<!--日期型-->
@@ -265,12 +270,11 @@ function playMedia(){
 								${(_data.code)!''}
 							</td>
 							<td >
-									<!--  -->
-								<video poster="" width='200px' src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="playMedia()"></video>
+								<video class="vid" poster="" width='200px' src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls'></video>
 								
 							</td>
 							<td >
-								<img src="${(_data.mediaImage)!''}" height="100px;" width="200px;"/>
+								<img src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage"/>
 							</td>
 						</tr>
 					</#list>

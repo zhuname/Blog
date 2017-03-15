@@ -8,18 +8,25 @@ import java.util.List;
 import javax.print.attribute.standard.Media;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Collect;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.Menu;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.Role;
+import com.cz.mts.system.entity.RoleMenu;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserCard;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
@@ -414,5 +421,36 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 		}
 		return returnObject;
 	}
+	
+	
+	
+	@Override
+	public AppUser findUserAndMedal(String userId) throws Exception {
+		if (StringUtils.isBlank(userId)) {
+			return null;
+		}
+		AppUser appUser = super.findById(userId, AppUser.class);
+		if (appUser == null) {
+			return null;
+		}
+		List<Medal> medals = findMedalByUserId(userId);
+		appUser.setMedals(medals);
+		return appUser;
+	}
+	
+	
+	
+	@Override
+	public List<Medal> findMedalByUserId(String userId) throws Exception{
+		if(StringUtils.isBlank(userId)){
+			return null;
+		}
+		Finder finder = new Finder(
+				"SELECT m.* from ").append(Finder.getTableName(Medal.class)).append(" m,").append(Finder.getTableName(UserMedal.class)).append(" um where um.userId = :userId and um.medalId=m.id order by m.id");
+		finder.setParam("userId", Integer.parseInt(userId));
+		return super.queryForList(finder,Medal.class);
+		
+	}
+	
 
 }

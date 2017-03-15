@@ -29,6 +29,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.Menu;
 import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
@@ -231,33 +232,49 @@ public class AppUserController  extends BaseController {
 					if(StringUtils.isNotBlank(appUser.getPhone())){
 						user.setPhone(appUser.getPhone());
 					}
-					//判断手机号是否注册过
 					List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
 					if(null != datas && datas.size() > 0){
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("该用户已注册");
 					}else{
-						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-						appUser.setCreateTime(new Date());
-						appUser.setIsBlack(0);
-						Object id = appUserService.saveorupdate(appUser);
-						//判断该密码在密码表中是否存在
-						Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
-						finder.setParam("mdBeforePass", appUser.getPassword());
-						List<Map<String, Object>> list = passwordService.queryForList(finder);
-						if(list.isEmpty()){
-							//向password表中插入数据
-							Password password = new Password();
-							password.setMdBeforePass(appUser.getPassword());
-							password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-							passwordService.save(password);
+						
+						//判断该用户是否发送验证码了
+						if(appUser.getPhone()!=null&&content!=null){
+							Sms sms=new Sms();
+							sms.setPhone(appUser.getPhone());
+							sms.setContent(content);
+							sms.setType(1);
+							List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+							if(smss.size()==0){
+								returnObject.setStatus(ReturnDatas.ERROR);
+								returnObject.setMessage("请发送验证码");
+							}else{
+								//删除该条记录
+								smsService.deleteByEntity(smss.get(0));
+								//判断该密码在密码表中是否存在
+								Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+								finder.setParam("mdBeforePass", appUser.getPassword());
+								List<Map<String, Object>> list = passwordService.queryForList(finder);
+								if(list.isEmpty()){
+									//向password表中插入数据
+									Password password = new Password();
+									password.setMdBeforePass(appUser.getPassword());
+									password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+									passwordService.save(password);
+								}
+								
+								appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+								appUser.setCreateTime(new Date());
+								appUser.setIsBlack(0);
+								Object id = appUserService.saveorupdate(appUser);
+								
+								returnObject.setData(appUserService.findById(id, AppUser.class));
+							}
 						}
-						returnObject.setData(appUserService.findById(id, AppUser.class));
 					}
 				}
 			}else{
 				if(StringUtils.isNotBlank(appUser.getPassword())){
-					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 					
 					//判断该密码在密码表中是否存在
 					Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
@@ -270,6 +287,7 @@ public class AppUserController  extends BaseController {
 						password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						passwordService.save(password);
 					}
+					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 				}
 				appUserService.update(appUser,true);
 				returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
@@ -449,7 +467,6 @@ public class AppUserController  extends BaseController {
 		// ==执行分页查询
 		
 		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null||appUser.getSinaNum()!=null){
-			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
 			if(datas.size()>0){
 				returnObject.setData(datas.get(0));
@@ -458,37 +475,6 @@ public class AppUserController  extends BaseController {
 				returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 				try {
 					appUser.setIsBlack(0);
-					
-					//有手机号的时候判断下是不是已经注册过的手机号了
-					
-					if(appUser.getPhone()!=null&&content!=null){
-						Sms sms=new Sms();
-						sms.setPhone(appUser.getPhone());
-						sms.setContent(content);
-						sms.setType(1);
-						List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
-						
-						if(smss.size()==0){
-							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage(MessageUtils.UPDATE_ERROR);
-							return returnObject;
-						}else{
-							//删除该条记录
-							smsService.deleteByEntity(smss.get(0));
-						}
-						
-					}
-					
-					//看下手机号是不是已经呗注册过了
-					AppUser appUserPhone=new AppUser();
-					appUserPhone.setPhone(appUser.getPhone());
-					List<AppUser> dataPhones=appUserService.findListDataByFinder(null,page,AppUser.class,appUserPhone);
-					if(dataPhones.size()>0){
-						returnObject.setStatus(ReturnDatas.ERROR);
-						returnObject.setMessage("该手机号已经被注册");
-						return returnObject;
-					}
-					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
 				} catch (Exception e) {
@@ -631,6 +617,20 @@ public class AppUserController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
+			
+			//判断该密码在密码表中是否存在
+			Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+			finder.setParam("mdBeforePass", appUser.getNewPwd());
+			List<Map<String, Object>> list = passwordService.queryForList(finder);
+			if(list.isEmpty()){
+				//向password表中插入数据
+				Password password = new Password();
+				password.setMdBeforePass(appUser.getNewPwd());
+				password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
+				passwordService.save(password);
+			}
+			
+			
 			AppUser appRecord = appUserService.findAppUserById(appUser.getId());
 			if(null != appRecord){
 				if(StringUtils.isNotBlank(appRecord.getPassword())){
@@ -640,20 +640,6 @@ public class AppUserController  extends BaseController {
 						if(!appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()))){
 							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
 							appUserService.update(appRecord);
-							
-							//判断该密码在密码表中是否存在
-							Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
-							finder.setParam("mdBeforePass", appUser.getNewPwd());
-							List<Map<String, Object>> list = passwordService.queryForList(finder);
-							if(list.isEmpty()){
-								//向password表中插入数据
-								Password password = new Password();
-								password.setMdBeforePass(appUser.getNewPwd());
-								password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
-								passwordService.save(password);
-							}
-							
-							
 						}else{
 							returnObject.setStatus(ReturnDatas.ERROR);
 							returnObject.setMessage("新旧密码不能相同");
@@ -818,6 +804,74 @@ public class AppUserController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	/**
+	 * 赋予勋章
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param userMedal
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/award/json")
+	public @ResponseBody 
+	ReturnDatas awardMedalJson(HttpServletRequest request,Model model,UserMedal userMedal) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String str_medalIds=request.getParameter("medalIds");
+		String userId = request.getParameter("userId");
+		if(StringUtils.isBlank(str_medalIds)){
+			userMedal.setMedalId(null);
+		}else{
+			String[] medalIds = str_medalIds.split(",");
+			if(medalIds != null && medalIds.length > 0 ){
+				for(String s:medalIds){
+					if(StringUtils.isBlank(s)){
+						continue;
+					}else{
+						userMedal.setMedalId(Integer.parseInt(s));
+						if(StringUtils.isNotBlank(userId)){
+							userMedal.setUserId(Integer.parseInt(userId));
+							//判断该用户是否申请过该勋章
+							Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId AND medalId=:medalId");
+							finder.setParam("userId", Integer.parseInt(userId));
+							finder.setParam("medalId", Integer.parseInt(s));
+							List list = userMedalService.queryForList(finder);
+							if(list.isEmpty()){
+								userMedal.setCreateTime(new Date());
+								userMedalService.save(userMedal);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return returnObject;
+	}
+	
+	/**
+	 * 查询勋章赋予详情
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/lookmedal/json")
+	public @ResponseBody 
+	ReturnDatas lookmedalJson(HttpServletRequest request,Model model) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		if (StringUtils.isNotBlank(id)) {
+			AppUser appUser = appUserService.findUserAndMedal(id);
+			returnObject.setData(appUser);
+		}else{
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		
+		return returnObject;
+	}
 	
 
 }

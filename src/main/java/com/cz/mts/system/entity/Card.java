@@ -138,7 +138,48 @@ public class Card  extends BaseEntity {
 	
 	private java.lang.String location;
 	
+	private String categoryName;
+	private String userName;
 	
+	private List<RedCity> redCities;
+	@Transient
+	public List<RedCity> getRedCities() {
+		return redCities;
+	}
+
+	public void setRedCities(List<RedCity> redCities) {
+		this.redCities = redCities;
+	}
+
+	private java.lang.String osType;
+	
+	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
+	
+	@Transient
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	//columns END 数据库字段结束
 	@WhereSQL(sql="location=:Card_location")
 	public java.lang.String getLocation() {
@@ -430,6 +471,7 @@ public class Card  extends BaseEntity {
 			.append("是否删除： 0否 1是[").append(getIsDel()).append("],")
 			.append("状态：[").append(getStatus()).append("],")
 			.append("定位地址：[").append(getLocation()).append("],")
+			.append("操作系统").append(getOsType()).append("],")
 			.toString();
 	}
 	
