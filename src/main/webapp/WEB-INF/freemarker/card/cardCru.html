@@ -27,6 +27,10 @@ jQuery(document).ready(function(){
 //-->
 
 
+function headOnc(){
+		jQuery("#filed").click();
+	}
+
 $(document).on("change", "#filed", function() {
     //...
 
@@ -54,6 +58,43 @@ $(document).on("change", "#filed", function() {
 	});
 
 
+	//加载链接目标
+	jQuery.ajax({
+		url : ctx+"/system/category/listAdmin/json?type=3&isDel=0",
+		type : "post",
+		dataType : "json",
+		success : function(_json) {
+			if(_json.status=="error"){
+				return;
+			}
+			
+			var appe="";
+			var appf="";
+			var id=jQuery("#catergoryId").val();
+			jQuery(_json.data).each(function(i,_obj){
+			
+				if(id==_obj.id){
+					appf="<option value='"+_obj.id+"'>"+_obj.name+"</option>";
+				}else{
+					appe+="<option value='"+_obj.id+"'>"+_obj.name+"</option>";
+				}
+			
+			});
+			
+			jQuery("#catergoryIds").append(appf+appe);
+			
+			jQuery("#catergoryIds").select2();
+		}
+	});
+
+	$(document).on("change", "#catergoryIds", function() {
+	
+		var categoryId=jQuery("#catergoryIds").val();
+		
+		jQuery("#catergoryId").val(categoryId);
+		
+	});
+
 
 </SCRIPT>
 
@@ -65,29 +106,26 @@ $(document).on("change", "#filed", function() {
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="images" >图片地址</label>
-				<div class="site-demo-upload">
-  						<img  name="imagesI" onclick="headOnc();" id="imagesI" value="${(returnDatas.data.images)!''}" src="${(returnDatas.data.images)!''}">
-   						<input type="file" id="filed" name="filed" style="display:none">
-   						<input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}" style="display:none"  type="text" />
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
+				<div class="col-xs-12 col-sm-9">
+						<div class="site-demo-upload">
+  								<img  name="imagesI" onclick="headOnc();" id="imagesI" value="${(returnDatas.data.images)!''}" src="${(returnDatas.data.images)!''}">
+   								 <input type="file" id="filed" name="filed" style="display:none">
+   								  <input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}" style="display:none"  type="text" />
+						</div>
+
+					<!-- <div class="clearfix">
+						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />
+					</div><div class="help-block" for="header"></div> -->
 				</div>
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="catergoryId" >分类id</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="catergoryId" class="col-xs-12 col-sm-6" id="catergoryId" value="${(returnDatas.data.catergoryId)!''}"  type="text" />
-					</div><div class="help-block" for="catergoryId"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >用户id</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="userId" class="col-xs-12 col-sm-6" id="userId" value="${(returnDatas.data.userId)!''}"  type="text" />
-					</div><div class="help-block" for="userId"></div>
+				<label class="col-sm-3 control-label no-padding-right" for="categoryId"> 分类</label>
+				<div class="col-sm-9">
+					<select  id="catergoryIds" name="catergoryIds"  >
+					</select>
+					<input name="catergoryId" class="col-xs-12 col-sm-6" id="catergoryId" style="display:none;" value="${(returnDatas.data.catergoryId)!''}"  type="text" />
 				</div>
 			</div>
 	        <div class="space-2"></div>

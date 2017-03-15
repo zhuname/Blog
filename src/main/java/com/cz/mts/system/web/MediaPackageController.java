@@ -274,7 +274,7 @@ public class MediaPackageController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/mediapackage/mediapackageCru";
+		return "/mediapackage/mediapackageCru";
 	}
 	
 	/**
