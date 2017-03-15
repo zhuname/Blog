@@ -1,9 +1,13 @@
 <#escape x as x?html>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <SCRIPT type="text/javascript">
 <!--
 
 jQuery(document).ready(function(){
+	
 	//回选 下拉框
 	//jQuery("#search_state option[value='是']").prop("selected",true);
 	
@@ -11,11 +15,11 @@ jQuery(document).ready(function(){
 	$('.date-picker').datepicker({
 		    autoclose: true,
 		    format: 'yyyy-mm-dd',
-		    language: 'zh-CN'
-		    //,todayBtn: 'linked',
-		    //startDate:new Date(2014,10,27),
-			//endDate:'+60d',
-		    //startDate: '+1d',
+		    language: 'zh-CN',
+		    todayBtn: 'linked',
+		    startDate:new Date(2014,10,27),
+			endDate:'+60d',
+		    startDate: '+1d',
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
@@ -68,6 +72,68 @@ jQuery(document).ready(function(){
 	
 	
 	
+	var encrypt = $("#encrypt").val();
+	if(1 == encrypt){
+		$("#divCommand").show();
+	}else{
+		$("#divCommand").hide();
+	}
+	
+	
+	$("#inputEncrypt").on('change',function(){
+		if(1 == $("#inputEncrypt").val()){
+			$("#divCommand").show();
+		}else{
+			$("#divCommand").hide();
+		}
+		
+		jQuery("#encrypt").attr('value',$("#inputEncrypt").val());
+	});
+	
+	//修改下拉框默认选中
+	var encrypt1 = $("#encrypt1").val();
+	var encrypt2 = $("#encrypt2").val();
+	if(encrypt1 == encrypt){
+		$("#encrypt1").attr("selected","selected");
+	}
+	if(encrypt2 == encrypt){
+		$("#encrypt2").attr("selected","selected");
+	}
+	
+	
+	
+function posterImages(){
+	jQuery("#filed").click();
+}
+	
+	
+	$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	
+            	jQuery("#posterI").attr('src',data); 
+            	jQuery("#posterI").attr('value',data); 
+            	jQuery("#image").attr('value',data); 
+            },
+            error : function(data, status, e) {
+            	myalert("上传出错");
+            }
+        })
+
+        return false;
+
+
+	});	
+	
+	
+	
 //-->
 </SCRIPT>
 
@@ -81,9 +147,25 @@ jQuery(document).ready(function(){
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >海报图片</label>
 				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
+					<!-- <div class="clearfix">
 						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
-					</div><div class="help-block" for="image"></div>
+					</div><div class="help-block" for="image"></div> -->
+					
+					<!-- <div class="site-demo-upload">
+							<img  name="posterI" onclick="posterImages();" id="lunboI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
+ 							<input type="file" id="filed" name="filed" style="display:none">
+ 							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+					</div> -->
+					 <!-- <input id="Button1" type="button" value="选择文件" />  
+            		 <input id="files" type="button" value="上传" />  
+		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
+		                  
+		            </div>  
+		            
+		            <div id="testdiv"></div>   -->
+					
+					
+					
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -117,14 +199,19 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="encrypt" >是否加密</label>
+				<input name="encrypt" class="col-xs-12 col-sm-6" id="encrypt" value="${(returnDatas.data.encrypt)!''}"  type="hidden" />
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="encrypt" class="col-xs-12 col-sm-6" id="encrypt" value="${(returnDatas.data.encrypt)!''}"  type="text" />
+						<select id="inputEncrypt">
+							<option value="0" id="encrypt1">不加密</option>
+							<option value="1" id="encrypt2">加密</option>
+						</select>
+						
 					</div><div class="help-block" for="encrypt"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
+			<div class="form-group" id="divCommand">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="command" >加密口令</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
@@ -134,10 +221,10 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="getNum" >领取次数</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lqNum" >领取次数</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="lqNum" class="col-xs-12 col-sm-6" id="getNum" value="${(returnDatas.data.lqNum)!''}"  type="text" />
+						<input name="lqNum" class="col-xs-12 col-sm-6" id="lqNum" value="${(returnDatas.data.lqNum)!''}"  type="text" />
 					</div><div class="help-block" for="lqNum"></div>
 				</div>
 			</div>

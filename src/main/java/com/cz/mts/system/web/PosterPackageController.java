@@ -322,10 +322,11 @@ public class PosterPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			posterPackageService.saveorupdate(posterPackage);
-			
+			if(posterPackage.getId() == null){
+				posterPackageService.saveorupdate(posterPackage);
+			}else{
+				posterPackageService.update(posterPackage,true);
+			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

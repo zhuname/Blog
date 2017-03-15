@@ -21,22 +21,6 @@ jQuery(document).ready(function(){
 		});
 	*/
 	
-	if(1 == $("#inputType").val()){
-		$("#itemIdDiv").hide();
-		$("#urlDiv").show();
-	}else{
-		$("#itemIdDiv").show();
-		$("#urlDiv").hide();
-	}
-	
-	
-	if(4 == $("#inputPosition").val()){
-		$("#itemIdDiv").hide();
-		$("#urlDiv").hide();
-	}else{
-		$("#itemIdDiv").show();
-		$("#urlDiv").hide();
-	}
 	
 	
 	});
@@ -87,6 +71,15 @@ function lunboImages(){
 	
 	
 	var type = $("#type").val();
+	console.log(type);
+	if(1 == type){
+		$("#itemIdDiv").hide();
+		$("#urlDiv").show();
+	}else{
+		$("#itemIdDiv").show();
+		$("#urlDiv").hide();
+	}
+	
 	$("#inputType").on('change',function(){
 		if(1 == $("#inputType").val()){
 			$("#itemIdDiv").hide();
@@ -123,6 +116,16 @@ function lunboImages(){
 	var position2 = $("#position2").val();
 	var position3 = $("#position3").val();
 	var position4 = $("#position4").val();
+	
+
+	if(4 == position){
+		$("#itemIdDiv").hide();
+		$("#urlDiv").hide();
+	}else{
+		$("#itemIdDiv").show();
+		$("#urlDiv").hide();
+	}
+	
 	
 	$("#inputPosition").on('change',function(){
 		if(4 == $("#inputPosition").val()){
