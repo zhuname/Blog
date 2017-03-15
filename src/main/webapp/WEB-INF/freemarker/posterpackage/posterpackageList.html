@@ -93,8 +93,7 @@ function deletePosterPackage(){
 						<th id="th_sumMoney" >红包金额</th>
 						<th id="th_status" >状态</th>
 						<th id="th_payType" >支付类型</th>
-						<th id="th_createTime" >创建时间</th>
-						<th id="th_payTime" >支付时间</th>
+						<th id="th_expTime" >过期时间</th>
 						<th id="th_failTime" >失败时间</th>
 						<th id="th_succTime" >审核通过时间</th>
 						<th id="th_endTime" >抢完时间</th>
@@ -221,14 +220,6 @@ function deletePosterPackage(){
 							<td >
 								<!--日期型-->
 							${((_data.expTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.payTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
 								<!--日期型-->

@@ -1,7 +1,6 @@
 
 
 function initCity(localtion,provinceId,cityId){
-	
 	//初始化
 	$('#'+localtion+'').html("<div class=\"layui-form-item\"><div class=\"layui-input-inline\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div class=\"layui-input-inline\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
 	
@@ -121,6 +120,4 @@ $(document).on("change", "#province", function() {
 
 
 });
-
-
 

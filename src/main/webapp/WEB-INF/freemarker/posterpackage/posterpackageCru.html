@@ -1,29 +1,137 @@
 <#escape x as x?html>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <SCRIPT type="text/javascript">
 <!--
 
 jQuery(document).ready(function(){
+	
 	//回选 下拉框
 	//jQuery("#search_state option[value='是']").prop("selected",true);
 	
-	/*
+	
 	$('.date-picker').datepicker({
 		    autoclose: true,
 		    format: 'yyyy-mm-dd',
-		    language: 'zh-CN'
-		    //,todayBtn: 'linked',
-		    //startDate:new Date(2014,10,27),
-			//endDate:'+60d',
-		    //startDate: '+1d',
+		    language: 'zh-CN',
+		    todayBtn: 'linked',
+		    startDate:new Date(2014,10,27),
+			endDate:'+60d',
+		    startDate: '+1d',
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-	*/
+	
+	
+	
+	
+	//加载分类
+	jQuery.ajax({
+		url : ctx+"/system/category/category/json?type=1&isDel=0",
+		type : "post",
+		dataType : "json",
+		success : function(_json) {
+			if(_json.status=="error"){
+				return;
+			}
+			
+			var appe="";
+			var appf="";
+			var id=jQuery("#categoryId").val();
+			jQuery(_json.data).each(function(i,_obj){
+			
+				if(id==_obj.id){
+					appf="<option value='"+_obj.id+"'>"+_obj.name+"</option>";
+				}else{
+					appe+="<option value='"+_obj.id+"'>"+_obj.name+"</option>";
+				}
+			
+			});
+			
+			jQuery("#categoryIds").append(appf+appe);
+			
+			jQuery("#categoryIds").select2();
+		}
+	});
+
+	$(document).on("change", "#categoryIds", function() {
+	
+		var categoryId=jQuery("#categoryIds").val();
+		
+		jQuery("#categoryId").val(categoryId);
+		
+	});
+
+		
 	
 	
 	
 	});
+	
+	
+	
+	var encrypt = $("#encrypt").val();
+	if(1 == encrypt){
+		$("#divCommand").show();
+	}else{
+		$("#divCommand").hide();
+	}
+	
+	
+	$("#inputEncrypt").on('change',function(){
+		if(1 == $("#inputEncrypt").val()){
+			$("#divCommand").show();
+		}else{
+			$("#divCommand").hide();
+		}
+		
+		jQuery("#encrypt").attr('value',$("#inputEncrypt").val());
+	});
+	
+	//修改下拉框默认选中
+	var encrypt1 = $("#encrypt1").val();
+	var encrypt2 = $("#encrypt2").val();
+	if(encrypt1 == encrypt){
+		$("#encrypt1").attr("selected","selected");
+	}
+	if(encrypt2 == encrypt){
+		$("#encrypt2").attr("selected","selected");
+	}
+	
+	
+	
+function posterImages(){
+	jQuery("#filed").click();
+}
+	
+	
+	$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	
+            	jQuery("#posterI").attr('src',data); 
+            	jQuery("#posterI").attr('value',data); 
+            	jQuery("#image").attr('value',data); 
+            },
+            error : function(data, status, e) {
+            	myalert("上传出错");
+            }
+        })
+
+        return false;
+
+
+	});	
+	
 	
 	
 //-->
@@ -33,35 +141,43 @@ jQuery(document).ready(function(){
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/posterpackage/update" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/posterpackage/update" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
-<!--input  hidden  End-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >用户id</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="userId" class="col-xs-12 col-sm-6" id="userId" value="${(returnDatas.data.userId)!''}"  type="text" />
-					</div><div class="help-block" for="userId"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
+			<!--input  hidden  End-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >海报图片</label>
 				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
+					<!-- <div class="clearfix">
 						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
-					</div><div class="help-block" for="image"></div>
+					</div><div class="help-block" for="image"></div> -->
+					
+					<!-- <div class="site-demo-upload">
+							<img  name="posterI" onclick="posterImages();" id="lunboI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
+ 							<input type="file" id="filed" name="filed" style="display:none">
+ 							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+					</div> -->
+					 <!-- <input id="Button1" type="button" value="选择文件" />  
+            		 <input id="files" type="button" value="上传" />  
+		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
+		                  
+		            </div>  
+		            
+		            <div id="testdiv"></div>   -->
+					
+					
+					
 				</div>
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="categoryId" >分类id</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="categoryId" class="col-xs-12 col-sm-6" id="categoryId" value="${(returnDatas.data.categoryId)!''}"  type="text" />
-					</div><div class="help-block" for="categoryId"></div>
+				<label class="col-sm-3 control-label no-padding-right" for="categoryId"> 分类</label>
+				<div class="col-sm-9">
+					<select  id="categoryIds" name="categoryIds"  >
+					</select>
+					<input name="categoryId" class="col-xs-12 col-sm-6" id="categoryId" style="display:none;" value="${(returnDatas.data.categoryId)!''}"  type="text" />
 				</div>
 			</div>
+
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="title" >主题</label>
@@ -82,15 +198,20 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="encrypt" >是否加密0否1是</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="encrypt" >是否加密</label>
+				<input name="encrypt" class="col-xs-12 col-sm-6" id="encrypt" value="${(returnDatas.data.encrypt)!''}"  type="hidden" />
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="encrypt" class="col-xs-12 col-sm-6" id="encrypt" value="${(returnDatas.data.encrypt)!''}"  type="text" />
+						<select id="inputEncrypt">
+							<option value="0" id="encrypt1">不加密</option>
+							<option value="1" id="encrypt2">加密</option>
+						</select>
+						
 					</div><div class="help-block" for="encrypt"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
+			<div class="form-group" id="divCommand">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="command" >加密口令</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
@@ -100,66 +221,21 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumMoney" >红包金额</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lqNum" >领取次数</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="sumMoney" class="col-xs-12 col-sm-6" id="sumMoney" value="${(returnDatas.data.sumMoney)!''}"  type="text" />
-					</div><div class="help-block" for="sumMoney"></div>
+						<input name="lqNum" class="col-xs-12 col-sm-6" id="lqNum" value="${(returnDatas.data.lqNum)!''}"  type="text" />
+					</div><div class="help-block" for="lqNum"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="getNum" >领取次数</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="getNum" class="col-xs-12 col-sm-6" id="getNum" value="${(returnDatas.data.getNum)!''}"  type="text" />
-					</div><div class="help-block" for="getNum"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topPrice" >最高金额</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="topPrice" class="col-xs-12 col-sm-6" id="topPrice" value="${(returnDatas.data.topPrice)!''}"  type="text" />
-					</div><div class="help-block" for="topPrice"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payMoney" >支付金额</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="payMoney" class="col-xs-12 col-sm-6" id="payMoney" value="${(returnDatas.data.payMoney)!''}"  type="text" />
-					</div><div class="help-block" for="payMoney"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status" >状态：0未支付 1支付 2失败 3通过 4抢完5过期</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="status" class="col-xs-12 col-sm-6" id="status" value="${(returnDatas.data.status)!''}"  type="text" />
-					</div><div class="help-block" for="status"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payType" >支付类型：1支付宝 2微信 3余额支付</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="payType" class="col-xs-12 col-sm-6" id="payType" value="${(returnDatas.data.payType)!''}"  type="text" />
-					</div><div class="help-block" for="payType"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
+			<!--日期型-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="expTime"  class="form-control date-picker"  id="expTime" readonly="readonly" value="${(returnDatas.data.expTime)!''}"  type="text" />
+						<input name="expTime"  class="form-control date-picker"  id="expTime" value="${(returnDatas.data.expTime)!''}"  type="text"/>
 					        <span class="input-group-addon">
 								<i class="fa fa-calendar bigger-110"></i>
 							</span>
@@ -169,152 +245,9 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="createTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payTime" >支付时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="payTime"  class="form-control date-picker"  id="payTime" readonly="readonly" value="${(returnDatas.data.payTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="payTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failTime" >失败时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="failTime"  class="form-control date-picker"  id="failTime" readonly="readonly" value="${(returnDatas.data.failTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="failTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="succTime" >审核通过时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="succTime"  class="form-control date-picker"  id="succTime" readonly="readonly" value="${(returnDatas.data.succTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="succTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="endTime" >抢完时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="endTime"  class="form-control date-picker"  id="endTime" readonly="readonly" value="${(returnDatas.data.endTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="endTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failReason" >失败原因</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="failReason" class="col-xs-12 col-sm-6" id="failReason" value="${(returnDatas.data.failReason)!''}"  type="text" />
-					</div><div class="help-block" for="failReason"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >剩余金额</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="balance" class="col-xs-12 col-sm-6" id="balance" value="${(returnDatas.data.balance)!''}"  type="text" />
-					</div><div class="help-block" for="balance"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="num" >剩余待抢次数</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="num" class="col-xs-12 col-sm-6" id="num" value="${(returnDatas.data.num)!''}"  type="text" />
-					</div><div class="help-block" for="num"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="code" >订单编号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="code" class="col-xs-12 col-sm-6" id="code" value="${(returnDatas.data.code)!''}"  type="text" />
-					</div><div class="help-block" for="code"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxCode" >微信交易流水号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="wxCode" class="col-xs-12 col-sm-6" id="wxCode" value="${(returnDatas.data.wxCode)!''}"  type="text" />
-					</div><div class="help-block" for="wxCode"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="tradeNo" >交易流水号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="tradeNo" class="col-xs-12 col-sm-6" id="tradeNo" value="${(returnDatas.data.tradeNo)!''}"  type="text" />
-					</div><div class="help-block" for="tradeNo"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isDel" >是否删除: 0否 1是</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="isDel" class="col-xs-12 col-sm-6" id="isDel" value="${(returnDatas.data.isDel)!''}"  type="text" />
-					</div><div class="help-block" for="isDel"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/posterpackage/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/posterpackage/list');">
 				保存
 			</button>
 		</div>

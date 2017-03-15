@@ -21,22 +21,6 @@ jQuery(document).ready(function(){
 		});
 	*/
 	
-	if(1 == $("#inputType").val()){
-		$("#itemIdDiv").hide();
-		$("#urlDiv").show();
-	}else{
-		$("#itemIdDiv").show();
-		$("#urlDiv").hide();
-	}
-	
-	
-	if(4 == $("#inputPosition").val()){
-		$("#itemIdDiv").hide();
-		$("#urlDiv").hide();
-	}else{
-		$("#itemIdDiv").show();
-		$("#urlDiv").hide();
-	}
 	
 	
 	});
@@ -87,6 +71,15 @@ function lunboImages(){
 	
 	
 	var type = $("#type").val();
+	console.log(type);
+	if(1 == type){
+		$("#itemIdDiv").hide();
+		$("#urlDiv").show();
+	}else{
+		$("#itemIdDiv").show();
+		$("#urlDiv").hide();
+	}
+	
 	$("#inputType").on('change',function(){
 		if(1 == $("#inputType").val()){
 			$("#itemIdDiv").hide();
@@ -124,6 +117,16 @@ function lunboImages(){
 	var position3 = $("#position3").val();
 	var position4 = $("#position4").val();
 	
+
+	if(4 == position){
+		$("#itemIdDiv").hide();
+		$("#urlDiv").hide();
+	}else{
+		$("#itemIdDiv").show();
+		$("#urlDiv").hide();
+	}
+	
+	
 	$("#inputPosition").on('change',function(){
 		if(4 == $("#inputPosition").val()){
 			$("#itemIdDiv").hide();
@@ -134,6 +137,7 @@ function lunboImages(){
 		}
 		jQuery("#position").attr('value',$("#inputPosition").val());
 		
+		console.log($("#inputPosition").val());
 		//加载链接目标
 		jQuery.ajax({
 			url : ctx+"/system/lunbopic/position/list?position="+$("#inputPosition").val(),
@@ -145,6 +149,9 @@ function lunboImages(){
 				}
 				
 				jQuery(_json.data).each(function(i,_obj){
+					
+					//先清除原来的数据
+					$("#itemId").val("");
 					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.userName+"------标题："+_obj.title+"</option>");
 				});
 				
@@ -277,7 +284,7 @@ function lunboImages(){
 			</div>
 			
 			
-			<div class="form-group">
+			<div class="form-group" id="itemIdDiv">
 				<label class="col-sm-3 control-label no-padding-right" for="itemId"> 链接目标</label>
 				<div class="col-sm-9">
 					<select  id="itemId" name="itemId"   class="form-control">
