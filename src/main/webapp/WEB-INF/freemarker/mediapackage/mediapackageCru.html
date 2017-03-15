@@ -26,6 +26,112 @@ jQuery(document).ready(function(){
 	});
 	
 	
+	
+	//加载链接目标
+	jQuery.ajax({
+		url : ctx+"/system/category/listAdmin/json?type=2&isDel=0",
+		type : "post",
+		dataType : "json",
+		success : function(_json) {
+			if(_json.status=="error"){
+				return;
+			}
+			
+			var appe="";
+			var appf="";
+			var id=jQuery("#categoryId").val();
+			jQuery(_json.data).each(function(i,_obj){
+			
+				if(id==_obj.id){
+					appf="<option value='"+_obj.id+"'>"+_obj.name+"</option>";
+				}else{
+					appe+="<option value='"+_obj.id+"'>"+_obj.name+"</option>";
+				}
+			
+			});
+			
+			jQuery("#categoryIds").append(appf+appe);
+			
+			jQuery("#categoryIds").select2();
+		}
+	});
+
+	$(document).on("change", "#categoryIds", function() {
+	
+		var categoryId=jQuery("#categoryIds").val();
+		
+		jQuery("#categoryId").val(categoryId);
+		
+	});
+	
+	
+	
+	function headOnc(){
+		jQuery("#filed").click();
+	}
+
+	$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'v_file',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	console.log(data);
+            	jQuery("#mediaImageI").attr('src',data); 
+            	jQuery("#mediaImageI").attr('value',data); 
+            	jQuery("#mediaImage").attr('value',data); 
+            },
+            error : function(data, status, e) {
+           		console.log(data);
+                alert('上传出错');
+            }
+        })
+
+        return false;
+
+
+	});
+	
+	
+	function yincang(){
+		var v_file=document.getElementById('v_file');
+		v_file.click();
+ 	}
+ 	function play(){
+	 var file = document.getElementById('v_file').files[0];
+            var url = URL.createObjectURL(file);
+            document.getElementById("video_id").src = url;
+	 
+	}
+	
+	
+	function go(){
+	
+		$.ajaxFileUpload({
+            url : '/mts/fileupload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	console.log(data);
+            	jQuery("#mediaUrl").attr('value',data); 
+            },
+            error : function(data, status, e) {
+           		console.log(data);
+                alert('上传出错');
+            }
+        })
+	
+	
+	}
+	
+	
+	
 //-->
 </SCRIPT>
 
@@ -33,24 +139,16 @@ jQuery(document).ready(function(){
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/mediapackage/update" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/mediapackage/update" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >用户id</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="userId" class="col-xs-12 col-sm-6" id="userId" value="${(returnDatas.data.userId)!''}"  type="text" />
-					</div><div class="help-block" for="userId"></div>
-				</div>
-			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="categoryId" >分类id</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="categoryId" class="col-xs-12 col-sm-6" id="categoryId" value="${(returnDatas.data.categoryId)!''}"  type="text" />
-					</div><div class="help-block" for="categoryId"></div>
+				<label class="col-sm-3 control-label no-padding-right" for="categoryId"> 分类</label>
+				<div class="col-sm-9">
+					<select  id="categoryIds" name="categoryIds"  >
+					</select>
+					<input name="categoryId" class="col-xs-12 col-sm-6" id="categoryId" style="display:none;" value="${(returnDatas.data.categoryId)!''}"  type="text" />
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -71,15 +169,22 @@ jQuery(document).ready(function(){
 					</div><div class="help-block" for="descr"></div>
 				</div>
 			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="encrypt" >是否加密:0否1是</label>
+			<div class="space-2"></div>
+	        
+	        <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="encrypt" >是否加密</label>
+				<input type="text" id="encrypt" name="encrypt" class="col-xs-12 col-sm-6" value="${(returnDatas.data.encrypt)!''}" style="display: none;"/>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="encrypt" class="col-xs-12 col-sm-6" id="encrypt" value="${(returnDatas.data.encrypt)!''}"  type="text" />
+						<select id="inputPosition">
+							<option value="0">否</option>
+							<option value="1">是</option>
+						</select>
 					</div><div class="help-block" for="encrypt"></div>
 				</div>
 			</div>
+			
+			
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="command" >加密口令</label>
@@ -100,11 +205,11 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="getNum" >领取次数</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lqNum" >领取次数</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="getNum" class="col-xs-12 col-sm-6" id="getNum" value="${(returnDatas.data.getNum)!''}"  type="text" />
-					</div><div class="help-block" for="getNum"></div>
+						<input name="lqNum" class="col-xs-12 col-sm-6" id="lqNum" value="${(returnDatas.data.lqNum)!''}"  type="text" />
+					</div><div class="help-block" for="lqNum"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -114,33 +219,6 @@ jQuery(document).ready(function(){
 					<div class="clearfix">
 						<input name="topPrice" class="col-xs-12 col-sm-6" id="topPrice" value="${(returnDatas.data.topPrice)!''}"  type="text" />
 					</div><div class="help-block" for="topPrice"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payMoney" >支付金额</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="payMoney" class="col-xs-12 col-sm-6" id="payMoney" value="${(returnDatas.data.payMoney)!''}"  type="text" />
-					</div><div class="help-block" for="payMoney"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status" >状态：0未支付 1支付 2失败 3通过 4抢完5过期</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="status" class="col-xs-12 col-sm-6" id="status" value="${(returnDatas.data.status)!''}"  type="text" />
-					</div><div class="help-block" for="status"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payType" >支付类型：1支付宝 2微信 3余额支付</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="payType" class="col-xs-12 col-sm-6" id="payType" value="${(returnDatas.data.payType)!''}"  type="text" />
-					</div><div class="help-block" for="payType"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -157,95 +235,6 @@ jQuery(document).ready(function(){
 					   </div>
 					
 					</div><div class="help-block" for="expTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="createTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="payTime" >支付时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="payTime"  class="form-control date-picker"  id="payTime" readonly="readonly" value="${(returnDatas.data.payTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="payTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failTime" >失败时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="failTime"  class="form-control date-picker"  id="failTime" readonly="readonly" value="${(returnDatas.data.failTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="failTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="succTime" >审核通过时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="succTime"  class="form-control date-picker"  id="succTime" readonly="readonly" value="${(returnDatas.data.succTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="succTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="endTime" >抢完时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="endTime"  class="form-control date-picker"  id="endTime" readonly="readonly" value="${(returnDatas.data.endTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="endTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="failReason" >失败原因</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="failReason" class="col-xs-12 col-sm-6" id="failReason" value="${(returnDatas.data.failReason)!''}"  type="text" />
-					</div><div class="help-block" for="failReason"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -277,28 +266,23 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxCode" >微信交易流水号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="wxCode" class="col-xs-12 col-sm-6" id="wxCode" value="${(returnDatas.data.wxCode)!''}"  type="text" />
-					</div><div class="help-block" for="wxCode"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="tradeNo" >交易流水号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="tradeNo" class="col-xs-12 col-sm-6" id="tradeNo" value="${(returnDatas.data.tradeNo)!''}"  type="text" />
-					</div><div class="help-block" for="tradeNo"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaUrl" >视频url</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="mediaUrl" class="col-xs-12 col-sm-6" id="mediaUrl" value="${(returnDatas.data.mediaUrl)!''}"  type="text" />
+						<input name="mediaUrl" class="col-xs-12 col-sm-6" style="display: none;" id="mediaUrl" value="${(returnDatas.data.mediaUrl)!''}"  type="text" />
+
+
+
+						<div class="content">
+							<input id="v_file" type="file" style="display:none;" onChange="play()"/>
+							<video id="video_id" controls autoplay src="${(returnDatas.data.mediaUrl)!''}" ></video>
+							<a class="layui-btn layui-btn-primary" id="play" onClick="yincang()">修改</a>
+							<a class="layui-btn layui-btn-primary" id="play" onClick="go()">上传</a>
+						</div>
+
+
+
+						
 					</div><div class="help-block" for="mediaUrl"></div>
 				</div>
 			</div>
@@ -306,9 +290,15 @@ jQuery(document).ready(function(){
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaImage" >视频图片</label>
 				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}"  type="text" />
-					</div><div class="help-block" for="mediaImage"></div>
+						<div class="site-demo-upload">
+  								<img  name="mediaImageI" onclick="headOnc();" id="mediaImageI" value="${(returnDatas.data.mediaImage)!''}" src="${(returnDatas.data.mediaImage)!''}">
+   								 <input type="file" id="filed" name="filed" style="display:none">
+   								  <input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}" style="display:none"  type="text" />
+						</div>
+
+					<!-- <div class="clearfix">
+						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />
+					</div><div class="help-block" for="header"></div> -->
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -321,18 +311,9 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isDel" >是否删除: 0否 1是</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="isDel" class="col-xs-12 col-sm-6" id="isDel" value="${(returnDatas.data.isDel)!''}"  type="text" />
-					</div><div class="help-block" for="isDel"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/mediapackage/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/mediapackage/list');">
 				保存
 			</button>
 		</div>
