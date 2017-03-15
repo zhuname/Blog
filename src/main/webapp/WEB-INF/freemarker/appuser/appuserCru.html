@@ -45,7 +45,6 @@ jQuery(document).ready(function(){
             dataType : 'text',
             data : {},
             success : function(data, status) {
-            	console.log(data);
             	jQuery("#headerI").attr('src',data); 
             	jQuery("#headerI").attr('value',data); 
             	jQuery("#header").attr('value',data); 
@@ -63,8 +62,13 @@ jQuery(document).ready(function(){
 	
 	
 	initCity("localtion",null,"cityId");
-	
+
+	$(document).on("change", "#city", function() {
+		var cityId=jQuery("#city").val();
+
+		jQuery("#cityId").val(cityId);
 		
+	});
 
 </SCRIPT>
 
@@ -126,22 +130,6 @@ jQuery(document).ready(function(){
 					<div class="clearfix">
 						<input name="sex" class="col-xs-12 col-sm-6" id="sex" value="${(returnDatas.data.sex)!''}" type="text"/>
 					</div><div class="help-block" for="sex"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="createTime"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>

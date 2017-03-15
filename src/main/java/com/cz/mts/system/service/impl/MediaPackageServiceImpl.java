@@ -14,18 +14,24 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
 
 
@@ -50,7 +56,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	private ICollectService collectService;
 	@Resource
 	private IAttentionService attentionService;
-	
+	@Resource
+	private ICategoryService categoryService;
+	@Resource
+	private ICityService cityService;
+	@Resource
+	private IRedCityService redCityService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -116,6 +127,34 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}else{
 			if(null != dataList && dataList.size() > 0){
 				for (MediaPackage mp : dataList) {
+					
+					 //返回分类名称
+					 if(mp != null && mp.getCategoryId() != null){
+						 Category category = categoryService.findCategoryById(mp.getCategoryId());
+						 if(category != null){
+							 if(StringUtils.isNotBlank(category.getName())){
+								 mp.setCategoryName(category.getName());
+							 }
+						 }
+					 }
+					 
+					//返回城市名称
+					 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=2");
+					 finder.setParam("id", mp.getId());
+					 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+					 if(null != redCities && redCities.size() > 0){
+						 for (RedCity redCity : redCities) {
+							if(null != redCity.getCityId()){
+								City city = cityService.findCityById(redCity.getCityId());
+								if(StringUtils.isNotBlank(city.getName())){
+									redCity.setCityName(city.getName());
+								}
+							}
+						}
+						 mp.setRedCities(redCities);
+					 }
+					
+					
 					//返回发布人的信息
 					if(null != mp.getUserId()){
 						AppUser appUser = appUserService.findAppUserById(mp.getUserId());
