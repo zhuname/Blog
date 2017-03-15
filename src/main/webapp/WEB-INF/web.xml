@@ -82,5 +82,16 @@
     <url-pattern>/fileupload</url-pattern>
   </servlet-mapping>
   
+  
+  
+  <servlet>
+    <servlet-name>AdminFileUpload</servlet-name>
+    <servlet-class>com.cz.mts.servlet.AdminFileUpload</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminFileUpload</servlet-name>
+    <url-pattern>/adminFileUpload</url-pattern>
+  </servlet-mapping>
+  
 
 </web-app>
