@@ -343,7 +343,7 @@ public class PosterPackageController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response,null);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/posterpackage/posterpackageCru";
+		return "/posterpackage/posterpackageCru";
 	}
 	
 	/**

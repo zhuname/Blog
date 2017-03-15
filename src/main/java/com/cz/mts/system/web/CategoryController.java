@@ -296,5 +296,30 @@ public class CategoryController  extends BaseController {
 		
 		
 	}
+	
+	
+	/**
+	 * 获取分类
+	 * 
+	 * @param request
+	 * @param model
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/category/json")
+	public @ResponseBody
+	ReturnDatas categoryjson(HttpServletRequest request, Model model,Category category) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		page.setPageSize(10000);
+		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
+			returnObject.setQueryBean(category);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
 
 }
