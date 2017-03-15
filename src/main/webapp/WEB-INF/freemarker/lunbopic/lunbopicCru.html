@@ -38,8 +38,6 @@ jQuery(document).ready(function(){
 		$("#urlDiv").hide();
 	}
 	
-	console.log($("#inputPosition").val());
-	
 	
 	});
 	
@@ -147,7 +145,7 @@ function lunboImages(){
 				}
 				
 				jQuery(_json.data).each(function(i,_obj){
-					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+_obj.title+"</option>");
+					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.userName+"------标题："+_obj.title+"</option>");
 				});
 				
 				jQuery("#itemId").select2();
@@ -179,7 +177,7 @@ function lunboImages(){
 			}
 			
 			jQuery(_json.data).each(function(i,_obj){
-				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+_obj.title+"</option>");
+				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.userName+"------标题："+_obj.title+"</option>");
 			});
 			
 			jQuery("#itemId").select2();

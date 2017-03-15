@@ -199,6 +199,19 @@ public class PosterPackage  extends BaseEntity {
 	
 	private List<RedCity> redCities;
 	
+	private String userName;
+	
+	
+	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Transient
 	 public List<RedCity> getRedCities() {
 		return redCities;

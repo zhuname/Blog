@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.LunboPic;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.User;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ILunboPicService;
 import com.cz.mts.system.service.IMediaPackageService;
@@ -54,6 +56,8 @@ public class LunboPicController  extends BaseController {
 	private IMediaPackageService mediaPackageService;
 	@Resource
 	private ICardService cardService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/lunbopic/lunbopicList";
 	
@@ -324,18 +328,54 @@ public class LunboPicController  extends BaseController {
 				//查询海报
 				Finder finder = new Finder("SELECT * FROM t_poster_package WHERE isDel=0");
 				List<PosterPackage> posterPackages = posterPackageService.queryForList(finder,PosterPackage.class);
+				if(null != posterPackages && posterPackages.size() > 0){
+					for (PosterPackage posterPackage : posterPackages) {
+						if(posterPackage.getUserId() != null){
+							AppUser appUser = appUserService.findAppUserById(posterPackage.getUserId());
+							if(appUser != null){
+								if(StringUtils.isNotBlank(appUser.getName())){
+									posterPackage.setUserName(appUser.getName());
+								}
+							}
+						}
+					}
+				}
 				returnObject.setData(posterPackages);
 			}
 			if("2".equals(position)){
 				//查询视频
 				Finder finder = new Finder("SELECT * FROM t_media_package WHERE isDel=0");
 				List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder,MediaPackage.class);
+				if(mediaPackages != null && mediaPackages.size() > 0){
+					for (MediaPackage mediaPackage : mediaPackages) {
+						if(mediaPackage.getUserId() != null){
+							AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
+							if(appUser != null){
+								if(StringUtils.isNotBlank(appUser.getName())){
+									mediaPackage.setUserName(appUser.getName());
+								}
+							}
+						}
+					}
+				}
 				returnObject.setData(mediaPackages);
 			}
 			if("3".equals(position)){
 				//查询卡券
 				Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0");
 				List<Card> cards = cardService.queryForList(finder,Card.class);
+				if(cards != null && cards.size() > 0){
+					for (Card card : cards) {
+						if(card.getUserId() != null){
+							AppUser appUser = appUserService.findAppUserById(card.getUserId());
+							if(appUser != null){
+								if(StringUtils.isNotBlank(appUser.getName())){
+									card.setUserName(appUser.getName());
+								}
+							}
+						}
+					}
+				}
 				returnObject.setData(cards);
 			}
 		}
