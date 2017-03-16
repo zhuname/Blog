@@ -183,13 +183,7 @@ UploadAssist.prototype = {
                     var ul = perviewImage.getPerviewRegion(that.settings.perviewElementId);  
                     var main = perviewImage.createPreviewElement(this.name, this.value, that.settings.perviewImgStyle);  
                     var li = document.createElement("li");  
-                    if ($.browser.msie) {  
-                        li.style.styleFloat = "left";  
-                    }  
-                    else {  
-                        li.style.cssFloat = "left";  
-                    }  
-  
+                    li.style.cssFloat = "left";  
                     li.style.margin = "5px";  
                     li.appendChild(main);  
                     ul.appendChild(li);  

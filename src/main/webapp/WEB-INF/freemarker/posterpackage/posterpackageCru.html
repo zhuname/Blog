@@ -1,7 +1,4 @@
 <#escape x as x?html>
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <SCRIPT type="text/javascript">
 <!--
@@ -102,37 +99,47 @@ jQuery(document).ready(function(){
 	
 	
 	
-function posterImages(){
-	jQuery("#filed").click();
-}
-	
-	
-	$(document).on("change", "#filed", function() {
-    //...
+	var res = "";
+      $(function () {  
+          //var btn = $("#Button1");  
 
-	  $.ajaxFileUpload({
-            url : '/mts/fileupload',
-            secureuri : false,
-            fileElementId : 'filed',
-            dataType : 'text',
-            data : {},
-            success : function(data, status) {
-            	
-            	jQuery("#posterI").attr('src',data); 
-            	jQuery("#posterI").attr('value',data); 
-            	jQuery("#image").attr('value',data); 
-            },
-            error : function(data, status, e) {
-            	myalert("上传出错");
-            }
-        })
+          var btn = $("#Button1").uploadFile({  
+              url: '/mts/adminFileUpload',  
+              fileSuffixs: ["jpg", "png", "gif"],  
+              maximumFilesUpload: 10,//最大文件上传数  
+              onComplete: function (msg) { 
+            	  var arrs = new Array(msg);
+            	  for (var i = 0;i<arrs.length;i++)
+            	  {
+            		  res += arrs[i]+";";
+            	  }
+            	 
+                  $("#testdiv").append(msg + "<br/>");
+              },  
+              onAllComplete: function () {  
+                  alert("全部上传完成");  
+                  jQuery("#image").attr("value",res);
+              },  
+              isGetFileSize: true,//是否获取上传文件大小，设置此项为true时，将在onChosen回调中返回文件fileSize和获取大小时的错误提示文本errorText  
+              onChosen: function (file, obj, fileSize, errorText) {  
+                  if (!errorText) {  
+                      $("#file_size").text(file + "文件大小为：" + fileSize + "KB");  
+                  } else {  
+                      alert(errorText);  
+                      return false;  
+                  }  
+                  return true;//返回false将取消当前选择的文件  
+              },  
+              perviewElementId: "fileList", //设置预览图片的元素id  
+              perviewImgStyle: { width: '100px', height: '100px', border: '1px solid #ebebeb' }//设置预览图片的样式  
+          });  
 
-        return false;
+          var upload = btn.data("uploadFileData");  
 
-
-	});	
-	
-	
+          $("#files").click(function () {  
+              upload.submitUpload();  
+          });  
+      });  
 	
 //-->
 </SCRIPT>
@@ -156,14 +163,12 @@ function posterImages(){
  							<input type="file" id="filed" name="filed" style="display:none">
  							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					</div> -->
-					 <!-- <input id="Button1" type="button" value="选择文件" />  
+					 <input id="Button1" type="button" value="选择文件" />  
             		 <input id="files" type="button" value="上传" />  
 		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
-		                  
 		            </div>  
-		            
-		            <div id="testdiv"></div>   -->
-					
+		            <div id="testdiv"></div>  
+		            <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					
 					
 				</div>

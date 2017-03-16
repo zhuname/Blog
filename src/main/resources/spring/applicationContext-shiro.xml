@@ -89,6 +89,7 @@
 				/weixin/token/** = anon
 				/system/**/json = anon
 				/fileupload=anon
+				/adminFileUpload=anon
 				/index = user,framefwlog,keepone
 				/logout = logout
 				/**/ajax/** = user,framefwlog,keepone
