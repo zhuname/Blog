@@ -7,7 +7,7 @@ jQuery(document).ready(function(){
 	//回选 下拉框
 	//jQuery("#search_state option[value='是']").prop("selected",true);
 	
-	/*
+	
 	$('.date-picker').datepicker({
 		    autoclose: true,
 		    format: 'yyyy-mm-dd',
@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-	*/
+	
 	
 	
 	
@@ -227,16 +227,20 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="expTime"  class="form-control date-picker"  id="expTime" readonly="readonly" value="${(returnDatas.data.expTime)!''}"  type="text" />
+					 	<div class="input-group col-xs-12 col-sm-6">
+							<input name="expTime"  class="form-control date-picker"  id="expTime" value="${(returnDatas.data.expTime)!''}"  type="text" />
 					        <span class="input-group-addon">
 								<i class="fa fa-calendar bigger-110"></i>
 							</span>
+					   
 					   </div>
 					
 					</div><div class="help-block" for="expTime"></div>
+				
 				</div>
+			
 			</div>
+			
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >剩余金额</label>
