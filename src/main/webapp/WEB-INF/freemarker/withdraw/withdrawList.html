@@ -10,10 +10,32 @@ function deleteWithdraw(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/withdraw/delete?id="+id;
-		var listurl="${ctx}/withdraw/list";
+		var _url="${ctx}/system/withdraw/delete?id="+id;
+		var listurl="${ctx}/system/withdraw/list";
 		mydelete(_url,listurl);
 	}
+}
+
+
+
+function checkRefuse(id){
+	var reason = prompt("请填写拒绝原因:","");
+	if(reason == null || reason == ""){
+		myalert("请输入拒绝原因");
+		return;
+	}
+	jQuery.post("${ctx}/system/withdraw/check/refuse",{ id: id, reason: reason },
+			function(_json) {
+				if (_json.status == "success") {
+					myalert("审核成功");
+					myhref("${ctx}/system/withdraw/list")
+					return false;
+				} else {
+					myalert("审核失败");
+					return false;
+				}
+	});
+	
 }
 </script>
 
@@ -27,7 +49,7 @@ function deleteWithdraw(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/withdraw/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/withdraw/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -44,18 +66,18 @@ function deleteWithdraw(){
 </form>
 		</div>
 		<div class="pull-right">
-			    <@shiro.hasPermission name="/withdraw/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/withdraw/list/export');" class="btn  btn-sm  btn-primary">
+			    <@shiro.hasPermission name="/system/withdraw/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/system/withdraw/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
-			    <@shiro.hasPermission name="/withdraw/update" >
+			    <@shiro.hasPermission name="/system/withdraw/update" >
 				  <button onclick="myhref('${ctx}/withdraw/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
-			    <@shiro.hasPermission name="/withdraw/delete" >
+			    <@shiro.hasPermission name="/system/withdraw/delete" >
 			    |
 				  <button onclick="deleteWithdraw();" class="btn btn-sm btn-danger">
                         删除
@@ -83,19 +105,19 @@ function deleteWithdraw(){
                         </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >用户id</th>
-						<th id="th_createTime" >创建时间</th>
+						<th id="th_userId" >用户名称</th>
+						<th id="th_createTime" >申请时间</th>
 						<th id="th_operTime" >审核时间</th>
-						<th id="th_status" >状态：1申请中   2通过   3失败</th>
+						<th id="th_status" >审核状态</th>
 						<th id="th_reason" >失败原因</th>
 						<th id="th_money" >提现金额</th>
 						<th id="th_factorage" >手续费</th>
 						<th id="th_realMoney" >实际到账金额</th>
 						<th id="th_branchBank" >开户行</th>
-						<th id="th_ownerName" >户主名称/真实姓名</th>
-						<th id="th_ownerPhone" >户主手机号</th>
-						<th id="th_cardNum" >卡号/支付宝账号</th>
-						<th id="th_withdrawType" >1银行 2支付宝</th>
+						<th id="th_ownerName" >户主名称/真实姓名/微信昵称</th>
+						<th id="th_ownerPhone" >户主手机号/微信绑定手机号</th>
+						<th id="th_cardNum" >卡号/支付宝账号/微信账号</th>
+						<th id="th_withdrawType" >提现方式</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -115,14 +137,26 @@ function deleteWithdraw(){
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/withdraw/update/pre?id=${(_data.id)!''}');">
+                                       <!--  <button class="btn btn-xs btn-info"
+                                                onclick="myhref('${ctx}/system/withdraw/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/withdraw/delete?id=${(_data.id)!''}','${ctx}/withdraw/list');">
+                                                onclick="mydelete('${ctx}/system/withdraw/delete?id=${(_data.id)!''}','${ctx}/withdraw/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </button>
+                                        </button> -->
+                                        
+                                         <#if (_data.status) == 1>
+                                            <button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="mydelete('${ctx}/system/withdraw/check/confirm?id=${(_data.id)!''}','${ctx}/system/withdraw/list');">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">
@@ -132,7 +166,7 @@ function deleteWithdraw(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/withdraw/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/withdraw/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -140,7 +174,7 @@ function deleteWithdraw(){
 											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/withdraw/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/withdraw/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -149,7 +183,7 @@ function deleteWithdraw(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/withdraw/delete?id=${(_data.id)!''}','${ctx}/withdraw/list');"
+                                                       href="javascript:mydelete('${ctx}/system/withdraw/delete?id=${(_data.id)!''}','${ctx}/system/withdraw/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -163,7 +197,7 @@ function deleteWithdraw(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.userId)!0}
+								${(_data.userName)!0}
 							</td>
 							<td >
 								<!--日期型-->
@@ -174,7 +208,15 @@ function deleteWithdraw(){
 							${((_data.operTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
-								${(_data.status)!0}
+								<#if (_data.status) == 1>
+									申请中
+								</#if>
+								<#if (_data.status) == 2>
+									申请通过
+								</#if>
+								<#if (_data.status) == 3>
+									申请失败
+								</#if>
 							</td>
 							<td >
 								${(_data.reason)!''}
@@ -201,7 +243,15 @@ function deleteWithdraw(){
 								${(_data.cardNum)!''}
 							</td>
 							<td >
-								${(_data.withdrawType)!0}
+								<#if (_data.withdrawType) == 1>
+									银行
+								</#if>
+								<#if (_data.withdrawType) == 2>
+									支付宝
+								</#if>
+								<#if (_data.withdrawType) == 3>
+									微信
+								</#if>
 							</td>
 						</tr>
 					</#list>

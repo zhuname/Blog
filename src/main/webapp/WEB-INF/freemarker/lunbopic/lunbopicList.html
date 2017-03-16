@@ -54,9 +54,16 @@ function deleteLunboPic(){
 				
 			    </@shiro.hasPermission>
 			    
+			    <@shiro.hasPermission name="/system/lunbopic/update/pre" >
+				  <button onclick="myhref('${ctx}/system/lunbopic/update/pre');" class="btn  btn-sm  btn-primary">
+                     	   添加
+                    </button>
+
+			    </@shiro.hasPermission>
+			    
 			    <@shiro.hasPermission name="/lunbopic/delete" >
 				  <button onclick="deleteLunboPic();" class="btn btn-sm btn-danger">
-                        删除
+                   	 删除
                     </button>
 			    </@shiro.hasPermission>
 			
