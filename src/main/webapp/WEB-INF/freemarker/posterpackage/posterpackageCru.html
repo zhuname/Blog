@@ -22,6 +22,17 @@ jQuery(document).ready(function(){
 		});
 	
 	
+	var images = $("#image").val();
+	var arr = images.split(";");
+	for(var j = 0; j < arr.length; j++){
+		//var div = document.getElementById(imageDiv);
+		console.log(arr[j]);
+		//添加 img
+	　　 var img = document.createElement("img");
+	 	img.setAttribute("id", "showImage");
+	 	jQuery("#showImage").attr('src',arr[j]);
+	 	//div.appendChild(img);
+	}
 	
 	
 	//加载分类
@@ -101,8 +112,6 @@ jQuery(document).ready(function(){
 	
 	var res = "";
       $(function () {  
-          //var btn = $("#Button1");  
-
           var btn = $("#Button1").uploadFile({  
               url: '/mts/adminFileUpload',  
               fileSuffixs: ["jpg", "png", "gif"],  
@@ -140,6 +149,7 @@ jQuery(document).ready(function(){
               upload.submitUpload();  
           });  
       });  
+      
 	
 //-->
 </SCRIPT>
@@ -153,7 +163,7 @@ jQuery(document).ready(function(){
 			<!--input  hidden  End-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >海报图片</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-9" id="imageDiv">
 					<!-- <div class="clearfix">
 						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
 					</div><div class="help-block" for="image"></div> -->
@@ -163,8 +173,9 @@ jQuery(document).ready(function(){
  							<input type="file" id="filed" name="filed" style="display:none">
  							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					</div> -->
-					 <input id="Button1" type="button" value="选择文件" />  
-            		 <input id="files" type="button" value="上传" />  
+					
+					 <input id="Button1" type="button" value="选择文件" class="btn btn-pink"/>  
+            		 <input id="files" type="button" value="上传" class="btn btn-purple"/>  
 		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
 		            </div>  
 		            <div id="testdiv"></div>  
