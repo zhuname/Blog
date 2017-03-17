@@ -199,7 +199,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
 						user.setBalance(nowBalance.doubleValue());
 						//更新用户余额
-						appUserService.save(user) ;
+						appUserService.saveorupdate(user) ;
 						//更新明细表
 						MoneyDetail md = new MoneyDetail();
 						md.setCreateTime(new Date());
@@ -209,7 +209,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 						md.setBalance(nowBalance.doubleValue());
 						md.setItemId(lpp.getPackageId());
 						md.setOsType(osType);
-						moneyDetailService.save(md) ;
+						moneyDetailService.saveorupdate(md) ;
 					}
 					
 					//解决红包表的数据
