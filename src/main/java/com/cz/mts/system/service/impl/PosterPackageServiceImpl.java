@@ -151,7 +151,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 //		//载入lua脚本
 		String sha = jedis.scriptLoad(GlobalStatic.luaScript);
 //		//入参:待抢小红包列表，已抢小红包列表，已抢人map，抢包人id
-		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
+		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL+packageId, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
 		if(object == null){  //代表已抢
 			return "红包已抢" ;
 		}
