@@ -1,9 +1,13 @@
 package com.cz.mts.system.aspect;
 
+import org.aopalliance.intercept.Joinpoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+
+
 
 
 
@@ -46,4 +50,8 @@ public class SecurityAspect {
 			returnDatas.setData(encodeData);
 		}
 	}
+//	@Before("securityAop()")
+//	public void  securityBefore(Joinpoint joinpoint){
+//		
+//	}
 }
