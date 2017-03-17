@@ -162,7 +162,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			
 			if(list != null && list.size() !=0){
 				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(Finder.getTableName(LposterPackage.class)).append("where packageId = :packageId and userId != null") ;
+				Finder finder = Finder.getSelectFinder(Finder.getTableName(new LposterPackage())).append("where packageId = :packageId and userId != null") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
 				List<LposterPackage> listMysql = super.queryForList(finder,LposterPackage.class) ;
 				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
@@ -268,7 +268,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedMap +packageId) ;  //已抢小红包Map
 //			
 			//因为不能像hibernate一样保存后就持久化，所以要重新取一下
-			Finder finder = Finder.getSelectFinder(Finder.getTableName(LposterPackage.class)).append("where packageId = :packageId ") ;
+			Finder finder = Finder.getSelectFinder(Finder.getTableName(new LposterPackage())).append("where packageId = :packageId ") ;
 			finder.setParam("packageId", Integer.valueOf(packageId)) ;
 			List<LposterPackage> listPersistence = super.queryForList(finder, LposterPackage.class) ;
 			

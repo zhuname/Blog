@@ -442,6 +442,8 @@ public class PosterPackageController  extends BaseController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result.setStatus(ReturnDatas.ERROR);
+				result.setMessage("系统异常");
 			}
 			
 			return result ;
