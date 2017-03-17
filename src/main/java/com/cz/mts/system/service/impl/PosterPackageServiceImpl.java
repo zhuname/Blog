@@ -281,7 +281,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				jedis.lpush(GlobalStatic.posterPackageL+packageId, lpStr) ;
 			}
 		}
-		super.save(pp) ;
+		super.saveorupdate(pp) ;
 		return "审核成功";
 	}
 		
