@@ -145,7 +145,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		//获取jedis客户端
 		Jedis jedis = (Jedis) redisConnectionFactory.getConnection().getNativeConnection() ;
 		//判断是否有这个红包
-		if(jedis.exists(GlobalStatic.posterPackageL+packageId)){
+		if(!jedis.exists(GlobalStatic.posterPackageL+packageId)){
 			return "没有该待抢红包" ;
 		}
 //		//载入lua脚本
@@ -281,6 +281,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				jedis.lpush(GlobalStatic.posterPackageL+packageId, lpStr) ;
 			}
 		}
+		super.save(pp) ;
 		return "审核成功";
 	}
 		
