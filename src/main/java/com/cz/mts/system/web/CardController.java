@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +47,7 @@ import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -77,6 +80,9 @@ public class CardController  extends BaseController {
 	private IRedCityService redCityService;
 	@Resource
 	private ICityService cityService;
+	
+	@Resource
+	private NotificationService notificationService;
 	
 	
 	private String listurl="/card/cardList";

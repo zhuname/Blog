@@ -150,6 +150,7 @@
 	   		<artifactId>dom4j</artifactId>
 	    	<version>1.6.1</version>
 		</dependency>
+		
  <!-- 
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -171,6 +172,7 @@
 			<version>${jsp-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		
 	
 	
@@ -520,6 +522,16 @@
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
+
+
+
+
+
+      <dependency>
+      	<groupId>cn.jpush.api</groupId>
+      	<artifactId>jpush-client</artifactId>
+      	<version>3.2.16</version>
+      </dependency>
 	</dependencies> 
 
 	<build>

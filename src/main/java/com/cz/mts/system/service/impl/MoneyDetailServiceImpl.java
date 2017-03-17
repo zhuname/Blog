@@ -192,6 +192,7 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 			}
 			returnObject.setQueryBean(moneyDetail);
 			returnObject.setData(datas);
+			returnObject.setPage(page);
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
