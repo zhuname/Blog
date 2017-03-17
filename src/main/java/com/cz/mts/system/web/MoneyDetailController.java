@@ -321,7 +321,7 @@ public class MoneyDetailController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		if(moneyDetail.getItemId()!=null){
-			Finder finder=new Finder("SELECT * FROM t_app_user au WHERE id IN (SELECT userId FROM t_money_detail mon WHERE mon.itemId = :itemId AND mon.type=3)");
+			Finder finder=new Finder("SELECT *,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0  order by mon.id");
 			finder.setParam("itemId", moneyDetail.getItemId());
 			returnObject.setData(appUserService.queryForList(finder,page));
 		}else {

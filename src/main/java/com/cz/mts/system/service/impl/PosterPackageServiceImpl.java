@@ -145,13 +145,13 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		//获取jedis客户端
 		Jedis jedis = (Jedis) redisConnectionFactory.getConnection().getNativeConnection() ;
 		//判断是否有这个红包
-		if(jedis.exists(GlobalStatic.posterPackageL+packageId)){
+		if(!jedis.exists(GlobalStatic.posterPackageL+packageId)){
 			return "没有该待抢红包" ;
 		}
 //		//载入lua脚本
 		String sha = jedis.scriptLoad(GlobalStatic.luaScript);
 //		//入参:待抢小红包列表，已抢小红包列表，已抢人map，抢包人id
-		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
+		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL+packageId, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
 		if(object == null){  //代表已抢
 			return "红包已抢" ;
 		}
@@ -162,7 +162,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			
 			if(list != null && list.size() !=0){
 				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(Finder.getTableName(LposterPackage.class)).append("where packageId = :packageId and userId != null") ;
+				Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId and userId != null") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
 				List<LposterPackage> listMysql = super.queryForList(finder,LposterPackage.class) ;
 				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
@@ -199,7 +199,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
 						user.setBalance(nowBalance.doubleValue());
 						//更新用户余额
-						appUserService.save(user) ;
+						appUserService.saveorupdate(user) ;
 						//更新明细表
 						MoneyDetail md = new MoneyDetail();
 						md.setCreateTime(new Date());
@@ -209,7 +209,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 						md.setBalance(nowBalance.doubleValue());
 						md.setItemId(lpp.getPackageId());
 						md.setOsType(osType);
-						moneyDetailService.save(md) ;
+						moneyDetailService.saveorupdate(md) ;
 					}
 					
 					//解决红包表的数据
@@ -252,7 +252,8 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			List<LposterPackage> list = new ArrayList<>() ;
 			for (int i = 0; i < moneys.length; i++) {
 				LposterPackage lp = new LposterPackage();
-				lp.setMoney(new Double(String.valueOf(moneys[i])));
+				Double money = new Double(String.valueOf(moneys[i])) ;
+				lp.setMoney(money/100);
 				lp.setPackageId(Integer.valueOf(packageId));
 				
 				list.add(lp) ;
@@ -268,7 +269,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedMap +packageId) ;  //已抢小红包Map
 //			
 			//因为不能像hibernate一样保存后就持久化，所以要重新取一下
-			Finder finder = Finder.getSelectFinder(Finder.getTableName(LposterPackage.class)).append("where packageId = :packageId ") ;
+			Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId ") ;
 			finder.setParam("packageId", Integer.valueOf(packageId)) ;
 			List<LposterPackage> listPersistence = super.queryForList(finder, LposterPackage.class) ;
 			
@@ -280,6 +281,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				jedis.lpush(GlobalStatic.posterPackageL+packageId, lpStr) ;
 			}
 		}
+		super.saveorupdate(pp) ;
 		return "审核成功";
 	}
 		

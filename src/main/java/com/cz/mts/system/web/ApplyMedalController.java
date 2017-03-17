@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.ApplyMedal;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IApplyMedalService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -39,6 +41,8 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class ApplyMedalController  extends BaseController {
 	@Resource
 	private IApplyMedalService applyMedalService;
+	@Resource
+	private IUserMedalService userMedalService;
 	
 	private String listurl="/applymedal/applymedalList";
 	
@@ -232,7 +236,83 @@ public class ApplyMedalController  extends BaseController {
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
-		
 	}
+	
+	
+	/**
+	 * 申请勋章认证接口
+	 * @author wj
+	 * @param model
+	 * @param applyMedal
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/json")
+	public @ResponseBody
+	ReturnDatas checkjson(Model model,ApplyMedal applyMedal,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			if(null != applyMedal.getId()){
+				applyMedal.setStatus(2);
+				applyMedalService.update(applyMedal,true);
+				
+				
+				UserMedal userMedal=new UserMedal();
+				ApplyMedal applyMedal2=applyMedalService.findApplyMedalById(applyMedal.getId());
+				
+				if(applyMedal2!=null){
+					userMedal.setMedalId(applyMedal2.getMedalId());
+					userMedal.setUserId(applyMedal2.getUserId());
+					userMedal.setCreateTime(new Date());
+				}
+				
+				userMedalService.save(userMedal);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
+	/**
+	 * 申请勋章认证接口
+	 * @author wj
+	 * @param model
+	 * @param applyMedal
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/fail/json")
+	public @ResponseBody
+	ReturnDatas failjson(Model model,ApplyMedal applyMedal,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			if(null != applyMedal.getId()){
+				applyMedal.setStatus(3);
+				applyMedalService.update(applyMedal,true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
 
 }

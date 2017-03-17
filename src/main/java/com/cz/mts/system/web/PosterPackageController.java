@@ -31,6 +31,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
+import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
@@ -442,6 +443,8 @@ public class PosterPackageController  extends BaseController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result.setStatus(ReturnDatas.ERROR);
+				result.setMessage("系统异常");
 			}
 			
 			return result ;
@@ -467,7 +470,7 @@ public class PosterPackageController  extends BaseController {
 				
 				//必须有的参数
 				
-				if(posterPackage.getUserId()==null||posterPackage.getCategoryId()==null){
+				if(posterPackage.getUserId()==null||posterPackage.getCategoryId()==null||posterPackage.getLqNum()==null){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("参数缺失");
 					return returnObject;
@@ -486,7 +489,7 @@ public class PosterPackageController  extends BaseController {
 				}
 				
 				
-				
+				posterPackage.setNum(posterPackage.getLqNum());
 				
 				posterPackage.setStatus(0);
 				
@@ -649,4 +652,63 @@ public class PosterPackageController  extends BaseController {
 		}
 	}
 
+	
+	
+	/**
+	 * 
+	 * 后台统计接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param mediaPackage
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/tongji/json")
+	public @ResponseBody
+	ReturnDatas tongjijson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder=new Finder("SELECT SUM(payMoney) FROM t_media_package ;");
+
+		Double sum=posterPackageService.queryForObject(finder, Double.class);
+		
+		if(sum==null){
+			sum=0.0;
+		}
+		
+		returnObject.setData(sum);
+		
+		return returnObject;
+	}
+	
+	/**
+	 * 
+	 * 后台统计接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param mediaPackage
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/balance/json")
+	public @ResponseBody
+	ReturnDatas balancejson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder=new Finder("SELECT SUM(balance) FROM t_media_package ;");
+		
+		Double sum=posterPackageService.queryForObject(finder, Double.class);
+		
+		
+		if(sum==null){
+			sum=0.0;
+		}
+		
+		returnObject.setData(sum);
+		
+		return returnObject;
+	}
+	
+	
+	
 }
