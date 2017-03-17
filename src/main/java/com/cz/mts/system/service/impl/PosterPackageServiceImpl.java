@@ -252,7 +252,8 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			List<LposterPackage> list = new ArrayList<>() ;
 			for (int i = 0; i < moneys.length; i++) {
 				LposterPackage lp = new LposterPackage();
-				lp.setMoney(new Double(String.valueOf(moneys[i])));
+				Double money = new Double(String.valueOf(moneys[i])) ;
+				lp.setMoney(money/100);
 				lp.setPackageId(Integer.valueOf(packageId));
 				
 				list.add(lp) ;
