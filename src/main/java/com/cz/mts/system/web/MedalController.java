@@ -139,7 +139,6 @@ public class MedalController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
 			medalService.saveorupdate(medal);
 			
 		} catch (Exception e) {
@@ -159,7 +158,7 @@ public class MedalController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/medal/medalCru";
+		return "/medal/medalCru";
 	}
 	
 	/**

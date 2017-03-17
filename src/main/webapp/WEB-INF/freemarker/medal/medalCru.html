@@ -25,6 +25,48 @@ jQuery(document).ready(function(){
 	
 	});
 	
+	function headOnc(){
+		jQuery("#filed").click();
+	}
+
+$(document).on("change", "#filed", function() {
+    //...
+
+	  $.ajaxFileUpload({
+            url : '/mts/adminFileUpload',
+            secureuri : false,
+            fileElementId : 'filed',
+            dataType : 'text',
+            data : {},
+            success : function(data, status) {
+            	console.log(data);
+            	jQuery("#imageI").attr('src',data); 
+            	jQuery("#imageI").attr('value',data); 
+            	jQuery("#image").attr('value',data); 
+            },
+            error : function(data, status, e) {
+           		console.log(data);
+                alert('上传出错');
+            }
+        })
+
+        return false;
+
+
+	});
+	
+	$(document).on("change", "#type1", function() {
+    //...
+
+		var type=$("#type1").val();
+		
+		$("#type").val(type);
+
+	});
+		
+		var type=$("#type").val();
+		
+		$("#type1").val(type);
 	
 //-->
 </SCRIPT>
@@ -33,7 +75,7 @@ jQuery(document).ready(function(){
 
 <div class="row">
 	<div class="col-xs-12">
-		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/medal/update" > 
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/medal/update" > 
 			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
 <!--input  hidden  End-->
 			<div class="form-group">
@@ -46,11 +88,17 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >勋章图片</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
 				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
-					</div><div class="help-block" for="image"></div>
+						<div class="site-demo-upload">
+  								<img  name="imageI" onclick="headOnc();" id="imageI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
+   								 <input type="file" id="filed" name="filed" style="display:none">
+   								  <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+						</div>
+
+					<!-- <div class="clearfix">
+						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />
+					</div><div class="help-block" for="header"></div> -->
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -64,10 +112,11 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >类型：1图片认证 2视频认证</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >认证类型：1图片认证 2视频认证</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="type" class="col-xs-12 col-sm-6" id="type" value="${(returnDatas.data.type)!''}"  type="text" />
+						<input name="type" style="display: none;" class="col-xs-12 col-sm-6" id="type" value="${(returnDatas.data.type)!''}"  type="text" />
+						<select id="type1"><option value="1">图片认证</option><option value="2">视频认证</option> </select>
 					</div><div class="help-block" for="type"></div>
 				</div>
 			</div>
@@ -83,7 +132,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/medal/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/medal/list');">
 				保存
 			</button>
 		</div>

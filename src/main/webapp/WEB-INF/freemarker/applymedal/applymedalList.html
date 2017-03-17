@@ -15,6 +15,48 @@ function deleteApplyMedal(){
 		mydelete(_url,listurl);
 	}
 }
+
+function checkRefuse(id){
+	var reason = prompt("请填写拒绝原因:","");
+	if(reason == null || reason == ""){
+		myalert("请输入拒绝原因");
+		return;
+	}
+	jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: reason },
+			function(_json) {
+				if (_json.status == "success") {
+					myalert("审核成功");
+					myhref("${ctx}/system/applymedal/list")
+					return false;
+				} else {
+					myalert("审核失败");
+					return false;
+				}
+	});
+	
+}
+
+//点击播放视频
+$(document).on("click", ".vid", function() {
+    	var a = $(this).attr("src");
+    	if(a != ""){
+    		//iframe层-多媒体
+        	layer.open({
+        	  type: 2,
+        	  title: false,
+        	  area: ['630px', '360px'],
+        	  shade: 0.8,
+        	  closeBtn: 0,
+        	  shadeClose: true,
+        	  content: a
+        	});
+        	layer.msg('点击任意处关闭');
+    	}else{
+    		myalert("暂无可播放的视频");
+    	}
+	});
+
+
 </script>
 
 
@@ -46,7 +88,6 @@ function deleteApplyMedal(){
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/applymedal/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/applymedal/list/export');" class="btn  btn-sm  btn-primary">
-                      
                         导出
                     </button>
 		    	</@shiro.hasPermission>
@@ -85,12 +126,12 @@ function deleteApplyMedal(){
                         <!--first_end_no_export-->
 						<th id="th_userId" >用户id</th>
 						<th id="th_medalId" >勋章id</th>
-						<th id="th_status" >状态：1申请中 2申请成功 3申请失败</th>
+						<th id="th_status" >状态</th>
 						<th id="th_applyTime" >申请时间</th>
 						<th id="th_operTime" >审核时间</th>
 						<th id="th_reason" >失败原因</th>
-						<th id="th_multiAddress" >多媒体地址（图片以分号分开）</th>
-						<th id="th_type" >类型：1图片 2视频</th>
+						<th id="th_multiAddress" >多媒体地址</th>
+						<th id="th_type" >类型</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -118,6 +159,19 @@ function deleteApplyMedal(){
                                                 onclick="mydelete('${ctx}/applymedal/delete?id=${(_data.id)!''}','${ctx}/applymedal/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
+                                        
+                                        <#if (_data.status) == 1>
+                                            <button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list');">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
+                                        
+                                        
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">
@@ -163,8 +217,17 @@ function deleteApplyMedal(){
 							<td >
 								${(_data.medalId)!0}
 							</td>
+							
 							<td >
-								${(_data.status)!0}
+								<#if (_data.status) == 1 >
+									申请中
+								</#if>
+								<#if (_data.status) == 2 >
+									申请成功
+								</#if>
+								<#if (_data.status) == 3 >
+									申请失败
+								</#if>
 							</td>
 							<td >
 								<!--日期型-->
@@ -178,10 +241,23 @@ function deleteApplyMedal(){
 								${(_data.reason)!''}
 							</td>
 							<td >
-								${(_data.multiAddress)!''}
+								<#if (_data.type) == 1 >
+									<#list "${(_data.multiAddress)!''}"?split(";") as s>
+										<img height="120px" width="120px" alt="" class="im" src="${s}" >
+									</#list>
+									
+								</#if>
+								<#if (_data.type) == 2 >
+									<video class="vid" poster="" width='200px' src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls'></video>
+								</#if>
 							</td>
 							<td >
-								${(_data.type)!0}
+								<#if (_data.type) == 1 >
+									图片
+								</#if>
+								<#if (_data.type) == 2 >
+									视频
+								</#if>
 							</td>
 						</tr>
 					</#list>

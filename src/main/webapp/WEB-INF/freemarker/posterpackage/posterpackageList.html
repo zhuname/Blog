@@ -15,6 +15,29 @@ function deletePosterPackage(){
 		mydelete(_url,listurl);
 	}
 }
+
+
+		$.ajax({
+           type: "post",
+           dataType: "json",
+           url: "/mts/system/posterpackage/tongji/json",
+           success: function (msg) {
+           	
+               $("#pay").html("支付金额："+msg.data+"元 ");
+           }
+    	 });
+		$.ajax({
+           type: "post",
+           dataType: "json",
+           url: "/mts/system/posterpackage/balance/json",
+           success: function (msg) {
+               $("#bal").html("剩余金额："+msg.data+"元,");
+           }
+    	 });
+
+
+
+
 </script>
 
 
@@ -43,6 +66,8 @@ function deletePosterPackage(){
 
 </form>
 		</div>
+		<span style="float: right;" id="pay"></span>
+		<span style="float: right;" id="bal"></span>     
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/posterpackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/posterpackage/list/export');" class="btn  btn-sm  btn-primary">
