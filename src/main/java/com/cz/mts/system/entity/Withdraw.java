@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -108,6 +109,18 @@ public class Withdraw  extends BaseEntity {
 	
 	private java.lang.String osType;
 	
+	private String userName;
+	
+	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@WhereSQL(sql="osType=:MediaPackage_osType")
 	public java.lang.String getOsType() {
 		return osType;

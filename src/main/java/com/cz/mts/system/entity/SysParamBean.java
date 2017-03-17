@@ -28,10 +28,17 @@ public class SysParamBean implements Serializable {
 	private String postVideoAddress ;
 	private String userRegisterProtocol ;
 	private String cardCharge ;
+	private String maxCharge;
 	
 	
 	public String getCardCharge() {
 		return cardCharge;
+	}
+	public String getMaxCharge() {
+		return maxCharge;
+	}
+	public void setMaxCharge(String maxCharge) {
+		this.maxCharge = maxCharge;
 	}
 	public void setCardCharge(String cardCharge) {
 		this.cardCharge = cardCharge;

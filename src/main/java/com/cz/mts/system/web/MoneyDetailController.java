@@ -24,12 +24,18 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.IWithdrawService;
 
 
 /**
@@ -50,6 +56,12 @@ public class MoneyDetailController  extends BaseController {
 	private IUserMedalService userMedalService;
 	@Resource
 	private IMedalService medalService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
+	@Resource
+	private IWithdrawService withdrawService;
 	
 	private String listurl="/system/moneydetail/moneydetailList";
 	
@@ -251,6 +263,32 @@ public class MoneyDetailController  extends BaseController {
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("该用户不存在");
+					}
+					
+					if(null != md.getItemId()){
+						if(1 == md.getType()){
+							//查询海报
+							PosterPackage posterPackage = posterPackageService.findPosterPackageById(md.getItemId());
+							if(posterPackage != null && StringUtils.isNotBlank(posterPackage.getTitle())){
+								md.setContent(posterPackage.getTitle());
+							}
+						}
+						
+						if(2 == md.getType()){
+							//查询视频
+							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(md.getItemId());
+							if(mediaPackage != null && StringUtils.isNotBlank(mediaPackage.getTitle())){
+								md.setContent(mediaPackage.getTitle());
+							}
+						}
+						
+						//提现失败
+						if(9 == md.getType()){
+							Withdraw withdraw = withdrawService.findWithdrawById(md.getItemId());
+							if(withdraw != null && StringUtils.isNotBlank(withdraw.getReason())){
+								md.setReason(withdraw.getReason());
+							}
+						}
 					}
 				}
 			}

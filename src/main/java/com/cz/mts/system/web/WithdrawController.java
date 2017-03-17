@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IWithdrawService;
 import com.cz.mts.frame.annotation.SecurityApi;
@@ -51,8 +54,10 @@ public class WithdrawController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private ISysSysparamService sysSysparamService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
 	
-	private String listurl="/system/withdraw/withdrawList";
+	private String listurl="/withdraw/withdrawList";
 	
 	
 	   
@@ -90,7 +95,19 @@ public class WithdrawController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<Withdraw> datas=withdrawService.findListDataByFinder(null,page,Withdraw.class,withdraw);
-			returnObject.setQueryBean(withdraw);
+		if(datas != null && datas.size() > 0){
+			for (Withdraw wd : datas) {
+				if(null != wd.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(wd.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getName())){
+							wd.setUserName(appUser.getName());
+						}
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(withdraw);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -114,7 +131,7 @@ public class WithdrawController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/withdraw/withdrawLook";
+		return "/withdraw/withdrawLook";
 	}
 
 	
@@ -170,7 +187,7 @@ public class WithdrawController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/withdraw/withdrawCru";
+		return "/withdraw/withdrawCru";
 	}
 	
 	/**
@@ -226,6 +243,120 @@ public class WithdrawController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 提现申请被拒绝
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/refuse")
+	public @ResponseBody
+	ReturnDatas checkRefuse(HttpServletRequest request, Model model,Withdraw withdraw) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		BigDecimal balance,frozenMoney;
+		String reason = request.getParameter("reason");
+		String id = request.getParameter("id");
+		withdraw = withdrawService.findWithdrawById(Integer.parseInt(id));
+		if(null != withdraw){
+			withdraw.setStatus(3);
+			withdraw.setReason(reason);
+			withdraw.setOperTime(new Date());
+			withdrawService.update(withdraw,true);
+			
+			//更改appUser表中的信息
+			if(null != withdraw.getUserId()){
+				AppUser appUser = appUserService.findAppUserById(withdraw.getUserId());
+				if(null != appUser){
+					if(null == appUser.getBalance()){
+						balance = new BigDecimal(0);
+					}else{
+						balance = new BigDecimal(appUser.getBalance());
+					}
+					
+					if(null == appUser.getFrozeBanlance()){
+						frozenMoney = new BigDecimal(0);
+					}else{
+						frozenMoney = new BigDecimal(appUser.getFrozeBanlance());
+					}
+					balance = balance.add(new BigDecimal(withdraw.getMoney()));
+					frozenMoney = frozenMoney.subtract(new BigDecimal(withdraw.getMoney()));
+					appUser.setBalance(balance.doubleValue());
+					appUser.setFrozeBanlance(frozenMoney.doubleValue());
+					appUserService.update(appUser,true);
+					
+					
+					//更新moneyDetail表中的信息
+					MoneyDetail moneyDetail = new MoneyDetail();
+					moneyDetail.setUserId(withdraw.getUserId());
+					moneyDetail.setCreateTime(new Date());
+					moneyDetail.setType(9);
+					moneyDetail.setMoney(withdraw.getMoney());
+					moneyDetail.setBalance(appUser.getBalance());
+					moneyDetail.setPayType(appUser.getWithdrawType());
+					moneyDetail.setItemId(Integer.parseInt(id));
+					moneyDetailService.save(moneyDetail);
+				}
+				
+			}
+		}
+		
+		return returnObject;
+		
+	}
+	
+	
+	/**
+	 * 审核通过
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/confirm")
+	public @ResponseBody
+	ReturnDatas checkConfirm(HttpServletRequest request,Model model,Withdraw withdraw) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String id = request.getParameter("id");
+		withdraw = withdrawService.findWithdrawById(Integer.parseInt(id));
+		if(null != withdraw){
+			withdraw.setStatus(2);
+			withdraw.setOperTime(new Date());
+			withdrawService.update(withdraw,true);
+			
+			//更新appUser表中的信息
+			if(null != withdraw.getUserId()){
+				BigDecimal frozenMoney;
+				AppUser appUser = appUserService.findAppUserById(withdraw.getUserId());
+				if(null != appUser){
+					if(null == appUser.getFrozeBanlance()){
+						frozenMoney = new BigDecimal(0);
+					}else{
+						frozenMoney = new BigDecimal(appUser.getFrozeBanlance());
+					}
+					frozenMoney = frozenMoney.subtract(new BigDecimal(withdraw.getMoney()));
+					appUser.setFrozeBanlance(frozenMoney.doubleValue());
+					appUserService.update(appUser,true);
+				}
+				
+				//查询该用户的申请中的状态
+				Finder finder = new Finder("select * from t_money_detail where userId = :userId and type=10 and payType = :payType");
+				finder.setParam("userId", withdraw.getUserId());
+				finder.setParam("payType", withdraw.getWithdrawType());
+				List<MoneyDetail> moneyDetails = moneyDetailService.queryForList(finder,MoneyDetail.class);
+				if(moneyDetails != null && moneyDetails.size() > 0){
+					MoneyDetail moneyDetail = moneyDetails.get(0);
+					moneyDetail.setType(7);
+					moneyDetailService.update(moneyDetail,true);
+				}
+			}
+			
+		}
+		return returnObject;
 	}
 
 }

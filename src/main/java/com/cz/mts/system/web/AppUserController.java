@@ -26,6 +26,7 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
@@ -34,6 +35,7 @@ import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IPasswordService;
@@ -61,7 +63,8 @@ public class AppUserController  extends BaseController {
 	private IPasswordService passwordService;
 	@Resource
 	private IMedalService medalService;
-	
+	@Resource
+	private IApplyMedalService applyMedalService;
 	private String listurl="/appuser/appuserList";
 	
 	@Resource
@@ -835,6 +838,7 @@ public class AppUserController  extends BaseController {
 					if(StringUtils.isBlank(s)){
 						continue;
 					}else{
+						Medal medal = medalService.findMedalById(Integer.parseInt(s));
 						userMedal.setMedalId(Integer.parseInt(s));
 						if(StringUtils.isNotBlank(userId)){
 							userMedal.setUserId(Integer.parseInt(userId));
@@ -847,6 +851,17 @@ public class AppUserController  extends BaseController {
 								userMedal.setCreateTime(new Date());
 								userMedalService.save(userMedal);
 							}
+							
+							//向t_apply_medal表中插入数据
+							ApplyMedal applyMedal = new ApplyMedal();
+							applyMedal.setUserId(Integer.parseInt(userId));
+							applyMedal.setMedalId(Integer.parseInt(s));
+							applyMedal.setStatus(2);
+							applyMedal.setOperTime(new Date());
+							applyMedal.setType(medal.getType());
+							applyMedal.setIntroduction("后台赋予");
+							applyMedalService.save(applyMedal);
+							
 						}
 					}
 				}

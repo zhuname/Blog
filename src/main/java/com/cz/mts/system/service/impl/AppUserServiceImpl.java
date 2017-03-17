@@ -389,7 +389,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			returnObject.setMessage("参数缺失");
 		}else{
 			//查询海报数量
-			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId AND isDel=0");
+			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId and status = 3 AND isDel=0");
 			posterFinder.setParam("userId", appUser.getId());
 			List posterList = queryForList(posterFinder);
 			if(null != posterList && posterList.size() > 0){
@@ -398,7 +398,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				appUser.setPosterCount(0);
 			}
 			//查询视频数量
-			Finder mediaFinder = new Finder("SELECT id FROM t_media_package WHERE userId=:userId AND isDel=0");
+			Finder mediaFinder = new Finder("SELECT id FROM t_media_package WHERE userId=:userId AND isDel=0 and status = 3 ");
 			mediaFinder.setParam("userId", appUser.getId());
 			List mediaList = queryForList(mediaFinder);
 			if(null != mediaList && mediaList.size() > 0){
@@ -408,7 +408,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//查询卡券数量
-			Finder cardFinder = new Finder("SELECT id FROM t_card WHERE userId=:userId AND isDel=0");
+			Finder cardFinder = new Finder("SELECT id FROM t_card WHERE userId=:userId AND isDel=0 and status = 2 ");
 			cardFinder.setParam("userId", appUser.getId());
 			List cardList = queryForList(cardFinder);
 			if(null != cardList && cardList.size() > 0){

@@ -90,6 +90,30 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private Double remainMoney;
 	
+	private String content;
+	
+	private String reason;
+	
+	
+	
+	@Transient
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	@Transient
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	@Transient
 	public Double getRemainMoney() {
 		return remainMoney;

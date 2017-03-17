@@ -421,30 +421,32 @@ public class PosterPackageController  extends BaseController {
 	 * @date 2017年2月28日
 	 */
 	@RequestMapping("/snatch/json")
-//	@SecurityApi
+	@SecurityApi
 	public @ResponseBody 
-	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId){
+	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId,String osType,String command){
+		
+		ReturnDatas result =  new ReturnDatas(ReturnDatas.SUCCESS,
+				MessageUtils.UPDATE_SUCCESS);
 		
 		if(StringUtils.isBlank(id) || StringUtils.isBlank(userId)) {
 			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;
 		}else {
 			
-//			ICached cached = cacheManager.getCached() ;
-//			try {
-//				AppUser user = (AppUser) cached.getCached(userId.getBytes()) ;
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			try {
-				posterPackageService.snatch(userId, id) ;
+				String data =  (String) posterPackageService.snatch(userId, id,osType,command) ;
+				if(data.indexOf("{") == -1 ){  //说明是个错误结果
+					result.setMessage(data);
+					result.setStatus(ReturnDatas.ERROR);
+				}else {
+					result.setData(data);
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result.setStatus(ReturnDatas.ERROR);
+				result.setMessage("系统异常");
 			}
-			ReturnDatas result =  new ReturnDatas(ReturnDatas.SUCCESS,
-					MessageUtils.UPDATE_SUCCESS);
-//			result.setData(snatch2);
+			
 			return result ;
 		}
 		
@@ -617,6 +619,37 @@ public class PosterPackageController  extends BaseController {
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject; 
+	}
+	
+	/**
+	 * 审核红包
+	 * @param request
+	 * @param id 红包id
+	 * @param type 审核类型 1通过 0拒绝
+	 * @param failReason 失败原因
+	 * @return
+	 * @author wxy
+	 * @date 2017年3月16日
+	 */
+	@RequestMapping("/check/json")
+	public @ResponseBody
+	ReturnDatas checkJson(HttpServletRequest request, String id,String type,String failReason){
+		if(StringUtils.isBlank(id) || StringUtils.isBlank(type)){
+			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失") ;
+		}else {
+			try {
+				Object object = posterPackageService.check(id, type, failReason) ;
+				if(object == null){
+					return new ReturnDatas(ReturnDatas.ERROR, "红包不存在") ;
+				}else {
+					return new ReturnDatas(ReturnDatas.SUCCESS, object.toString()) ;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return new ReturnDatas(ReturnDatas.ERROR, "系统异常") ;
+			}
+		}
 	}
 
 	

@@ -121,124 +121,119 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		mediaPackage.setIsDel(0);
 		List<MediaPackage> dataList = findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
-		if(null == mediaPackage.getStatus()){
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage("参数缺失");
-		}else{
-			if(null != dataList && dataList.size() > 0){
-				for (MediaPackage mp : dataList) {
-					
-					 //返回分类名称
-					 if(mp != null && mp.getCategoryId() != null){
-						 Category category = categoryService.findCategoryById(mp.getCategoryId());
-						 if(category != null){
-							 if(StringUtils.isNotBlank(category.getName())){
-								 mp.setCategoryName(category.getName());
-							 }
+		if(null != dataList && dataList.size() > 0){
+			for (MediaPackage mp : dataList) {
+				
+				 //返回分类名称
+				 if(mp != null && mp.getCategoryId() != null){
+					 Category category = categoryService.findCategoryById(mp.getCategoryId());
+					 if(category != null){
+						 if(StringUtils.isNotBlank(category.getName())){
+							 mp.setCategoryName(category.getName());
 						 }
 					 }
-					 
-					//返回城市名称
-					 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=2");
-					 finder.setParam("id", mp.getId());
-					 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
-					 if(null != redCities && redCities.size() > 0){
-						 for (RedCity redCity : redCities) {
-							if(null != redCity.getCityId()){
-								City city = cityService.findCityById(redCity.getCityId());
-								if(StringUtils.isNotBlank(city.getName())){
-									redCity.setCityName(city.getName());
-								}
-							}
-						}
-						 mp.setRedCities(redCities);
-					 }
-					
-					
-					//返回发布人的信息
-					if(null != mp.getUserId()){
-						AppUser appUser = appUserService.findAppUserById(mp.getUserId());
-						if(null != appUser){
-							if(StringUtils.isNotBlank(appUser.getSign())){
-								mp.setSign(appUser.getSign());
-							}
-							if(StringUtils.isNotBlank(appUser.getName())){
-								mp.setName(appUser.getName());
-							}
-							if(StringUtils.isNotBlank(appUser.getHeader())){
-								mp.setHeader(appUser.getHeader());
-							}
-							if(StringUtils.isNotBlank(appUser.getSex())){
-								mp.setSex(appUser.getSex());
-							}
-							if(StringUtils.isNotBlank(appUser.getPhone())){
-								mp.setPhone(appUser.getPhone());
-							}
-						}
-						UserMedal userMedal = new UserMedal();
-						userMedal.setUserId(mp.getUserId());
-						//查询勋章列表
-						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-						if(null != userMedals && userMedals.size() > 0){
-							for (UserMedal um : userMedals) {
-								if(null != um.getMedalId()){
-									Medal medal = medalService.findMedalById(um.getMedalId());
-									if(null != medal){
-										um.setMedal(medal);
-									}
-								}
-							}
-							mp.setUserMedals(userMedals);
-						}
-						//返回是否关注
-						if(StringUtils.isNotBlank(appUserId)){
-							Attention attention = new Attention();
-							attention.setUserId(Integer.parseInt(appUserId));
-							attention.setItemId(mp.getUserId());
-							List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
-							if(null != attentions && attentions.size() > 0){
-								mp.setIsAttention(1);
-							}else{
-								mp.setIsAttention(0);
-							}
-							
-							//返回是否收藏
-							Collect collect = new Collect();
-							collect.setUserId(Integer.parseInt(appUserId));
-							collect.setItemId(mp.getId());
-							collect.setType(2);
-							List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
-							if(null != collects && collects.size() > 0){
-								mp.setIsCollect(1);
-							}else{
-								mp.setIsCollect(0);
+				 }
+				 
+				//返回城市名称
+				 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=2");
+				 finder.setParam("id", mp.getId());
+				 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+				 if(null != redCities && redCities.size() > 0){
+					 for (RedCity redCity : redCities) {
+						if(null != redCity.getCityId()){
+							City city = cityService.findCityById(redCity.getCityId());
+							if(StringUtils.isNotBlank(city.getName())){
+								redCity.setCityName(city.getName());
 							}
 						}
 					}
-					
-					
-					//已抢红包列表
-					MoneyDetail moneyDetail = new MoneyDetail();
-					moneyDetail.setItemId(mp.getId());
-					moneyDetail.setType(2);
-					List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
-					if(null != moneyDetails && moneyDetails.size() > 0){
-						for (MoneyDetail md : moneyDetails) {
-							if(null != md.getUserId()){
-								AppUser appUser = appUserService.findAppUserById(md.getUserId());
-								if(null != appUser){
-									md.setAppUser(appUser);
+					 mp.setRedCities(redCities);
+				 }
+				
+				
+				//返回发布人的信息
+				if(null != mp.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(mp.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getSign())){
+							mp.setSign(appUser.getSign());
+						}
+						if(StringUtils.isNotBlank(appUser.getName())){
+							mp.setName(appUser.getName());
+						}
+						if(StringUtils.isNotBlank(appUser.getHeader())){
+							mp.setHeader(appUser.getHeader());
+						}
+						if(StringUtils.isNotBlank(appUser.getSex())){
+							mp.setSex(appUser.getSex());
+						}
+						if(StringUtils.isNotBlank(appUser.getPhone())){
+							mp.setPhone(appUser.getPhone());
+						}
+					}
+					UserMedal userMedal = new UserMedal();
+					userMedal.setUserId(mp.getUserId());
+					//查询勋章列表
+					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+					if(null != userMedals && userMedals.size() > 0){
+						for (UserMedal um : userMedals) {
+							if(null != um.getMedalId()){
+								Medal medal = medalService.findMedalById(um.getMedalId());
+								if(null != medal){
+									um.setMedal(medal);
 								}
 							}
 						}
-						mp.setMoneyDetails(moneyDetails);
+						mp.setUserMedals(userMedals);
+					}
+					//返回是否关注
+					if(StringUtils.isNotBlank(appUserId)){
+						Attention attention = new Attention();
+						attention.setUserId(Integer.parseInt(appUserId));
+						attention.setItemId(mp.getUserId());
+						List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+						if(null != attentions && attentions.size() > 0){
+							mp.setIsAttention(1);
+						}else{
+							mp.setIsAttention(0);
+						}
+						
+						//返回是否收藏
+						Collect collect = new Collect();
+						collect.setUserId(Integer.parseInt(appUserId));
+						collect.setItemId(mp.getId());
+						collect.setType(2);
+						List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
+						if(null != collects && collects.size() > 0){
+							mp.setIsCollect(1);
+						}else{
+							mp.setIsCollect(0);
+						}
 					}
 				}
+				
+				
+				//已抢红包列表
+				MoneyDetail moneyDetail = new MoneyDetail();
+				moneyDetail.setItemId(mp.getId());
+				moneyDetail.setType(2);
+				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+				if(null != moneyDetails && moneyDetails.size() > 0){
+					for (MoneyDetail md : moneyDetails) {
+						if(null != md.getUserId()){
+							AppUser appUser = appUserService.findAppUserById(md.getUserId());
+							if(null != appUser){
+								md.setAppUser(appUser);
+							}
+						}
+					}
+					mp.setMoneyDetails(moneyDetails);
+				}
 			}
-			returnObject.setPage(page);
-			returnObject.setData(dataList);
-			returnObject.setQueryBean(mediaPackage);
 		}
+		returnObject.setPage(page);
+		returnObject.setData(dataList);
+		returnObject.setQueryBean(mediaPackage);
 		return returnObject;
 	}
 
