@@ -142,6 +142,18 @@ public class Card  extends BaseEntity {
 	private String userName;
 	
 	private List<RedCity> redCities;
+	
+	private Double sumMoney;
+	
+	@Transient
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+
 	@Transient
 	public List<RedCity> getRedCities() {
 		return redCities;

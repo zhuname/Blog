@@ -297,6 +297,7 @@ public class WithdrawController  extends BaseController {
 					moneyDetail.setMoney(withdraw.getMoney());
 					moneyDetail.setBalance(appUser.getBalance());
 					moneyDetail.setPayType(appUser.getWithdrawType());
+					moneyDetail.setItemId(Integer.parseInt(id));
 					moneyDetailService.save(moneyDetail);
 				}
 				

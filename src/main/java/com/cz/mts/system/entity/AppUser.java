@@ -150,7 +150,7 @@ public class AppUser  extends BaseEntity {
 	/**
 	 * 当前可领取次数
 	 */
-	private java.lang.Integer currentGetNum;
+	private java.lang.Integer currentLqNum;
 	/**
 	 * 当前可分享次数
 	 */
@@ -158,7 +158,7 @@ public class AppUser  extends BaseEntity {
 	/**
 	 * 可领取次数
 	 */
-	private java.lang.Integer getNum;
+	private java.lang.Integer lqNum;
 	/**
 	 * 可分享次数
 	 */
@@ -538,13 +538,13 @@ public class AppUser  extends BaseEntity {
 	public java.lang.Integer getWithdrawType() {
 		return this.withdrawType;
 	}
-	public void setCurrentGetNum(java.lang.Integer value) {
-		this.currentGetNum = value;
+	public void setCurrentLqNum(java.lang.Integer value) {
+		this.currentLqNum = value;
 	}
 	
-     @WhereSQL(sql="currentGetNum=:AppUser_currentGetNum")
-	public java.lang.Integer getCurrentGetNum() {
-		return this.currentGetNum;
+     @WhereSQL(sql="currentLqNum=:AppUser_currentLqNum")
+	public java.lang.Integer getCurrentLqNum() {
+		return this.currentLqNum;
 	}
 	public void setCurrentShareNum(java.lang.Integer value) {
 		this.currentShareNum = value;
@@ -554,13 +554,13 @@ public class AppUser  extends BaseEntity {
 	public java.lang.Integer getCurrentShareNum() {
 		return this.currentShareNum;
 	}
-	public void setGetNum(java.lang.Integer value) {
-		this.getNum = value;
+	public void setLqNum(java.lang.Integer value) {
+		this.lqNum = value;
 	}
 	
-     @WhereSQL(sql="getNum=:AppUser_getNum")
-	public java.lang.Integer getGetNum() {
-		return this.getNum;
+     @WhereSQL(sql="lqNum=:AppUser_lqNum")
+	public java.lang.Integer getLqNum() {
+		return this.lqNum;
 	}
 	public void setShareNum(java.lang.Integer value) {
 		this.shareNum = value;
@@ -618,9 +618,9 @@ public class AppUser  extends BaseEntity {
 			.append("户主手机号[").append(getOwnerPhone()).append("],")
 			.append("卡号/支付宝账号[").append(getCardNum()).append("],")
 			.append("1银行 2支付宝[").append(getWithdrawType()).append("],")
-			.append("当前可领取次数[").append(getCurrentGetNum()).append("],")
+			.append("当前可领取次数[").append(getCurrentLqNum()).append("],")
 			.append("当前可分享次数[").append(getCurrentShareNum()).append("],")
-			.append("可领取次数[").append(getGetNum()).append("],")
+			.append("可领取次数[").append(getLqNum()).append("],")
 			.append("可分享次数[").append(getShareNum()).append("],")
 			.append("是否关闭卡券手续费 0否 1是[").append(getIsCloseFee()).append("],")
 			.append("是否有信息更新 0否 1是[").append(getIsUpdate()).append("],")
