@@ -36,6 +36,24 @@ $(document).on("click", ".vid", function() {
     	}
 	});
 	
+	
+		$.ajax({
+           type: "post",
+           dataType: "json",
+           url: "/mts/system/mediapackage/tongji/json",
+           success: function (msg) {
+           	
+               $("#pay").html("支付金额："+msg.data+"元 ");
+           }
+    	 });
+		$.ajax({
+           type: "post",
+           dataType: "json",
+           url: "/mts/system/mediapackage/balance/json",
+           success: function (msg) {
+               $("#bal").html("剩余金额："+msg.data+"元,");
+           }
+    	 });
 
 </script>
 
@@ -62,9 +80,10 @@ $(document).on("click", ".vid", function() {
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
-
 </form>
 		</div>
+		<span style="float: right;" id="pay"></span>
+		<span style="float: right;" id="bal"></span>     
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/mediapackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/mediapackage/list/export');" class="btn  btn-sm  btn-primary">

@@ -470,7 +470,13 @@ public class AppUserController  extends BaseController {
 		// ==执行分页查询
 		
 		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null||appUser.getSinaNum()!=null){
-			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			
+			AppUser appUser2=new AppUser();
+			appUser2.setQqNum(appUser.getQqNum());
+			appUser2.setSinaNum(appUser.getSinaNum());
+			appUser2.setWxNum(appUser.getWxNum());
+			
+			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser2);
 			if(datas.size()>0){
 				returnObject.setData(datas.get(0));
 			}else{

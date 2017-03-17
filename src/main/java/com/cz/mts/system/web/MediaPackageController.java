@@ -3,13 +3,16 @@ package  com.cz.mts.system.web;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -254,8 +257,7 @@ public class MediaPackageController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
-			mediaPackageService.saveorupdate(mediaPackage);
+			mediaPackageService.update(mediaPackage,true);
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -494,4 +496,62 @@ public class MediaPackageController  extends BaseController {
 		return returnObject;
 	}
 
+	
+	/**
+	 * 
+	 * 后台统计接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param mediaPackage
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/tongji/json")
+	public @ResponseBody
+	ReturnDatas tongjijson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder=new Finder("SELECT SUM(payMoney) FROM t_media_package ;");
+
+		Double sum=mediaPackageService.queryForObject(finder, Double.class);
+		
+		if(sum==null){
+			sum=0.0;
+		}
+		
+		returnObject.setData(sum);
+		
+		return returnObject;
+	}
+	
+	/**
+	 * 
+	 * 后台统计接口
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param mediaPackage
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/balance/json")
+	public @ResponseBody
+	ReturnDatas balancejson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder=new Finder("SELECT SUM(balance) FROM t_media_package ;");
+		
+		Double sum=mediaPackageService.queryForObject(finder, Double.class);
+		
+		
+		if(sum==null){
+			sum=0.0;
+		}
+		
+		returnObject.setData(sum);
+		
+		return returnObject;
+	}
+	
+	
+	
 }
