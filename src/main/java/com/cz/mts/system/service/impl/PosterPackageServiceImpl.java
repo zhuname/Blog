@@ -253,6 +253,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				Double money = new Double(String.valueOf(pp.getSumMoney())) ;
 				lp.setMoney(money);
 				lp.setPackageId(Integer.valueOf(packageId));
+				lposterPackageService.save(lp) ;
 			}else {
 				//开始分小红包
 				long[] moneys = generate(pp.getSumMoney().longValue() * 100, pp.getLqNum(), pp.getSumMoney().longValue() * 100, 1) ;
@@ -271,7 +272,6 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			//如果没有异常，就往redis中存放
 			//获取jedis客户端
 			Jedis jedis = (Jedis) redisConnectionFactory.getConnection().getNativeConnection() ;
-			HashMap<String, String> map = new HashMap<>() ;
 			jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageL+packageId) ;  //待抢小红包
 			jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedList +packageId) ;  //已抢小红包List
 			jedis.sadd(GlobalStatic.posterPackage, GlobalStatic.posterPackageConsumedMap +packageId) ;  //已抢小红包Map
