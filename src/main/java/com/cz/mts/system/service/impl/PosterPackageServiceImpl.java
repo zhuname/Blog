@@ -247,19 +247,27 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
 			
-			//开始分小红包
-			long[] moneys = generate(pp.getSumMoney().longValue() * 100, pp.getLqNum(), pp.getSumMoney().longValue() * 100, 1) ;
-			List<LposterPackage> list = new ArrayList<>() ;
-			for (int i = 0; i < moneys.length; i++) {
+			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
+			if(pp.getLqNum() != null && pp.getLqNum() == 1){
 				LposterPackage lp = new LposterPackage();
-				Double money = new Double(String.valueOf(moneys[i])) ;
-				lp.setMoney(money/100);
+				Double money = new Double(String.valueOf(pp.getSumMoney())) ;
+				lp.setMoney(money);
 				lp.setPackageId(Integer.valueOf(packageId));
-				
-				list.add(lp) ;
+			}else {
+				//开始分小红包
+				long[] moneys = generate(pp.getSumMoney().longValue() * 100, pp.getLqNum(), pp.getSumMoney().longValue() * 100, 1) ;
+				List<LposterPackage> list = new ArrayList<>() ;
+				for (int i = 0; i < moneys.length; i++) {
+					LposterPackage lp = new LposterPackage();
+					Double money = new Double(String.valueOf(moneys[i])) ;
+					lp.setMoney(money/100);
+					lp.setPackageId(Integer.valueOf(packageId));
+					
+					list.add(lp) ;
+				}
+				//批量保存小红包
+				lposterPackageService.save(list) ;
 			}
-			//批量保存小红包
-			lposterPackageService.save(list) ;
 			//如果没有异常，就往redis中存放
 			//获取jedis客户端
 			Jedis jedis = (Jedis) redisConnectionFactory.getConnection().getNativeConnection() ;
