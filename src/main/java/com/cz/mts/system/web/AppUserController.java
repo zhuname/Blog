@@ -192,9 +192,7 @@ public class AppUserController  extends BaseController {
 					 if(medal!=null){
 						 userMedal2.setMedal(medal);
 					 }
-					 
 				 }
-				 
 			 }
 			 if(null != userMedals && userMedals.size() > 0){
 				 appUser.setUserMedals(userMedals);
@@ -269,6 +267,11 @@ public class AppUserController  extends BaseController {
 								appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 								appUser.setCreateTime(new Date());
 								appUser.setIsBlack(0);
+								appUser.setCurrentLqNum(1);
+								appUser.setCurrentShareNum(1);
+								appUser.setLqNum(1);
+								appUser.setShareNum(1);
+								appUser.setIsUpdate(0);
 								Object id = appUserService.saveorupdate(appUser);
 								
 								returnObject.setData(appUserService.findById(id, AppUser.class));
@@ -277,23 +280,53 @@ public class AppUserController  extends BaseController {
 					}
 				}
 			}else{
-				if(StringUtils.isNotBlank(appUser.getPassword())){
-					
-					//判断该密码在密码表中是否存在
-					Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
-					finder.setParam("mdBeforePass", appUser.getPassword());
-					List<Map<String, Object>> list = passwordService.queryForList(finder);
-					if(list.isEmpty()){
-						//向password表中插入数据
-						Password password = new Password();
-						password.setMdBeforePass(appUser.getPassword());
-						password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-						passwordService.save(password);
+				AppUser aUser = appUserService.findAppUserById(appUser.getId());
+				if(aUser != null){
+					if(StringUtils.isNotBlank(appUser.getPassword())){
+						//判断该密码在密码表中是否存在
+						Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+						finder.setParam("mdBeforePass", appUser.getPassword());
+						List<Map<String, Object>> list = passwordService.queryForList(finder);
+						if(list.isEmpty()){
+							//向password表中插入数据
+							Password password = new Password();
+							password.setMdBeforePass(appUser.getPassword());
+							password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+							passwordService.save(password);
+						}
+						aUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 					}
-					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					
+					//判断该用户是否绑定qq
+					if(StringUtils.isNotBlank(appUser.getQqNum())){
+						if(StringUtils.isNotBlank(aUser.getQqNum()) && !(aUser.getQqNum()).equals(appUser.getQqNum())){
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage("该用户已经绑定qq");
+						}
+					}
+					
+					//判断该用户是否绑定微信
+					if(StringUtils.isNotBlank(appUser.getWxNum())){
+						if(StringUtils.isNotBlank(aUser.getWxNum()) && !(aUser.getWxNum()).equals(appUser.getWxNum())){
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage("该用户已经绑定微信");
+						}
+					}
+					
+					//判断该用户是否绑定微博
+					if(StringUtils.isNotBlank(appUser.getSinaNum())){
+						if(StringUtils.isNotBlank(aUser.getSinaNum()) && !(aUser.getSinaNum()).equals(appUser.getSinaNum())){
+							returnObject.setStatus(ReturnDatas.ERROR);
+							returnObject.setMessage("该用户已经绑定微博");
+						}
+					}
+					
+					appUserService.update(aUser,true);
+					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("该用户不存在");
 				}
-				appUserService.update(appUser,true);
-				returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -484,6 +517,11 @@ public class AppUserController  extends BaseController {
 				returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 				try {
 					appUser.setIsBlack(0);
+					appUser.setCurrentLqNum(1);
+					appUser.setCurrentShareNum(1);
+					appUser.setLqNum(1);
+					appUser.setShareNum(1);
+					appUser.setIsUpdate(0);
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
 				} catch (Exception e) {
@@ -787,7 +825,11 @@ public class AppUserController  extends BaseController {
 			Finder finder = new Finder("SELECT f.*,COUNT(uc.id) as totalUserCard FROM(SELECT e.*,COUNT(um.id) as totalMedal FROM(SELECT d.*,COUNT(`at`.id) AS totalAttention FROM (SELECT c.*,COUNT(co.id) as totalCollect FROM(SELECT b.*,COUNT(ca.id) as totalCard FROM (SELECT a.*,COUNT(pp.id) AS totalPoster FROM(SELECT au.balance ,COUNT(mp.id) as totalMedia,au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId=au.id WHERE au.id=:id) a LEFT JOIN t_poster_package pp ON pp.userId = a.id )b LEFT JOIN t_card ca ON ca.userId=b.id)c LEFT JOIN t_collect co ON co.userId=c.id)d LEFT JOIN t_attention at ON `at`.userId=d.id)e LEFT JOIN t_user_medal um ON um.userId=e.id)f LEFT JOIN t_user_card uc ON uc.userId=f.id AND uc.`status` != 0;");
 			finder.setParam("id", appUser.getId());
 			List datas = appUserService.queryForList(finder);
-			returnObject.setData(datas);
+			Object object = new Object();
+			if(null != datas && datas.size() > 0){
+				object = datas.get(0);
+			}
+			returnObject.setData(object);
 		}
 		return returnObject;
 	}

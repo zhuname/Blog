@@ -43,9 +43,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 2:
-				JPushUtil.sendJPushNotification("您发布的红包已被人领取哦，请及时关注领取动态", type+"", id, userId, null);
+				JPushUtil.sendJPushNotification("您发布的视频红包已被人领取哦，请及时关注领取动态", type+"", id, userId, null);
 				try {
-					message=new Message(null, 2, userId, new Date(), extend[0], id, "您发布的红包已被人领取哦，请及时关注领取动态", 0, "红包领取", 2);
+					message=new Message(null, 2, userId, new Date(), extend[0], id, "您发布的视频红包已被人领取哦，请及时关注领取动态", 0, "红包领取", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -53,9 +53,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 3:
-				JPushUtil.sendJPushNotification("您发布的红包已被领取结束，您可操作再次发放或查看红包领取情况", type+"", id, userId, null);
+				JPushUtil.sendJPushNotification("您发布的视频红包已被领取结束，您可操作再次发放或查看红包领取情况", type+"", id, userId, null);
 				try {
-					message=new Message(null, 3, userId, new Date(), "您发布的红包已被领取结束，您可操作再次发放或查看红包领取情况", id, "", 0, "红包领取完", 2);
+					message=new Message(null, 3, userId, new Date(), "您发布的视频红包已被领取结束，您可操作再次发放或查看红包领取情况", id, "", 0, "红包领取完", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -83,14 +83,14 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			case 8:
-				JPushUtil.sendJPushNotification("您发布的信息审核失败，请及时查看原因并进行修改，然后再次提交", type+"", id, userId, null);
-				message=new Message(null, 8, userId, new Date(), "您发布的信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
+				JPushUtil.sendJPushNotification("您发布的视频信息审核失败，请及时查看原因并进行修改，然后再次提交", type+"", id, userId, null);
+				message=new Message(null, 8, userId, new Date(), "您发布的视频信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
 				messageService.save(message);
 			break;
 			case 9:
-				JPushUtil.sendJPushNotification("您发布的信息审核成功，已经发布上线，感谢您的配合", type+"", id, userId, null);
+				JPushUtil.sendJPushNotification("您发布的视频信息审核成功，已经发布上线，感谢您的配合", type+"", id, userId, null);
 				try {
-					message=new Message(null, 9, userId, new Date(), "您发布的信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
+					message=new Message(null, 9, userId, new Date(), "您发布的视频信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -122,6 +122,58 @@ public class NotificationServiceImpl implements NotificationService {
 				message = new Message(null, 14, userId, new Date(), "您的卡券已被使用，如非本人操作，请及时联系客服", id, null, 0, "卡券兑换信息", 2);
 				messageService.save(message);
 			break;
+			case 15:
+				JPushUtil.sendJPushNotification("您发布的海报红包已被人领取哦，请及时关注领取动态", type+"", id, userId, null);
+				try {
+					message=new Message(null, 15, userId, new Date(), extend[0], id, "您发布的海报红包已被人领取哦，请及时关注领取动态", 0, "红包领取", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 16:
+				JPushUtil.sendJPushNotification("您发布的海报红包已被领取结束，您可操作再次发放或查看红包领取情况", type+"", id, userId, null);
+				try {
+					message=new Message(null, 3, userId, new Date(), "您发布的海报红包已被领取结束，您可操作再次发放或查看红包领取情况", id, "", 0, "红包领取完", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			
+			case 17:
+				JPushUtil.sendJPushNotification("您发布的海报信息审核失败，请及时查看原因并进行修改，然后再次提交", type+"", id, userId, null);
+				message=new Message(null, 8, userId, new Date(), "您发布的海报信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
+				messageService.save(message);
+			break;
+			case 18:
+				JPushUtil.sendJPushNotification("您发布的卡券信息审核失败，请及时查看原因并进行修改，然后再次提交", type+"", id, userId, null);
+				message=new Message(null, 8, userId, new Date(), "您发布的卡券信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
+				messageService.save(message);
+			break;
+			case 19:
+				JPushUtil.sendJPushNotification("您发布的海报信息审核成功，已经发布上线，感谢您的配合", type+"", id, userId, null);
+				try {
+					message=new Message(null, 9, userId, new Date(), "您发布的海报信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 20:
+				JPushUtil.sendJPushNotification("您发布的卡券信息审核成功，已经发布上线，感谢您的配合", type+"", id, userId, null);
+				try {
+					message=new Message(null, 9, userId, new Date(), "您发布的卡券信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
