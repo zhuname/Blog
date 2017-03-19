@@ -24,6 +24,7 @@ import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
+import com.cz.mts.frame.util.JsonUtils;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
@@ -31,6 +32,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
+import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
@@ -438,7 +440,8 @@ public class PosterPackageController  extends BaseController {
 					result.setMessage(data);
 					result.setStatus(ReturnDatas.ERROR);
 				}else {
-					result.setData(data);
+					LposterPackage lpp = JsonUtils.readValue(data, LposterPackage.class) ;
+					result.setData(lpp);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

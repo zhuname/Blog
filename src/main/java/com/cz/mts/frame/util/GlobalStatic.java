@@ -89,6 +89,15 @@ public class GlobalStatic {
 	//已抢到红包的用户map，后边append大红包的id
 	public static final String posterPackageConsumedMap = "pPackageCM_" ;
 	
+	//视频红包
+	public static final String mediaPackage = "mediaPackage" ;
+	//待抢小红包队列（剩余待抢的红包队列），后边append大红包的id
+	public static final String mediaPackageL = "mPackageL_" ;
+	//已消费队列，后边append大红包的id
+	public static final String mediaPackageConsumedList = "mPackageCL_" ;
+	//已抢到红包的用户map，后边append大红包的id
+	public static final String mediaPackageConsumedMap = "mPackageCM_" ;
+	
 //  -- 函数：尝试获得红包，如果成功，则返回json字符串，如果不成功，则返回空  
 //  -- 参数：红包队列名， 已消费的队列名，去重的Map名，用户ID  
 //  -- 返回值：nil 或者 json字符串，包含用户ID：userId，红包ID：id，红包金额：money
