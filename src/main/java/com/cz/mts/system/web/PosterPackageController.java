@@ -520,6 +520,12 @@ public class PosterPackageController  extends BaseController {
 						redCityService.save(redCity);
 					}
 					
+				}else{
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(1);
+					redCityService.save(redCity);
 				}
 				
 				

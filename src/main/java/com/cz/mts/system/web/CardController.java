@@ -318,7 +318,8 @@ public class CardController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
+	 * 发布卡券
+	 * @author wml
 	 * 
 	 */
 	@RequestMapping("/update/json")
@@ -363,10 +364,16 @@ public class CardController  extends BaseController {
 						RedCity redCity=new RedCity();
 						redCity.setCityId(Integer.parseInt(string));
 						redCity.setPackageId(Integer.parseInt(id.toString()));
-						redCity.setType(1);
+						redCity.setType(3);
 						redCityService.save(redCity);
 					}
 					
+				}else{
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(3);
+					redCityService.save(redCity);
 				}
 				returnObject.setData(cardService.findCardById(id));
 			}else{

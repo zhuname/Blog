@@ -138,6 +138,8 @@ public class Card  extends BaseEntity {
 	
 	private java.lang.String location;
 	
+	private java.lang.Integer cityId;
+	
 	private String categoryName;
 	private String userName;
 	
@@ -145,6 +147,16 @@ public class Card  extends BaseEntity {
 	
 	private Double sumMoney;
 	
+	
+	@Transient
+	public java.lang.Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(java.lang.Integer cityId) {
+		this.cityId = cityId;
+	}
+
 	@Transient
 	public Double getSumMoney() {
 		return sumMoney;

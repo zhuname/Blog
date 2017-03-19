@@ -299,7 +299,7 @@ public class AppUserController  extends BaseController {
 							password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 							passwordService.save(password);
 						}
-						aUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 					}
 					
 					//判断该用户是否绑定qq
@@ -326,7 +326,7 @@ public class AppUserController  extends BaseController {
 						}
 					}
 					
-					appUserService.update(aUser,true);
+					appUserService.update(appUser,true);
 					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
