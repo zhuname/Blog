@@ -135,7 +135,7 @@ public class UserCardController  extends BaseController {
 			}
 		}
 		
-			returnObject.setQueryBean(userCard);
+		returnObject.setQueryBean(userCard);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;

@@ -1,6 +1,7 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -126,7 +127,7 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 						appUserRecord.setWxAccount(withdraw.getCardNum());
 						appUserRecord.setWxPhone(withdraw.getOwnerPhone());
 					}
-					appUserRecord.setBalance(appUserRecord.getBalance() - withdraw.getMoney());
+					appUserRecord.setBalance(new BigDecimal(appUserRecord.getBalance()).subtract(new BigDecimal(withdraw.getMoney())).doubleValue());
 					appUserRecord.setFrozeBanlance(withdraw.getMoney());
 					appUserService.update(appUserRecord);
 					withdraw.setCreateTime(new Date());
@@ -139,9 +140,9 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 					if(null != sysparams && sysparams.size() > 0){
 						sysSysparam = sysparams.get(0);
 					}
-					Double factorage = Double.parseDouble(sysSysparam.getValue()) * withdraw.getMoney();
+					Double factorage = new BigDecimal(sysSysparam.getValue()).multiply(new BigDecimal(withdraw.getMoney())).doubleValue();
 					//实际到账金额
-					Double realMoney = withdraw.getMoney() - factorage;
+					Double realMoney = new BigDecimal(withdraw.getMoney()).subtract(new BigDecimal(factorage)).doubleValue();
 					withdraw.setFactorage(factorage);
 					withdraw.setRealMoney(realMoney);
 					saveorupdate(withdraw);

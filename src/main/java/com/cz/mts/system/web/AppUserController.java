@@ -41,6 +41,7 @@ import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.system.service.ISmsService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -65,6 +66,10 @@ public class AppUserController  extends BaseController {
 	private IMedalService medalService;
 	@Resource
 	private IApplyMedalService applyMedalService;
+	@Resource
+	private NotificationService notificationService;
+	
+	
 	private String listurl="/appuser/appuserList";
 	
 	@Resource
@@ -904,6 +909,8 @@ public class AppUserController  extends BaseController {
 							applyMedal.setIntroduction("后台赋予");
 							applyMedalService.save(applyMedal);
 							
+							//给该用户发推送
+							notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
 						}
 					}
 				}

@@ -539,10 +539,7 @@ public class MediaPackageController  extends BaseController {
 	ReturnDatas balancejson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Finder finder=new Finder("SELECT SUM(balance) FROM t_media_package ;");
-		
 		Double sum=mediaPackageService.queryForObject(finder, Double.class);
-		
-		
 		if(sum==null){
 			sum=0.0;
 		}
