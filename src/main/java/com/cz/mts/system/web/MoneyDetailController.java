@@ -63,7 +63,7 @@ public class MoneyDetailController  extends BaseController {
 	@Resource
 	private IWithdrawService withdrawService;
 	
-	private String listurl="/system/moneydetail/moneydetailList";
+	private String listurl="/moneydetail/moneydetailList";
 	
 	
 	   
@@ -122,7 +122,7 @@ public class MoneyDetailController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/moneydetail/moneydetailLook";
+		return "/moneydetail/moneydetailLook";
 	}
 
 	
@@ -178,7 +178,7 @@ public class MoneyDetailController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/moneydetail/moneydetailCru";
+		return "/moneydetail/moneydetailCru";
 	}
 	
 	/**
@@ -369,6 +369,14 @@ public class MoneyDetailController  extends BaseController {
 		Page page = new Page();
 		returnObject = moneyDetailService.rechargeStatics(moneyDetail, page);
 		return returnObject;
+	}
+	
+	@RequestMapping("recharge/result")
+	public String rechargeResult(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
+			throws Exception {
+		ReturnDatas returnObject = rechargeStatics(request, model, moneyDetail);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/moneydetail/moneydetailStatics";
 	}
 	
 
