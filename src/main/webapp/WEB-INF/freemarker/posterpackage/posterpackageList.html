@@ -45,7 +45,7 @@ function checkRefuse(id){
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
-					myhref("${ctx}/system/card/list")
+					myhref("${ctx}/system/posterpackage/list")
 					return false;
 				} else {
 					myalert("审核失败");
@@ -174,7 +174,7 @@ function checkRefuse(id){
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?id=${(_data.id)!''}','${ctx}/system/card/list');">
+                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	
