@@ -94,8 +94,20 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String reason;
 	
+	private String userName;
 	
 	
+	
+	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Transient
 	public String getReason() {
 		return reason;

@@ -30,6 +30,8 @@
 				rollback-for="Exception" />
 			<tx:method name="delete*" propagation="REQUIRED"   isolation="READ_UNCOMMITTED"  timeout="3600"
 				rollback-for="Exception" />
+			<tx:method name="*" propagation="REQUIRED"   isolation="READ_UNCOMMITTED"  timeout="3600"
+				rollback-for="Exception" />
 		</tx:attributes>
 	</tx:advice>
 

@@ -18,7 +18,7 @@ public class SysParamBean implements Serializable {
 	private String appVersionNumber ;
 	private String businessPhone ;
 	private String chargePercent ;
-	private String getPackageRule ;
+	private String packageRule ;
 	private String imgHardAddress ;
 	private String kefuphone ;
 	private String mediaHint ;
@@ -97,11 +97,11 @@ public class SysParamBean implements Serializable {
 	public void setChargePercent(String chargePercent) {
 		this.chargePercent = chargePercent;
 	}
-	public String getGetPackageRule() {
-		return getPackageRule;
+	public String getPackageRule() {
+		return packageRule;
 	}
-	public void setGetPackageRule(String getPackageRule) {
-		this.getPackageRule = getPackageRule;
+	public void setPackageRule(String packageRule) {
+		this.packageRule = packageRule;
 	}
 	public String getImgHardAddress() {
 		return imgHardAddress;

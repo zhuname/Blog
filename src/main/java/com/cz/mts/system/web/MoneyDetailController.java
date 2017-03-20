@@ -333,6 +333,15 @@ public class MoneyDetailController  extends BaseController {
 		return returnObject;
 	}
 	
+	/**
+	 * 统计已领红包金额和已领总人数
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param moneyDetail
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/statics/json")
 	@SecurityApi
 	public @ResponseBody
@@ -340,6 +349,25 @@ public class MoneyDetailController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Page page = newPage(request);
 		returnObject = moneyDetailService.statics(moneyDetail, page);
+		return returnObject;
+	}
+	
+	
+	/**
+	 * 充值统计
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param moneyDetail
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("recharge/statics")
+	public @ResponseBody
+	ReturnDatas rechargeStatics(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Page page = new Page();
+		returnObject = moneyDetailService.rechargeStatics(moneyDetail, page);
 		return returnObject;
 	}
 	

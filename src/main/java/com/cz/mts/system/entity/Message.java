@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -225,6 +226,25 @@ public class Message  extends BaseEntity {
 			.append(getId(),other.getId())
 			.isEquals();
 	}
+
+	public Message(Integer id, Integer pushType, Integer userId,
+			Date createTime, String content, Integer itemId, String url,
+			Integer isRead, String name, Integer type) {
+		super();
+		this.id = id;
+		this.pushType = pushType;
+		this.userId = userId;
+		this.createTime = createTime;
+		this.content = content;
+		this.itemId = itemId;
+		this.url = url;
+		this.isRead = isRead;
+		this.name = name;
+		this.type = type;
+	}
+	
+	
+	
 }
 
 	

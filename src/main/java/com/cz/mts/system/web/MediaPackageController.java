@@ -406,17 +406,18 @@ public class MediaPackageController  extends BaseController {
 							RedCity redCity=new RedCity();
 							redCity.setCityId(Integer.parseInt(string));
 							redCity.setPackageId(Integer.parseInt(id.toString()));
-							redCity.setType(1);
+							redCity.setType(2);
 							redCityService.save(redCity);
 						}
 					
-				}else {
+				}else{
 					RedCity redCity=new RedCity();
 					redCity.setCityId(0);
 					redCity.setPackageId(Integer.parseInt(id.toString()));
 					redCity.setType(2);
 					redCityService.save(redCity);
 				}
+				
 				
 			}else{
 				
@@ -545,10 +546,7 @@ public class MediaPackageController  extends BaseController {
 	ReturnDatas balancejson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Finder finder=new Finder("SELECT SUM(balance) FROM t_media_package ;");
-		
 		Double sum=mediaPackageService.queryForObject(finder, Double.class);
-		
-		
 		if(sum==null){
 			sum=0.0;
 		}
@@ -556,6 +554,48 @@ public class MediaPackageController  extends BaseController {
 		returnObject.setData(sum);
 		
 		return returnObject;
+	}
+	
+	/**
+	 * 抢红包
+	 * @param request
+	 * @param model
+	 * @param id 红包id
+	 * @param userId  操作人id
+	 * @return
+	 * @author wxy
+	 * @date 2017年2月28日
+	 */
+	@RequestMapping("/snatch/json")
+	@SecurityApi
+	public @ResponseBody 
+	ReturnDatas snatchjson(HttpServletRequest request, Model model,String id,String userId,String osType,String command){
+		
+		ReturnDatas result =  new ReturnDatas(ReturnDatas.SUCCESS,
+				MessageUtils.UPDATE_SUCCESS);
+		
+		if(StringUtils.isBlank(id) || StringUtils.isBlank(userId)) {
+			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;
+		}else {
+			
+			try {
+				String data =  (String) mediaPackageService.snatch(userId, id,osType,command) ;
+				if(data.indexOf("{") == -1 ){  //说明是个错误结果
+					result.setMessage(data);
+					result.setStatus(ReturnDatas.ERROR);
+				}else {
+					result.setData(data);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result.setStatus(ReturnDatas.ERROR);
+				result.setMessage("系统异常");
+			}
+			
+			return result ;
+		}
+		
 	}
 	
 	

@@ -2,7 +2,6 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,9 +16,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Share;
-import com.cz.mts.system.service.IShareService;
-import com.cz.mts.frame.annotation.SecurityApi;
+import com.cz.mts.system.entity.LmediaPackage;
+import com.cz.mts.system.service.ILmediaPackageService;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -31,16 +29,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 15:17:28
- * @see com.cz.mts.system.web.Share
+ * @version  2017-03-17 21:28:32
+ * @see com.cz.mts.system.web.LmediaPackage
  */
 @Controller
-@RequestMapping(value="/system/share")
-public class ShareController  extends BaseController {
+@RequestMapping(value="/lmediapackage")
+public class LmediaPackageController  extends BaseController {
 	@Resource
-	private IShareService shareService;
+	private ILmediaPackageService lmediaPackageService;
 	
-	private String listurl="/share/shareList";
+	private String listurl="/system/lmediapackage/lmediapackageList";
 	
 	
 	   
@@ -49,14 +47,14 @@ public class ShareController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param share
+	 * @param lmediaPackage
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Share share) 
+	public String list(HttpServletRequest request, Model model,LmediaPackage lmediaPackage) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, share);
+		ReturnDatas returnObject = listjson(request, model, lmediaPackage);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -66,31 +64,31 @@ public class ShareController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param share
+	 * @param lmediaPackage
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Share share) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,LmediaPackage lmediaPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Share> datas=shareService.findListDataByFinder(null,page,Share.class,share);
-			returnObject.setQueryBean(share);
+		List<LmediaPackage> datas=lmediaPackageService.findListDataByFinder(null,page,LmediaPackage.class,lmediaPackage);
+			returnObject.setQueryBean(lmediaPackage);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Share share) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,LmediaPackage lmediaPackage) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = shareService.findDataExportExcel(null,listurl, page,Share.class,share);
-		String fileName="share"+GlobalStatic.excelext;
+		File file = lmediaPackageService.findDataExportExcel(null,listurl, page,LmediaPackage.class,lmediaPackage);
+		String fileName="lmediaPackage"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
@@ -102,7 +100,7 @@ public class ShareController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/share/shareLook";
+		return "/system/lmediapackage/lmediapackageLook";
 	}
 
 	
@@ -117,8 +115,8 @@ public class ShareController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Share share = shareService.findShareById(id);
-		   returnObject.setData(share);
+		  LmediaPackage lmediaPackage = lmediaPackageService.findLmediaPackageById(id);
+		   returnObject.setData(lmediaPackage);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -129,19 +127,18 @@ public class ShareController  extends BaseController {
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
-	 * 分享接口
 	 * 
 	 */
-	@RequestMapping("/update/json")
-	@SecurityApi
+	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdatejson(Model model,Share share,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,LmediaPackage lmediaPackage,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			share.setIsNum(0);
-			share.setShareTime(new Date());
-			shareService.saveorupdate(share);
+		
+		
+			lmediaPackageService.saveorupdate(lmediaPackage);
+			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -159,7 +156,7 @@ public class ShareController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/share/shareCru";
+		return "/system/lmediapackage/lmediapackageCru";
 	}
 	
 	/**
@@ -174,7 +171,7 @@ public class ShareController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				shareService.deleteById(id,Share.class);
+				lmediaPackageService.deleteById(id,LmediaPackage.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -206,7 +203,7 @@ public class ShareController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			shareService.deleteByIds(ids,Share.class);
+			lmediaPackageService.deleteByIds(ids,LmediaPackage.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);
