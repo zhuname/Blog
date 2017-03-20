@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.print.attribute.standard.Media;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
@@ -24,6 +26,8 @@ import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -42,6 +46,10 @@ import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 @Service("appUserService")
 public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAppUserService {
 
+	@Resource
+	private ICardService cardService;
+	@Resource
+	private NotificationService notificationService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -240,6 +248,17 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			
 			super.update(cards, true);
 			
+			//更新card中的convertNum字段
+			Card card = cardService.findCardById(cards.get(0).getCardId());
+			if(null != card){
+				card.setConvertNum(card.getConvertNum()-cards.size());
+				cardService.update(card, true);
+				
+				if(0 == card.getConvertNum()){
+					notificationService.notify(5, card.getId(), card.getUserId());
+				}
+			}
+			
 			
 			break;
 		}
@@ -374,6 +393,18 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					}
 					
 					super.update(cards, true);
+					
+					
+					//更新card中的convertNum字段
+					Card card = cardService.findCardById(cards.get(0).getCardId());
+					if(null != card){
+						card.setConvertNum(card.getConvertNum()-cards.size());
+						cardService.update(card, true);
+						
+						if(0 == card.getConvertNum()){
+							notificationService.notify(5, card.getId(), card.getUserId());
+						}
+					}
 					
 					
 					break;

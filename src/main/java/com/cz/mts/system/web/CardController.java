@@ -564,6 +564,11 @@ public class CardController  extends BaseController {
 			//给发布人发推送
 			notificationService.notify(4, card.getId(), card.getUserId());
 			
+			
+			//给自己发推送
+			notificationService.notify(14, userCard.getId(), userCard.getUserId());
+			
+			
 			//手续费比例
 			BigDecimal cardCharge=new BigDecimal(0.0);
 			

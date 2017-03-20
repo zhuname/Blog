@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Share;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IShareService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -39,6 +41,8 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class ShareController  extends BaseController {
 	@Resource
 	private IShareService shareService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/share/shareList";
 	
@@ -139,9 +143,31 @@ public class ShareController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			share.setIsNum(0);
-			share.setShareTime(new Date());
-			shareService.saveorupdate(share);
+			if(null == share.getUserId() || null == share.getShareType()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+			}else{
+				//查询appUser表中的信息
+				AppUser appUser = appUserService.findAppUserById(share.getUserId());
+				if(null != appUser){
+					if(null != appUser.getCurrentShareNum()){
+						if(appUser.getCurrentShareNum() > 0){
+							//向share表中加入记录
+							share.setShareTime(new Date());
+							shareService.saveorupdate(share);
+							
+							//更新appUser表中的当前可领取次数字段
+							appUser.setCurrentShareNum(appUser.getCurrentShareNum());
+							appUserService.update(appUser);
+						}
+					}
+					
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("该用户不存在");
+				}
+			}
+			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

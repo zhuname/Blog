@@ -357,7 +357,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						MoneyDetail md = new MoneyDetail();
 						md.setCreateTime(new Date());
 						md.setUserId(_userId);
-						md.setType(1);  //海报红包
+						md.setType(2);  //海报红包
 						md.setMoney(lpp.getMoney());
 						md.setBalance(nowBalance.doubleValue());
 						md.setItemId(lpp.getPackageId());
