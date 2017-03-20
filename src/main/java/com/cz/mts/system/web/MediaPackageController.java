@@ -410,6 +410,12 @@ public class MediaPackageController  extends BaseController {
 							redCityService.save(redCity);
 						}
 					
+				}else {
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(2);
+					redCityService.save(redCity);
 				}
 				
 			}else{

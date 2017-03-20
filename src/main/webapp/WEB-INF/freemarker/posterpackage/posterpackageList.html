@@ -35,7 +35,25 @@ function deletePosterPackage(){
            }
     	 });
 
-
+function checkRefuse(id){
+	var reason = prompt("请填写拒绝原因:","");
+	if(reason == null || reason == ""){
+		myalert("请输入拒绝原因");
+		return;
+	}
+	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type=0},
+			function(_json) {
+				if (_json.status == "success") {
+					myalert("审核成功");
+					myhref("${ctx}/system/card/list")
+					return false;
+				} else {
+					myalert("审核失败");
+					return false;
+				}
+	});
+	
+}
 
 
 </script>
@@ -153,6 +171,20 @@ function deletePosterPackage(){
                                                 onclick="mydelete('${ctx}/system/posterpackage/delete/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
+                                        
+                                        
+                                        <#if (_data.status) == 1>
+                                            <button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?id=${(_data.id)!''}','${ctx}/system/card/list');">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
+                                        
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">

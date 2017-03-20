@@ -361,6 +361,12 @@ public class CardController  extends BaseController {
 						redCityService.save(redCity);
 					}
 					
+				}else {
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(3);
+					redCityService.save(redCity);
 				}
 				returnObject.setData(cardService.findCardById(id));
 			}else{
