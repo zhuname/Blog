@@ -195,7 +195,7 @@ $(document).on("click", ".vid", function() {
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
+                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	
