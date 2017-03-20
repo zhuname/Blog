@@ -41,7 +41,7 @@ function checkRefuse(id){
 		myalert("请输入拒绝原因");
 		return;
 	}
-	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type=0},
+	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type: 0},
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -139,7 +139,6 @@ function checkRefuse(id){
 						<th id="th_expTime" >过期时间</th>
 						<th id="th_failTime" >失败时间</th>
 						<th id="th_succTime" >审核通过时间</th>
-						<th id="th_endTime" >抢完时间</th>
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_num" >剩余待抢次数</th>

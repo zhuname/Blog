@@ -42,22 +42,10 @@
                     <!--first_start_export-->
                     <thead>
                     <tr>
-                        <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
-                        <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >用户id</th>
-						<th id="th_createTime" >创建时间</th>
-						<th id="th_type" >类型</th>
-						<th id="th_money" >变动金额</th>
+						<th id="th_userId" >充值人</th>
+						<th id="th_money" >充值金额</th>
 						<th id="th_balance" >剩余金额</th>
-						<th id="th_itemId" >目标id</th>
-						<th id="th_osType" >操作系统</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -69,72 +57,15 @@
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <div class="hidden-md hidden-lg">
-                                        <div class="inline position-relative">
-                                            <button class="btn btn-minier btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" data-position="auto">
-                                                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-	                                          <li>
-													<a  href="javascript:myhref('${ctx}/moneydetail/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
-														<span class="blue">
-															<i class="ace-icon fa fa-search-plus bigger-120"></i>
-														</span>
-													</a>
-											  </li>	
-                                                <li>
-                                                    <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/moneydetail/update/pre?id=${(_data.id)!''}');"
-                                                       class="tooltip-success" data-rel="tooltip" title="">
-																		<span class="green">
-																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																		</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/moneydetail/delete?id=${(_data.id)!''}','${ctx}/moneydetail/list');"
-                                                       class="tooltip-error" data-rel="tooltip" title="">
-																		<span class="red">
-																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																		</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td>
-                                <!--end_no_export-->
 
 							<td >
-								${(_data.userId)!0}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
-								${(_data.type)!0}
+								${(_data.userName)!''}
 							</td>
 							<td >
 								${(_data.money)!0}
 							</td>
 							<td >
 								${(_data.balance)!0}
-							</td>
-							<td >
-								${(_data.itemId)!0}
-							</td>
-							<td >
-								${(_data.osType)!''}
 							</td>
 						</tr>
 					</#list>

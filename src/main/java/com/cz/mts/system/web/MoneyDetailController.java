@@ -362,7 +362,7 @@ public class MoneyDetailController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("recharge/statics")
+	@RequestMapping("/recharge/statics")
 	public @ResponseBody
 	ReturnDatas rechargeStatics(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -371,7 +371,7 @@ public class MoneyDetailController  extends BaseController {
 		return returnObject;
 	}
 	
-	@RequestMapping("recharge/result")
+	@RequestMapping("/recharge/result")
 	public String rechargeResult(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
 			throws Exception {
 		ReturnDatas returnObject = rechargeStatics(request, model, moneyDetail);
@@ -379,5 +379,4 @@ public class MoneyDetailController  extends BaseController {
 		return "/moneydetail/moneydetailStatics";
 	}
 	
-
 }

@@ -943,5 +943,24 @@ public class AppUserController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	/**
+	 * 获取当前服务器时间
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getTime/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas getTimeJson(HttpServletRequest request,Model model) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Date date = new Date();
+		returnObject.setData(date);
+		return returnObject;
+	}
+	
 
 }
