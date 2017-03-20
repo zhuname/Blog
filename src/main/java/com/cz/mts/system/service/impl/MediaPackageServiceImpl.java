@@ -49,6 +49,7 @@ import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -82,6 +83,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	private RedisConnectionFactory redisConnectionFactory ;
 	@Resource
 	private ILmediaPackageService iLmediaPackageService ;
+	@Resource
+	private NotificationService notificationService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -307,6 +310,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			List<String> list = jedis.lrange(GlobalStatic.mediaPackageConsumedList + packageId , 0 , -1) ;
 			
 			if(list != null && list.size() !=0){
+				
+				//给发布人发推送
+				notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
+				
 				//已抢红包的list，mysql中的
 				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and userId != null") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
@@ -369,6 +376,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
+						
+						//给发布人发推送
+						notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+						
 					}
 					super.saveorupdate(pp) ;
 				}
@@ -389,10 +400,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
+			notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
+			
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
-			
+			notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){

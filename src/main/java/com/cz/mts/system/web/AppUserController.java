@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -959,8 +960,11 @@ public class AppUserController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas getTimeJson(HttpServletRequest request,Model model) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		Date date = new Date();
-		returnObject.setData(date);
+		String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        res = simpleDateFormat.format(date);
+		returnObject.setData(res);
 		return returnObject;
 	}
 	
