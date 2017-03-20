@@ -22,12 +22,15 @@ import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
+import com.cz.mts.frame.util.JsonUtils;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
+import com.cz.mts.system.entity.LmediaPackage;
+import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
@@ -580,7 +583,8 @@ public class MediaPackageController  extends BaseController {
 					result.setMessage(data);
 					result.setStatus(ReturnDatas.ERROR);
 				}else {
-					result.setData(data);
+					LmediaPackage lpp = JsonUtils.readValue(data, LmediaPackage.class) ;
+					result.setData(lpp);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -594,6 +598,37 @@ public class MediaPackageController  extends BaseController {
 		
 	}
 	
+	
+	/**
+	 * 审核红包
+	 * @param request
+	 * @param id 红包id
+	 * @param type 审核类型 1通过 0拒绝
+	 * @param failReason 失败原因
+	 * @return
+	 * @author wxy
+	 * @date 2017年3月16日
+	 */
+	@RequestMapping("/check/json")
+	public @ResponseBody
+	ReturnDatas checkJson(HttpServletRequest request, String id,String type,String failReason){
+		if(StringUtils.isBlank(id) || StringUtils.isBlank(type)){
+			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失") ;
+		}else {
+			try {
+				Object object = mediaPackageService.check(id, type, failReason) ;
+				if(object == null){
+					return new ReturnDatas(ReturnDatas.ERROR, "红包不存在") ;
+				}else {
+					return new ReturnDatas(ReturnDatas.SUCCESS, object.toString()) ;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return new ReturnDatas(ReturnDatas.ERROR, "系统异常") ;
+			}
+		}
+	}
 	
 	
 }
