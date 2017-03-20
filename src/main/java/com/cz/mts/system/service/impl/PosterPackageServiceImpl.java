@@ -12,12 +12,14 @@ import java.util.Random;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Service;
 
 import redis.clients.jedis.Jedis;
+import cn.jpush.api.push.model.notification.IosNotification;
 
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
@@ -33,6 +35,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ILposterPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -55,6 +58,8 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 	private ILposterPackageService lposterPackageService ;
 	@Autowired
 	private IMoneyDetailService moneyDetailService ;
+	@Autowired
+	private NotificationService notificationService;
 	
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -161,6 +166,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			List<String> list = jedis.lrange(GlobalStatic.posterPackageConsumedList + packageId , 0 , -1) ;
 			
 			if(list != null && list.size() !=0){
+				//给发布人发推送
+				notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
+				
 				//已抢红包的list，mysql中的
 				Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId and userId != null") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
@@ -223,6 +231,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
+						
+						//给发布人发推送
+						notificationService.notify(16, Integer.parseInt(packageId), pp.getUserId());
 					}
 					super.saveorupdate(pp) ;
 				}
@@ -243,9 +254,15 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
+			//给发布人发推送
+			notificationService.notify(17, Integer.parseInt(packageId), pp.getUserId());
+			
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
+			
+			//给发布人发推送
+			notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){

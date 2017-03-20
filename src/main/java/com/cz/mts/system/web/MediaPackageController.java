@@ -409,11 +409,18 @@ public class MediaPackageController  extends BaseController {
 							RedCity redCity=new RedCity();
 							redCity.setCityId(Integer.parseInt(string));
 							redCity.setPackageId(Integer.parseInt(id.toString()));
-							redCity.setType(1);
+							redCity.setType(2);
 							redCityService.save(redCity);
 						}
 					
+				}else{
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(2);
+					redCityService.save(redCity);
 				}
+				
 				
 			}else{
 				
@@ -542,10 +549,7 @@ public class MediaPackageController  extends BaseController {
 	ReturnDatas balancejson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Finder finder=new Finder("SELECT SUM(balance) FROM t_media_package ;");
-		
 		Double sum=mediaPackageService.queryForObject(finder, Double.class);
-		
-		
 		if(sum==null){
 			sum=0.0;
 		}

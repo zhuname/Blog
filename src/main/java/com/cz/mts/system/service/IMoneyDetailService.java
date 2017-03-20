@@ -40,6 +40,16 @@ public interface IMoneyDetailService extends IBaseSpringrainService {
 	 */
 	ReturnDatas list(MoneyDetail moneyDetail,Page page) throws Exception;
 	
+	/**
+	 * 充值记录统计
+	 * @author wangjing
+	 * @param moneyDetail
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	ReturnDatas rechargeStatics(MoneyDetail moneyDetail,Page page) throws Exception;
+	
 	
 	
 }

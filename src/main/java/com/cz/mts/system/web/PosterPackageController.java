@@ -12,16 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
-import com.cz.mts.frame.cached.ICached;
 import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.shiro.ShiroRedisCacheManager;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.JsonUtils;
@@ -150,6 +147,7 @@ public class PosterPackageController  extends BaseController {
 				finder1.setParam("categoryId", posterPackage.getCategoryId());
 				
 			}
+			
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
 			if(null != list && list.size() > 0){
 				for (Map<String, Object> map : list) {
@@ -433,7 +431,6 @@ public class PosterPackageController  extends BaseController {
 		if(StringUtils.isBlank(id) || StringUtils.isBlank(userId)) {
 			return new ReturnDatas(ReturnDatas.ERROR, "参数缺失!") ;
 		}else {
-			
 			try {
 				String data =  (String) posterPackageService.snatch(userId, id,osType,command) ;
 				if(data.indexOf("{") == -1 ){  //说明是个错误结果
@@ -449,7 +446,6 @@ public class PosterPackageController  extends BaseController {
 				result.setStatus(ReturnDatas.ERROR);
 				result.setMessage("系统异常");
 			}
-			
 			return result ;
 		}
 		
@@ -520,6 +516,12 @@ public class PosterPackageController  extends BaseController {
 						redCityService.save(redCity);
 					}
 					
+				}else {
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(1);
+					redCityService.save(redCity);
 				}
 				
 				

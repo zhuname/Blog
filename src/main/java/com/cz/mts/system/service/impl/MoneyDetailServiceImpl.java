@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
@@ -197,6 +198,29 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}
+		return returnObject;
+	}
+	
+	@Override
+	public ReturnDatas rechargeStatics(MoneyDetail moneyDetail,Page page) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		moneyDetail.setType(4);
+		List<MoneyDetail> moneyDetails = findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+		if(null != moneyDetails && moneyDetails.size() > 0){
+			for (MoneyDetail md : moneyDetails) {
+				if(null != md.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(md.getUserId());
+					if(null != appUser){
+						if(StringUtils.isNotBlank(appUser.getName())){
+							md.setUserName(appUser.getName());
+						}
+					}
+				}
+			}
+		}
+		returnObject.setData(moneyDetails);
+		returnObject.setPage(page);
+		returnObject.setQueryBean(moneyDetail);
 		return returnObject;
 	}
 

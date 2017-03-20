@@ -27,6 +27,7 @@
 		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
 		<logback.version>1.1.7</logback.version>
 		
+		
 		<!--  
 		<javax.validation.version>1.1.0.Final</javax.validation.version>
 		<hibernate.validator.version>5.3.2.Final</hibernate.validator.version>
@@ -523,14 +524,10 @@
 			<classifier>jdk15</classifier> 
 		</dependency>
 
-
-
-
-
       <dependency>
       	<groupId>cn.jpush.api</groupId>
       	<artifactId>jpush-client</artifactId>
-      	<version>3.2.16</version>
+      	<version>3.2.6</version>
       </dependency>
 	</dependencies> 
 

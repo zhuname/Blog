@@ -318,7 +318,8 @@ public class CardController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
+	 * 发布卡券
+	 * @author wml
 	 * 
 	 */
 	@RequestMapping("/update/json")
@@ -363,10 +364,16 @@ public class CardController  extends BaseController {
 						RedCity redCity=new RedCity();
 						redCity.setCityId(Integer.parseInt(string));
 						redCity.setPackageId(Integer.parseInt(id.toString()));
-						redCity.setType(1);
+						redCity.setType(3);
 						redCityService.save(redCity);
 					}
 					
+				}else{
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(3);
+					redCityService.save(redCity);
 				}
 				returnObject.setData(cardService.findCardById(id));
 			}else{
@@ -553,6 +560,9 @@ public class CardController  extends BaseController {
 			usercard.setChangeTime(new Date());
 			userCardService.update(usercard, true);
 			
+			//给发布人发推送
+			notificationService.notify(4, card.getId(), card.getUserId());
+			
 			//手续费比例
 			BigDecimal cardCharge=new BigDecimal(0.0);
 			
@@ -667,6 +677,7 @@ public class CardController  extends BaseController {
 			card.setStatus(2);
 			card.setSuccTime(new Date());
 			cardService.update(card,true);
+			notificationService.notify(20, Integer.parseInt(id), card.getUserId());
 		}
 		return returnObject;
 	}
@@ -692,6 +703,7 @@ public class CardController  extends BaseController {
 			card.setFailTime(new Date());
 			card.setFailReason(refuseReason);
 			cardService.update(card,true);
+			notificationService.notify(18, Integer.parseInt(id), card.getUserId());
 		}
 		return returnObject;
 	}

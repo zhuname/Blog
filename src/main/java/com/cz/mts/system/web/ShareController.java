@@ -40,7 +40,7 @@ public class ShareController  extends BaseController {
 	@Resource
 	private IShareService shareService;
 	
-	private String listurl="/system/share/shareList";
+	private String listurl="/share/shareList";
 	
 	
 	   
