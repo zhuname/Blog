@@ -34,8 +34,8 @@
 </context:component-scan>
 
 <!-- 调度任务扫描,对应参考  @Scheduled(cron="0/5 * *  * * ? ")  -->
-<!--  
+ 
 <task:annotation-driven/> 
--->
+
 
 </beans>

@@ -1,4 +1,4 @@
-package com.cz.mts.system.aspect;
+package com.cz.mts.frame.aspect;
 
 import org.aopalliance.intercept.Joinpoint;
 import org.aspectj.lang.annotation.AfterReturning;
