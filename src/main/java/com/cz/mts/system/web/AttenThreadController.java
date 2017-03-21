@@ -1,8 +1,5 @@
 package com.cz.mts.system.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
@@ -10,8 +7,6 @@ import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.NotificationService;
 
-@Controller
-@RequestMapping(value="/system/attenThread")
 public class AttenThreadController extends Thread{
 	
 	
