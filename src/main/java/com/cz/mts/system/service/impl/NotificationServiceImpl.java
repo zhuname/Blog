@@ -29,13 +29,13 @@ public class NotificationServiceImpl implements NotificationService {
 		//		  itemId:目标id   0代表固定位置
 		//		  pushType：与推送文档的type一致
 		Message message = null ;
-		Integer orderType= null;
 		try {
 			switch (type) {
 			case 1:
-				JPushUtil.sendJPushNotification(extend[0], type+"", id, userId, null);
+				other.put("url", extend[1]);
+				JPushUtil.sendJPushNotification(extend[0], type+"", 0, userId, other);
 				try {
-					message=new Message(null, 1, userId, new Date(), "系统推送", null, null, 0, "系统推送", 1);
+					message=new Message(null, 1, userId, new Date(), extend[0], null, extend[1], 0, "系统推送", 1);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -53,7 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 3:
-				JPushUtil.sendJPushNotification("您发布的视频红包已被领取结束，您可操作再次发放或查看红包领取情况", type+"", id, userId, null);
+				JPushUtil.sendJPushNotification("您发布的视频红包已被领取结束，您可操作再次发放或查看红包领取情况", type+"", id, userId,null);
 				try {
 					message=new Message(null, 3, userId, new Date(), "您发布的视频红包已被领取结束，您可操作再次发放或查看红包领取情况", id, "", 0, "红包领取完", 2);
 					messageService.save(message);
@@ -68,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			case 5:
-				JPushUtil.sendJPushNotification("您发布的卡券已被全部领取，您可操作再次发放或查看卡券领取状况", type+"", id, userId, null);
+				JPushUtil.sendJPushNotification("您发布的卡券已被全部领取，您可操作再次发放或查看卡券领取状况", type+"", id, userId,null);
 				message=new Message(null, 5, userId, new Date(), "您发布的卡券已被全部领取，您可操作再次发放或查看卡券领取状况", id, null, 0, "兑换完成", 2);
 				messageService.save(message);
 			break;

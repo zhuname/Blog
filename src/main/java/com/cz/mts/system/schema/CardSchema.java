@@ -35,7 +35,7 @@ public class CardSchema extends BaseLogger{
 	@Scheduled(cron="0 0/5 * * * ?")
 	public void cardEnd() throws Exception{
 		logger.info("*****************判断卡券到期******************");
-		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 AND NOW()>endTime;");
+		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 AND NOW()>endTime");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
 			for (Card card : cards) {
