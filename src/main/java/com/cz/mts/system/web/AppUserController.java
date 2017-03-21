@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -889,16 +890,18 @@ public class AppUserController  extends BaseController {
 						userMedal.setMedalId(Integer.parseInt(s));
 						if(StringUtils.isNotBlank(userId)){
 							userMedal.setUserId(Integer.parseInt(userId));
-							//判断该用户是否申请过该勋章
-							Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId AND medalId=:medalId");
+							//判断是否存在该用户的勋章记录
+							Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
 							finder.setParam("userId", Integer.parseInt(userId));
-							finder.setParam("medalId", Integer.parseInt(s));
-							List list = userMedalService.queryForList(finder);
-							if(list.isEmpty()){
-								userMedal.setCreateTime(new Date());
-								userMedalService.save(userMedal);
-							}
+							userMedalService.queryForObject(finder);
 							
+							userMedal.setCreateTime(new Date());
+							userMedalService.save(userMedal);
+							
+							
+							//清除t_apply_medal表中关于该用户的记录
+							Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=3");
+							applyMedalService.queryForObject(finder2);
 							//向t_apply_medal表中插入数据
 							ApplyMedal applyMedal = new ApplyMedal();
 							applyMedal.setUserId(Integer.parseInt(userId));
@@ -940,6 +943,28 @@ public class AppUserController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 		}
 		
+		return returnObject;
+	}
+	
+	
+	/**
+	 * 获取当前服务器时间
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getTime/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas getTimeJson(HttpServletRequest request,Model model) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        res = simpleDateFormat.format(date);
+		returnObject.setData(res);
 		return returnObject;
 	}
 	

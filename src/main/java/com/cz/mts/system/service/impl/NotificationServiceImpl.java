@@ -33,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			switch (type) {
 			case 1:
-				JPushUtil.sendAllPushNotification(extend[0],type+"", other,null);
+				JPushUtil.sendJPushNotification(extend[0], type+"", id, userId, null);
 				try {
 					message=new Message(null, 1, userId, new Date(), "系统推送", null, null, 0, "系统推送", 1);
 					messageService.save(message);

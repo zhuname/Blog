@@ -224,19 +224,14 @@ function deleteAppUser(){
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_name" >昵称</th>
-						<th id="th_password" >密码</th>
 						<th id="th_phone" >电话</th>
-						<th id="th_qqNum" >qq号</th>
-						<th id="th_wxNum" >微信号</th>
 						<th id="th_sex" >性别</th>
 						<th id="th_createTime" >创建时间</th>
 						<th id="th_header" >头像</th>
 						<th id="th_cityName" >城市名称 </th>
 						<th id="th_sign" >个性签名</th>
-						<th id="th_sinaNum" >新浪账号</th>
 						<th id="th_balance" >余额</th>
 						<th id="th_frozeBanlance" >冻结余额</th>
-						<th id="th_osType" >操作系统</th>
 						<th id="th_bankName" >银行名称</th>
 						<th id="th_branchBank" >开户行</th>
 						<th id="th_ownerName" >户主名称/真实姓名</th>
@@ -247,9 +242,8 @@ function deleteAppUser(){
 						<th id="th_currentShareNum" >当前可分享次数</th>
 						<th id="th_getNum" >可领取次数</th>
 						<th id="th_shareNum" >可分享次数</th>
-						<th id="th_isCloseFee" >是否关闭卡券手续费 0否 1是</th>
-						<th id="th_isUpdate" >是否有信息更新 0否 1是</th>
-						<th id="th_isBlack" >是否是黑名单 0否 1是</th>
+						<th id="th_isCloseFee" >是否关闭卡券手续费</th>
+						<th id="th_isBlack" >是否是黑名单</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -341,16 +335,7 @@ function deleteAppUser(){
 								${(_data.name)!''}
 							</td>
 							<td >
-								${(_data.password)!''}
-							</td>
-							<td >
 								${(_data.phone)!''}
-							</td>
-							<td >
-								${(_data.qqNum)!''}
-							</td>
-							<td >
-								${(_data.wxNum)!''}
 							</td>
 							<td >
 								${(_data.sex)!''}
@@ -369,16 +354,10 @@ function deleteAppUser(){
 								${(_data.sign)!''}
 							</td>
 							<td >
-								${(_data.sinaNum)!''}
-							</td>
-							<td >
 								${(_data.balance)!0}
 							</td>
 							<td >
 								${(_data.frozeBanlance)!0}
-							</td>
-							<td >
-								${(_data.osType)!''}
 							</td>
 							<td >
 								${(_data.bankName)!''}
@@ -396,7 +375,15 @@ function deleteAppUser(){
 								${(_data.cardNum)!''}
 							</td>
 							<td >
-								${(_data.withdrawType)!0}
+								<#if (_data.withdrawType) == 1>
+								银行
+								</#if>
+								<#if (_data.withdrawType) == 2>
+								支付宝
+								</#if>
+								<#if (_data.withdrawType) == 3>
+								微信
+								</#if>
 							</td>
 							<td >
 								${(_data.currentGetNum)!0}
@@ -411,13 +398,20 @@ function deleteAppUser(){
 								${(_data.shareNum)!0}
 							</td>
 							<td >
-								${(_data.isCloseFee)!0}
+								<#if (_data.isCloseFee) == 0>
+								未关闭
+								</#if>
+								<#if (_data.isCloseFee) == 1>
+								关闭
+								</#if>
 							</td>
 							<td >
-								${(_data.isUpdate)!0}
-							</td>
-							<td >
-								${(_data.isBlack)!0}
+								<#if (_data.isBlack) == 0>
+								正常用户
+								</#if>
+								<#if (_data.isBlack) == 1>
+								黑名单用户
+								</#if>
 							</td>
 						</tr>
 					</#list>

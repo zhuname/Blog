@@ -54,6 +54,27 @@ $(document).on("click", ".vid", function() {
                $("#bal").html("剩余金额："+msg.data+"元,");
            }
     	 });
+		
+		
+		function checkRefuse(id){
+			var reason = prompt("请填写拒绝原因:","");
+			if(reason == null || reason == ""){
+				myalert("请输入拒绝原因");
+				return;
+			}
+			jQuery.post("${ctx}/system/mediapackage/check/json",{ id: id, failReason: reason ,type: 0},
+					function(_json) {
+						if (_json.status == "success") {
+							myalert("审核成功");
+							myhref("${ctx}/system/mediapackage/list")
+							return false;
+						} else {
+							myalert("审核失败");
+							return false;
+						}
+			});
+			
+		}
 
 </script>
 
@@ -171,6 +192,19 @@ $(document).on("click", ".vid", function() {
                                                 onclick="mydelete('${ctx}/system/mediapackage/delete/json?id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
+                                        
+                                        <#if (_data.status) == 1>
+                                            <button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
+                                        
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">
@@ -289,7 +323,7 @@ $(document).on("click", ".vid", function() {
 								${(_data.code)!''}
 							</td>
 							<td >
-								<video class="vid" poster="" width='200px' src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls'></video>
+								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls'></video>
 								
 							</td>
 							<td >

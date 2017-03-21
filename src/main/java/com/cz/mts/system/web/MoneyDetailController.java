@@ -250,7 +250,7 @@ public class MoneyDetailController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/moneydetail/moneydetailLook";
+		return "/moneydetail/moneydetailLook";
 	}
 
 	
@@ -306,7 +306,7 @@ public class MoneyDetailController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/moneydetail/moneydetailCru";
+		return "/moneydetail/moneydetailCru";
 	}
 	
 	/**
@@ -507,7 +507,7 @@ public class MoneyDetailController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("recharge/statics")
+	@RequestMapping("/recharge/statics")
 	public @ResponseBody
 	ReturnDatas rechargeStatics(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -516,5 +516,12 @@ public class MoneyDetailController  extends BaseController {
 		return returnObject;
 	}
 	
-
+	@RequestMapping("/recharge/result")
+	public String rechargeResult(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
+			throws Exception {
+		ReturnDatas returnObject = rechargeStatics(request, model, moneyDetail);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/moneydetail/moneydetailStatics";
+	}
+	
 }

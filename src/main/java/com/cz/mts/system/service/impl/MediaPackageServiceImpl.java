@@ -49,6 +49,8 @@ import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
+import com.cz.mts.system.web.AttenThreadController;
 
 
 /**
@@ -82,6 +84,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	private RedisConnectionFactory redisConnectionFactory ;
 	@Resource
 	private ILmediaPackageService iLmediaPackageService ;
+	@Resource
+	private NotificationService notificationService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -307,6 +311,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			List<String> list = jedis.lrange(GlobalStatic.mediaPackageConsumedList + packageId , 0 , -1) ;
 			
 			if(list != null && list.size() !=0){
+				
+				//给发布人发推送
+				notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
+				
 				//已抢红包的list，mysql中的
 				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and userId != null") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
@@ -350,7 +358,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						MoneyDetail md = new MoneyDetail();
 						md.setCreateTime(new Date());
 						md.setUserId(_userId);
-						md.setType(1);  //海报红包
+						md.setType(2);  //海报红包
 						md.setMoney(lpp.getMoney());
 						md.setBalance(nowBalance.doubleValue());
 						md.setItemId(lpp.getPackageId());
@@ -369,6 +377,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
+						
+						//给发布人发推送
+						notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+						
 					}
 					super.saveorupdate(pp) ;
 				}
@@ -389,10 +401,31 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
+			notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
+			
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
+			notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
 			
+			//更新attention表中的isUpdate字段
+			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+			finderAtte.setParam("itemId", pp.getUserId());
+			super.queryForObject(finderAtte);
+			//更新appUser表中的isUpdate字段
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			finderAppUser.setParam("itemId",  pp.getUserId());
+			super.queryForObject(finderAppUser);
+			
+			AppUser appUser = appUserService.findAppUserById(pp.getUserId());
+			//查询接收推送的用户
+			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+			finderSelect.setParam("itemId", pp.getUserId());
+			List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
+			for (Attention attention : attentions) {
+				AttenThreadController attenThreadController = new AttenThreadController(null, pp, attention, null, notificationService, appUser);
+				attenThreadController.run();
+			}
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){

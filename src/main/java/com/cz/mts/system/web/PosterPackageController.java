@@ -30,18 +30,22 @@ import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LposterPackage;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.Snatch;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
+import com.cz.mts.system.service.IUserMedalService;
 
 
 /**
@@ -58,6 +62,10 @@ public class PosterPackageController  extends BaseController {
 	private IPosterPackageService posterPackageService;
 	@Resource
 	private ICityService cityService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IMedalService medalService;
 	
 	private String listurl="/posterpackage/posterpackageList";
 	
@@ -240,6 +248,21 @@ public class PosterPackageController  extends BaseController {
 				 AppUser appUser=appUserService.findAppUserById(posterPackage.getUserId());
 				 if(appUser!=null){
 					 posterPackage.setAppUser(appUser);
+				 }
+				 
+				 //返回勋章信息
+				 Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId");
+				 finder.setParam("userId", posterPackage.getUserId());
+				 List<UserMedal> userMedals = userMedalService.queryForList(finder,UserMedal.class);
+				 if(null != userMedals && userMedals.size() > 0){
+					 for (UserMedal userMedal : userMedals) {
+						if(null != userMedal.getMedalId()){
+							Medal medal = medalService.findMedalById(userMedal.getMedalId());
+							if(null != medal && StringUtils.isNotBlank(medal.getName())){
+								userMedal.setMedalName(medal.getName());
+							}
+						}
+					}
 				 }
 			 }
 			 

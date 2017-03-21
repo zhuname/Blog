@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,12 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.LunboPic;
+import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -46,8 +51,12 @@ public class AttentionController  extends BaseController {
 	private IAttentionService attentionService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IUserMedalService userMedalService;
+	@Resource
+	private IMedalService medalService;
 	
-	private String listurl="/system/attention/attentionList";
+	private String listurl="/attention/attentionList";
 	
 	
 	   
@@ -90,7 +99,25 @@ public class AttentionController  extends BaseController {
 		if(attention.getUserId()!=null){
 			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id  order by att.id");
 			finder.setParam("id", attention.getUserId());
-			returnObject.setData(appUserService.queryForList(finder,page));
+			List<Map<String, Object>> list = appUserService.queryForList(finder,page);
+			if(null != list && list.size() > 0){
+				for (Map<String, Object> map : list) {
+					//返回勋章列表
+					Finder finder2 = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId");
+					finder2.setParam("userId", attention.getUserId());
+					List<UserMedal> userMedals = userMedalService.queryForList(finder2,UserMedal.class);
+					if(null != userMedals && userMedals.size() > 0){
+						for (UserMedal userMedal : userMedals) {
+							Medal medal = medalService.findMedalById(userMedal.getMedalId());
+							if(null != medal && StringUtils.isNotBlank(medal.getName())){
+								userMedal.setMedalName(medal.getName());
+							}
+						}
+					}
+				} 
+			}
+			
+			returnObject.setData(list);
 		}else {
 			returnObject.setMessage("参数缺失");
 		}
