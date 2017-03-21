@@ -678,7 +678,9 @@ public class PosterPackageController  extends BaseController {
 		Double sum=posterPackageService.queryForObject(finder, Double.class);
 		
 		if(sum==null){
+			
 			sum=0.0;
+			
 		}
 		
 		returnObject.setData(sum);

@@ -23,6 +23,7 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
@@ -30,12 +31,14 @@ import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.IWithdrawService;
+import com.cz.mts.system.service.impl.CardServiceImpl;
 
 
 /**
@@ -62,8 +65,11 @@ public class MoneyDetailController  extends BaseController {
 	private IMediaPackageService mediaPackageService;
 	@Resource
 	private IWithdrawService withdrawService;
+	@Resource
+	private ICardService cardService;
 	
-	private String listurl="/system/moneydetail/moneydetailList";
+	
+	private String listurl="/moneydetail/moneydetailList";
 	
 	
 	   
@@ -76,13 +82,135 @@ public class MoneyDetailController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
+	@RequestMapping("/list1")
+	public String list1(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, moneyDetail);
+		
+		moneyDetail.setType(1);
+		
+		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
+	
+	/**
+	 * 列表数据,调用listjson方法,保证和app端数据统一
+	 * 
+	 * @param request
+	 * @param model
+	 * @param moneyDetail
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list2")
+	public String list2(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
+			throws Exception {
+		
+		moneyDetail.setType(2);
+		
+		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return listurl;
+	}
+	
+	/**
+	 * 列表数据,调用listjson方法,保证和app端数据统一
+	 * 
+	 * @param request
+	 * @param model
+	 * @param moneyDetail
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list3")
+	public String list3(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
+			throws Exception {
+		
+		moneyDetail.setType(3);
+		
+		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return listurl;
+	}
+	
+	
+	/**
+	 * 领取红包人列表
+	 * @author wml
+	 * @param request
+	 * @param model
+	 * @param moneyDetail
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listadmin/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas listadminjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+		
+		
+		for (MoneyDetail moneyDetail2 : datas) {
+			
+			if(moneyDetail2.getType()==1){
+				
+				PosterPackage posterPackage=posterPackageService.findPosterPackageById(moneyDetail2.getItemId());
+				
+				if(posterPackage!=null){
+					
+					moneyDetail2.setItemName(posterPackage.getTitle());
+					
+				}
+				
+				
+			}else if (moneyDetail2.getType()==2) {
+				
+				MediaPackage mediaPackage=mediaPackageService.findMediaPackageById(moneyDetail2.getItemId());
+				
+				if(mediaPackage!=null){
+					moneyDetail2.setItemName(mediaPackage.getTitle());
+				}
+				
+			}else if (moneyDetail2.getType()==3) {
+				
+				Card card=cardService.findCardById(moneyDetail2.getItemId());
+				
+				if(card!=null){
+					
+					moneyDetail2.setItemName(card.getTitle());
+					
+				}
+				
+			}
+			
+			
+			if(moneyDetail2.getUserId()!=null){
+				
+				AppUser appUser=appUserService.findAppUserById(moneyDetail2.getUserId());
+				
+				if(appUser!=null){
+					moneyDetail2.setUserName(appUser.getName());
+				}
+				
+			}
+			
+		}
+		
+		
+		
+		returnObject.setQueryBean(moneyDetail);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+		
+		
+	}
+	
 	
 	/**
 	 * 领取红包人列表
@@ -321,9 +449,26 @@ public class MoneyDetailController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		if(moneyDetail.getItemId()!=null){
-			Finder finder=new Finder("SELECT *,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0  order by mon.id");
+			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0 GROUP BY au.id  order by mon.id");
 			finder.setParam("itemId", moneyDetail.getItemId());
-			returnObject.setData(appUserService.queryForList(finder,page));
+			
+			
+			List<AppUser> appUsers=appUserService.findListDataByFinder(finder, page, AppUser.class,null);
+			
+			for (AppUser appUser : appUsers) {
+				
+				Page pageM=new Page();
+				pageM.setPageSize(1000);
+				Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId)");
+				finderM.setParam("userId", appUser.getId());
+				List<Medal> medals=medalService.findListDataByFinder(finderM, pageM, Medal.class, null);
+				appUser.setMedals(medals);
+				
+			}
+			
+			returnObject.setData(appUsers);
+			
+			
 		}else {
 			returnObject.setMessage("参数缺失");
 		}

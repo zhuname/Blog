@@ -41,7 +41,7 @@ function checkRefuse(id){
 		myalert("请输入拒绝原因");
 		return;
 	}
-	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type=0},
+	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type:0},
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");

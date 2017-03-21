@@ -96,9 +96,18 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String userName;
 	
+	private String itemName;
 	
 	
-	
+	@Transient
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
 	@Transient
 	public String getUserName() {
 		return userName;

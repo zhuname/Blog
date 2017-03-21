@@ -15,6 +15,7 @@ encoding//src/main/webapp/WEB-INF/freemarker/medal/medalCru.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/medal/medalList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/mediapackage/mediapackageCru.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/mediapackage/mediapackageList.html=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/moneydetail/moneydetailList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/posterpackage/posterpackageList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/province/provinceList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/system/index.html=UTF-8
