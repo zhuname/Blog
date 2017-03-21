@@ -33,10 +33,10 @@ public class FileUpload extends HttpServlet {
 	
 	//保存文件的文件夹名称
 	private static final String uploadDirName="mts";
-	private static final String realpath="/usr/local/app/";
+	private static final String realpath="/webdata/app/images/";
 	private static final String realfilepath= realpath+uploadDirName;
 	//http地址
-	private static final String httppath="http://114.55.4.234:22222/";
+	private static final String httppath="http://106.15.60.65:22222/";
 	private static final String httpfilepath=httppath+uploadDirName;
 	//callback的url的key
 	private static final String callbackurlName="callbackurl";

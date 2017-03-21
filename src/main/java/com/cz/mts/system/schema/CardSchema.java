@@ -34,7 +34,7 @@ public class CardSchema extends BaseLogger{
 	 */
 	@Scheduled(cron="0 0/5 * * * ?")
 	public void cardEnd() throws Exception{
-		logger.info("*****************判断卡券到期******************");
+		/*logger.info("*****************判断卡券到期******************");
 		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 AND NOW()>endTime;");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
@@ -55,12 +55,12 @@ public class CardSchema extends BaseLogger{
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	@Scheduled(cron="0 0 */1 * * ?")
 	public void updateLqNum() throws Exception{
-		logger.info("*****************领取次数更新提醒******************");
+		/*logger.info("*****************领取次数更新提醒******************");
 		Finder finder = new Finder("SELECT * FROM t_app_user");
 		List<AppUser> appUsers = appUserService.queryForList(finder,AppUser.class);
 		if(null != appUsers && appUsers.size() > 0){
@@ -71,7 +71,7 @@ public class CardSchema extends BaseLogger{
 				//给用户发推送
 				notificationService.notify(12, appUser.getId(), appUser.getId(), appUser.getCurrentLqNum()+"");
 			}
-		}
+		}*/
 		
 	}
 
