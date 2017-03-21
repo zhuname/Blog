@@ -50,6 +50,7 @@ import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
+import com.cz.mts.system.web.AttenThreadController;
 
 
 /**
@@ -406,6 +407,25 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
 			notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
+			
+			//更新attention表中的isUpdate字段
+			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+			finderAtte.setParam("itemId", pp.getUserId());
+			super.queryForObject(finderAtte);
+			//更新appUser表中的isUpdate字段
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			finderAppUser.setParam("itemId",  pp.getUserId());
+			super.queryForObject(finderAppUser);
+			
+			AppUser appUser = appUserService.findAppUserById(pp.getUserId());
+			//查询接收推送的用户
+			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+			finderSelect.setParam("itemId", pp.getUserId());
+			List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
+			for (Attention attention : attentions) {
+				AttenThreadController attenThreadController = new AttenThreadController(null, pp, attention, null, notificationService, appUser);
+				attenThreadController.run();
+			}
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){

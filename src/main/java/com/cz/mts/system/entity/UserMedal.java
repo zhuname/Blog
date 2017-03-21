@@ -60,9 +60,21 @@ public class UserMedal  extends BaseEntity {
 	
 	private List<Medal> medals;
 	
+	private String medalName;
 	
 	
 	
+	
+	
+	@Transient
+	public String getMedalName() {
+		return medalName;
+	}
+
+	public void setMedalName(String medalName) {
+		this.medalName = medalName;
+	}
+
 	@Transient
 	public List<Medal> getMedals() {
 		return medals;

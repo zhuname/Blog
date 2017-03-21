@@ -27,6 +27,7 @@ import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.JsonUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
@@ -36,6 +37,7 @@ import com.cz.mts.system.service.ILposterPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.NotificationService;
+import com.cz.mts.system.web.AttenThreadController;
 
 
 /**
@@ -256,6 +258,26 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			pp.setFailReason(failReason);
 			//给发布人发推送
 			notificationService.notify(17, Integer.parseInt(packageId), pp.getUserId());
+			
+			
+			//更新attention表中的isUpdate字段
+			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+			finderAtte.setParam("itemId", pp.getUserId());
+			super.queryForObject(finderAtte);
+			//更新appUser表中的isUpdate字段
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			finderAppUser.setParam("itemId",  pp.getUserId());
+			super.queryForObject(finderAppUser);
+			
+			AppUser appUser = appUserService.findAppUserById(pp.getUserId());
+			//查询接收推送的用户
+			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+			finderSelect.setParam("itemId", pp.getUserId());
+			List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
+			for (Attention attention : attentions) {
+				AttenThreadController attenThreadController = new AttenThreadController(pp, null, attention, null, notificationService, appUser);
+				attenThreadController.run();
+			}
 			
 		}else {  //审核通过
 			pp.setStatus(3);

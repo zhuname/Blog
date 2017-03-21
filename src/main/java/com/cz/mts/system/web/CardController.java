@@ -28,6 +28,7 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
@@ -684,6 +685,25 @@ public class CardController  extends BaseController {
 			card.setSuccTime(new Date());
 			cardService.update(card,true);
 			notificationService.notify(20, Integer.parseInt(id), card.getUserId());
+			
+			//更新attention表中的isUpdate字段
+			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+			finderAtte.setParam("itemId", card.getUserId());
+			cardService.queryForObject(finderAtte);
+			//更新appUser表中的isUpdate字段
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			finderAppUser.setParam("itemId",  card.getUserId());
+			cardService.queryForObject(finderAppUser);
+			
+			AppUser appUser = appUserService.findAppUserById(card.getUserId());
+			//查询接收推送的用户
+			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+			finderSelect.setParam("itemId", card.getUserId());
+			List<Attention> attentions = cardService.queryForList(finderSelect,Attention.class);
+			for (Attention attention : attentions) {
+				AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, card, notificationService, appUser);
+				attenThreadController.run();
+			}
 		}
 		return returnObject;
 	}
