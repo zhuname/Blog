@@ -237,7 +237,6 @@ function deleteAppUser(){
 						<th id="th_ownerName" >户主名称/真实姓名</th>
 						<th id="th_ownerPhone" >户主手机号</th>
 						<th id="th_cardNum" >卡号/支付宝账号</th>
-						<th id="th_withdrawType" >1银行 2支付宝</th>
 						<th id="th_currentGetNum" >当前可领取次数</th>
 						<th id="th_currentShareNum" >当前可分享次数</th>
 						<th id="th_getNum" >可领取次数</th>
@@ -375,24 +374,13 @@ function deleteAppUser(){
 								${(_data.cardNum)!''}
 							</td>
 							<td >
-								<#if (_data.withdrawType) == 1>
-								银行
-								</#if>
-								<#if (_data.withdrawType) == 2>
-								支付宝
-								</#if>
-								<#if (_data.withdrawType) == 3>
-								微信
-								</#if>
-							</td>
-							<td >
-								${(_data.currentGetNum)!0}
+								${(_data.currentLqNum)!0}
 							</td>
 							<td >
 								${(_data.currentShareNum)!0}
 							</td>
 							<td >
-								${(_data.getNum)!0}
+								${(_data.LqNum)!0}
 							</td>
 							<td >
 								${(_data.shareNum)!0}

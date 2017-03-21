@@ -25,7 +25,7 @@ public class JPushUtil {
 	 * @param appType  1:用户版 2：商家版 3：快递版
 	 * void
 	 */
-	public static void sendJPushNotification(String content,String type,int id,int userId,Map<String, String> other){
+	public static void sendJPushNotification(String content,String type,int id,int userId,String url){
 		String message = content;
 		String[] tags = {"userId"+userId};
 		
@@ -43,9 +43,8 @@ public class JPushUtil {
 		Map<String,Object> androidiosextra = new HashMap<String,Object>();
 		androidiosextra.put("type", type);
 		androidiosextra.put("id", id);
-		for (Object key:other.keySet()) {			
-			androidiosextra.put(key.toString(), other.get(key));
-		}
+		androidiosextra.put("url", url);
+		
 //		androidiosextra.put("sound", sound);
 		notificationMap.put("category", "identifier");
 		Map<String,Object> android = new HashMap<String,Object>();

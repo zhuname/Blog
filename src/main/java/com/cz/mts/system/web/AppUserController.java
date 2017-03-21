@@ -278,6 +278,7 @@ public class AppUserController  extends BaseController {
 								appUser.setLqNum(1);
 								appUser.setShareNum(1);
 								appUser.setIsUpdate(0);
+								appUser.setIsCloseFee(0);
 								Object id = appUserService.saveorupdate(appUser);
 								
 								returnObject.setData(appUserService.findById(id, AppUser.class));
