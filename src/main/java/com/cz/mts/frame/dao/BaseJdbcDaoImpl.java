@@ -583,17 +583,18 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 			paramMap.put(fdName, fdValue);
 
 			System.out.println("*******************name:"+fdNames.get(i));
+			System.out.println("*******************num:"+i);
 			if ((i + 1) == fdNames.size()) {
 				System.out.println("*******************here:"+i);
 				sql.append(fdName).append(")");
 				valueSql.append(mapKey).append(")");
 				break;
 			}
-			System.out.println("*******************num:"+i);
 
 			sql.append(fdName).append(",");
 			valueSql.append(mapKey).append(",");
 
+			System.out.println("*******************sql:"+sql.toString());
 		}
 		sql.append(valueSql);// sql语句
 		return sql.toString();
