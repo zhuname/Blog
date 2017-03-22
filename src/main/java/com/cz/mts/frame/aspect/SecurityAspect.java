@@ -83,56 +83,56 @@ public class SecurityAspect {
 	@Autowired  
 	HttpServletRequest request; 
 	
-	@Around("securityAop()")
-	public Object around(ProceedingJoinPoint proceedingJoinPoint){
-		Object object = null ;
-		Object[] args = proceedingJoinPoint.getArgs() ;
-//		HttpServletRequest request =  (HttpServletRequest) args[0] ;
-		
-	    Map<String,String[]> paramMap = new HashMap(request.getParameterMap()) ;
-//		ServletRequestAttributes attr = (ServletRequestAttributes)  
-//	               RequestContextHolder.currentRequestAttributes();  
-//	       HttpServletRequest request = attr.getRequest(); 
-//	    Map<String,String[]> paramMap = HttpUtil.getRequestMap(request) ;
-	    
-	    if(!paramMap.containsKey("sign")){  //说明是非法请求
-	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
-	    }else {
-	    	try {
-	    		String[] sign = (String[])paramMap.get("sign") ;
-	    		//解密
-        		String params=SecureRSA.decrypt(sign[0], privateKey, "UTF-8") ;   //物业公钥
-        		JSONObject json = JSONObject.fromObject(params) ;
-        		//验证时间戳，防止爬虫请求
-        		if(!json.containsKey("T")){
-	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
-        		}else {
-        			Iterator<String> keys = json.keys() ;
-        			String key  = "" ;
-        			while(keys.hasNext()){
-        				key = keys.next() ;
-        				if(key.equals("T")){
-        					Long T = json.getLong(key) ;
-        					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
-        					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
-//        						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
-        					}
-        				}
-        				paramMap.put(key, new String[]{json.get(key).toString()}) ; ;
-        			}
-//        			ac.setParameters(parameters);
-        			paramMap.put("sign", new String[]{"1"}) ;
-        			HttpServletRequest req =  new ParameterRequestWrapper(request, paramMap) ;
-        			args[0] = req ;
-        			object = proceedingJoinPoint.proceed(args) ;
-        		}
-//	    		object = proceedingJoinPoint.proceed() ;
-	    	} catch (Throwable e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	}
-	    }
-		
-		return object ;
-	}
+//	@Around("securityAop()")
+//	public Object around(ProceedingJoinPoint proceedingJoinPoint){
+//		Object object = null ;
+//		Object[] args = proceedingJoinPoint.getArgs() ;
+////		HttpServletRequest request =  (HttpServletRequest) args[0] ;
+//		
+//	    Map<String,String[]> paramMap = new HashMap(request.getParameterMap()) ;
+////		ServletRequestAttributes attr = (ServletRequestAttributes)  
+////	               RequestContextHolder.currentRequestAttributes();  
+////	       HttpServletRequest request = attr.getRequest(); 
+////	    Map<String,String[]> paramMap = HttpUtil.getRequestMap(request) ;
+//	    
+//	    if(!paramMap.containsKey("sign")){  //说明是非法请求
+//	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+//	    }else {
+//	    	try {
+//	    		String[] sign = (String[])paramMap.get("sign") ;
+//	    		//解密
+//        		String params=SecureRSA.decrypt(sign[0], privateKey, "UTF-8") ;   //物业公钥
+//        		JSONObject json = JSONObject.fromObject(params) ;
+//        		//验证时间戳，防止爬虫请求
+//        		if(!json.containsKey("T")){
+//	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+//        		}else {
+//        			Iterator<String> keys = json.keys() ;
+//        			String key  = "" ;
+//        			while(keys.hasNext()){
+//        				key = keys.next() ;
+//        				if(key.equals("T")){
+//        					Long T = json.getLong(key) ;
+//        					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
+//        					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
+////        						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
+//        					}
+//        				}
+//        				paramMap.put(key, new String[]{json.get(key).toString()}) ; ;
+//        			}
+////        			ac.setParameters(parameters);
+//        			paramMap.put("sign", new String[]{"1"}) ;
+//        			HttpServletRequest req =  new ParameterRequestWrapper(request, paramMap) ;
+//        			args[0] = req ;
+//        			object = proceedingJoinPoint.proceed(args) ;
+//        		}
+////	    		object = proceedingJoinPoint.proceed() ;
+//	    	} catch (Throwable e) {
+//	    		// TODO Auto-generated catch block
+//	    		e.printStackTrace();
+//	    	}
+//	    }
+//		
+//		return object ;
+//	}
 }
