@@ -98,7 +98,18 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String itemName;
 	
+	private Double moneyCount;
 	
+	
+	@Transient
+	public Double getMoneyCount() {
+		return moneyCount;
+	}
+
+	public void setMoneyCount(Double moneyCount) {
+		this.moneyCount = moneyCount;
+	}
+
 	@Transient
 	public String getItemName() {
 		return itemName;

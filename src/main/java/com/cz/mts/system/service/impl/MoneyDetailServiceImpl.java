@@ -25,6 +25,7 @@ import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.sun.xml.internal.xsom.impl.scd.Iterators.Map;
 
 
 /**
@@ -138,6 +139,18 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 		if(null != moneyDetail.getType() && null != moneyDetail.getItemId()){
 			//如果是海报红包
 			if(1 == moneyDetail.getType()){
+				//查询已抢金额
+				Finder finder = new Finder("SELECT SUM(money)  FROM t_money_detail WHERE type=:type AND itemId=:itemId");
+				finder.setParam("type", moneyDetail.getType());
+				finder.setParam("itemId", moneyDetail.getItemId());
+				List<java.util.Map<String, Object>> lists = super.queryForList(finder);
+				if(null != lists && lists.size() > 0){
+					for (java.util.Map<String, Object> map : lists) {
+					  for (String k : map.keySet()){  
+						  moneyCount = Double.parseDouble(map.get(k).toString());
+						}  
+					}
+				}
 				PosterPackage posterPackage = posterPackageService.findPosterPackageById(moneyDetail.getItemId());
 				if(null != posterPackage){
 					if(null != posterPackage.getSumMoney()){
@@ -149,6 +162,18 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 			}
 			//如果是视频红包
 			if(2 == moneyDetail.getType()){
+				//查询已抢金额
+				Finder finder = new Finder("SELECT SUM(money)  FROM t_money_detail WHERE type=:type AND itemId=:itemId");
+				finder.setParam("type", moneyDetail.getType());
+				finder.setParam("itemId", moneyDetail.getItemId());
+				List<java.util.Map<String, Object>> lists = super.queryForList(finder);
+				if(null != lists && lists.size() > 0){
+					for (java.util.Map<String, Object> map : lists) {
+					  for (String k : map.keySet()){  
+						  moneyCount = Double.parseDouble(map.get(k).toString());
+						}  
+					}
+				}
 				MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(moneyDetail.getItemId());
 				if(null != mediaPackage){
 					if(null != mediaPackage.getSumMoney()){
@@ -189,6 +214,7 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 						md.setUserMedals(userMedals);
 					}
 					md.setRemainMoney(remainMoney);
+					md.setMoneyCount(moneyCount);
 				}
 			}
 			returnObject.setQueryBean(moneyDetail);
