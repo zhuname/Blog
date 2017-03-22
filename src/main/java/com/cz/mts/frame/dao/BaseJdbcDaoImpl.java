@@ -564,6 +564,8 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 
 			if (fdName.equals(pkName)) {// 如果是ID,自动生成UUID
 				Object _getId = ClassUtils.getPKValue(entity); // 主键
+				
+				System.out.println("%%%%%%%%%%%%%%%%%%%pk:"+entityInfo.getPksequence());
 				if (_getId == null) {
 					if (returnType == String.class) {
 						ClassUtils.setPropertieValue(pkName, entity, id);
