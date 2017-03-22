@@ -214,6 +214,7 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 						md.setUserMedals(userMedals);
 					}
 					md.setRemainMoney(remainMoney);
+					md.setMoneyCount(moneyCount);
 				}
 			}
 			returnObject.setQueryBean(moneyDetail);
