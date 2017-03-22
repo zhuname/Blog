@@ -81,7 +81,7 @@ public class AliPayController extends BaseController {
 			code = notify.getOut_trade_no().split("a")[0];
 			log.info("****支付宝返回的订单号=" + code + "*****");
 			type = code.substring(0, 1);
-
+			code = code.substring(1);
 			money = notify.getTotal_fee();
 			payNumber = notify.getTrade_no();
 			tradeNo = notify.getTrade_no();
@@ -98,6 +98,7 @@ public class AliPayController extends BaseController {
 			trade_status = params.get("trade_status");
 			code = params.get("out_trade_no");
 			type = code.substring(0, 1);
+			code = code.substring(1);
 			// code0返回的订单 ，最后一位是判断分类的
 
 			System.out.println(trade_status);
@@ -119,6 +120,9 @@ public class AliPayController extends BaseController {
 				break;
 			case"C":
 				appUserService.alipay(code, 3, Double.parseDouble(money), tradeNo, 1);
+				break;
+			case"R":
+				appUserService.alipay(code, 4, Double.parseDouble(money), tradeNo, 1);
 				break;
 			}
 			

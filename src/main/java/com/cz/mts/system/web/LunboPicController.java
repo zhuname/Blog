@@ -60,6 +60,7 @@ public class LunboPicController  extends BaseController {
 	private IAppUserService appUserService;
 	
 	private String listurl="/lunbopic/lunbopicList";
+	private String listurl4="/lunbopic/lunbopicList4";
 	
 	
 	   
@@ -72,12 +73,30 @@ public class LunboPicController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/list")
+	@RequestMapping("/list1")
 	public String list(HttpServletRequest request, Model model,LunboPic lunboPic) 
 			throws Exception {
 		ReturnDatas returnObject = listadminjson(request, model, lunboPic);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	/**
+	 * 列表数据,调用listjson方法,保证和app端数据统一
+	 * 
+	 * @param request
+	 * @param model
+	 * @param lunboPic
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list4")
+	public String list4(HttpServletRequest request, Model model,LunboPic lunboPic) 
+			throws Exception {
+		lunboPic.setPosition(4);
+		ReturnDatas returnObject = listadminjson(request, model, lunboPic);
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return listurl4;
 	}
 	
 	/**
@@ -265,7 +284,14 @@ public class LunboPicController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
+		Finder finder = null;
+		if(lunboPic.getPosition()==null){
+			finder=Finder.getSelectFinder(lunboPic).append(" where position!=4");
+		}else if (lunboPic.getPosition()!=null&&lunboPic.getPosition()==4) {
+			finder=Finder.getSelectFinder(lunboPic).append(" where 1=1 ");
+		}
+		
+		List<LunboPic> datas=lunboPicService.findListDataByFinder(finder,page,LunboPic.class,lunboPic);
 		if(null != datas && datas.size() > 0){
 			for (LunboPic lp : datas) {
 				if(null != lp.getItemId()){
