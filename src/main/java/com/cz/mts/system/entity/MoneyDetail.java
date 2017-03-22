@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.cz.mts.frame.annotation.PKSequence;
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -211,6 +212,7 @@ public class MoneyDetail  extends BaseEntity {
 	
 	
 	@Id
+	@PKSequence
      @WhereSQL(sql="id=:MoneyDetail_id")
 	public java.lang.Integer getId() {
 		return this.id;
