@@ -299,7 +299,7 @@ public class MoneyDetail  extends BaseEntity {
     	 this.code = value;
      }
      
-     @WhereSQL(sql="osType=:MoneyDetail_code")
+     @WhereSQL(sql="code=:MoneyDetail_code")
      public java.lang.String getCode() {
     	 return this.code;
      }
