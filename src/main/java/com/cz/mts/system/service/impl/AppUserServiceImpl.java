@@ -272,9 +272,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				
 				String[] codes=aliCode.split("_");
 				
-				Integer itemId=Integer.parseInt(codes[1].toString());
+				Integer itemId=Integer.parseInt(codes[0].toString());
 				
-				String code = codes[1].toString();
+				String code = codes[0].toString();
 				
 				//判断购买的是什么类型的红包  1支付的海报红包   2支付的视频红包   3支付的卡券红包
 				switch (type) {
@@ -285,6 +285,20 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					//查询出来海报红包的数据
 					PosterPackage posterPackage=super.findById(itemId, PosterPackage.class);
 					if(posterPackage==null||posterPackage.getSumMoney()==null){
+						return 4;
+					}
+					
+
+					//看是不是第一次进来
+					MoneyDetail moneyDetailP=new MoneyDetail();
+					moneyDetailP.setItemId(itemId);
+					moneyDetailP.setType(6);
+					moneyDetailP.setUserId(posterPackage.getUserId());
+					
+					Page pageP=new Page();
+					List<MoneyDetail> moneyDetailsP=super.findListDataByFinder(null, pageP, MoneyDetail.class	, moneyDetailP);
+					
+					if(moneyDetailsP.size()>0){
 						return 4;
 					}
 					
@@ -321,6 +335,18 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						return 4;
 					}
 					
+					//看是不是第一次进来
+					MoneyDetail moneyDetailMM=new MoneyDetail();
+					moneyDetailMM.setItemId(itemId);
+					moneyDetailMM.setType(5);
+					moneyDetailMM.setUserId(mediaPackage.getUserId());
+					
+					Page pageM=new Page();
+					List<MoneyDetail> moneyDetails=super.findListDataByFinder(null, pageM, MoneyDetail.class	, moneyDetailMM);
+					
+					if(moneyDetails.size()>0){
+						return 4;
+					}
 					
 					//改变红包状态
 					mediaPackage.setStatus(1);
@@ -368,16 +394,18 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					}
 					AppUser appUserC=this.findAppUserById(cards.get(0).getUserId());
 					
-					//记录用户的余额记录
-					MoneyDetail moneyDetailC=new MoneyDetail();
-					moneyDetailC.setBalance(appUserC.getBalance());
-					moneyDetailC.setCreateTime(new Date());
-					moneyDetailC.setItemId(itemId);
-					moneyDetailC.setMoney(cardSum.doubleValue());
-					moneyDetailC.setType(3);
-					moneyDetailC.setPayType(payType);
-					moneyDetailC.setUserId(cards.get(0).getUserId());
-					super.save(moneyDetailC);
+					//看是不是第一次进来
+					MoneyDetail moneyDetailCC=new MoneyDetail();
+					moneyDetailCC.setItemId(itemId);
+					moneyDetailCC.setType(3);
+					moneyDetailCC.setUserId(cards.get(0).getUserId());
+					
+					Page pageC=new Page();
+					List<MoneyDetail> moneyDetailsC=super.findListDataByFinder(null, pageC, MoneyDetail.class	, moneyDetailCC);
+					
+					if(moneyDetailsC.size()>0){
+						return 4;
+					}
 					
 					for (UserCard userCard : cards) {
 						userCard.setPayMoney(userCard.getSumMoney());
@@ -391,6 +419,17 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						}
 						
 					}
+					
+					//记录用户的余额记录
+					MoneyDetail moneyDetailC=new MoneyDetail();
+					moneyDetailC.setBalance(appUserC.getBalance());
+					moneyDetailC.setCreateTime(new Date());
+					moneyDetailC.setItemId(itemId);
+					moneyDetailC.setMoney(cardSum.doubleValue());
+					moneyDetailC.setType(3);
+					moneyDetailC.setPayType(payType);
+					moneyDetailC.setUserId(cards.get(0).getUserId());
+					super.save(moneyDetailC);
 					
 					super.update(cards, true);
 					
@@ -406,6 +445,53 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						}
 					}
 					
+					
+					break;
+					
+					
+				case 4:
+					
+					if(itemId==null){
+						return null;
+					}
+					
+					//看是不是第一次进来
+					MoneyDetail moneyDetailRR=new MoneyDetail();
+					moneyDetailRR.setItemId(itemId);
+					moneyDetailRR.setType(4);
+					moneyDetailRR.setUserId(itemId);
+					
+					Page pageRR=new Page();
+					List<MoneyDetail> moneyDetailsR=super.findListDataByFinder(null, pageRR, MoneyDetail.class	, moneyDetailRR);
+					
+					if(moneyDetailsR.size()>0){
+						return 4;
+					}
+					
+					AppUser appuser=super.findById(itemId, AppUser.class);
+					if(appuser!=null){
+						if(appuser.getBalance()!=null){
+							appuser.setBalance(appuser.getBalance()+money);
+						}else {
+							appuser.setBalance(money);
+						}
+					}else {
+						return null;
+					}
+					
+
+					//记录用户的余额记录
+					MoneyDetail moneyDetailr=new MoneyDetail();
+					moneyDetailr.setBalance(appuser.getBalance());
+					moneyDetailr.setCreateTime(new Date());
+					moneyDetailr.setItemId(itemId);
+					moneyDetailr.setMoney(money);
+					moneyDetailr.setType(4);
+					moneyDetailr.setPayType(payType);
+					moneyDetailr.setUserId(itemId);
+					super.save(moneyDetailr);
+					
+					super.update(appuser,true);
 					
 					break;
 				}

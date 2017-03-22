@@ -75,10 +75,23 @@ public class LunboPic  extends BaseEntity {
 	private java.lang.String cityIds;
 	//columns END 数据库字段结束
 	
+	
+	private String name;
+	
+	
 	private String cityName;
 	
 	private String itemName;
 	
+	@WhereSQL(sql="name=:LunboPic_name")
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Transient
 	public String getItemName() {
 		return itemName;
