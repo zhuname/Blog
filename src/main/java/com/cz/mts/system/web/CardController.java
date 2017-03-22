@@ -689,11 +689,11 @@ public class CardController  extends BaseController {
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", card.getUserId());
-			cardService.queryForObject(finderAtte);
+			cardService.update(finderAtte);
 			//更新appUser表中的isUpdate字段
 			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  card.getUserId());
-			cardService.queryForObject(finderAppUser);
+			cardService.update(finderAppUser);
 			
 			AppUser appUser = appUserService.findAppUserById(card.getUserId());
 			//查询接收推送的用户
