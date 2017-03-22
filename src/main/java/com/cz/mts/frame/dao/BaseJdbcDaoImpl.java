@@ -548,6 +548,8 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 		StringBuffer sql = new StringBuffer("INSERT INTO ").append(tableName).append(tableExt).append("(");
 
 		StringBuffer valueSql = new StringBuffer(" values(");
+		
+		System.out.println("*******************size:"+fdNames.size());
 
 		for (int i = 0; i < fdNames.size(); i++) {
 			String fdName = fdNames.get(i);// 字段名称
@@ -581,10 +583,12 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 			paramMap.put(fdName, fdValue);
 
 			if ((i + 1) == fdNames.size()) {
+				System.out.println("*******************here:"+i);
 				sql.append(fdName).append(")");
 				valueSql.append(mapKey).append(")");
 				break;
 			}
+			System.out.println("*******************num:"+i);
 
 			sql.append(fdName).append(",");
 			valueSql.append(mapKey).append(",");
