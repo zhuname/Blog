@@ -578,6 +578,7 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 						valueSql.append(_sequence_value).append(",");
 						continue;
 					} else {
+						System.out.println("$$$$$$$$$$$$$$$$$走这里了吧￥￥￥￥￥￥￥￥￥￥￥￥￥");
 						continue;
 					}
 				} else {
