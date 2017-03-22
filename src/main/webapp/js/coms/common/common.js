@@ -54,7 +54,7 @@ function mydelete(_url) {
  * @param _url
  */
 function mydelete(_url,message) {
-	myconfirm(message, function() {
+	myconfirm("确认删除此数据？", function() {
 		myhref(_url);
 	});
 }
@@ -77,7 +77,7 @@ function mydelete(_url, listage,par) {
  * @param listage
  */
 function mydelete(_url, listage,par,message) {
-	myconfirm(message, function() {
+	myconfirm("确认删除此数据？", function() {
 		myhref2page(_url,listage,par);
 	});
 }

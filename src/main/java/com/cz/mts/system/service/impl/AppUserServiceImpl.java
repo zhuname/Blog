@@ -272,7 +272,12 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				
 				String[] codes=aliCode.split("_");
 				
-				Integer itemId=Integer.parseInt(codes[0].toString());
+				Integer itemId = null;
+				if(type!=3){
+					
+					itemId=Integer.parseInt(codes[0].toString());
+					
+				}
 				
 				String code = codes[0].toString();
 				
@@ -396,7 +401,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//看是不是第一次进来
 					MoneyDetail moneyDetailCC=new MoneyDetail();
-					moneyDetailCC.setItemId(itemId);
+					moneyDetailCC.setCode(code);
 					moneyDetailCC.setType(3);
 					moneyDetailCC.setUserId(cards.get(0).getUserId());
 					
@@ -424,7 +429,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					MoneyDetail moneyDetailC=new MoneyDetail();
 					moneyDetailC.setBalance(appUserC.getBalance());
 					moneyDetailC.setCreateTime(new Date());
-					moneyDetailC.setItemId(itemId);
+					moneyDetailC.setCode(code);
 					moneyDetailC.setMoney(cardSum.doubleValue());
 					moneyDetailC.setType(3);
 					moneyDetailC.setPayType(payType);
