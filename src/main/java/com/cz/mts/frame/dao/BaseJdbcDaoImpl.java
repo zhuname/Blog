@@ -582,6 +582,7 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 			Object fdValue = ClassUtils.getPropertieValue(fdName, entity);
 			paramMap.put(fdName, fdValue);
 
+			System.out.println("*******************name:"+fdNames.get(i));
 			if ((i + 1) == fdNames.size()) {
 				System.out.println("*******************here:"+i);
 				sql.append(fdName).append(")");
