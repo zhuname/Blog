@@ -388,7 +388,9 @@ public class CityController  extends BaseController {
 			 Finder finder = Finder.getSelectFinder(City.class).append("where INSTR(`name`,:name)>0 ");
 			 finder.setParam("name", city.getName());
 			 List<City> list = cityService.queryForList(finder,City.class);
-			 returnObject.setData(list.get(0));
+			 if(list != null && list.size() > 0){
+				 returnObject.setData(list.get(0));
+			 }
 		 }else{
 			 returnObject.setMessage("参数缺失");
 			 returnObject.setStatus(ReturnDatas.ERROR);

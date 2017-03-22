@@ -23,7 +23,7 @@ var orgMultiSelectSetting = {
 	
 
 var orgMultiSelectTree;
-function showZtreeOrg(){
+/* function showZtreeOrg(){
 	
 	if(!orgMultiSelectTree){
 		jQuery.post("${ctx}/system/org/list/json",
@@ -46,7 +46,7 @@ function showZtreeOrg(){
 	
 	
 	//页面层-自定义
-	layer.open({
+ 	layer.open({
 	  shadeClose:true,
 	  type: 1,
 	  title: "选择部门",
@@ -59,17 +59,17 @@ function showZtreeOrg(){
 		    selectZtreeOrg();
 		    layer.close(index); //如果设定了yes回调，需进行手工关闭
 		  }
-	});
+	}); 
 	
 	
 	return false;
 	
 	
-}
+} */
 
 
 
-function selectZtreeOrg(){
+/* function selectZtreeOrg(){
 	
 	var nodes = orgMultiSelectTree.getCheckedNodes(true);
 	
@@ -84,7 +84,7 @@ function selectZtreeOrg(){
 	jQuery("#orgIds").val(orgIds);
 	
 	
-}
+} */
 	
 	
 	
@@ -387,7 +387,7 @@ function check(type){
 										</div>
 										
 										
-										<div class="form-group">
+										<!-- <div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="orgIds"> 部门<span  style="color:#E12424">*</span> </label>
 											<div class="col-sm-9">
 												<div class="input-group">
@@ -400,7 +400,7 @@ function check(type){
 													 </span>
 												</div>
 											</div>
-										</div>
+										</div> -->
 										
 										
 										
@@ -479,7 +479,7 @@ function check(type){
 
 
 <!-- /.main-container -->
-<div id="div_orgMultiSelectTree" >
+<div id="div_orgMultiSelectTree" style="display: none;">
 	<ul id="orgMultiSelectTree" class="ztree"></ul>
 </div>
 

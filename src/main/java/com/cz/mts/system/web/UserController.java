@@ -140,29 +140,29 @@ public class UserController extends BaseController {
 				user.setPassword(SecUtils.encoderByMd5With32Bit(password));
 			}
 			
-			String str_orgIds=request.getParameter("orgIds");
-			String[] orgIds=null;
-			List<Org> listOrg=null;
-			
-			if(StringUtils.isNotBlank(str_orgIds)){
-			 orgIds = str_orgIds.split(",");
-			}
-			if(orgIds!=null&&orgIds.length>0){
-				Set<String> set=new HashSet<String>();
-				for(String s:orgIds){
-					if(StringUtils.isBlank(s)){
-						continue;
-					}
-					set.add(s);
-				}
-				listOrg=new ArrayList<Org>();
-				for(String s2:set){
-					Org org=new Org();
-					org.setId(s2);
-					listOrg.add(org);
-				}
-			}
-			user.setUserOrgs(listOrg);
+//			String str_orgIds=request.getParameter("orgIds");
+//			String[] orgIds=null;
+//			List<Org> listOrg=null;
+//			
+//			if(StringUtils.isNotBlank(str_orgIds)){
+//			 orgIds = str_orgIds.split(",");
+//			}
+//			if(orgIds!=null&&orgIds.length>0){
+//				Set<String> set=new HashSet<String>();
+//				for(String s:orgIds){
+//					if(StringUtils.isBlank(s)){
+//						continue;
+//					}
+//					set.add(s);
+//				}
+//				listOrg=new ArrayList<Org>();
+//				for(String s2:set){
+//					Org org=new Org();
+//					org.setId(s2);
+//					listOrg.add(org);
+//				}
+//			}
+//			user.setUserOrgs(listOrg);
 			String[] roleIds=request.getParameterValues("roleIds");
 			List<Role> listRole=null;
 			if(roleIds!=null&&roleIds.length>0){
