@@ -279,6 +279,7 @@ public class AppUserController  extends BaseController {
 								appUser.setShareNum(1);
 								appUser.setIsUpdate(0);
 								appUser.setIsCloseFee(0);
+								appUser.setBalance(0.0);
 								Object id = appUserService.saveorupdate(appUser);
 								
 								returnObject.setData(appUserService.findById(id, AppUser.class));
@@ -744,6 +745,9 @@ public class AppUserController  extends BaseController {
 					smsService.deleteByEntity(smss.get(0));
 					//更新appUser表中的记录
 					appRecord.setPhone(appUser.getPhone());
+					if(StringUtils.isNotBlank(appUser.getPassword())){
+						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					}
 					appUserService.update(appRecord);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);

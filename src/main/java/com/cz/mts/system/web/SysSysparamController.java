@@ -356,7 +356,7 @@ public class SysSysparamController  extends BaseController {
 	}
 	
 	/**
-	 * 修改最低手续费
+	 * 修改最低提现金额
 	 * @author wj
 	 * @param model
 	 * @param request
@@ -374,6 +374,49 @@ public class SysSysparamController  extends BaseController {
 		returnObject.setData(sysparams.get(0));
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/syssysparam/updateMinimumCharge";
+	}
+	
+	/**
+	 * 超出多少元收手续费
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/maxCharge")
+	public String updateMaxCharge(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","maxCharge");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateMaxCharge";
+	}
+	
+	
+	/**
+	 * 修改提现说明
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/withdrawIntroduce")
+	public String updateWithdrawIntroduce(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","withdrawIntroduce");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateWithdrawIntroduce";
 	}
 	
 

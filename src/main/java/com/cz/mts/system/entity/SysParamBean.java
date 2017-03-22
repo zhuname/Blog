@@ -29,8 +29,16 @@ public class SysParamBean implements Serializable {
 	private String userRegisterProtocol ;
 	private String cardCharge ;
 	private String maxCharge;
+	private String withdrawIntroduce;
 	
 	
+	
+	public String getWithdrawIntroduce() {
+		return withdrawIntroduce;
+	}
+	public void setWithdrawIntroduce(String withdrawIntroduce) {
+		this.withdrawIntroduce = withdrawIntroduce;
+	}
 	public String getCardCharge() {
 		return cardCharge;
 	}
