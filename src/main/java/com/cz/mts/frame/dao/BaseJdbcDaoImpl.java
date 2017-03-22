@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -542,6 +543,12 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 		String tableName = entityInfo.getTableName();
 		Class<?> returnType = entityInfo.getPkReturnType();
 		String pkName = entityInfo.getPkName();
+		System.out.println("**********************pk:"+ pkName);
+		
+		Iterator<String> iter = fdNames.iterator() ;
+		while(iter.hasNext()){
+			System.out.println("&&&&&&&&&&&&&&&&&&&  fd:"+iter.next());
+		}
 		// 获取 分表的扩展
 		String tableExt = entityInfo.getTableExt();
 
