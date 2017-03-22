@@ -148,15 +148,15 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			super.update(posterPackage,true);
 			
 			//记录用户的余额记录
-			MoneyDetail moneyDetail=new MoneyDetail();
-			moneyDetail.setBalance(appUser.getBalance());
-			moneyDetail.setCreateTime(new Date());
-			moneyDetail.setItemId(itemId);
-			moneyDetail.setMoney(posterPackage.getSumMoney());
-			moneyDetail.setType(6);
-			moneyDetail.setPayType(3);
-			moneyDetail.setUserId(userId);
-			super.save(moneyDetail);
+			MoneyDetail moneyDetailp=new MoneyDetail();
+			moneyDetailp.setBalance(appUser.getBalance());
+			moneyDetailp.setCreateTime(new Date());
+			moneyDetailp.setItemId(itemId);
+			moneyDetailp.setMoney(posterPackage.getSumMoney());
+			moneyDetailp.setType(6);
+			moneyDetailp.setPayType(3);
+			moneyDetailp.setUserId(userId);
+			super.save(moneyDetailp);
 			
 			break;
 		case 2:

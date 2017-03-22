@@ -37,7 +37,7 @@ public class AdminFileUpload extends HttpServlet {
 	private static final String realpath="/webdata/app/images/";
 	private static final String realfilepath= realpath+uploadDirName;
 	//http地址
-	private static final String httppath="http://106.15.60.65:22222/";
+	private static final String httppath="http://106.15.60.65:22222/images/mts/";
 	private static final String httpfilepath=httppath+uploadDirName;
 	//callback的url的key
 	private static final String callbackurlName="callbackurl";

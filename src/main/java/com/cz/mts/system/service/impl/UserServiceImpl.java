@@ -60,29 +60,9 @@ public class UserServiceImpl extends BaseSpringrainServiceImpl implements IUserS
 	
 	private void  updateUserInfo(User user)throws Exception {
 		String userId=user.getId();
-		Finder f_del=Finder.getDeleteFinder(UserOrg.class).append(" WHERE userId=:userId ");
-		f_del.setParam("userId",userId);
-		super.update(f_del);
-		
 		Finder f_del_role=Finder.getDeleteFinder(UserRole.class).append(" WHERE userId=:userId ");
 		f_del_role.setParam("userId",userId);
 		super.update(f_del_role);
-		
-		
-		
-		List<Org> list = user.getUserOrgs();
-		List<UserOrg> listuo=new ArrayList<UserOrg>();
-		for(Org org:list){
-			UserOrg uo=new UserOrg();
-			uo.setUserId(userId);
-			uo.setOrgId(org.getId());
-			listuo.add(uo);
-		}
-		if(CollectionUtils.isEmpty(listuo)){
-			return;
-		}
-		
-		super.save(listuo);
 		
 		
 		

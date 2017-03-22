@@ -146,8 +146,12 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 				List<java.util.Map<String, Object>> lists = super.queryForList(finder);
 				if(null != lists && lists.size() > 0){
 					for (java.util.Map<String, Object> map : lists) {
-					  for (String k : map.keySet()){  
-						  moneyCount = Double.parseDouble(map.get(k).toString());
+					  for (String k : map.keySet()){ 
+						  if(null == map.get(k)){
+							  moneyCount = 0.0;
+						  }else{
+							  moneyCount = Double.parseDouble(map.get(k).toString());
+						  }
 						}  
 					}
 				}
@@ -170,7 +174,11 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 				if(null != lists && lists.size() > 0){
 					for (java.util.Map<String, Object> map : lists) {
 					  for (String k : map.keySet()){  
-						  moneyCount = Double.parseDouble(map.get(k).toString());
+						  if(null == map.get(k)){
+							  moneyCount = 0.0;
+						  }else{
+							  moneyCount = Double.parseDouble(map.get(k).toString());
+						  }
 						}  
 					}
 				}
