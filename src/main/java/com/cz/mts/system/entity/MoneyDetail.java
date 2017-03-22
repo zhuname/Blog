@@ -74,6 +74,10 @@ public class MoneyDetail  extends BaseEntity {
 	 * 操作系统
 	 */
 	private java.lang.String osType;
+	/**
+	 * 卡券code
+	 */
+	private java.lang.String code;
 	//columns END 数据库字段结束
 	
 	private Integer payType;
@@ -288,6 +292,17 @@ public class MoneyDetail  extends BaseEntity {
 	public java.lang.String getOsType() {
 		return this.osType;
 	}
+     public void setCode(java.lang.String value) {
+    	 if(StringUtils.isNotBlank(value)){
+    		 value=value.trim();
+    	 }
+    	 this.code = value;
+     }
+     
+     @WhereSQL(sql="osType=:MoneyDetail_code")
+     public java.lang.String getCode() {
+    	 return this.code;
+     }
 	
 	public String toString() {
 		return new StringBuffer()
