@@ -76,6 +76,16 @@ $(document).on("click", ".vid", function() {
 			
 		}
 
+		jQuery(document).ready(function(){
+			
+			//回选 下拉框
+			jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
+			jQuery("#search_encrypt option[value='${(returnDatas.queryBean.encrypt)!''}']").prop("selected",true);
+			
+			jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
+			
+		});
+		
 </script>
 
 
@@ -92,11 +102,35 @@ $(document).on("click", ".vid", function() {
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			<label for="search_status"><b>状态:</b></label> 
+			 <select id="search_status" name="status" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="0">未支付</option>
+				<option value="1">已支付</option>
+				<option value="2">审核失败</option>
+				<option value="3">审核成功</option>
 			</select>
+			
+			<label for="search_encrypt"><b>是否加密:</b></label> 
+			 <select id="search_encrypt" name="encrypt" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="0">不加密</option>
+				<option value="1">加密</option>
+			</select>
+			
+			<label for="search_payType"><b>支付类型:</b></label>
+			 <select id="search_payType" name="payType" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">支付宝</option>
+				<option value="2">微信</option>
+				<option value="3">余额支付</option>
+			</select>
+			
+			<label for="search_categoryName"><b>分类名称:</b></label> 
+			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}">
+			 <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_name"  name="name" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.name)!''}">
+			
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>

@@ -239,7 +239,12 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 	public ReturnDatas rechargeStatics(MoneyDetail moneyDetail,Page page) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		moneyDetail.setType(4);
-		List<MoneyDetail> moneyDetails = findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+		Finder finder = Finder.getSelectFinder(MoneyDetail.class).append(" where 1=1 ");
+		if(StringUtils.isNotBlank(moneyDetail.getUserName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", moneyDetail.getUserName());
+		}
+		List<MoneyDetail> moneyDetails = findListDataByFinder(finder, page, MoneyDetail.class, moneyDetail);
 		if(null != moneyDetails && moneyDetails.size() > 0){
 			for (MoneyDetail md : moneyDetails) {
 				if(null != md.getUserId()){

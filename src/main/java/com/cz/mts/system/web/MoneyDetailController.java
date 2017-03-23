@@ -151,8 +151,13 @@ public class MoneyDetailController  extends BaseController {
 		
 		// ==构造分页请求
 		Page page = newPage(request);
+		Finder finder = Finder.getSelectFinder(MoneyDetail.class).append(" where 1=1 ");
+		if(StringUtils.isNotBlank(moneyDetail.getUserName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", moneyDetail.getUserName());
+		}
 		// ==执行分页查询
-		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		
 		
 		for (MoneyDetail moneyDetail2 : datas) {

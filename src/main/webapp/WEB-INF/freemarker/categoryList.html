@@ -154,11 +154,11 @@ function headOnc(){
 				 
 				 <label for="search_name"><b>名称:</b></label> 
 				 <input type="text" id="search_name" name="name" placeholder="请输入名称" value="${(returnDatas.queryBean.name)!''}"> 
-				 <label for="search_state"><b>是否可用:</b></label> 
+				 <!-- <label for="search_state"><b>是否可用:</b></label> 
 				 <select id="search_state" name="state">
 					<option value="是">是</option>
 					<option value="否">否</option>
-				</select>
+				</select> -->
 				<a href="javascript:mySubmitForm('searchForm');" class="btn btn-purple btn-sm"> 
 				    查询 
 					<i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -219,8 +219,8 @@ function headOnc(){
 										<tr>
 										 <!--first_start_no_export-->
 										 <!--first_end_no_export-->
-												<th id="th_name" >分类名称</th>
-												<th id="th_image" >分类图片</th>
+												<th id="th_name" style="width: 20%;" >分类名称</th>
+												<th id="th_image" style="width: 20%;">分类图片</th>
 
 										</tr>
 									</thead>
@@ -243,7 +243,7 @@ function headOnc(){
 													${(_data.name)!''}
 											</td>
 											<td >
-													${(_data.image)!''}
+													<img src="${(_data.image)!''}"/>
 											</td>
 										</tr>
 										
@@ -285,9 +285,12 @@ function headOnc(){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="isDel" >0否1是</label>
+											<label class="col-sm-3 control-label no-padding-right" for="isDel" >是否可用</label>
 												 <div class="col-sm-9">
-													<input name="isDel"  id="isDel" value="" placeholder="0否1是" class="form-control"  type="text" />
+													<select id="isDel" name="isDel" class="col-10">
+													<option value="0">可用</option>
+													<option value="1">不可用</option>
+													</select>
 													
 													<input name="type"  id="type" value="" class="form-control"  type="text" style="display: none;"/>
 												 </div> 

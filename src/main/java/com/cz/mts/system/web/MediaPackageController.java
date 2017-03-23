@@ -465,7 +465,16 @@ public class MediaPackageController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		mediaPackage.setIsDel(0);
-		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
+		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1 = 1");
+		if(StringUtils.isNotBlank(mediaPackage.getCategoryName())){
+			finder.append(" and categoryId in(select id from t_category where type=2 and INSTR(`name`,:categoryName)>0 )");
+			finder.setParam("categoryName", mediaPackage.getCategoryName());
+		}
+		if(StringUtils.isNotBlank(mediaPackage.getName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", mediaPackage.getName());
+		}
+		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		if(null != datas && datas.size() > 0){
 			for (MediaPackage mp : datas) {
 				//获取用户名称
