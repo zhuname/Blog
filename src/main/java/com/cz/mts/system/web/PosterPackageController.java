@@ -610,6 +610,18 @@ public class PosterPackageController  extends BaseController {
 			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
 			finder.setParam("userName", posterPackage.getUserName());
 		}
+		
+		if(StringUtils.isNotBlank(posterPackage.getStartTime())){
+			finder.append(" and payTime > :startTime ");
+			finder.setParam("startTime", posterPackage.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(posterPackage.getEnddTime())){
+			finder.append(" and payTime < :endTime ");
+			finder.setParam("endTime", posterPackage.getEnddTime());
+		}
+		
+		
 		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,posterPackage);
 		if(null != datas && datas.size() > 0){
 			for (PosterPackage pc : datas) {

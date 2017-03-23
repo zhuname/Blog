@@ -99,6 +99,17 @@ public class WithdrawController  extends BaseController {
 			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
 			finder.setParam("userName", withdraw.getUserName());
 		}
+		
+		if(StringUtils.isNotBlank(withdraw.getStartTime())){
+			finder.append(" and createTime > :startTime ");
+			finder.setParam("startTime", withdraw.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(withdraw.getEndTime())){
+			finder.append(" and createTime < :endTime ");
+			finder.setParam("endTime", withdraw.getEndTime());
+		}
+		
 		List<Withdraw> datas=withdrawService.findListDataByFinder(finder,page,Withdraw.class,withdraw);
 		if(datas != null && datas.size() > 0){
 			for (Withdraw wd : datas) {

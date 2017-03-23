@@ -4,6 +4,18 @@
 
 <script type="text/javascript">
 
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+
 function deletePosterPackage(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -110,6 +122,19 @@ jQuery(document).ready(function(){
 			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}">
 			 <label for="search_userName"><b>用户名称:</b></label> 
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			 <label for="search_state">支付开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">支付结束时间</label>
+			<input name="enddTime"  class="date-picker"  id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			 
+			 
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -169,7 +194,7 @@ jQuery(document).ready(function(){
 						<th id="th_sumMoney" >红包金额</th>
 						<th id="th_status" >状态</th>
 						<th id="th_payType" >支付类型</th>
-						<th id="th_expTime" >过期时间</th>
+						<th id="th_payTime" >支付时间</th>
 						<th id="th_failTime" >失败时间</th>
 						<th id="th_succTime" >审核通过时间</th>
 						<th id="th_failReason" >失败原因</th>
@@ -308,7 +333,7 @@ jQuery(document).ready(function(){
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.expTime)?string('yyyy-MM-dd'))!''}
+							${((_data.payTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
 								<!--日期型-->
