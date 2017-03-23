@@ -31,10 +31,22 @@ function deleteLunboPic(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+            
+            <label for="search_position"><b>位置:</b></label> 
+			 <select id="search_position" name="position" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">红包</option>
+				<option value="2">视频</option>
+				<option value="3">卡券</option>
+			</select>
+			
+			 <label for="search_type"><b>跳转类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="1">url</option>
+				<option value="2">红包</option>
+				<option value="3">视频</option>
+				<option value="4">卡券</option>
 			</select>
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">

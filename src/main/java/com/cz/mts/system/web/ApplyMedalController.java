@@ -92,10 +92,9 @@ public class ApplyMedalController  extends BaseController {
 		Finder finder=Finder.getSelectFinder(applyMedal).append(" where 1=1");
 		
 		if(StringUtils.isNotBlank(applyMedal.getUserName())){
-			finder.append(" and userId in (select id from t_app_user where name like '%:userName%')");
-			finder.setParam("userName", applyMedal.getUserName());
+			finder.append(" and userId in (select id from t_app_user where name like '%"+applyMedal.getUserName()+"%')");
 		}
-		
+		System.out.println(finder.getSql());
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
