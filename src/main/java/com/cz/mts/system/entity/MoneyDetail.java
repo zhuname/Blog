@@ -212,7 +212,6 @@ public class MoneyDetail  extends BaseEntity {
 	
 	
 	@Id
-	@PKSequence
      @WhereSQL(sql="id=:MoneyDetail_id")
 	public java.lang.Integer getId() {
 		return this.id;

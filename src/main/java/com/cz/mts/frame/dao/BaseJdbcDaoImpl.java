@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import com.cz.mts.frame.annotation.LuceneSearch;
 import com.cz.mts.frame.common.BaseLogger;
 import com.cz.mts.frame.common.SessionUser;
@@ -45,17 +43,17 @@ import com.cz.mts.frame.util.WhereSQLInfo;
  * 例如 demo数据的实现类是org.springrain.springrain.dao.BasedemoDaoImpl,demo2数据的实现类是org.
  * springrain demo2.dao.Basedemo2DaoImpl</br>
  * 
- * @copyright {@link 9iu.org}
+ * @copyright {@link weicms.net}
  * @author springrain<Auto generate>
  * @version 2013-03-19 11:08:15
- * @see com.cz.mts.frame.dao.BaseJdbcDaoImpl
+ * @see org.springrain.frame.dao.BaseJdbcDaoImpl
  */
 public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao {
 	private String frame_jdbc_call_key = "frame_jdbc_call_key";
 
 	/**
 	 * 抽象方法.每个数据库的代理Dao都必须实现.在多库情况下,用于区分底层数据库的连接对象,对数据库进行增删改查.</br>
-	 * 例如:demo数据库的代理Dao org.springrain.springrain.dao.BasedemoDaoImpll
+	 * 例如:demo数据库的代理Dao org.springrain.dao.BasedemoDaoImpll
 	 * 实现返回的是spring的beanjdbc.</br>
 	 * demo2 数据库的代理Dao org.springrain.demo2.dao.Basedemo2DaoImpl
 	 * 实现返回的是spring的bean jdbc_demo2.</br>
@@ -66,7 +64,7 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 
 	/**
 	 * 抽象方法.每个数据库的代理Dao都必须实现.在多库情况下,用于区分底层数据库的连接对象,调用数据库的函数和存储过程.</br>
-	 * 例如:demo 数据库的代理Dao org.springrain.springrain.dao.BasedemoDaoImpl
+	 * 例如:demo 数据库的代理Dao org.springrain.demo1.dao.BasedemoDaoImpl
 	 * 实现返回的是spring的bean jdbcCall.</br>
 	 * datalog 数据库的代理Dao org.springrain.demo2.dao.Basedemo2DaoImpl
 	 * 实现返回的是spring的beanjdbcCall_demo2.</br>
@@ -337,7 +335,7 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 		String order = page.getOrder();
 		if (StringUtils.isNotBlank(order)) {
 			order = order.trim();
-			if (order.indexOf(" ") > -1 || order.indexOf(";") > -1) {// 认为是异常的,主要是防止注入
+			if (order.contains(" ") || order.contains(";")|| order.contains(",") || order.contains("'") || order.contains("(")|| order.contains(")") ) {// 认为是异常的,主要是防止注入
 				return null;
 			}
 
@@ -433,7 +431,7 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 			if (page != null && StringUtils.isNotBlank(page.getOrder())) {// 如果page中包含
 																			// 排序属性
 				String _order = page.getOrder().trim();
-				if (_order.indexOf(" ") > -1 || _order.indexOf(";") > -1) {// 认为是异常的,主要是防止注入
+				if (_order.contains(" ") || _order.contains(";")|| _order.contains(",") || _order.contains("'") || _order.contains("(")|| _order.contains(")") ) {// 认为是异常的,主要是防止注入
 					orderSql = " order by id asc ";
 				} else {
 					String _sort = page.getSort();
@@ -543,44 +541,39 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 		String tableName = entityInfo.getTableName();
 		Class<?> returnType = entityInfo.getPkReturnType();
 		String pkName = entityInfo.getPkName();
-		System.out.println("**********************pk:"+ pkName);
-		
-		Iterator<String> iter = fdNames.iterator() ;
-		while(iter.hasNext()){
-			System.out.println("&&&&&&&&&&&&&&&&&&&  fd:"+iter.next());
-		}
 		// 获取 分表的扩展
 		String tableExt = entityInfo.getTableExt();
 
 		StringBuffer sql = new StringBuffer("INSERT INTO ").append(tableName).append(tableExt).append("(");
 
 		StringBuffer valueSql = new StringBuffer(" values(");
-		
-		System.out.println("*******************size:"+fdNames.size());
 
 		for (int i = 0; i < fdNames.size(); i++) {
 			String fdName = fdNames.get(i);// 字段名称
-			// fd.setAccessible(true);
 
 			if (fdName.equals(pkName)) {// 如果是ID,自动生成UUID
 				Object _getId = ClassUtils.getPKValue(entity); // 主键
-				
-				System.out.println("%%%%%%%%%%%%%%%%%%%pk:"+entityInfo.getPksequence());
-				if (_getId == null) {
+				if (_getId == null) {//Id为空
 					if (returnType == String.class) {
 						ClassUtils.setPropertieValue(pkName, entity, id);
 					} else if (StringUtils.isNotBlank(entityInfo.getPksequence())) {// 如果包含主键序列注解
 						String _sequence_value = entityInfo.getPksequence();
-						if ((i + 1) == fdNames.size()) {
-							sql.append(fdName).append(")");
-							valueSql.append(_sequence_value).append(")");
+						
+					    if(i==0){//如果是第一个字段
+					    	sql.append(fdName);
+							valueSql.append(_sequence_value);
+					    }else{//如果不是第一个字段
+					    	sql.append(",").append(fdName);
+							valueSql.append(",").append(_sequence_value);
+					    }
+						
+					    if (fdNames.size()-i==1) {//最后一个字段
+							sql.append(")");
+							valueSql.append(")");
 							break;
 						}
-						sql.append(fdName).append(",");
-						valueSql.append(_sequence_value).append(",");
 						continue;
 					} else {
-						System.out.println("$$$$$$$$$$$$$$$$$走这里了吧￥￥￥￥￥￥￥￥￥￥￥￥￥");
 						continue;
 					}
 				} else {
@@ -591,20 +584,21 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 			String mapKey = ":" + fdName;// 占位符
 			Object fdValue = ClassUtils.getPropertieValue(fdName, entity);
 			paramMap.put(fdName, fdValue);
-
-			System.out.println("*******************name:"+fdNames.get(i));
-			System.out.println("*******************num:"+i);
-			if ((i + 1) == fdNames.size()) {
-				System.out.println("*******************here:"+i);
-				sql.append(fdName).append(")");
-				valueSql.append(mapKey).append(")");
+			
+			
+			if(i==0){//第一个字段
+				sql.append(fdName);
+				valueSql.append(mapKey);
+			}else{//不是第一个字段
+				sql.append(",").append(fdName);
+				valueSql.append(",").append(mapKey);
+			}
+			if (fdNames.size()-i==1) {//最后一个字段
+				sql.append(")");
+				valueSql.append(")");
 				break;
 			}
 
-			sql.append(fdName).append(",");
-			valueSql.append(mapKey).append(",");
-
-			System.out.println("*******************sql:"+sql.toString());
 		}
 		sql.append(valueSql);// sql语句
 		return sql.toString();
