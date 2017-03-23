@@ -91,21 +91,8 @@ public class SmsServiceImpl extends BaseSpringrainServiceImpl implements ISmsSer
 			}  
 			String smscode = x;
 			sms.setContent(smscode);
-			String content = "";
 			
-			//发送短信
-			if(1 == sms.getType()){  //注册
-				content = "【美天赏】"+smscode+"(美天赏注册验证码，请完成验证)，如非本人操作，请忽略此短信。";
-			}else if(2 == sms.getType()){     //修改原手机号
-				content = "【美天赏】"+smscode+"(修改绑定原手机号验证码)，工作人员不会向您索要，请勿向任何人泄漏。";
-			}else if(3 == sms.getType()){    //绑定新手机号
-				content = "【美天赏】"+smscode+"(美天赏绑定新手机号验证码，请完成验证)，如非本人操作，请忽略此短信。";
-			}else if(4 == sms.getType()){    //商家找回密码
-				content = "【美天赏】"+smscode+"(找回密码验证码)，工作人员不会向您索要，请勿向任何人泄漏。";
-			}else if(5 == sms.getType()){
-				content = "【美天赏】"+smscode+"(绑定手机号验证码)，工作人员不会向您索要，请勿向任何人泄漏。";
-			}
-			SMSUtil.SendSMS(sms.getPhone(), content);
+			SMSUtil.SendSMS(sms.getPhone(), smscode,sms.getType().toString());
 			save(sms);
 			return sms;
 		}

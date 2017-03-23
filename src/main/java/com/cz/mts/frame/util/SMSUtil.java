@@ -1,57 +1,83 @@
 package com.cz.mts.frame.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.rmi.ServerException;
+
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
+import com.aliyuncs.sms.model.v20160927.SingleSendSmsRequest;
+import com.aliyuncs.sms.model.v20160927.SingleSendSmsResponse;
+
+import net.sf.json.JSONObject;
 
 
 
 public class SMSUtil {
 	
-	public static final String serviceURL = "http://sdk.entinfo.cn:8061/mdsmssend.ashx";
-	public static final String serviceURL2 = "";
-	public static final String Sn = "SDK-BSY-010-00094";
-	public static final String password = "649309";
-	public static final String Pwd = SecUtils.encoderByMd5With32Bit(Sn+password).toUpperCase();
+	public static final String serviceURL = "https://sms.aliyuncs.com/?Action=SingleSendSms";
+	public static final String SignName = "美天赏";
+	public static final String TemplateCode1 = "SMS_57370135";
+	public static final String TemplateCode2 = "SMS_57355139";
+	public static final String TemplateCode3 = "SMS_57285091";
+	public static final String TemplateCode4 = "SMS_57385113";
+	public static final String TemplateCode5 = "SMS_57430047";
 	
-	//发送短信
-	public static String SendSMS(String mobile, String content) throws Exception {
-		String smsUrl = serviceURL+"?Sn="+Sn+"&Pwd="+Pwd+"&mobile="+mobile+"&content="+URLEncoder.encode(content,"UTF-8");
-		URL url = new URL(smsUrl);
- 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
- 		conn.setConnectTimeout(5000);		
- 		conn.setRequestMethod("GET");
- 		conn.setRequestProperty("Content-Type",
-				"application/x-www-form-urlencoded,charset=UTF-8");
- 		conn.setRequestProperty("Accept-Charset", "UTF-8");
- 		conn.setRequestProperty("contentType", "UTF-8");
- 		String json = "";
- 		if (conn.getResponseCode() == 200) {
- 			InputStream inStream = conn.getInputStream();
- 			byte[] data = readInputStream(inStream);
- 	 		 json = new String(data);
- 		}
-		System.out.println(smsUrl);
- 		return json;
+
+	
+	/**
+	 * 发送短信
+	 * @param mobile：手机号
+	 * @param content：验证码
+	 * @return
+	 * @throws Exception
+	 */
+	public static String SendSMS(String mobile, String content,String type) throws Exception {
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("code", content);
+		IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI3ugrkiVbqkuF", "AGQJXuWCxS0oOoavMkqcybdF5wTzTX");
+        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Sms",  "sms.aliyuncs.com");
+        IAcsClient client = new DefaultAcsClient(profile);
+        SingleSendSmsRequest request = new SingleSendSmsRequest();
+        try {
+        	if("1".equals(type)){
+				request.setTemplateCode(TemplateCode1); 
+			}
+			if("2".equals(type)){
+				request.setTemplateCode(TemplateCode2); 
+			}
+			if("3".equals(type)){
+				request.setTemplateCode(TemplateCode3); 
+			}
+			if("4".equals(type)){
+				request.setTemplateCode(TemplateCode4); 
+			}
+			if("5".equals(type)){
+				request.setTemplateCode(TemplateCode5); 
+			}
+			
+			request.setSignName(SignName);   
+            request.setParamString(jsonObj.toString());
+            request.setRecNum(mobile);
+            System.out.println("-------->"+request.getSignName());
+            SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
+//            System.out.println(httpResponse.getModel());
+//            System.out.println(httpResponse.getRequestId());
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
-	
-	  public static byte[] readInputStream(InputStream instream) throws Exception {
-	 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();//读到的数据放到内存中
-	 		byte []buffer = new  byte[1024];
-	 		int len = 0;
-	 		while((len = instream.read(buffer)) !=-1){
-	 			outStream.write(buffer, 0, len);//往内存中写入数据
-	 		}
-	 		instream.close();
-	 	 return outStream.toByteArray();
-	 	}
 
 	
 	public static void main(String[] args) throws Exception {
 		SMSUtil smsUtil = new SMSUtil();
-		String status =  smsUtil.SendSMS("18339956750", "【幸福城市】");
-		System.out.println(status);
+		String status =  smsUtil.SendSMS("18538036976", "123456","1");
+//		System.out.println(status);
+//		JSONObject jsonObj = new JSONObject();
+//		jsonObj.put("code", "123456");
+//		jsonObj.put("product", "ECCare");
+//		System.out.println(jsonObj.toString());
 	}
 }
