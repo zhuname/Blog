@@ -27,6 +27,7 @@ import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -87,10 +88,18 @@ public class ApplyMedalController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,ApplyMedal applyMedal) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		Finder finder=Finder.getSelectFinder(applyMedal).append(" where 1=1");
+		
+		if(StringUtils.isNotBlank(applyMedal.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%:userName%')");
+			finder.setParam("userName", applyMedal.getUserName());
+		}
+		
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<ApplyMedal> datas=applyMedalService.findListDataByFinder(null,page,ApplyMedal.class,applyMedal);
+		List<ApplyMedal> datas=applyMedalService.findListDataByFinder(finder,page,ApplyMedal.class,applyMedal);
 		if(null != datas && datas.size() > 0){
 			for (ApplyMedal am : datas) {
 				if(null != am.getUserId()){

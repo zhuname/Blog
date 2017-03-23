@@ -82,6 +82,8 @@ jQuery(document).ready(function(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+            <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
 			<label for="search_type"><b>申请类型:</b></label> 
 			 <select id="search_type" name="type" class="col-10" >
 			 	<option value="">请选择</option>
@@ -96,6 +98,11 @@ jQuery(document).ready(function(){
 				<option value="2">申请成功</option>
 				<option value="3">申请失败</option>
 			</select>
+			
+			<a  href="javascript:mySubmitForm('searchForm');"
+				class="btn btn-purple btn-sm">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+				</a>
 			
 </form>
 		</div>
