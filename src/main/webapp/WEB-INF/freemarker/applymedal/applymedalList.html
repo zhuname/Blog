@@ -151,14 +151,6 @@ $(document).on("click", ".vid", function() {
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/applymedal/update/pre?id=${(_data.id)!''}');">
-                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/applymedal/delete?id=${(_data.id)!''}','${ctx}/applymedal/list');">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </button>
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"

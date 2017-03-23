@@ -925,6 +925,7 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 		// 打印sql
 		logInfoSql(finder.getSql());
 		update(finder);
+		
 
 		if (auditLog == null) {
 			return;

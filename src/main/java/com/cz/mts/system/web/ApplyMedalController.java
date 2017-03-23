@@ -241,7 +241,7 @@ public class ApplyMedalController  extends BaseController {
 	
 	/**
 	 * 申请勋章认证接口
-	 * @author wj
+	 * @author wml
 	 * @param model
 	 * @param applyMedal
 	 * @param request
@@ -285,7 +285,7 @@ public class ApplyMedalController  extends BaseController {
 	
 	/**
 	 * 申请勋章认证接口
-	 * @author wj
+	 * @author wml
 	 * @param model
 	 * @param applyMedal
 	 * @param request
