@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -83,8 +84,28 @@ public class ApplyMedal  extends BaseEntity {
 	
 	private java.lang.String introduction;
 	
+	private String userName;
+	private String medalName;
 	
 	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Transient
+	public String getMedalName() {
+		return medalName;
+	}
+
+	public void setMedalName(String medalName) {
+		this.medalName = medalName;
+	}
+
 	//columns END 数据库字段结束
 	 @WhereSQL(sql="introduction=:ApplyMedal_introduction")
 	public java.lang.String getIntroduction() {

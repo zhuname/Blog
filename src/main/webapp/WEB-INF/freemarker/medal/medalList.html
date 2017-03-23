@@ -10,11 +10,19 @@ function deleteMedal(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/medal/delete?id="+id;
-		var listurl="${ctx}/medal/list";
+		var _url="${ctx}/system/medal/delete?id="+id;
+		var listurl="${ctx}/system/medal/list";
 		mydelete(_url,listurl);
 	}
 }
+
+
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
+	
+});
 </script>
 
 
@@ -27,14 +35,17 @@ function deleteMedal(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/medal/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/medal/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+            <label for="search_name"><b>勋章名称:</b></label> 
+			 <input type="text" id="search_name"  name="name" placeholder="请填写勋章名称"  value="${(returnDatas.queryBean.name)!''}">
+			<label for="search_type"><b>认证类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">图片认证</option>
+				<option value="2">视频认证</option>
 			</select>
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
