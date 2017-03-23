@@ -894,6 +894,16 @@ public class AppUserController  extends BaseController {
 		}else{
 			String[] medalIds = str_medalIds.split(",");
 			if(medalIds != null && medalIds.length > 0 ){
+				//判断是否存在该用户的勋章记录
+				Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
+				finder.setParam("userId", Integer.parseInt(userId));
+				userMedalService.update(finder);
+				
+				//清除t_apply_medal表中关于该用户的记录
+				Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2");
+				finder2.setParam("userId", Integer.parseInt(userId));
+				applyMedalService.update(finder2);
+				
 				for(String s:medalIds){
 					if(StringUtils.isBlank(s)){
 						continue;
@@ -902,18 +912,9 @@ public class AppUserController  extends BaseController {
 						userMedal.setMedalId(Integer.parseInt(s));
 						if(StringUtils.isNotBlank(userId)){
 							userMedal.setUserId(Integer.parseInt(userId));
-							//判断是否存在该用户的勋章记录
-							Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
-							finder.setParam("userId", Integer.parseInt(userId));
-							userMedalService.queryForObject(finder);
-							
 							userMedal.setCreateTime(new Date());
 							userMedalService.save(userMedal);
-							
-							
-							//清除t_apply_medal表中关于该用户的记录
-							Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=3");
-							applyMedalService.queryForObject(finder2);
+						
 							//向t_apply_medal表中插入数据
 							ApplyMedal applyMedal = new ApplyMedal();
 							applyMedal.setUserId(Integer.parseInt(userId));
