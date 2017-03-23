@@ -474,6 +474,17 @@ public class MediaPackageController  extends BaseController {
 			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
 			finder.setParam("userName", mediaPackage.getName());
 		}
+		
+		if(StringUtils.isNotBlank(mediaPackage.getStartTime())){
+			finder.append(" and payTime > :startTime ");
+			finder.setParam("startTime", mediaPackage.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(mediaPackage.getEnddTime())){
+			finder.append(" and payTime < :endTime ");
+			finder.setParam("endTime", mediaPackage.getEnddTime());
+		}
+		
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		if(null != datas && datas.size() > 0){
 			for (MediaPackage mp : datas) {

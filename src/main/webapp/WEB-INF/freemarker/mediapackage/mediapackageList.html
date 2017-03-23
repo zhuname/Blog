@@ -4,6 +4,18 @@
 
 <script type="text/javascript">
 
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+
 function deleteMediaPackage(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -131,6 +143,17 @@ $(document).on("click", ".vid", function() {
 			 <label for="search_userName"><b>用户名称:</b></label> 
 			 <input type="text" id="search_name"  name="name" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.name)!''}">
 			
+			 <label for="search_state">支付开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">支付结束时间</label>
+			<input name="enddTime"  class="date-picker"  id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -188,7 +211,6 @@ $(document).on("click", ".vid", function() {
 						<th  style="width: 3%"  id="th_sumMoney" >红包金额</th>
 						<th  style="width: 3%"  id="th_status" >状态</th>
 						<th  style="width: 3%"  id="th_payType" >支付类型</th>
-						<th  style="width: 3%"  id="th_createTime" >创建时间</th>
 						<th  style="width: 3%"  id="th_payTime" >支付时间</th>
 						<th  style="width: 3%"  id="th_failTime" >失败时间</th>
 						<th  style="width: 3%"  id="th_succTime" >审核通过时间</th>
@@ -326,14 +348,6 @@ $(document).on("click", ".vid", function() {
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.expTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
-							</td>
-							<td >
-								<!--日期型-->
 							${((_data.payTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
@@ -343,6 +357,10 @@ $(document).on("click", ".vid", function() {
 							<td >
 								<!--日期型-->
 							${((_data.succTime)?string('yyyy-MM-dd'))!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.endTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td >
 								${(_data.failReason)!''}

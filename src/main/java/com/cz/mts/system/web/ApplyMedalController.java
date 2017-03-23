@@ -94,7 +94,16 @@ public class ApplyMedalController  extends BaseController {
 		if(StringUtils.isNotBlank(applyMedal.getUserName())){
 			finder.append(" and userId in (select id from t_app_user where name like '%"+applyMedal.getUserName()+"%')");
 		}
-		System.out.println(finder.getSql());
+		
+		if(StringUtils.isNotBlank(applyMedal.getStartTime())){
+			finder.append(" and applyTime > :startTime ");
+			finder.setParam("startTime", applyMedal.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(applyMedal.getEndTime())){
+			finder.append(" and applyTime < :endTime ");
+			finder.setParam("endTime", applyMedal.getEndTime());
+		}
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询

@@ -218,7 +218,26 @@ public class MediaPackage  extends BaseEntity {
 	
 	private String userName;
 	
+	private String startTime;
+	private String enddTime;
 	
+	@Transient
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	@Transient
+	public String getEnddTime() {
+		return enddTime;
+	}
+
+	public void setEnddTime(String enddTime) {
+		this.enddTime = enddTime;
+	}
 	
 	@Transient
 	public String getUserName() {

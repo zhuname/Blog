@@ -197,11 +197,28 @@ public class AppUser  extends BaseEntity {
 	
 	private List<Medal> medals;
 	
-	
+	private String endTime;
+	private String startTime;
 	
 	
 	//columns END 数据库字段结束
-	
+	@Transient
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	@Transient
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
 	//concstructor
 	@Transient
 	public List<Medal> getMedals() {

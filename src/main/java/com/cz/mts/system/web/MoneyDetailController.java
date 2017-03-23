@@ -156,6 +156,17 @@ public class MoneyDetailController  extends BaseController {
 			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
 			finder.setParam("userName", moneyDetail.getUserName());
 		}
+		
+		if(StringUtils.isNotBlank(moneyDetail.getStartTime())){
+			finder.append(" and createTime > :startTime ");
+			finder.setParam("startTime", moneyDetail.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(moneyDetail.getEndTime())){
+			finder.append(" and createTime < :endTime ");
+			finder.setParam("endTime", moneyDetail.getEndTime());
+		}
+		
 		// ==执行分页查询
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		

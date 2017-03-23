@@ -4,6 +4,18 @@
 
 <script type="text/javascript">
 
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+
 function deleteApplyMedal(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -98,6 +110,17 @@ jQuery(document).ready(function(){
 				<option value="2">申请成功</option>
 				<option value="3">申请失败</option>
 			</select>
+			
+			<label for="search_state">申请开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">申请结束时间</label>
+			<input name="endTime"  class="date-picker"  id="endTime" value="${(returnDatas.queryBean.endTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
 			
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
