@@ -23,6 +23,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IFeedbackService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -79,10 +80,27 @@ public class FeedbackController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Feedback feedback) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		Finder finder=Finder.getSelectFinder(feedback).append(" where 1=1");
+		
+		if(StringUtils.isNotBlank(feedback.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+feedback.getUserName()+"%')");
+		}
+		
+		if(StringUtils.isNotBlank(feedback.getStartTime())){
+			finder.append(" and createTime > :startTime ");
+			finder.setParam("startTime", feedback.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(feedback.getEndTime())){
+			finder.append(" and createTime < :endTime ");
+			finder.setParam("endTime", feedback.getEndTime());
+		}
+		
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Feedback> datas=feedbackService.findListDataByFinder(null,page,Feedback.class,feedback);
+		List<Feedback> datas=feedbackService.findListDataByFinder(finder,page,Feedback.class,feedback);
 		if(null != datas && datas.size() > 0){
 			for (Feedback fb : datas) {
 				if(null != fb.getUserId()){

@@ -54,11 +54,40 @@ public class Feedback  extends BaseEntity {
 	 */
 	private java.util.Date createTime;
 	
+	
+	
+	
+	private String startTime;
+	
+	private String endTime;
+	
 	private String userName;
 	
 	private java.lang.String osType;
 	
-	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	
+	
+	
+	
+	@Transient
+	 public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	@Transient
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	@WhereSQL(sql="osType=:MediaPackage_osType")
 	public java.lang.String getOsType() {
 		return osType;
 	}
