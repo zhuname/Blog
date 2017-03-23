@@ -94,7 +94,23 @@ public class WithdrawController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Withdraw> datas=withdrawService.findListDataByFinder(null,page,Withdraw.class,withdraw);
+		Finder finder = Finder.getSelectFinder(Withdraw.class).append(" where 1=1 ");
+		if(StringUtils.isNotBlank(withdraw.getUserName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", withdraw.getUserName());
+		}
+		
+		if(StringUtils.isNotBlank(withdraw.getStartTime())){
+			finder.append(" and createTime > :startTime ");
+			finder.setParam("startTime", withdraw.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(withdraw.getEndTime())){
+			finder.append(" and createTime < :endTime ");
+			finder.setParam("endTime", withdraw.getEndTime());
+		}
+		
+		List<Withdraw> datas=withdrawService.findListDataByFinder(finder,page,Withdraw.class,withdraw);
 		if(datas != null && datas.size() > 0){
 			for (Withdraw wd : datas) {
 				if(null != wd.getUserId()){

@@ -4,6 +4,18 @@
 
 <script type="text/javascript">
 
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+
 function deleteApplyMedal(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -82,6 +94,8 @@ jQuery(document).ready(function(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+            <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
 			<label for="search_type"><b>申请类型:</b></label> 
 			 <select id="search_type" name="type" class="col-10" >
 			 	<option value="">请选择</option>
@@ -96,6 +110,22 @@ jQuery(document).ready(function(){
 				<option value="2">申请成功</option>
 				<option value="3">申请失败</option>
 			</select>
+			
+			<label for="search_state">申请开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">申请结束时间</label>
+			<input name="endTime"  class="date-picker"  id="endTime" value="${(returnDatas.queryBean.endTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			
+			<a  href="javascript:mySubmitForm('searchForm');"
+				class="btn btn-purple btn-sm">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+				</a>
 			
 </form>
 		</div>
@@ -130,22 +160,22 @@ jQuery(document).ready(function(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                        <th  style="width: 3%" class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>操作</th>
+                        <th  style="width: 5%">操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >用户名称</th>
-						<th id="th_medalId" >勋章名称</th>
-						<th id="th_status" >状态</th>
-						<th id="th_applyTime" >申请时间</th>
-						<th id="th_operTime" >审核时间</th>
-						<th id="th_reason" >失败原因</th>
-						<th id="th_multiAddress" >多媒体地址</th>
-						<th id="th_type" >类型</th>
+						<th  style="width: 12%" id="th_userId" >用户名称</th>
+						<th  style="width: 12%" id="th_medalId" >勋章名称</th>
+						<th  style="width: 5%" id="th_type" >类型</th>
+						<th  style="width: 5%" id="th_status" >状态</th>
+						<th  style="width: 5%" id="th_applyTime" >申请时间</th>
+						<th  style="width: 5%" id="th_operTime" >审核时间</th>
+						<th  style="width: 20%" id="th_reason" >失败原因</th>
+						<th  style="width: 20%" id="th_multiAddress" >多媒体地址</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -165,14 +195,6 @@ jQuery(document).ready(function(){
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/applymedal/update/pre?id=${(_data.id)!''}');">
-                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/applymedal/delete?id=${(_data.id)!''}','${ctx}/applymedal/list');">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </button>
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
@@ -228,10 +250,18 @@ jQuery(document).ready(function(){
 							<td >
 								${(_data.userName)!0}
 							</td>
+							
 							<td >
 								${(_data.medalName)!0}
 							</td>
-							
+							<td >
+								<#if (_data.type) == 1 >
+									图片
+								</#if>
+								<#if (_data.type) == 2 >
+									视频
+								</#if>
+							</td>
 							<td >
 								<#if (_data.status) == 1 >
 									申请中
@@ -265,14 +295,7 @@ jQuery(document).ready(function(){
 									<video class="vid" poster="" width='200px' src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls'></video>
 								</#if>
 							</td>
-							<td >
-								<#if (_data.type) == 1 >
-									图片
-								</#if>
-								<#if (_data.type) == 2 >
-									视频
-								</#if>
-							</td>
+							
 						</tr>
 					</#list>
 					 </#if>

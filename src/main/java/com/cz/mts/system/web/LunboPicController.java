@@ -118,8 +118,12 @@ public class LunboPicController  extends BaseController {
 		// ==执行分页查询
 		
 		if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
-			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and position= :position order by Rand() limit 1");
-			finder.setParam("position", lunboPic.getPosition());
+			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name= :name ");
+			if(StringUtils.isBlank(lunboPic.getName())){
+				finder.setParam("name", "android启动广告图");
+			}else{
+				finder.setParam("name", lunboPic.getName());
+			}
 			returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
 		}else {
 			List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);

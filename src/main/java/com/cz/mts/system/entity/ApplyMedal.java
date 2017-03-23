@@ -87,7 +87,28 @@ public class ApplyMedal  extends BaseEntity {
 	private String userName;
 	private String medalName;
 	
+	private String startTime;
 	
+	private String endTime;
+	
+	@Transient
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	@Transient
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	@Transient
 	public String getUserName() {
 		return userName;

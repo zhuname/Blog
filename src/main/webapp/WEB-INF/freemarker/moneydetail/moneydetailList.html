@@ -4,6 +4,17 @@
 
 <script type="text/javascript">
 
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
 function deleteMoneyDetail(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -27,15 +38,25 @@ function deleteMoneyDetail(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/moneydetail/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/moneydetail/list1" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
-			</select>
+			
+			 <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			 <label for="search_state">开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">结束时间</label>
+			<input name="endTime"  class="date-picker"  id="endTime" value="${(returnDatas.queryBean.endTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			 
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -76,12 +97,12 @@ function deleteMoneyDetail(){
                     <tr>
                         <!--first_start_no_export-->
                         <!--first_end_no_export-->
-                        <th id="th_userName" >用户名称</th>
-						<th id="th_createTime" >创建时间</th>
-						<th id="th_money" >变动金额</th>
-						<th id="th_balance" >剩余金额</th>
-						<th id="th_itemId" >目标名称</th>
-						<th id="th_osType" >操作系统</th>
+                        <th id="th_userName" style="width: 16.6%;">用户名称</th>
+						<th id="th_createTime" style="width: 16.6%;">创建时间</th>
+						<th id="th_money" style="width: 16.6%;">变动金额</th>
+						<th id="th_balance" style="width: 16.6%;">剩余金额</th>
+						<th id="th_itemId" style="width: 16.6%;">目标名称</th>
+						<th id="th_osType" style="width: 16.6%;">操作系统</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->

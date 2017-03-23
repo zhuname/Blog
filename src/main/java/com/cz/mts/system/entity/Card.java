@@ -147,6 +147,27 @@ public class Card  extends BaseEntity {
 	
 	private Double sumMoney;
 	
+	private String enddTime;
+	private String startTime;
+	
+	
+	//columns END 数据库字段结束
+	@Transient
+	public String getEnddTime() {
+		return enddTime;
+	}
+
+	public void setEnddTime(String enddTime) {
+		this.enddTime = enddTime;
+	}
+	@Transient
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
 	
 	@Transient
 	public java.lang.Integer getCityId() {

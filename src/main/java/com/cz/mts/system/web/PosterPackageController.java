@@ -601,7 +601,28 @@ public class PosterPackageController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		posterPackage.setIsDel(0);
-		List<PosterPackage> datas = posterPackageService.findListDataByFinder(null,page,PosterPackage.class,posterPackage);
+		Finder finder = Finder.getSelectFinder(PosterPackage.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(posterPackage.getCategoryName())){
+			finder.append(" and categoryId in(select id from t_category where type=1 and INSTR(`name`,:categoryName)>0 )");
+			finder.setParam("categoryName", posterPackage.getCategoryName());
+		}
+		if(StringUtils.isNotBlank(posterPackage.getUserName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", posterPackage.getUserName());
+		}
+		
+		if(StringUtils.isNotBlank(posterPackage.getStartTime())){
+			finder.append(" and payTime > :startTime ");
+			finder.setParam("startTime", posterPackage.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(posterPackage.getEnddTime())){
+			finder.append(" and payTime < :endTime ");
+			finder.setParam("endTime", posterPackage.getEnddTime());
+		}
+		
+		
+		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,posterPackage);
 		if(null != datas && datas.size() > 0){
 			for (PosterPackage pc : datas) {
 				if(StringUtils.isNotBlank(pc.getImage())){

@@ -4,6 +4,18 @@
 
 <script type="text/javascript">
 
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+
 function deleteWithdraw(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -37,6 +49,16 @@ function checkRefuse(id){
 	});
 	
 }
+
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_withdrawType option[value='${(returnDatas.queryBean.withdrawType)!''}']").prop("selected",true);
+	
+	
+	jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
+	
+});
 </script>
 
 
@@ -53,11 +75,36 @@ function checkRefuse(id){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			<label for="search_withdrawType"><b>提现方式:</b></label> 
+			 <select id="search_withdrawType" name="withdrawType" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">银行</option>
+				<option value="2">支付宝</option>
+				<option value="3">微信</option>
 			</select>
+			
+			<label for="search_status"><b>申请状态:</b></label> 
+			 <select id="search_status" name="status" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">申请中</option>
+				<option value="2">申请成功</option>
+				<option value="3">申请失败</option>
+			</select>
+			 <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			 <label for="search_state">申请开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">申请结束时间</label>
+			<input name="endTime"  class="date-picker"  id="endTime" value="${(returnDatas.queryBean.endTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			 
+			 
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -97,27 +144,27 @@ function checkRefuse(id){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                        <th   style="width: 3%"  class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>操作</th>
+                        <th   style="width: 2%" >操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >用户名称</th>
-						<th id="th_createTime" >申请时间</th>
-						<th id="th_operTime" >审核时间</th>
-						<th id="th_status" >审核状态</th>
-						<th id="th_reason" >失败原因</th>
-						<th id="th_money" >提现金额</th>
-						<th id="th_factorage" >手续费</th>
-						<th id="th_realMoney" >实际到账金额</th>
-						<th id="th_branchBank" >开户行</th>
-						<th id="th_ownerName" >户主名称/真实姓名/微信昵称</th>
-						<th id="th_ownerPhone" >户主手机号/微信绑定手机号</th>
-						<th id="th_cardNum" >卡号/支付宝账号/微信账号</th>
-						<th id="th_withdrawType" >提现方式</th>
+						<th   style="width: 5%"  id="th_userId" >用户名称</th>
+						<th  style="width: 3%"  id="th_createTime" >申请时间</th>
+						<th  style="width: 3%"  id="th_operTime" >审核时间</th>
+						<th  style="width: 3%"  id="th_status" >审核状态</th>
+						<th  style="width: 5%"  id="th_reason" >失败原因</th>
+						<th  style="width: 3%"  id="th_money" >提现金额</th>
+						<th  style="width: 3%"  id="th_factorage" >手续费</th>
+						<th  style="width: 3%"  id="th_realMoney" >实际到账金额</th>
+						<th  style="width: 5%"  id="th_branchBank" >开户行</th>
+						<th  style="width: 3%"  id="th_ownerName" >户主名称/真实姓名/微信昵称</th>
+						<th  style="width: 3%"  id="th_ownerPhone" >户主手机号/微信绑定手机号</th>
+						<th  style="width: 3%"  id="th_cardNum" >卡号/支付宝账号/微信账号</th>
+						<th  style="width: 3%"  id="th_withdrawType" >提现方式</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->

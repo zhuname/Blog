@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +84,9 @@ public class SysSysparamServiceImpl extends BaseSpringrainServiceImpl implements
 		}
 		
 		@Override
-		@Cacheable(value = GlobalStatic.cacheKey, key = "'sysParamData'")
+//		@Cacheable(value = GlobalStatic.cacheKey, key = "'sysParamData'")
+		
+		@CachePut(value = GlobalStatic.cacheKey, key = "'sysParamData'")
 		public SysParamBean findParamBean() throws Exception {
 			Finder finder=Finder.getSelectFinder(SysSysparam.class);
 			List<SysSysparam> list = super.queryForList(finder, SysSysparam.class);

@@ -111,8 +111,19 @@ public class AppUserController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		Finder finder = Finder.getSelectFinder(AppUser.class).append(" where 1=1 ");
+		if(StringUtils.isNotBlank(appUser.getStartTime())){
+			finder.append(" and createTime > :startTime ");
+			finder.setParam("startTime", appUser.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(appUser.getEndTime())){
+			finder.append(" and createTime < :endTime ");
+			finder.setParam("endTime", appUser.getEndTime());
+		}
+		
 		// ==执行分页查询
-		List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
 			returnObject.setQueryBean(appUser);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

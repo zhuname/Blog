@@ -1,6 +1,5 @@
 package com.cz.mts.system.entity;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -11,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.cz.mts.frame.annotation.PKSequence;
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -83,6 +81,10 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private Integer payType;
 	
+	private String startTime;
+	
+	private String endTime;
+	
 	
 	//concstructor
 
@@ -106,6 +108,23 @@ public class MoneyDetail  extends BaseEntity {
 	private Double moneyCount;
 	
 	
+    @Transient
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	 @Transient
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	@Transient
 	public Double getMoneyCount() {
 		return moneyCount;

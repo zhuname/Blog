@@ -638,7 +638,27 @@ public class CardController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		card.setIsDel(0);
-		List<Card> datas = cardService.findListDataByFinder(null,page,Card.class,card);
+		Finder finder = Finder.getSelectFinder(Card.class).append("where 1=1");
+		if(StringUtils.isNotBlank(card.getCategoryName())){
+			finder.append(" and catergoryId in(select id from t_category where type=3 and INSTR(`name`,:categoryName)>0 )");
+			finder.setParam("categoryName", card.getCategoryName());
+		}
+		if(StringUtils.isNotBlank(card.getUserName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", card.getUserName());
+		}
+		
+		if(StringUtils.isNotBlank(card.getStartTime())){
+			finder.append(" and endTime > :startTime ");
+			finder.setParam("startTime", card.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(card.getEnddTime())){
+			finder.append(" and endTime < :endTime ");
+			finder.setParam("endTime", card.getEnddTime());
+		}
+		
+		List<Card> datas = cardService.findListDataByFinder(finder,page,Card.class,card);
 		if(null != datas && datas.size() > 0){
 			for (Card cd : datas) {
 				if(null != cd.getUserId()){

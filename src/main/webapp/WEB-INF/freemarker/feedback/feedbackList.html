@@ -4,6 +4,20 @@
 
 <script type="text/javascript">
 
+
+$('.date-picker').datepicker({
+		    autoclose: true,
+		    format: 'yyyy-mm-dd',
+		    language: 'zh-CN',
+		    todayBtn: 'linked',
+		    startDate:new Date(2014,10,27),
+			endDate:'+6000d',
+		    startDate: '-6000d',
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+
 function deleteFeedback(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
@@ -31,16 +45,24 @@ function deleteFeedback(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<!-- <label for="search_state"><b>反馈人xingmin:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
-			</select>
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
+			 <label for="search_state"><b>反馈人姓名:</b></label> 
+			  <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+				
+						<label for="search_state">开始时间</label>
+						<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+						  <span >
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					    <label for="search_state">结束时间</label>
+						<input name="endTime"  class="date-picker"  id="endTime" value="${(returnDatas.queryBean.endTime)!''}"  type="text"/>
+						 	<span>
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+			
+				<a  href="javascript:mySubmitForm('searchForm');" class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
- -->
+ 
 </form>
 		</div>
 		<div class="pull-right">
@@ -75,17 +97,17 @@ function deleteFeedback(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                        <th  style="width: 2%" class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>操作</th>
+                        <th  style="width:5%">操作</th>
                         <!--first_end_no_export-->
-						<th id="th_content" >反馈内容</th>
-						<th id="th_userId" >用户名称</th>
-						<th id="th_createTime" >创建时间</th>
+						<th  id="th_content" >反馈内容</th>
+						<th  style="width: 18%" id="th_userId" >用户名称</th>
+						<th  style="width: 8%" id="th_createTime" >创建时间</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->

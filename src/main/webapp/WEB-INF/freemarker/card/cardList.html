@@ -3,6 +3,18 @@
 <script type="text/javascript" src="${ctx}/js/system/card/card.js"></script>
 
 <script type="text/javascript">
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+
 
 function deleteCard(){
 	var id=jQuery("#id").val();
@@ -37,6 +49,13 @@ function checkRefuse(id){
 	
 }
 
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
+	
+});
+
 </script>
 
 
@@ -53,11 +72,35 @@ function checkRefuse(id){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			<label for="search_status"><b>状态:</b></label> 
+			 <select id="search_status" name="status" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">审核中</option>
+				<option value="2">审核成功</option>
+				<option value="3">审核失败</option>
+				<option value="4">已过期</option>
 			</select>
+			 <label for="search_title"><b>卡券名称:</b></label> 
+			 <input type="text" id="search_title"  name="title" placeholder="请填写卡券名称"  value="${(returnDatas.queryBean.title)!''}">
+			<label for="search_phone"><b>联系电话:</b></label> 
+			 <input type="text" id="search_phone"  name="phone" placeholder="请填写联系电话"  value="${(returnDatas.queryBean.phone)!''}">
+			 <label for="search_categoryName"><b>分类名称:</b></label> 
+			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}">
+			 <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			  <label for="search_state">到期开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">到期结束时间</label>
+			<input name="enddTime"  class="date-picker"  id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			 
+			 
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
