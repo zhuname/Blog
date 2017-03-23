@@ -17,9 +17,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
+import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IApplyMedalService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -43,6 +47,10 @@ public class ApplyMedalController  extends BaseController {
 	private IApplyMedalService applyMedalService;
 	@Resource
 	private IUserMedalService userMedalService;
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private IMedalService medalService;
 	
 	private String listurl="/applymedal/applymedalList";
 	
@@ -83,7 +91,24 @@ public class ApplyMedalController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<ApplyMedal> datas=applyMedalService.findListDataByFinder(null,page,ApplyMedal.class,applyMedal);
-			returnObject.setQueryBean(applyMedal);
+		if(null != datas && datas.size() > 0){
+			for (ApplyMedal am : datas) {
+				if(null != am.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(am.getUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						am.setUserName(appUser.getName());
+					}
+				}
+				
+				if(null != am.getMedalId()){
+					Medal medal = medalService.findMedalById(am.getMedalId());
+					if(null != medal && StringUtils.isNotBlank(medal.getName())){
+						am.setMedalName(medal.getName());
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(applyMedal);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -257,6 +282,7 @@ public class ApplyMedalController  extends BaseController {
 		try {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(2);
+				applyMedal.setOperTime(new Date());
 				applyMedalService.update(applyMedal,true);
 				
 				
@@ -301,6 +327,7 @@ public class ApplyMedalController  extends BaseController {
 		try {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(3);
+				applyMedal.setOperTime(new Date());
 				applyMedalService.update(applyMedal,true);
 			}
 		} catch (Exception e) {

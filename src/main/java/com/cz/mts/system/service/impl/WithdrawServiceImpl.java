@@ -153,6 +153,7 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 					moneyDetail.setType(10);
 					moneyDetail.setMoney(withdraw.getMoney());
 					moneyDetail.setBalance(appUserRecord.getBalance());
+//					moneyDetail.setOsType("ios");
 					moneyDetailService.saveorupdate(moneyDetail);
 //					returnObject.setStatus(MessageUtils.UPDATE_SUCCESS);
 				}else{
