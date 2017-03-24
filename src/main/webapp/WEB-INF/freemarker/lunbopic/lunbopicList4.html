@@ -31,10 +31,14 @@ function deleteLunboPic(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			
+			 <label for="search_type"><b>跳转类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="1">url</option>
+				<option value="2">红包</option>
+				<option value="3">视频</option>
+				<option value="4">卡券</option>
 			</select>
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
@@ -59,21 +63,21 @@ function deleteLunboPic(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                        <th  style="width: 3%" class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>操作</th>
+                        <th  style="width: 5%">操作</th>
                         <!--first_end_no_export-->
-                        <th id="th_name" >名称</th>
-						<th id="th_image" >图片</th>
-						<th id="th_type" >跳转类型</th>
-						<th id="th_createTime" >创建时间</th>
-						<th id="th_itemId" >对应的目标</th>
-						<th id="th_position" >展示位置</th>
-						<th id="th_url" >url</th>
+                        <th  style="width: 12%" id="th_name" >名称</th>
+						<th  style="width: 8%" id="th_image" >图片</th>
+						<th  style="width: 8%" id="th_type" >跳转类型</th>
+						<th  style="width: 8%" id="th_createTime" >创建时间</th>
+						<th  style="width: 8%" id="th_itemId" >对应的目标</th>
+						<th  style="width: 8%" id="th_position" >展示位置</th>
+						<th  style="width: 8%" id="th_url" >url</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->

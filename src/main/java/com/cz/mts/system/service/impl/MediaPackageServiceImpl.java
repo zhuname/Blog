@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -320,7 +322,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				}
 				
 				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and userId != null") ;
+				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
 				List<LmediaPackage> listMysql = super.queryForList(finder,LmediaPackage.class) ;
 				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
@@ -342,20 +344,22 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					//移除已经持久化的
 					//listNosql是需要更新的list
 					List<String> listNosql = list ;
-					listNosql.removeAll(listMysql) ;
-					Iterator<String> iterNosql = listNosql.iterator() ;
+					List<LmediaPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LmediaPackage.class) ;
+					_listNosql.removeAll(listMysql) ;
+					Iterator<LmediaPackage> iterNosql = _listNosql.iterator() ;
 					//需要更新的已抢金额
 					BigDecimal money = new BigDecimal(0) ;
 					while(iterNosql.hasNext()){
-						String lppStr = iterNosql.next() ;
+						LmediaPackage lpp = iterNosql.next() ;
 						//转换成bean
-						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
+//						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
 						//金额累计
 						money = money.add(new BigDecimal(lpp.getMoney())) ;
 						Integer _userId = lpp.getUserId() ;
 						AppUser user = super.findById(_userId, AppUser.class) ;
 						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
 						user.setBalance(nowBalance.doubleValue());
+						user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
 						//更新用户余额
 						appUserService.saveorupdate(user) ;
 						//更新明细表
@@ -372,7 +376,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					
 					//解决红包表的数据
 					//本次更新的已抢次数
-					Integer num = listNosql.size() ;
+					Integer num = _listNosql.size() ;
 					//这里需要再取一次，防止并发造成pp数据不一致
 					MediaPackage pp = findById(packageId, MediaPackage.class) ;
 					pp.setNum(pp.getNum() - num);
