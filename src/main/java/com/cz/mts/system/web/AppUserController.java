@@ -294,6 +294,7 @@ public class AppUserController  extends BaseController {
 								appUser.setIsBlack(0);
 								appUser.setIsCloseFee(0);
 								appUser.setBalance(0.0);
+								appUser.setIsPush(1);
 								Object id = appUserService.saveorupdate(appUser);
 								
 								returnObject.setData(appUserService.findById(id, AppUser.class));
@@ -936,8 +937,11 @@ public class AppUserController  extends BaseController {
 							applyMedal.setIntroduction("后台赋予");
 							applyMedalService.save(applyMedal);
 							
-							//给该用户发推送
-							notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+							AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
+							if(null != appUser && 1 == appUser.getIsPush()){
+								//给该用户发推送
+								notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+							}
 						}
 					}
 				}

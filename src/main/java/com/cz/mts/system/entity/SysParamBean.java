@@ -28,11 +28,16 @@ public class SysParamBean implements Serializable {
 	private String postVideoAddress ;
 	private String userRegisterProtocol ;
 	private String cardCharge ;
-	private String maxCharge;
 	private String withdrawIntroduce;
+	private String aboutImage;
 	
 	
-	
+	public String getAboutImage() {
+		return aboutImage;
+	}
+	public void setAboutImage(String aboutImage) {
+		this.aboutImage = aboutImage;
+	}
 	public String getWithdrawIntroduce() {
 		return withdrawIntroduce;
 	}
@@ -41,12 +46,6 @@ public class SysParamBean implements Serializable {
 	}
 	public String getCardCharge() {
 		return cardCharge;
-	}
-	public String getMaxCharge() {
-		return maxCharge;
-	}
-	public void setMaxCharge(String maxCharge) {
-		this.maxCharge = maxCharge;
 	}
 	public void setCardCharge(String cardCharge) {
 		this.cardCharge = cardCharge;

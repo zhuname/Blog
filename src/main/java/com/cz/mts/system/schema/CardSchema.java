@@ -35,12 +35,16 @@ public class CardSchema extends BaseLogger{
 	@Scheduled(cron="0 0/5 * * * ?")
 	public void cardEnd() throws Exception{
 		logger.info("*****************判断卡券到期******************");
-		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 AND NOW()>endTime;");
+		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 AND NOW()>endTime");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
 			for (Card card : cards) {
-				//给发布人发推送
-				notificationService.notify(6, card.getId(), card.getUserId());
+				//查询用户信息
+				AppUser appUser = appUserService.findAppUserById(card.getUserId());
+				if(null != appUser && 1 == appUser.getIsPush()){
+					//给发布人发推送
+					notificationService.notify(6, card.getId(), card.getUserId());
+				}
 				card.setStatus(4);
 				cardService.update(card,true);
 				
@@ -50,8 +54,14 @@ public class CardSchema extends BaseLogger{
 				List<UserCard> userCards = userCardService.queryForList(finder2,UserCard.class);
 				if(null != userCards && userCards.size() > 0){
 					for (UserCard userCard : userCards) {
-						//对该用户发推送
-						notificationService.notify(13, userCard.getCardId(), userCard.getUserId());
+						//查询用户信息
+						AppUser appUser2 = appUserService.findAppUserById(userCard.getUserId());
+						if(null != appUser2 && 1 == appUser2.getIsPush()){
+							//对该用户发推送
+							notificationService.notify(13, userCard.getCardId(), userCard.getUserId());
+							userCard.setStatus(3);
+							userCardService.update(userCard,true);
+						}
 					}
 				}
 			}
@@ -68,8 +78,10 @@ public class CardSchema extends BaseLogger{
 				appUser.setCurrentLqNum(appUser.getLqNum());
 				appUser.setCurrentShareNum(appUser.getShareNum());
 				appUserService.update(appUser,true);
-				//给用户发推送
-				notificationService.notify(12, appUser.getId(), appUser.getId(), appUser.getCurrentLqNum()+"");
+				if(1 == appUser.getIsPush()){
+					//给用户发推送
+					notificationService.notify(12, appUser.getId(), appUser.getId(), appUser.getCurrentLqNum()+"");
+				}
 			}
 		}
 		

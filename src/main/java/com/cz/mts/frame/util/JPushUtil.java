@@ -25,7 +25,7 @@ public class JPushUtil {
 	 * @param appType  1:用户版 2：商家版 3：快递版
 	 * void
 	 */
-	public static void sendJPushNotification(String content,String type,int id,int userId,String url){
+	public static void sendJPushNotification(String content,String type,Integer id,Integer userId,String url){
 		String message = content;
 		String[] tags = {"userId"+userId};
 		

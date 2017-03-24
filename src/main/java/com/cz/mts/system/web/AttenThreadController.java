@@ -23,13 +23,13 @@ public class AttenThreadController extends Thread{
 	
 	public void run(){
 		try {
-			if(null != posterPackage){
+			if(null != posterPackage && 1 == appUser.getIsPush()){
 				notificationService.notify(10,posterPackage.getId(),attention.getId(),appUser.getName(),posterPackage.getTitle(),posterPackage.getBalance()+"");
 			}
-			if(null != mediaPackage){
+			if(null != mediaPackage && 1 == appUser.getIsPush()){
 				notificationService.notify(10,mediaPackage.getId(),attention.getId(),appUser.getName(),mediaPackage.getTitle(),mediaPackage.getBalance()+"");
 			}
-			if(null != card){
+			if(null != card && 1 == appUser.getIsPush()){
 				notificationService.notify(11,card.getId(),attention.getId(),appUser.getName(),card.getTitle());
 			}
 		} catch (Exception e) {

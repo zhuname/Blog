@@ -210,7 +210,7 @@ public class MediaPackageController  extends BaseController {
 					 mediaPackage.setScanNum(0);
 				 }
 				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
-				 mediaPackageService.update(mediaPackage);
+				 mediaPackageService.update(mediaPackage,true);
 			 }
 			 
 			 //返回分类名称

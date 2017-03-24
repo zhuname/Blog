@@ -419,5 +419,27 @@ public class SysSysparamController  extends BaseController {
 		return "/syssysparam/updateWithdrawIntroduce";
 	}
 	
+	
+	/**
+	 * 修改提现说明
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/aboutImage")
+	public String updateAboutImage(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","aboutImage");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/aboutImage";
+	}
+	
 
 }
