@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,8 +17,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -39,6 +44,10 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class MedalController  extends BaseController {
 	@Resource
 	private IMedalService medalService;
+	@Resource
+	private IApplyMedalService applyMedalService;
+	@Resource
+	private IUserMedalService userMedalService;
 	
 	private String listurl="/medal/medalList";
 	
@@ -172,6 +181,17 @@ public class MedalController  extends BaseController {
 		  String  strId=request.getParameter("id");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
+			  
+			  Finder finderAppLy=Finder.getSelectFinder(ApplyMedal.class," id ").append(" where 1=1 and medalId=:medalId");
+			  finderAppLy.setParam("medalId", strId);
+			  List<Integer> applyIds=applyMedalService.queryForList(finderAppLy, Integer.class);
+			  applyMedalService.deleteByIds(applyIds, ApplyMedal.class);
+			  
+			  Finder finderUser=Finder.getSelectFinder(UserMedal.class," id ").append(" where 1=1 and medalId=:medalId");
+			  finderUser.setParam("medalId", strId);
+			  List<Integer> userIds=userMedalService.queryForList(finderUser, Integer.class);
+			  userMedalService.deleteByIds(userIds, UserMedal.class);
+			  
 			 id= java.lang.Integer.valueOf(strId.trim());
 				medalService.deleteById(id,Medal.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
