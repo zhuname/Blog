@@ -135,7 +135,7 @@ public class NotificationServiceImpl implements NotificationService {
 			case 16:
 				JPushUtil.sendJPushNotification("您发布的海报红包已被领取结束，您可操作再次发放或查看红包领取情况", type+"", id, userId, "");
 				try {
-					message=new Message(null, 3, userId, new Date(), "您发布的海报红包已被领取结束，您可操作再次发放或查看红包领取情况", id, "", 0, "红包领取完", 2);
+					message=new Message(null, 16, userId, new Date(), "您发布的海报红包已被领取结束，您可操作再次发放或查看红包领取情况", id, "", 0, "红包领取完", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -145,18 +145,18 @@ public class NotificationServiceImpl implements NotificationService {
 			
 			case 17:
 				JPushUtil.sendJPushNotification("您发布的海报信息审核失败，请及时查看原因并进行修改，然后再次提交", type+"", id, userId, "");
-				message=new Message(null, 8, userId, new Date(), "您发布的海报信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
+				message=new Message(null, 17, userId, new Date(), "您发布的海报信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
 				messageService.save(message);
 			break;
 			case 18:
 				JPushUtil.sendJPushNotification("您发布的卡券信息审核失败，请及时查看原因并进行修改，然后再次提交", type+"", id, userId, "");
-				message=new Message(null, 8, userId, new Date(), "您发布的卡券信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
+				message=new Message(null, 18, userId, new Date(), "您发布的卡券信息审核失败，请及时查看原因并进行修改，然后再次提交", id, null, 0, "审核失败信息", 2);
 				messageService.save(message);
 			break;
 			case 19:
 				JPushUtil.sendJPushNotification("您发布的海报信息审核成功，已经发布上线，感谢您的配合", type+"", id, userId, "");
 				try {
-					message=new Message(null, 9, userId, new Date(), "您发布的海报信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
+					message=new Message(null, 19, userId, new Date(), "您发布的海报信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -166,7 +166,7 @@ public class NotificationServiceImpl implements NotificationService {
 			case 20:
 				JPushUtil.sendJPushNotification("您发布的卡券信息审核成功，已经发布上线，感谢您的配合", type+"", id, userId, "");
 				try {
-					message=new Message(null, 9, userId, new Date(), "您发布的卡券信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
+					message=new Message(null, 20, userId, new Date(), "您发布的卡券信息审核成功，已经发布上线，感谢您的配合", id, null, 0, "审核成功信息", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception

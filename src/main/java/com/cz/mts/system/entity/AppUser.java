@@ -200,7 +200,17 @@ public class AppUser  extends BaseEntity {
 	private String endTime;
 	private String startTime;
 	
+	private java.lang.Integer isPush;
 	
+	@WhereSQL(sql="isPush=:AppUser_isPush")
+	public java.lang.Integer getIsPush() {
+		return isPush;
+	}
+
+	public void setIsPush(java.lang.Integer isPush) {
+		this.isPush = isPush;
+	}
+
 	//columns END 数据库字段结束
 	@Transient
 	public String getEndTime() {
@@ -642,6 +652,7 @@ public class AppUser  extends BaseEntity {
 			.append("是否关闭卡券手续费 0否 1是[").append(getIsCloseFee()).append("],")
 			.append("是否有信息更新 0否 1是[").append(getIsUpdate()).append("],")
 			.append("是否是黑名单 0否 1是[").append(getIsBlack()).append("],")
+			.append("推送开关[").append(getIsPush()).append("],")
 			.toString();
 	}
 	

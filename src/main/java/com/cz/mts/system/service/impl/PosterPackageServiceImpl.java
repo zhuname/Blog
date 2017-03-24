@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,7 @@ import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.system.web.AttenThreadController;
+import com.google.gson.JsonArray;
 
 
 /**
@@ -168,11 +170,14 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			List<String> list = jedis.lrange(GlobalStatic.posterPackageConsumedList + packageId , 0 , -1) ;
 			
 			if(list != null && list.size() !=0){
-				//给发布人发推送
-				notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
+				AppUser _user = findById(userId, AppUser.class) ;
+				if(null != _user && 1 == _user.getIsPush()){
+					//给发布人发推送
+					notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
+				}
 				
 				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId and userId != null") ;
+				Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
 				List<LposterPackage> listMysql = super.queryForList(finder,LposterPackage.class) ;
 				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
@@ -194,20 +199,22 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 					//移除已经持久化的
 					//listNosql是需要更新的list
 					List<String> listNosql = list ;
-					listNosql.removeAll(listMysql) ;
-					Iterator<String> iterNosql = listNosql.iterator() ;
+					List<LposterPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LposterPackage.class) ;
+					_listNosql.removeAll(listMysql) ;
+					Iterator<LposterPackage> iterNosql = _listNosql.iterator() ;
 					//需要更新的已抢金额
 					BigDecimal money = new BigDecimal(0) ;
 					while(iterNosql.hasNext()){
-						String lppStr = iterNosql.next() ;
+						LposterPackage lpp = iterNosql.next() ;
 						//转换成bean
-						LposterPackage lpp = JsonUtils.readValue(lppStr, LposterPackage.class) ;
+//						LposterPackage lpp = JsonUtils.readValue(lppStr, LposterPackage.class) ;
 						//金额累计
 						money = money.add(new BigDecimal(lpp.getMoney())) ;
 						Integer _userId = lpp.getUserId() ;
 						AppUser user = super.findById(_userId, AppUser.class) ;
 						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
 						user.setBalance(nowBalance.doubleValue());
+						user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
 						//更新用户余额
 						appUserService.saveorupdate(user) ;
 						//更新明细表
@@ -224,7 +231,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 					
 					//解决红包表的数据
 					//本次更新的已抢次数
-					Integer num = listNosql.size() ;
+					Integer num = _listNosql.size() ;
 					//这里需要再取一次，防止并发造成pp数据不一致
 					PosterPackage pp = findById(packageId, PosterPackage.class) ;
 					pp.setNum(pp.getNum() - num);
@@ -233,9 +240,11 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
-						
-						//给发布人发推送
-						notificationService.notify(16, Integer.parseInt(packageId), pp.getUserId());
+						AppUser appUser = appUserService.findAppUserById(pp.getUserId());
+						if(null != appUser && 1 == appUser.getIsPush()){
+							//给发布人发推送
+							notificationService.notify(16, Integer.parseInt(packageId), pp.getUserId());
+						}
 					}
 					super.saveorupdate(pp) ;
 				}
@@ -250,14 +259,17 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 	public Object check(String packageId, String type,String failReason) throws Exception {
 		// TODO Auto-generated method stub
 		PosterPackage pp = findById(Integer.valueOf(packageId), PosterPackage.class) ;
+		AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 		if(pp == null)
 			return null ;
 		if("0".equals(type)){  //拒绝
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
-			//给发布人发推送
-			notificationService.notify(17, Integer.parseInt(packageId), pp.getUserId());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				//给发布人发推送
+				notificationService.notify(17, Integer.parseInt(packageId), pp.getUserId());
+			}
 			
 			
 			//更新attention表中的isUpdate字段
@@ -269,7 +281,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			finderAppUser.setParam("itemId",  pp.getUserId());
 			super.update(finderAppUser);
 			
-			AppUser appUser = appUserService.findAppUserById(pp.getUserId());
+			
 			//查询接收推送的用户
 			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
 			finderSelect.setParam("itemId", pp.getUserId());
@@ -282,9 +294,10 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
-			
-			//给发布人发推送
-			notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				//给发布人发推送
+				notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
+			}
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){

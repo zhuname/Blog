@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -271,6 +273,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		
 		//获取红包
 		MediaPackage _package = findById(packageId, MediaPackage.class) ;
+		
+		AppUser appUser = appUserService.findAppUserById(_package.getUserId());
 		if(_package != null && _package.getStatus() == 3){  //通过审核的红包才能抢
 			if(_package.getEncrypt() == 0){  //看是否是加密红包，如果不是
 				//看这个用户是否能在此小时内能抢
@@ -312,11 +316,13 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			
 			if(list != null && list.size() !=0){
 				
-				//给发布人发推送
-				notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
+				if(null != appUser && 1 == appUser.getIsPush()){
+					//给发布人发推送
+					notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
+				}
 				
 				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and userId != null") ;
+				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
 				finder.setParam("packageId", Integer.valueOf(packageId)) ;
 				List<LmediaPackage> listMysql = super.queryForList(finder,LmediaPackage.class) ;
 				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
@@ -338,20 +344,22 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					//移除已经持久化的
 					//listNosql是需要更新的list
 					List<String> listNosql = list ;
-					listNosql.removeAll(listMysql) ;
-					Iterator<String> iterNosql = listNosql.iterator() ;
+					List<LmediaPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LmediaPackage.class) ;
+					_listNosql.removeAll(listMysql) ;
+					Iterator<LmediaPackage> iterNosql = _listNosql.iterator() ;
 					//需要更新的已抢金额
 					BigDecimal money = new BigDecimal(0) ;
 					while(iterNosql.hasNext()){
-						String lppStr = iterNosql.next() ;
+						LmediaPackage lpp = iterNosql.next() ;
 						//转换成bean
-						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
+//						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
 						//金额累计
 						money = money.add(new BigDecimal(lpp.getMoney())) ;
 						Integer _userId = lpp.getUserId() ;
 						AppUser user = super.findById(_userId, AppUser.class) ;
 						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
 						user.setBalance(nowBalance.doubleValue());
+						user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
 						//更新用户余额
 						appUserService.saveorupdate(user) ;
 						//更新明细表
@@ -368,7 +376,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					
 					//解决红包表的数据
 					//本次更新的已抢次数
-					Integer num = listNosql.size() ;
+					Integer num = _listNosql.size() ;
 					//这里需要再取一次，防止并发造成pp数据不一致
 					MediaPackage pp = findById(packageId, MediaPackage.class) ;
 					pp.setNum(pp.getNum() - num);
@@ -377,9 +385,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
-						
-						//给发布人发推送
-						notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+						if(null != appUser && 1 == appUser.getIsPush()){
+							//给发布人发推送
+							notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+						}
 						
 					}
 					super.saveorupdate(pp) ;
@@ -395,19 +404,25 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	public Object check(String packageId, String type,String failReason) throws Exception {
 		// TODO Auto-generated method stub
 		MediaPackage pp = findById(Integer.valueOf(packageId), MediaPackage.class) ;
+		
 		if(pp == null)
 			return null ;
+		
+		AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 		if("0".equals(type)){  //拒绝
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
-			notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
+			}
 			
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
-			notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
-			
+			if(null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
+			}
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());
@@ -417,7 +432,6 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finderAppUser.setParam("itemId",  pp.getUserId());
 			super.update(finderAppUser);
 			
-			AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 			//查询接收推送的用户
 			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
 			finderSelect.setParam("itemId", pp.getUserId());

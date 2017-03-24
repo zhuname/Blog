@@ -574,13 +574,6 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 						}
 						continue;
 					} else {
-//						if(i==0){//第一个字段
-//							sql.append(fdName);
-//							valueSql.append(mapKey);
-//						}else{//不是第一个字段
-//							sql.append(",").append(fdName);
-//							valueSql.append(",").append(mapKey);
-//						}
 						if (fdNames.size()-i==1) {//最后一个字段
 							sql.append(")");
 							valueSql.append(")");
