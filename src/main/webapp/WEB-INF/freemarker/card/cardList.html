@@ -56,6 +56,24 @@ jQuery(document).ready(function(){
 	
 });
 
+
+//点击播放视频
+$(document).on("click", ".sim", function() {
+	var me=$(this).html();
+		//iframe层-多媒体
+    	layer.open({
+		  type: 1,
+		  title: false,
+		  closeBtn: 0,
+		  area: '200px',
+		  skin: 'layui-layer-nobg', //没有背景色
+		  shadeClose: true,
+		  content:me
+		 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+		});
+    	layer.msg('点击任意处关闭');
+});
+
 </script>
 
 
@@ -148,7 +166,7 @@ jQuery(document).ready(function(){
                         </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_images" >图片地址</th>
+						<th id="th_images" >图片</th>
 						<th id="th_catergoryId" >分类名称</th>
 						<th id="th_userId" >用户名称</th>
 						<th id="th_title" >标题</th>
@@ -236,14 +254,13 @@ jQuery(document).ready(function(){
                                                     </a>
                                                 </li>
                                                 
-                                                
                                             </ul>
                                         </div>
                                     </div>
                                 </td>
                                 <!--end_no_export-->
 
-							<td >
+							<td class="sim">
 								<img src="${(_data.images)!''}" height="100px;" width="200px;"/>
 							</td>
 							<td >

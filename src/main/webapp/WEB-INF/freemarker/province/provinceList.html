@@ -36,7 +36,7 @@ function deleteProvince(){
 		        	var obj1 = eval(data.data);
 		        	
 		        	for (var int = 0; int < obj1.length; int++) {
-						$($('#'+id+'')).after("<tr class=\"province"+id+"\"><td class=\"center\"> <label class=\"position-relative\"> <input name=\"check_li\" value=\"cityId\" class=\"ace\" type=\"checkbox\"><span class=\"lbl\"></span></label></td>        <td><div class=\"hidden-sm hidden-xs btn-group\"><button class=\"btn btn-xs btn-danger\" onclick=\"mydelete('${ctx}/city/open/json?id=${(_data.id)!''}','${ctx}/province/list/json');\"><i class=\"ace-icon fa fa-pencil bigger-120\"></i></button></div><div class=\"hidden-md hidden-lg\"><div class=\"inline position-relative\"><button class=\"btn btn-xs btn-primary dropdown-toggle\"  data-toggle=\"dropdown\" data-position=\"auto\"><i class=\"ace-icon fa fa-cog icon-only bigger-110\"></i></button><ul class=\"dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close\"><li><a data-original-title=\"Delete\" href=\"javascript:mydelete('${ctx}/city/open/json?id=${(_data.id)!''}','${ctx}/province/list');\" class=\"tooltip-error\" data-rel=\"tooltip\" title=\"\"><span class=\"red\"><i class=\"ace-icon fa fa-trash-o bigger-120\"></i></span></a></li></ul></div></div></td>        <td ></td><td >"+obj1[int].name+"</td><td >"+obj1[int].open+"</td><td >"+obj1[int].capital+"</td></tr>");
+						$($('#'+id+'')).after("<tr class=\"province"+id+"\"><td><div class=\"hidden-sm hidden-xs btn-group\"><button class=\"btn btn-xs btn-danger\" onclick=\"mydelete('${ctx}/city/open/json?id=${(_data.id)!''}','${ctx}/province/list/json');\"><i class=\"ace-icon fa fa-pencil bigger-120\"></i></button></div><div class=\"hidden-md hidden-lg\"><div class=\"inline position-relative\"><button class=\"btn btn-xs btn-primary dropdown-toggle\"  data-toggle=\"dropdown\" data-position=\"auto\"><i class=\"ace-icon fa fa-cog icon-only bigger-110\"></i></button><ul class=\"dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close\"><li><a data-original-title=\"Delete\" href=\"javascript:mydelete('${ctx}/city/open/json?id=${(_data.id)!''}','${ctx}/province/list');\" class=\"tooltip-error\" data-rel=\"tooltip\" title=\"\"><span class=\"red\"><i class=\"ace-icon fa fa-trash-o bigger-120\"></i></span></a></li></ul></div></div></td>        <td ></td><td >"+obj1[int].name+"</td><td >"+obj1[int].open+"</td><td >"+obj1[int].capital+"</td></tr>");
 					}
 		        	
 		        }
@@ -114,19 +114,12 @@ function deleteProvince(){
                     <!--first_start_export-->
                     <thead>
                     <tr>
-                        <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
-                        <th>操作</th>
+                        <th style="width: 1%;">操作</th>
                         <!--first_end_no_export-->
-						<th id="th_name" >名称</th>
-						<th id="th_city" >市</th>
-						<th id="th_open" >省是否开通(1是0否)</th>
-						<th id="th_capital" >拼音</th>
+						<th style="width: 8%;" id="th_name" >名称</th>
+						<th style="width: 8%;" id="th_city" >市</th>
+						<th style="width: 3%;" id="th_open" >省是否开通</th>
+						<th style="width: 3%;" id="th_capital" >拼音</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -138,21 +131,11 @@ function deleteProvince(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="" onclick="trClick(${_data.id});" id="${_data.id}">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
                                                 onclick="myhref('${ctx}/province/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/province/delete?id=${(_data.id)!''}','${ctx}/province/list');">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
                                     <div class="hidden-md hidden-lg">
@@ -197,10 +180,14 @@ function deleteProvince(){
 								${(_data.name)!''}
 							</td>
 							<td >
-								
 							</td>
 							<td >
-								${(_data.open)!0}
+								<#if (_data.open) == 0 >
+									未开通
+								</#if>
+								<#if (_data.open) == 1 >
+									开通
+								</#if>
 							</td>
 							<td >
 								${(_data.capital)!''}

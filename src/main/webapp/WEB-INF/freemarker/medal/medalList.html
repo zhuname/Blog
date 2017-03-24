@@ -17,11 +17,29 @@ function deleteMedal(){
 }
 
 
+
+//点击播放视频
+$(document).on("click", ".sim", function() {
+    	var me=$(this).html();
+    		//iframe层-多媒体
+        	layer.open({
+			  type: 1,
+			  title: false,
+			  closeBtn: 0,
+			  area: '516px',
+			  skin: 'layui-layer-nobg', //没有背景色
+			  shadeClose: true,
+			  content:me
+			 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			});
+        	layer.msg('点击任意处关闭');
+	});
+
 jQuery(document).ready(function(){
 	
 	//回选 下拉框
 	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
-	
+
 });
 </script>
 
@@ -156,7 +174,8 @@ jQuery(document).ready(function(){
 								${(_data.name)!''}
 							</td>
 							<td >
-								<img alt="" width="200px" height="200px" src="${(_data.image)!''}">
+								
+								<img alt=""  src="${(_data.image)!''}">
 							</td>
 							<td >
 								${(_data.descr)!''}
