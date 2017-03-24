@@ -751,30 +751,42 @@ public class AppUserController  extends BaseController {
 			returnObject.setMessage("参数缺失");
 		}else{
 			Page page = new Page();
-			AppUser appRecord = appUserService.findAppUserById(appUser.getId());
-			if(null != appRecord){
-				//判断验证码
-				Sms sms=new Sms();
-				sms.setPhone(appUser.getPhone());
-				sms.setContent(content);
-				sms.setType(5);
-				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
-				if(null != smss && smss.size() > 0 ){
-					//删除该条记录
-					smsService.deleteByEntity(smss.get(0));
-					//更新appUser表中的记录
-					appRecord.setPhone(appUser.getPhone());
-					if(StringUtils.isNotBlank(appUser.getPassword())){
-						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+			
+			//先判断手机号是否已经存在
+			AppUser user = new AppUser();
+			if(StringUtils.isNotBlank(appUser.getPhone())){
+				user.setPhone(appUser.getPhone());
+			}
+			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+			if(null != datas && datas.size() > 0){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户已注册");
+			}else{
+				AppUser appRecord = appUserService.findAppUserById(appUser.getId());
+				if(null != appRecord){
+					//判断验证码
+					Sms sms=new Sms();
+					sms.setPhone(appUser.getPhone());
+					sms.setContent(content);
+					sms.setType(5);
+					List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+					if(null != smss && smss.size() > 0 ){
+						//删除该条记录
+						smsService.deleteByEntity(smss.get(0));
+						//更新appUser表中的记录
+						appRecord.setPhone(appUser.getPhone());
+						if(StringUtils.isNotBlank(appUser.getPassword())){
+							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						}
+						appUserService.update(appRecord);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("请再次获取验证码");
 					}
-					appUserService.update(appRecord);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
-					returnObject.setMessage("请再次获取验证码");
+					returnObject.setMessage("该用户不存在");
 				}
-			}else{
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该用户不存在");
 			}
 		}
 		return returnObject;
