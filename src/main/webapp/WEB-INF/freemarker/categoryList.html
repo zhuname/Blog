@@ -66,15 +66,19 @@ function deleteCategory(){
 function updateCategory(type){
     var id=jQuery("#id").val();
     
+	var style="";    
+    
     if(type=="t"){
     	 $("#type").val(1);
     }
     
      if(type==1){
     	 $("#type").val(2);
+    	 style=1;
     }
      if(type==2){
     	 $("#type").val(3);
+    	  style=2;
     }
    
 	if(!id||id==""){
@@ -183,7 +187,7 @@ function headOnc(){
 				 </a>
 			 </@shiro.hasPermission>
 			
-			 <@shiro.hasPermission name="/category/delete" > 
+			 <@shiro.hasPermission name="/system/category/delete" > 
 				 <a id="btn_delete" href="javascript:deleteCategory();" class="btn btn-sm btn-danger " style="display: none;">
 					删除
 				 </a> 

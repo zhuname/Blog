@@ -548,6 +548,7 @@ public class AppUserController  extends BaseController {
 					appUser.setFrozeBanlance(0.0);
 					appUser.setLqNum(1);
 					appUser.setIsBlack(0);
+					appUser.setIsCloseFee(0);
 					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));

@@ -146,6 +146,7 @@ public class PosterPackageController  extends BaseController {
 				finder1.append(" and p.status = :status");
 				
 				finder1.setParam("status", posterPackage.getStatus());
+				
 			}
 			
 			if(posterPackage.getCategoryId()!=null){

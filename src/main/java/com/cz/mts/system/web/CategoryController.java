@@ -219,7 +219,7 @@ public class CategoryController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			categoryService.save(category);
+			categoryService.saveorupdate(category);
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
