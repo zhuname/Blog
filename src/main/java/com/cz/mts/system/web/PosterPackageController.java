@@ -566,6 +566,8 @@ public class PosterPackageController  extends BaseController {
 					
 				}
 				
+				posterPackage.setStatus(0);
+				
 				id=posterPackageService.update(posterPackage, true);
 				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				

@@ -140,7 +140,7 @@ public class CardController  extends BaseController {
 		return;
 	}
 	
-		/**
+	/**
 	 * 查看操作,调用APP端lookjson方法
 	 */
 	@RequestMapping(value = "/look")
@@ -392,6 +392,7 @@ public class CardController  extends BaseController {
 					}
 					
 				}
+				card.setStatus(1);
 				Object id=cardService.update(card,true);
 				returnObject.setData(cardService.findCardById(id));
 			}

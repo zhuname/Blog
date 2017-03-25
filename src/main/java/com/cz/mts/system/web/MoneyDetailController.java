@@ -28,6 +28,7 @@ import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
@@ -36,9 +37,11 @@ import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.IWithdrawService;
 import com.cz.mts.system.service.impl.CardServiceImpl;
+import com.cz.mts.system.service.impl.UserCardServiceImpl;
 
 
 /**
@@ -57,6 +60,8 @@ public class MoneyDetailController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IUserMedalService userMedalService;
+	@Resource
+	private IUserCardService userCardService;
 	@Resource
 	private IMedalService medalService;
 	@Resource
@@ -424,6 +429,25 @@ public class MoneyDetailController  extends BaseController {
 							if(mediaPackage != null && StringUtils.isNotBlank(mediaPackage.getTitle())){
 								md.setContent(mediaPackage.getTitle());
 							}
+						}
+						
+						
+						if( 8 == md.getType()){
+							
+							UserCard userCard=userCardService.findUserCardById(md.getItemId());
+							
+							if(userCard!=null){
+								
+								Card card=cardService.findCardById(userCard.getCardId());
+								
+								if(card!=null){
+									
+									md.setContent(card.getTitle());
+									
+								}
+								
+							}
+							
 						}
 						
 						//提现失败
