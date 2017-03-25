@@ -86,9 +86,14 @@ public class MedalController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Medal> datas=medalService.findListDataByFinder(null,page,Medal.class,medal);
-			returnObject.setQueryBean(medal);
-//		returnObject.setPage(page);
+		Finder finder = Finder.getSelectFinder(Medal.class).append(" where 1=1 ");
+		if(StringUtils.isNotBlank(medal.getName())){
+			finder.append(" and name like '%"+medal.getName()+"%'");
+			medal.setName(null);
+		}
+		List<Medal> datas=medalService.findListDataByFinder(finder,page,Medal.class,medal);
+		returnObject.setQueryBean(medal);
+		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}

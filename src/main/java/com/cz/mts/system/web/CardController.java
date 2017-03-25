@@ -525,7 +525,7 @@ public class CardController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try { 
 			
-			if(userCard.getCode()==null){
+			if(userCard.getCardCode()==null){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
 				return returnObject;
