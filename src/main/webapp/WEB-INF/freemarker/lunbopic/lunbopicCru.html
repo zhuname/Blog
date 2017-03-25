@@ -119,7 +119,9 @@ function lunboImages(){
 		$("#cityDiv").hide();
 		$("#itemIdDiv").hide();
 		$("#urlDiv").hide();
+		$("#name").attr("disabled","disabled");
 	}else{
+		$("#name").removeAttr("disabled");
 		$("#itemIdDiv").show();
 		$("#urlDiv").hide();
 	}

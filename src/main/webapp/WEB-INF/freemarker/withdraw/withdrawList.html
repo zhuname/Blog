@@ -55,6 +55,9 @@ jQuery(document).ready(function(){
 	//回选 下拉框
 	jQuery("#search_withdrawType option[value='${(returnDatas.queryBean.withdrawType)!''}']").prop("selected",true);
 	
+	//回选 下拉框
+	jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
+	
 	
 	jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
 	
@@ -75,6 +78,13 @@ jQuery(document).ready(function(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+            <label for="search_status"><b>申请状态:</b></label> 
+			 <select id="search_status" name="status" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">申请中</option>
+				<option value="2">申请成功</option>
+				<option value="3">申请失败</option>
+			</select>
 			<label for="search_withdrawType"><b>提现方式:</b></label> 
 			 <select id="search_withdrawType" name="withdrawType" class="col-10" >
 			 	<option value="">请选择</option>
@@ -83,13 +93,7 @@ jQuery(document).ready(function(){
 				<option value="3">微信</option>
 			</select>
 			
-			<label for="search_status"><b>申请状态:</b></label> 
-			 <select id="search_status" name="status" class="col-10" >
-			 	<option value="">请选择</option>
-				<option value="1">申请中</option>
-				<option value="2">申请成功</option>
-				<option value="3">申请失败</option>
-			</select>
+			
 			 <label for="search_userName"><b>用户名称:</b></label> 
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
 			 

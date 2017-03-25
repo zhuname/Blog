@@ -128,7 +128,9 @@ jQuery(document).ready(function(){
         })
 	}
 	
-	
+	$("#num").attr("disabled","disabled");
+	$("#lqNum").attr("disabled","disabled");
+	$("#topPriceDiv").hide();
 	
 //-->
 </SCRIPT>
@@ -211,7 +213,7 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
+			<div class="form-group" id="topPriceDiv">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topPrice" >最高金额</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
@@ -230,15 +232,10 @@ jQuery(document).ready(function(){
 					        <span class="input-group-addon">
 								<i class="fa fa-calendar bigger-110"></i>
 							</span>
-					   
 					   </div>
-					
 					</div><div class="help-block" for="expTime"></div>
-				
 				</div>
-			
 			</div>
-			
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >剩余金额</label>
@@ -281,9 +278,6 @@ jQuery(document).ready(function(){
 							<a class="layui-btn layui-btn-primary" id="play" onClick="yincang()">修改</a>
 							<a class="layui-btn layui-btn-primary" id="play" onClick="go()">上传</a>
 						</div>
-
-
-
 						
 					</div><div class="help-block" for="mediaUrl"></div>
 				</div>
@@ -292,9 +286,9 @@ jQuery(document).ready(function(){
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaImage" >视频图片</label>
 				<div class="col-xs-12 col-sm-9">
-  								<img  name="mediaImageI" style="height: 200px;width: 200px;"  onclick="headOnc();" id="mediaImageI" value="${(returnDatas.data.mediaImage)!''}" src="${(returnDatas.data.mediaImage)!''}">
-   								 <input type="file" id="filed" name="filed" style="display:none">
-   								  <input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}" style="display:none"  type="text" />
+  							<img  name="mediaImageI" style="height: 200px;width: 200px;"  onclick="headOnc();" id="mediaImageI" value="${(returnDatas.data.mediaImage)!''}" src="${(returnDatas.data.mediaImage)!''}">
+   							<input type="file" id="filed" name="filed" style="display:none">
+   							<input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}" style="display:none"  type="text" />
 
 					<!-- <div class="clearfix">
 						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />

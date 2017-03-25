@@ -167,7 +167,7 @@ public class PosterPackageController  extends BaseController {
 						 for (RedCity redCity : redCities) {
 							if(null != redCity.getCityId()){
 								City city = cityService.findCityById(redCity.getCityId());
-								if(StringUtils.isNotBlank(city.getName())){
+								if(city!=null){
 									redCity.setCityName(city.getName());
 								}
 							}
