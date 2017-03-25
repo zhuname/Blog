@@ -128,11 +128,11 @@ public class PosterPackageController  extends BaseController {
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
 		if(StringUtils.isNotBlank(posterPackage.getTitle())){
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
 			finder1.setParam("title", posterPackage.getTitle());
 			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		} else {
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
 			if(posterPackage.getUserId()!=null){
 				
 				finder1.append(" and p.userId = :userId");
@@ -146,6 +146,7 @@ public class PosterPackageController  extends BaseController {
 				finder1.append(" and p.status = :status");
 				
 				finder1.setParam("status", posterPackage.getStatus());
+				
 			}
 			
 			if(posterPackage.getCategoryId()!=null){
@@ -167,7 +168,7 @@ public class PosterPackageController  extends BaseController {
 						 for (RedCity redCity : redCities) {
 							if(null != redCity.getCityId()){
 								City city = cityService.findCityById(redCity.getCityId());
-								if(StringUtils.isNotBlank(city.getName())){
+								if(city!=null){
 									redCity.setCityName(city.getName());
 								}
 							}
