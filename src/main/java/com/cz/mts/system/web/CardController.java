@@ -393,8 +393,8 @@ public class CardController  extends BaseController {
 					
 				}
 				card.setStatus(1);
-				Object id=cardService.update(card,true);
-				returnObject.setData(cardService.findCardById(id));
+				cardService.update(card,true);
+				returnObject.setData(cardService.findCardById(card.getId()));
 			}
 			
 		} catch (Exception e) {

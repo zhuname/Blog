@@ -569,7 +569,7 @@ public class PosterPackageController  extends BaseController {
 				posterPackage.setStatus(0);
 				
 				id=posterPackageService.update(posterPackage, true);
-				returnObject.setData(posterPackageService.findPosterPackageById(id));
+				returnObject.setData(posterPackageService.findPosterPackageById(posterPackage.getId()));
 				
 			}
 			
@@ -578,7 +578,6 @@ public class PosterPackageController  extends BaseController {
 			if(posterPackage.getId()==null){
 				posterPackageService.deleteById(id, PosterPackage.class);
 			}
-			
 			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

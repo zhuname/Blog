@@ -80,7 +80,7 @@ public class MoneyDetailController  extends BaseController {
 	private String listurl="/moneydetail/moneydetailList";
 	
 	
-	   
+	
 	/**
 	 * 列表数据,调用listjson方法,保证和app端数据统一
 	 * 
