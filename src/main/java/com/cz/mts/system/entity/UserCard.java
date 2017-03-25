@@ -121,6 +121,18 @@ public class UserCard  extends BaseEntity {
 	 * 交易流水号
 	 */
 	private java.lang.String tradeNo;
+	
+	
+	private java.lang.String osType;
+	
+	 @WhereSQL(sql="osType=:UserCard_osType")
+	public java.lang.String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(java.lang.String osType) {
+		this.osType = osType;
+	}
 	//columns END 数据库字段结束
 	
 	//concstructor

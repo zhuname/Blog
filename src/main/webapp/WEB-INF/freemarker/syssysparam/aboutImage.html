@@ -60,14 +60,18 @@ $(document).on("change", "#filed", function() {
 	<div class="col-xs-12">
 		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/syssysparam/update" > 
 			<input type="hidden" id="code" name="code" value="${(returnDatas.data.code)!''}"/>	
-	        <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
+			
+	        <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >请上传237*43的图片，并以英文命名：</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="site-demo-upload">
 							<img  name="lunboI" onclick="lunboImages();" id="lunboI" value="${(returnDatas.data.value)!''}" src="${(returnDatas.data.value)!''}">
  							<input type="file" id="filed" name="filed" style="display:none">
  							<input name="value" class="col-xs-12 col-sm-6" id="value" value="" style="display:none"  type="text" />
+ 							
 					</div>
 				</div>
+				
+				
 		</form>
 		<div class="wizard-actions">
 		

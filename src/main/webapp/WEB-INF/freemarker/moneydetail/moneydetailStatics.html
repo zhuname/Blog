@@ -1,8 +1,7 @@
 <#escape x as x?html>
 
-
+<script type="text/javascript" src="${ctx}/js/system/moneydetail/moneydetail.js"></script>
 <script type="text/javascript">
-
 </script>
 
 
@@ -25,11 +24,13 @@
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
-
 </form>
 		</div>
+		<span style="float: right;" id="sumMoney">充值总金额：${returnDatas.map.sumMoney}</span>
 	</div>
 </div>
+
+
 
    <div class="row">
             <div class="col-xs-12">
@@ -43,6 +44,7 @@
 						<th id="th_userId" >充值人</th>
 						<th id="th_money" >充值金额</th>
 						<th id="th_balance" >剩余金额</th>
+						<th id="th_createTime" >充值时间</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -63,6 +65,9 @@
 							</td>
 							<td >
 								${(_data.balance)!0}
+							</td>
+							<td >
+								${(_data.createTime)!0}
 							</td>
 						</tr>
 					</#list>

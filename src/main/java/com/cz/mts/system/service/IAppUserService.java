@@ -34,7 +34,7 @@ public interface IAppUserService extends IBaseSpringrainService {
 	 * @throws Exception
 	 * @author wml
 	 */
-	Integer pay(Integer userId,Integer type,Integer itemId,String code)throws Exception;
+	Integer pay(Integer userId,Integer type,Integer itemId,String code,String osType)throws Exception;
 	
 	/**
 	 * 第三方支付接口
