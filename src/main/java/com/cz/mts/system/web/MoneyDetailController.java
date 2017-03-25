@@ -1,7 +1,9 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,6 +30,7 @@ import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
@@ -36,9 +39,11 @@ import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.IWithdrawService;
 import com.cz.mts.system.service.impl.CardServiceImpl;
+import com.sun.xml.internal.xsom.impl.scd.Iterators.Map;
 
 
 /**
@@ -67,6 +72,8 @@ public class MoneyDetailController  extends BaseController {
 	private IWithdrawService withdrawService;
 	@Resource
 	private ICardService cardService;
+	@Resource
+	private IUserCardService userCardService;
 	
 	
 	private String listurl="/moneydetail/moneydetailList";
@@ -90,7 +97,7 @@ public class MoneyDetailController  extends BaseController {
 		
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return listurl;
+		return "/moneydetail/moneydetailPosterList";
 	}
 	
 	/**
@@ -110,7 +117,7 @@ public class MoneyDetailController  extends BaseController {
 		
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return listurl;
+		return "/moneydetail/moneydetailMediaList";
 	}
 	
 	/**
@@ -127,10 +134,44 @@ public class MoneyDetailController  extends BaseController {
 			throws Exception {
 		
 		moneyDetail.setType(3);
-		
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
+		List<MoneyDetail> moneyDetails = (List<MoneyDetail>) returnObject.getData();
+		if(null != moneyDetails && moneyDetails.size() > 0){
+			for (MoneyDetail moneyDetail2 : moneyDetails) {
+				if(null != moneyDetail2.getItemId()){
+					Card card = cardService.findCardById(moneyDetail2.getItemId());
+					if(null != card){
+						moneyDetail2.setExperTime(card.getEndTime());
+					}
+				}
+				
+				Finder finder = new Finder("SELECT * FROM t_user_card WHERE userId=:userId AND cardId=:cardId");
+				finder.setParam("userId", moneyDetail2.getUserId());
+				finder.setParam("cardId", moneyDetail2.getItemId());
+				List<UserCard> userCards = userCardService.queryForList(finder,UserCard.class);
+				if(null != userCards && userCards.size() > 0){
+					for (UserCard userCard : userCards) {
+						if(null != userCard.getStatus()){
+							if(0 == userCard.getStatus()){
+								moneyDetail2.setStatusName("待支付");
+							}
+							if(1 == userCard.getStatus()){
+								moneyDetail2.setStatusName("未兑换");
+							}
+							if(2 == userCard.getStatus()){
+								moneyDetail2.setStatusName("已兑换");
+							}
+							if(3 == userCard.getStatus()){
+								moneyDetail2.setStatusName("已过期");
+							}
+						}
+						moneyDetail2.setChangeTime(userCard.getChangeTime());
+					}
+				}
+			}
+		}
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return listurl;
+		return "/moneydetail/moneyDetailCardList";
 	}
 	
 	
@@ -144,7 +185,6 @@ public class MoneyDetailController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/listadmin/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listadminjson(HttpServletRequest request, Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -170,7 +210,7 @@ public class MoneyDetailController  extends BaseController {
 		// ==执行分页查询
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		
-		
+		Double sumMoney = 0.0;
 		for (MoneyDetail moneyDetail2 : datas) {
 			
 			if(moneyDetail2.getType()==1){
@@ -215,10 +255,13 @@ public class MoneyDetailController  extends BaseController {
 				
 			}
 			
+			//计算总计金额
+			sumMoney += moneyDetail2.getMoney();
 		}
 		
-		
-		
+		HashMap<String, Object> map=new HashMap<String,Object>();  
+		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		returnObject.setMap(map);
 		returnObject.setQueryBean(moneyDetail);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

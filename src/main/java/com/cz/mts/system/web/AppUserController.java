@@ -122,6 +122,15 @@ public class AppUserController  extends BaseController {
 			finder.setParam("endTime", appUser.getEndTime());
 		}
 		
+		if(StringUtils.isNotBlank(appUser.getName())){
+			finder.append(" and name like '%"+appUser.getName()+"%'");
+			appUser.setName(null);
+		}
+		if(StringUtils.isNotBlank(appUser.getPhone())){
+			finder.append(" and phone like '%"+appUser.getPhone()+"%'");
+			appUser.setPhone(null);
+		}
+		
 		// ==执行分页查询
 		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
 			returnObject.setQueryBean(appUser);
@@ -367,6 +376,22 @@ public class AppUserController  extends BaseController {
 	@RequestMapping(value = "/update/pre")
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
+		AppUser appUser = (AppUser) returnObject.getData();
+		if(null != appUser){
+			if(StringUtils.isNotBlank(appUser.getPassword())){
+				//查询是否存在该密码
+				Finder finder = Finder.getSelectFinder(Password.class).append(" where mdAfterPass = :mdAfterPass");
+				finder.setParam("mdAfterPass", appUser.getPassword());
+				Password password = appUserService.queryForObject(finder,Password.class);
+				if(null != password){
+					//将appUser表的password重置为加密前的密码
+					appUser.setPassword(password.getMdBeforePass());
+				}else{
+					appUser.setPassword("");
+				}
+			}
+		}
+		returnObject.setData(appUser);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/appuser/appuserCru";
 	}
@@ -776,6 +801,21 @@ public class AppUserController  extends BaseController {
 						//更新appUser表中的记录
 						appRecord.setPhone(appUser.getPhone());
 						if(StringUtils.isNotBlank(appUser.getPassword())){
+							//判断该密码在密码表中是否存在
+							Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+							finder.setParam("mdBeforePass", appUser.getPassword());
+							List<Map<String, Object>> list = passwordService.queryForList(finder);
+							if(list.isEmpty()){
+								//向password表中插入数据
+								Password password = new Password();
+								password.setMdBeforePass(appUser.getPassword());
+								password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+								passwordService.save(password);
+							}
+							
+							
+							
+							
 							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						}
 						appUserService.update(appRecord);
@@ -805,7 +845,7 @@ public class AppUserController  extends BaseController {
 	@RequestMapping("/pay/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
+	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code,String osType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		
@@ -817,7 +857,7 @@ public class AppUserController  extends BaseController {
 		}
 		try {
 			//支付 ，并且返回状态
-			Integer result=appUserService.pay(userId, type, itemId,code);
+			Integer result=appUserService.pay(userId, type, itemId,code,osType);
 			if(result==1){
 				returnObject.setMessage("支付成功");
 				returnObject.setStatus(ReturnDatas.SUCCESS);

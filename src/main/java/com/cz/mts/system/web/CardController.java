@@ -422,7 +422,7 @@ public class CardController  extends BaseController {
 	@RequestMapping("/payCard/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas payCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Integer num,Integer cardId,Integer userId) throws Exception{
+	ReturnDatas payCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Integer num,Integer cardId,Integer userId,String osType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
@@ -491,6 +491,7 @@ public class CardController  extends BaseController {
 				userCar.setAdress(card.getAddress());
 				
 				userCar.setExpTime(card.getEndTime());
+				userCar.setOsType(osType);
 				
 				userCards.add(userCar);
 			}

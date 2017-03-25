@@ -1,0 +1,161 @@
+<#escape x as x?html>
+
+<script type="text/javascript" src="${ctx}/js/system/moneydetail/moneydetail.js"></script>
+
+<script type="text/javascript">
+
+$('.date-picker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    todayBtn: 'linked',
+    startDate:new Date(2014,10,27),
+	endDate:'+6000d',
+    startDate: '-6000d',
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+function deleteMoneyDetail(){
+	var id=jQuery("#id").val();
+	if(!id||id==""){
+		myalert("请选择你要删除的记录");
+		return;
+	}else{
+		var _url="${ctx}/moneydetail/delete?id="+id;
+		var listurl="${ctx}/moneydetail/list";
+		mydelete(_url,listurl);
+	}
+}
+
+//$(document).ready(function(){ 
+	/* $.ajax({
+	    type: "post",
+	    dataType: "json",
+	    url: "/mts/system/moneydetail/listadmin/json?type=2",
+	    success: function (msg) {
+	    	
+	        $("#sumMoney").html("用户领取总金额："+msg.data[msg.data.length-1].sumMoney+"元");
+	    }
+	}); */
+//});
+
+</script>
+
+
+	
+
+<!-- /.page-header -->
+
+<div class="row">
+    <div class="col-xs-12">
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/moneydetail/list1" role="form">
+            <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
+            <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
+            <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+			
+			 <label for="search_userName"><b>用户名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			 <label for="search_state">开始时间</label>
+			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			  <span >
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+		    <label for="search_state">结束时间</label>
+			<input name="endTime"  class="date-picker"  id="endTime" value="${(returnDatas.queryBean.endTime)!''}"  type="text"/>
+			 	<span>
+					<i class="fa fa-calendar bigger-110"></i>
+				</span>
+			 
+			<a  href="javascript:mySubmitForm('searchForm');"
+				class="btn btn-purple btn-sm">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+				</a>
+
+</form>
+		</div>
+			<span style="float: right;" id="sumMoney">领取总金额：${returnDatas.map.sumMoney}</span>
+		<div class="pull-right">
+			    <@shiro.hasPermission name="/moneydetail/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/moneydetail/list/export');" class="btn  btn-sm  btn-primary">
+                      
+                        导出
+                    </button>
+		    	</@shiro.hasPermission>
+			    <@shiro.hasPermission name="/moneydetail/update" >
+				  <button onclick="myhref('${ctx}/moneydetail/update/pre');" class="btn  btn-sm  btn-primary">
+                        添加
+                    </button>
+			    </@shiro.hasPermission>
+			    <@shiro.hasPermission name="/moneydetail/delete" >
+			    |
+				  <button onclick="deleteMoneyDetail();" class="btn btn-sm btn-danger">
+                        删除
+                    </button>
+			    </@shiro.hasPermission>
+			
+		</div>
+	</div>
+</div>
+
+   <div class="row">
+            <div class="col-xs-12">
+	            <!--start_export-->
+                <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover">
+                    <!--end_no_export-->
+                    <!--first_start_export-->
+                    <thead>
+                    <tr>
+                        <!--first_start_no_export-->
+                        <!--first_end_no_export-->
+                        <th id="th_userName" style="width: 16.6%;">用户名称</th>
+						<th id="th_createTime" style="width: 16.6%;">创建时间</th>
+						<th id="th_money" style="width: 16.6%;">领取金额</th>
+						<th id="th_balance" style="width: 16.6%;">用户金额</th>
+						<th id="th_itemId" style="width: 16.6%;">红包名称</th>
+                    </tr>
+                    </thead>
+                    <!--first_end_export-->
+
+                    <!--start_export-->
+                    <tbody>
+           
+				   <#if (returnDatas.data??)&&(returnDatas.data?size>0)>
+					 <#list returnDatas.data as _data>
+                            <!--start_no_export-->
+                            <tr class="">
+							<td >
+								${(_data.userName)!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							</td>
+							<td >
+								${(_data.money)!0}
+							</td>
+							<td >
+								${(_data.balance)!0}
+							</td>
+							<td >
+								${(_data.itemName)!''}
+							</td>
+						</tr>
+					</#list>
+					 </#if>
+                    </tbody>
+                </table>
+                <!--end_export-->
+            </div>
+            <!-- /.span -->
+        </div>
+        <#if returnDatas.page??>	
+            <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
+         </#if>
+    </div>
+</div>
+<!-- /.main-container -->
+</#escape>

@@ -35,7 +35,7 @@ public class CardSchema extends BaseLogger{
 	@Scheduled(cron="0 0/5 * * * ?")
 	public void cardEnd() throws Exception{
 		logger.info("*****************判断卡券到期******************");
-		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 AND NOW()>endTime");
+		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 and `status` != 4 AND NOW()>endTime");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
 			for (Card card : cards) {
@@ -49,7 +49,7 @@ public class CardSchema extends BaseLogger{
 				cardService.update(card,true);
 				
 				//查询userCard表中是否存在该卡券的记录
-				Finder finder2 = new Finder("SELECT * FROM t_user_card WHERE `status`!=0 AND cardId=:cardId");
+				Finder finder2 = new Finder("SELECT * FROM t_user_card WHERE `status`!=0 and `status` != 3 AND cardId=:cardId");
 				finder2.setParam("cardId", card.getId());
 				List<UserCard> userCards = userCardService.queryForList(finder2,UserCard.class);
 				if(null != userCards && userCards.size() > 0){
