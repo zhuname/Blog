@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -486,6 +487,8 @@ public class MediaPackageController  extends BaseController {
 		}
 		
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
+		Double sumPayMoney = 0.0;
+		Double sumBalance = 0.0;
 		if(null != datas && datas.size() > 0){
 			for (MediaPackage mp : datas) {
 				//获取用户名称
@@ -519,8 +522,22 @@ public class MediaPackageController  extends BaseController {
 						mp.setPayName("余额支付");
 					}
 				}
+				if(null == mp.getPayMoney()){
+					mp.setPayMoney(0.0);
+				}
+				sumPayMoney += mp.getPayMoney();
+				
+				if(null == mp.getBalance()){
+					mp.setBalance(0.0);
+				}
+				sumBalance += mp.getBalance();
 			}
 		}
+		HashMap<String, Object> map=new HashMap<String,Object>();  
+		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		
+		returnObject.setMap(map);
 		returnObject.setQueryBean(mediaPackage);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

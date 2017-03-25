@@ -1,8 +1,10 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -622,7 +624,8 @@ public class PosterPackageController  extends BaseController {
 			finder.setParam("endTime", posterPackage.getEnddTime());
 		}
 		
-		
+		Double sumPayMoney = 0.0;
+		Double sumBalance = 0.0;
 		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,posterPackage);
 		if(null != datas && datas.size() > 0){
 			for (PosterPackage pc : datas) {
@@ -662,9 +665,24 @@ public class PosterPackageController  extends BaseController {
 					}
 				}
 				
+				if(null == pc.getPayMoney()){
+					pc.setPayMoney(0.0);
+				}
+				sumPayMoney += pc.getPayMoney();
+				
+				if(null == pc.getBalance()){
+					pc.setBalance(0.0);
+				}
+				sumBalance += pc.getBalance();
+				
 				
 			}
 		}
+		HashMap<String, Object> map=new HashMap<String,Object>();  
+		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		
+		returnObject.setMap(map);
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

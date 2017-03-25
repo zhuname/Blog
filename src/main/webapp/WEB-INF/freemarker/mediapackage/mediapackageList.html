@@ -64,24 +64,6 @@ $(document).on("click", ".vid", function() {
         	layer.msg('点击任意处关闭');
 	});
 	
-		$.ajax({
-           type: "post",
-           dataType: "json",
-           url: "/mts/system/mediapackage/tongji/json",
-           success: function (msg) {
-           	
-               $("#pay").html("支付金额："+msg.data+"元 ");
-           }
-    	 });
-		$.ajax({
-           type: "post",
-           dataType: "json",
-           url: "/mts/system/mediapackage/balance/json",
-           success: function (msg) {
-               $("#bal").html("剩余金额："+msg.data+"元,");
-           }
-    	 });
-		
 		
 		function checkRefuse(id){
 			var reason = prompt("请填写拒绝原因:","");
@@ -178,8 +160,8 @@ $(document).on("click", ".vid", function() {
 				</a>
 </form>
 		</div>
-		<span style="float: right;" id="pay"></span>
-		<span style="float: right;" id="bal"></span>     
+		<span style="float: right;" id="pay">支付金额：${returnDatas.map.sumPayMoney}</span>&nbsp;&nbsp;&nbsp;
+		<span style="float: right;" id="bal">剩余金额：${returnDatas.map.sumBalance}</span>     
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/mediapackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/mediapackage/list/export');" class="btn  btn-sm  btn-primary">
