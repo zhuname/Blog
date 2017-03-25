@@ -197,7 +197,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumMoney" >红包金额</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="sumMoney" class="col-xs-12 col-sm-6" id="sumMoney" value="${(returnDatas.data.sumMoney)!''}"  type="text" />
 					</div><div class="help-block" for="sumMoney"></div>
@@ -206,7 +206,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lqNum" >领取次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="lqNum" class="col-xs-12 col-sm-6" id="lqNum" value="${(returnDatas.data.lqNum)!''}"  type="text" />
 					</div><div class="help-block" for="lqNum"></div>
@@ -215,7 +215,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group" id="topPriceDiv">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topPrice" >最高金额</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="topPrice" class="col-xs-12 col-sm-6" id="topPrice" value="${(returnDatas.data.topPrice)!''}"  type="text" />
 					</div><div class="help-block" for="topPrice"></div>
@@ -225,7 +225,7 @@ jQuery(document).ready(function(){
 					<!--日期型-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 					 	<div class="input-group col-xs-12 col-sm-6">
 							<input name="expTime"  class="form-control date-picker"  id="expTime" value="${(returnDatas.data.expTime)!''}"  type="text" />
@@ -239,7 +239,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >剩余金额</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="balance" class="col-xs-12 col-sm-6" id="balance" value="${(returnDatas.data.balance)!''}"  type="text" />
 					</div><div class="help-block" for="balance"></div>
@@ -248,7 +248,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="num" >剩余待抢次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="num" class="col-xs-12 col-sm-6" id="num" value="${(returnDatas.data.num)!''}"  type="text" />
 					</div><div class="help-block" for="num"></div>
@@ -269,9 +269,6 @@ jQuery(document).ready(function(){
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<input name="mediaUrl" class="col-xs-12 col-sm-6" style="display: none;" id="mediaUrl" value="${(returnDatas.data.mediaUrl)!''}"  type="text" />
-
-
-
 						<div class="content">
 							<input id="v_file" type="file" style="display:none;" onChange="play()"/>
 							<video id="video_id" controls autoplay src="${(returnDatas.data.mediaUrl)!''}" ></video>
@@ -299,7 +296,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="scanNum" >浏览次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="scanNum" class="col-xs-12 col-sm-6" id="scanNum" value="${(returnDatas.data.scanNum)!''}"  type="text" />
 					</div><div class="help-block" for="scanNum"></div>

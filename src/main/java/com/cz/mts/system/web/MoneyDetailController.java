@@ -43,6 +43,7 @@ import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.IWithdrawService;
 import com.cz.mts.system.service.impl.CardServiceImpl;
+import com.cz.mts.system.service.impl.UserCardServiceImpl;
 import com.sun.xml.internal.xsom.impl.scd.Iterators.Map;
 
 
@@ -63,6 +64,8 @@ public class MoneyDetailController  extends BaseController {
 	@Resource
 	private IUserMedalService userMedalService;
 	@Resource
+	private IUserCardService userCardService;
+	@Resource
 	private IMedalService medalService;
 	@Resource
 	private IPosterPackageService posterPackageService;
@@ -72,14 +75,12 @@ public class MoneyDetailController  extends BaseController {
 	private IWithdrawService withdrawService;
 	@Resource
 	private ICardService cardService;
-	@Resource
-	private IUserCardService userCardService;
 	
 	
 	private String listurl="/moneydetail/moneydetailList";
 	
 	
-	   
+	
 	/**
 	 * 列表数据,调用listjson方法,保证和app端数据统一
 	 * 
@@ -467,6 +468,25 @@ public class MoneyDetailController  extends BaseController {
 							if(mediaPackage != null && StringUtils.isNotBlank(mediaPackage.getTitle())){
 								md.setContent(mediaPackage.getTitle());
 							}
+						}
+						
+						
+						if( 8 == md.getType()){
+							
+							UserCard userCard=userCardService.findUserCardById(md.getItemId());
+							
+							if(userCard!=null){
+								
+								Card card=cardService.findCardById(userCard.getCardId());
+								
+								if(card!=null){
+									
+									md.setContent(card.getTitle());
+									
+								}
+								
+							}
+							
 						}
 						
 						//提现失败

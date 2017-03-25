@@ -36,6 +36,7 @@ function showdata(result) {
     $("#btn_add").hide();
 	$("#btn_reload").show();
 	$("#btn_update").show();
+	$("#btn_delete").show();
      
 	for (var s in result.data) {
 		set_val(s, result.data[s]);
@@ -180,18 +181,15 @@ function headOnc(){
 				<a id="btn_add" href="javascript:saveCategory();" class="btn  btn-sm  btn-primary "> 
 					<img src="${ctx}/images/btn_save.png" style="vertical-align: middle;" />保存新增
 				</a>
-				
 				 <a id="btn_update" href="javascript:updateCategory();" class="btn  btn-sm  btn-primary " style="display: none;">
 				    <img src="${ctx}/images/btn_save.png" style="vertical-align: middle;" />
 				  	保存修改
 				 </a>
-			 </@shiro.hasPermission>
-			
-			 <@shiro.hasPermission name="/system/category/delete" > 
 				 <a id="btn_delete" href="javascript:deleteCategory();" class="btn btn-sm btn-danger " style="display: none;">
 					删除
 				 </a> 
-			 </@shiro.hasPermission> 
+			 </@shiro.hasPermission>
+			
 		</div>
 
 	</div>
