@@ -96,8 +96,8 @@ public class UserServiceImpl extends BaseSpringrainServiceImpl implements IUserS
 		
 		String userId=u.getId();
 		
-		List<Org> listOrg = userOrgService.findOrgByUserId(userId);
-		u.setUserOrgs(listOrg);
+//		List<Org> listOrg = userOrgService.findOrgByUserId(userId);
+//		u.setUserOrgs(listOrg);
 		List<Role> roleByUserId = userRoleMenuService.findRoleByUserId(userId);
 		u.setUserRoles(roleByUserId);
 		
@@ -203,10 +203,6 @@ public class UserServiceImpl extends BaseSpringrainServiceImpl implements IUserS
 		
 		Finder f_del_role=Finder.getDeleteFinder(UserRole.class).append(" WHERE userId=:userId ").setParam("userId", userId);
 		super.update(f_del_role);
-		
-		Finder f_del_org=Finder.getDeleteFinder(UserOrg.class).append(" WHERE userId=:userId ").setParam("userId", userId);
-		super.update(f_del_org);
-		
 		
 		Finder f_update=Finder.getUpdateFinder(User.class," state=:state ").append(" WHERE id=:id ").setParam("id", userId).setParam("state", "否");
 		

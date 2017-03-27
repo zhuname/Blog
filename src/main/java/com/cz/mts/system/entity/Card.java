@@ -152,9 +152,6 @@ public class Card  extends BaseEntity {
 	
 	
 	
-	
-	
-	
 	//columns END 数据库字段结束
 	@Transient
 	public String getEnddTime() {

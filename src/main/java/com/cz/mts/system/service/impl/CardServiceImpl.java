@@ -100,10 +100,18 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 			returnObject.setMessage("参数缺失");
 		}else{
 			// ==执行分页查询
-			card.setIsDel(0);
+			Finder finder = Finder.getSelectFinder(Card.class).append(" where isDel=0");
+			
+			if(null != card.getCityId()){
+				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=3)");
+				finder.setParam("cityId", card.getCityId());
+			}else{
+				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=3)");
+			}
 			page.setOrder("createTime");
 			page.setSort("desc");
-			List<Card> datas = findListDataByFinder(null,page,Card.class,card);
+			
+			List<Card> datas = findListDataByFinder(finder,page,Card.class,null);
 			if(null != datas && datas.size() > 0){
 				for (Card cd : datas) {
 					if(null != cd.getUserId()){

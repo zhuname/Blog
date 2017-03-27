@@ -145,8 +145,14 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	@Override
 	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		mediaPackage.setIsDel(0);
-		List<MediaPackage> dataList = findListDataByFinder(null,page,MediaPackage.class,mediaPackage);
+		Finder finder1 = Finder.getSelectFinder(MediaPackage.class).append(" where isDel=0");
+		if(null != mediaPackage.getCityId()){
+			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=2)");
+			finder1.setParam("cityId", mediaPackage.getCityId());
+		}else{
+			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=2)");
+		}
+		List<MediaPackage> dataList = findListDataByFinder(finder1,page,MediaPackage.class,null);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
 				
@@ -168,7 +174,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					 for (RedCity redCity : redCities) {
 						if(null != redCity.getCityId()){
 							City city = cityService.findCityById(redCity.getCityId());
-							if(StringUtils.isNotBlank(city.getName())){
+							if(null != city &&  StringUtils.isNotBlank(city.getName())){
 								redCity.setCityName(city.getName());
 							}
 						}
@@ -459,7 +465,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){
-				LposterPackage lp = new LposterPackage();
+				LmediaPackage lp = new LmediaPackage();
 				Double money = new Double(String.valueOf(pp.getSumMoney())) ;
 				lp.setMoney(money);
 				lp.setPackageId(Integer.valueOf(packageId));
