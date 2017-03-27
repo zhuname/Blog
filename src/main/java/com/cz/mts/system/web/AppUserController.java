@@ -523,7 +523,13 @@ public class AppUserController  extends BaseController {
 			appUser.setSign(null);
 			List<AppUser> datas=appUserService.queryForListByEntity(appUser, page) ;  //findListDataByFinder(null,page,AppUser.class,appUser);
 			if(datas!=null&&datas.size()>0){
-				returnObject.setData(datas.get(0));
+				AppUser user = datas.get(0) ;
+				if(user.getIsBlack() == 1){
+					returnObject.setStatus(ReturnDatas.WARNING);
+					returnObject.setMessage("黑名单成员！");
+				}else {
+					returnObject.setData(datas.get(0));
+				}
 			}else {
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("帐号密码错误");
