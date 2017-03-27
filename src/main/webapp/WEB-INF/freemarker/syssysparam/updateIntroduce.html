@@ -50,16 +50,20 @@ jQuery(document).ready(function(){
 			<input type="hidden" id="value" name="value" value=""/>	
 	        <div>
 		    	<h1>APP简介</h1>
-				<textarea id="editor" style="height: 800px;width: 40%;">${(returnDatas.data.value)!''}</textarea>
+		    	<br>
+		    	<br>
+				<textarea id="editor" style="height: 400px;width: 30%;">${(returnDatas.data.value)!''}</textarea>
 			</div>
 		</form>
+		<br>
+		<br>
 		<div class="wizard-actions">
 		
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="submit()">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="submit()" style="float: left;">
 				保存
 			</button>
 		
-			<button id="submit" style="display: none" class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','');">
+			<button id="submit" style="display: none" class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','');" >
 				保存
 			</button>
 		</div>

@@ -178,54 +178,58 @@ public class AppUserController  extends BaseController {
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 AppUser appUser = appUserService.findAppUserById(id);
-			 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
-			 finder.setParam("itemId", id);
-			 Page page = new Page();
-			 Attention attention = new Attention();
-			 //获取别人关注我的列表
-			 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
-			 if(null != attentions && attentions.size() > 0){
-				 appUser.setFansNum(attentions.size());
-			 }else{
-				 appUser.setFansNum(0);
-			 }
-
-
-			 if(StringUtils.isNotBlank(itemId)){
-				 //获取我的关注列表
-				 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
-				 fder.setParam("userId", id);
-				 fder.setParam("itemId", Integer.parseInt(itemId));
-				 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
-				 if(null != myAttens && myAttens.size() > 0){
-					 for (Attention at : myAttens) {
-						at.setIsUpdate(0);
-						attentionService.update(at);
-					}
+			 if(null != appUser){
+				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
+				 finder.setParam("itemId", id);
+				 Page page = new Page();
+				 Attention attention = new Attention();
+				 //获取别人关注我的列表
+				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
+				 if(null != attentions && attentions.size() > 0){
+					 appUser.setFansNum(attentions.size());
+				 }else{
+					 appUser.setFansNum(0);
 				 }
-			 }
 
-			 UserMedal userMedal=new UserMedal();
-			 userMedal.setUserId(id);
 
-			 //获取我的勋章列表
-			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-			 for (UserMedal userMedal2 : userMedals) {
-				 
-				 if(userMedal2.getMedalId()!=null){
-					 
-					 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
-					 if(medal!=null){
-						 userMedal2.setMedal(medal);
+				 if(StringUtils.isNotBlank(itemId)){
+					 //获取我的关注列表
+					 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
+					 fder.setParam("userId", id);
+					 fder.setParam("itemId", Integer.parseInt(itemId));
+					 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+					 if(null != myAttens && myAttens.size() > 0){
+						 for (Attention at : myAttens) {
+							at.setIsUpdate(0);
+							attentionService.update(at);
+						}
 					 }
 				 }
-			 }
-			 if(null != userMedals && userMedals.size() > 0){
-				 appUser.setUserMedals(userMedals);
-			 }
 
-			 returnObject.setData(appUser);
+				 UserMedal userMedal=new UserMedal();
+				 userMedal.setUserId(id);
 
+				 //获取我的勋章列表
+				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+				 for (UserMedal userMedal2 : userMedals) {
+					 
+					 if(userMedal2.getMedalId()!=null){
+						 
+						 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
+						 if(medal!=null){
+							 userMedal2.setMedal(medal);
+						 }
+					 }
+				 }
+				 if(null != userMedals && userMedals.size() > 0){
+					 appUser.setUserMedals(userMedals);
+				 }
+				 returnObject.setData(appUser);
+			 }else{
+				 returnObject.setStatus(ReturnDatas.ERROR);
+				 returnObject.setMessage("该用户不存在");
+			 }
+			 
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");

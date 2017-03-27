@@ -22,17 +22,6 @@ jQuery(document).ready(function(){
 		});
 	
 	
-	/* var images = $("#image").val();
-	var arr = images.split(";");
-	for(var j = 0; j < arr.length; j++){
-		var div = document.getElementById(imageDiv);
-		console.log(arr[j]);
-		//添加 img
-	　　 var img = document.createElement("img");
-	 	img.setAttribute("id", "showImage");
-	 	jQuery("#showImage").attr('src',arr[j]);
-	 	div.appendChild(img);
-	} */
 	
 	
 	//加载分类
@@ -71,8 +60,27 @@ jQuery(document).ready(function(){
 		jQuery("#categoryId").val(categoryId);
 		
 	});
-
-		
+	
+	
+	
+	var images = $("#image").val();
+	var arr = images.split(";");//
+	if(arr.length>0){
+			//获得div
+	   var ul = document.getElementById("testdiv");
+		 for(var i=0;i<arr.length;i++){
+		   　　 var li = document.createElement("li");
+		   　　 var img = document.createElement("img");
+		   　　 img.setAttribute("id", "newImg"+i);
+		   　　 img.setAttribute("width","50px");
+		   　　  img.setAttribute("height","50px");
+		　        // jQuery("#newImg").attr("src",arr[i]);
+		　        img.src = arr[i];
+		　        li.appendChild(img);
+		　        ul.appendChild(li);
+		}
+	}
+	
 	
 	
 	
@@ -126,7 +134,7 @@ jQuery(document).ready(function(){
                   $("#testdiv").append(msg + "<br/>");
               },  
               onAllComplete: function () {  
-                  alert("全部上传完成");  
+                  myalert("全部上传完成");  
                   jQuery("#image").attr("value",res);
               },  
               isGetFileSize: true,//是否获取上传文件大小，设置此项为true时，将在onChosen回调中返回文件fileSize和获取大小时的错误提示文本errorText  
@@ -164,21 +172,14 @@ jQuery(document).ready(function(){
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >海报图片</label>
 				<div class="col-xs-12 col-sm-9" id="imageDiv">
-					<!-- <div class="clearfix">
-						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
-					</div><div class="help-block" for="image"></div> -->
-					
-					<!-- <div class="site-demo-upload">
-							<img  name="posterI" onclick="posterImages();" id="lunboI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
- 							<input type="file" id="filed" name="filed" style="display:none">
- 							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
-					</div> -->
 					
 					 <input id="Button1" type="button" value="选择文件" class="btn btn-pink"/>  
-            		 <input id="files" type="button" value="上传" class="btn btn-purple"/>  
+            		 <input id="files" type="button" value="上传" class="btn btn-purple"/>
+            		   
 		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
 		            </div>  
-		            <div id="testdiv"></div>  
+		            <div id="showdiv" style="display: none;"></div>  
+		             <div id="testdiv"></div>  
 		            <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					
 					
@@ -263,12 +264,15 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/posterpackage/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/posterpackage/list');" style="float: left;margin-left: 25.4%;">
 				保存
 			</button>
 		</div>
 	</div>
 </div>
 
+<script type="text/javascript">
+
+</script>
 
 </#escape>

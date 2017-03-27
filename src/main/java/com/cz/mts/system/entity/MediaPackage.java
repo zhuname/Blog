@@ -221,6 +221,18 @@ public class MediaPackage  extends BaseEntity {
 	private String startTime;
 	private String enddTime;
 	
+	private Integer cityId;
+	
+	
+	@Transient
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
 	@Transient
 	public String getStartTime() {
 		return startTime;

@@ -241,7 +241,7 @@ public class MessageController  extends BaseController {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
 	}
 	
 

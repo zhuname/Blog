@@ -158,8 +158,15 @@ public class PosterPackageController  extends BaseController {
 				finder1.setParam("categoryId", posterPackage.getCategoryId());
 				
 			}
-			
+			//如果cityId不等于空
+			if(null != posterPackage.getCityId()){
+				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=1)");
+				finder1.setParam("cityId", posterPackage.getCityId());
+			}else{
+				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=1)");
+			}
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
+		
 			if(null != list && list.size() > 0){
 				for (Map<String, Object> map : list) {
 					 //返回城市名称
@@ -266,6 +273,7 @@ public class PosterPackageController  extends BaseController {
 							}
 						}
 					}
+					 posterPackage.setUserMedals(userMedals);
 				 }
 			 }
 			 
