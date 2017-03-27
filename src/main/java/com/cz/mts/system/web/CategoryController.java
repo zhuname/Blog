@@ -55,6 +55,7 @@ public class CategoryController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
 		category.setType(1);
+		category.setIsDel(0);
 		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -73,6 +74,7 @@ public class CategoryController  extends BaseController {
 	public String list1(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
 		category.setType(2);
+		category.setIsDel(0);
 		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -91,6 +93,7 @@ public class CategoryController  extends BaseController {
 	public String list2(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
 		category.setType(3);
+		category.setIsDel(0);
 		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -219,7 +222,8 @@ public class CategoryController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			categoryService.saveorupdate(category);
+			category.setIsDel(0);
+			categoryService.save(category);
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -253,7 +257,11 @@ public class CategoryController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				categoryService.deleteById(id,Category.class);
+			 Category category = categoryService.findCategoryById(id);
+			 if(null != category){
+				 category.setIsDel(1);
+				 categoryService.update(category,true);
+			 }
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {

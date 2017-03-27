@@ -273,6 +273,7 @@ public class PosterPackageController  extends BaseController {
 							}
 						}
 					}
+					 posterPackage.setUserMedals(userMedals);
 				 }
 			 }
 			 
