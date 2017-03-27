@@ -47,10 +47,7 @@ public class PushController extends BaseController{
 			returnObject.setMessage("参数缺失");
 		}else{
 			//查询所有用户
-			Finder finder = new Finder("SELECT * FROM t_app_user");
-			List<AppUser> appUsers = appUserService.queryForList(finder,AppUser.class);
-			PushThreadController pushThreadController = new PushThreadController(appUsers, notificationService, content, url);
-			pushThreadController.run();
+			notificationService.notify(1, null, null, content,url);
 		}
 		return new ReturnDatas(ReturnDatas.SUCCESS,"推送成功");
 		

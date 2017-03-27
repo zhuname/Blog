@@ -2,14 +2,18 @@ package com.cz.mts.system.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.JPushUtil;
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Message;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IMessageService;
 import com.cz.mts.system.service.NotificationService;
 
@@ -18,6 +22,8 @@ import com.cz.mts.system.service.NotificationService;
 public class NotificationServiceImpl implements NotificationService {
 	@Resource
 	private IMessageService messageService;
+	@Resource
+	private IAppUserService appUserService;
 	
 
 	@Override
@@ -33,10 +39,18 @@ public class NotificationServiceImpl implements NotificationService {
 			switch (type) {
 			case 1:
 				other.put("url", extend[1]);
-				JPushUtil.sendJPushNotification(extend[0], type+"", 0, userId, extend[1]);
+				JPushUtil.sendAllPushNotification(extend[0], type+"", other, "");
 				try {
-					message=new Message(null, 1, userId, new Date(), extend[0], null, extend[1], 0, "系统推送", 1);
-					messageService.save(message);
+					//查询所有的用户
+					Finder finder = new Finder("SELECT * FROM t_app_user WHERE isPush=1");
+					List<AppUser> appUsers = appUserService.queryForList(finder,AppUser.class);
+					if(null != appUsers && appUsers.size() > 0){
+						for (AppUser appUser : appUsers) {
+							message=new Message(null, 1, appUser.getId(), new Date(), extend[0], null, extend[1], 0, "系统推送", 1);
+							messageService.save(message);
+						}
+					}
+					
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
@@ -73,8 +87,8 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			case 6:
-				JPushUtil.sendJPushNotification("您发布的卡券已过期，您可操作再次发放或查看卡券领取状况", type+"", id, userId, "");
-				message=new Message(null, 6, userId, new Date(), "您发布的卡券已过期，您可操作再次发放或查看卡券领取状况", id, null, 0, "卡券到期", 2);
+				JPushUtil.sendJPushNotification("您发布的卡券即将过期，您可操作再次发放或查看卡券领取状况", type+"", id, userId, "");
+				message=new Message(null, 6, userId, new Date(), "您发布的卡券即将过期，您可操作再次发放或查看卡券领取状况", id, null, 0, "卡券到期", 2);
 				messageService.save(message);
 			break;
 			case 7:

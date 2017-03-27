@@ -21,7 +21,7 @@ public class PushThreadController extends Thread{
 			if(null != appUsers && appUsers.size() > 0){
 				for (AppUser appUser : appUsers) {
 					if(1 == appUser.getIsPush()){
-						notificationService.notify(1, null, appUser.getId(), content,url);
+						notificationService.notify(1, appUser.getId(), appUser.getId(), content,url);
 					}
 				}
 			}

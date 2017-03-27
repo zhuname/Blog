@@ -78,6 +78,8 @@ public class MoneyDetail  extends BaseEntity {
 	 * 卡券code
 	 */
 	private java.lang.String code;
+	
+	private java.lang.String aliTrade;
 	//columns END 数据库字段结束
 	
 	private Integer payType;
@@ -117,6 +119,17 @@ public class MoneyDetail  extends BaseEntity {
 	private String statusName;
 	
 	
+	
+	
+	@WhereSQL(sql="aliTrade=:MoneyDetail_aliTrade")
+	public java.lang.String getAliTrade() {
+		return aliTrade;
+	}
+
+	public void setAliTrade(java.lang.String aliTrade) {
+		this.aliTrade = aliTrade;
+	}
+
 	@Transient
 	public String getStatusName() {
 		return statusName;

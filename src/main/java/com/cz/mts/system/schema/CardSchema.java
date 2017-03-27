@@ -32,10 +32,10 @@ public class CardSchema extends BaseLogger{
 	 * 卡券到期
 	 * @throws Exception
 	 */
-	@Scheduled(cron="0 0/5 * * * ?")
+	@Scheduled(cron="0 0 12 * * ?")
 	public void cardEnd() throws Exception{
 		logger.info("*****************判断卡券到期******************");
-		Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0 and `status` != 4 AND NOW()>endTime");
+		Finder finder = new Finder("SELECT * FROM t_card WHERE DATE_SUB(endTime,INTERVAL 3 DAY) = DATE(NOW()) AND isDel=0 AND `status`!=4");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
 			for (Card card : cards) {
