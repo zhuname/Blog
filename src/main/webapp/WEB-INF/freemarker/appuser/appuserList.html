@@ -294,11 +294,11 @@ jQuery(document).ready(function(){
 						<th id="th_frozeBanlance" >冻结余额</th>
 						<th id="th_bankName" >银行名称</th>
 						<th id="th_branchBank" >开户行</th>
-						<th id="th_ownerName" >户主名称/真实姓名</th>
-						<th id="th_ownerPhone" >户主手机号</th>
+						<th id="th_ownerName" >户主名称</th>
+						<th id="th_ownerPhone" >手机号</th>
 						<th id="th_cardNum" >卡号/支付宝账号</th>
-						<th id="th_currentGetNum" >当前可领取次数</th>
-						<th id="th_currentShareNum" >当前可分享次数</th>
+						<th id="th_currentGetNum" >可领取次数</th>
+						<th id="th_currentShareNum" >可分享次数</th>
 						<th id="th_getNum" >可领取次数</th>
 						<th id="th_shareNum" >可分享次数</th>
 						<th id="th_isCloseFee" >是否关闭卡券手续费</th>
@@ -327,9 +327,13 @@ jQuery(document).ready(function(){
                                                 onclick="myhref('${ctx}/system/appuser/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
-                                        <button class="btn btn-xs btn-danger" title="删除"
+                                        
+                                        <button class="btn btn-xs btn-danger" title="拉黑"
                                                 onclick="mydelete('${ctx}/system/appuser/delete?id=${(_data.id)!''}','${ctx}/system/appuser/list');">
-                                            <i class="ace-icon fa  fa-trash-o bigger-120"></i>
+                                            <i class="ace-icon fa bigger-120">
+                                            	拉黑
+                                            <i class=" fa  fa-trash-o"></i>
+                                            </i>
                                         </button>
                                         
                                         <!-- 赋予勋章 -->
@@ -404,7 +408,7 @@ jQuery(document).ready(function(){
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td class="sim">
-								<img src="${(_data.header)!''}" height="100px;" width="200px;"/>
+								<img src="${(_data.header)!''}" height="100px;" width="100px;"/>
 							</td>
 							<td >
 								${(_data.cityName)!''}

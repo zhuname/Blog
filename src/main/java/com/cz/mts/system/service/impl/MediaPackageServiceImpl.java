@@ -417,6 +417,22 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
 			}
 			
+			if(appUser!=null){
+				appUser.setBalance(pp.getPayMoney()+appUser.getBalance());
+				super.update(appUser, true);
+				
+				//记录用户的余额记录
+				MoneyDetail moneyDetail=new MoneyDetail();
+				moneyDetail.setBalance(appUser.getBalance());
+				moneyDetail.setCreateTime(new Date());
+				moneyDetail.setItemId(pp.getId());
+				moneyDetail.setMoney(pp.getPayMoney());
+				moneyDetail.setType(11);
+				moneyDetail.setUserId(appUser.getId());
+				super.save(moneyDetail);
+				
+			}
+			
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());

@@ -568,9 +568,20 @@ public class PosterPackageController  extends BaseController {
 					
 				}
 				
+				posterPackage.setPayMoney(0.0);
+				
 				posterPackage.setStatus(0);
 				
+				posterPackage.setPayType(null);
+				
+				posterPackage.setPayTime(null);
+				
+				posterPackage.setWxCode(null);
+				
+				posterPackage.setTradeNo(null);
+				
 				id=posterPackageService.update(posterPackage, true);
+				
 				returnObject.setData(posterPackageService.findPosterPackageById(posterPackage.getId()));
 				
 			}

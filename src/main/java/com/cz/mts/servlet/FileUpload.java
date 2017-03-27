@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.math.RandomUtils;
 
 import com.cz.mts.frame.util.ReturnDatas;
 
@@ -142,7 +144,7 @@ public class FileUpload extends HttpServlet {
 			}
 			// 获得文件名
 			String filename = item.getName();
-			filename = filename.substring(filename.lastIndexOf("\\") + 1);
+			filename = filename.substring(filename.lastIndexOf("\\") + 1+RandomUtils.nextInt(99999));
 			
 			File f_dir=new File(dir);
 			if(!f_dir.exists()){

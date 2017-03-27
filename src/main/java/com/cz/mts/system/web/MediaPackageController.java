@@ -402,7 +402,6 @@ public class MediaPackageController  extends BaseController {
 				Object id=mediaPackageService.saveorupdate(mediaPackage);
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				
-				
 				if(cityIds!=null){
 				
 					String[] cityId=cityIds.split(",");
@@ -414,7 +413,7 @@ public class MediaPackageController  extends BaseController {
 							redCity.setType(2);
 							redCityService.save(redCity);
 						}
-					
+				
 				}else{
 					RedCity redCity=new RedCity();
 					redCity.setCityId(0);
@@ -422,7 +421,6 @@ public class MediaPackageController  extends BaseController {
 					redCity.setType(2);
 					redCityService.save(redCity);
 				}
-				
 				
 			}else{
 				
@@ -441,6 +439,18 @@ public class MediaPackageController  extends BaseController {
 					}
 				
 				}
+				
+				mediaPackage.setPayMoney(0.0);
+				
+				mediaPackage.setStatus(0);
+				
+				mediaPackage.setPayType(null);
+				
+				mediaPackage.setPayTime(null);
+				
+				mediaPackage.setWxCode(null);
+				
+				mediaPackage.setTradeNo(null);
 				
 				Object id=mediaPackageService.update(mediaPackage,true);
 				

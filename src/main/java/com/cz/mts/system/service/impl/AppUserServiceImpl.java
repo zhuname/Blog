@@ -303,6 +303,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					//看是不是第一次进来
 					MoneyDetail moneyDetailP=new MoneyDetail();
 					moneyDetailP.setItemId(itemId);
+					moneyDetailP.setAliTrade(wxCode);
 					moneyDetailP.setType(6);
 					moneyDetailP.setUserId(posterPackage.getUserId());
 					
@@ -334,6 +335,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetail.setItemId(itemId);
 					moneyDetail.setMoney(posterPackage.getSumMoney());
 					moneyDetail.setType(6);
+					moneyDetail.setAliTrade(wxCode);
 					moneyDetail.setPayType(payType);
 					moneyDetail.setUserId(posterPackage.getUserId());
 					super.save(moneyDetail);
@@ -350,6 +352,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					MoneyDetail moneyDetailMM=new MoneyDetail();
 					moneyDetailMM.setItemId(itemId);
 					moneyDetailMM.setType(5);
+					moneyDetailMM.setAliTrade(wxCode);
 					moneyDetailMM.setUserId(mediaPackage.getUserId());
 					
 					Page pageM=new Page();
@@ -380,6 +383,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetailM.setItemId(itemId);
 					moneyDetailM.setMoney(mediaPackage.getSumMoney());
 					moneyDetailM.setType(5);
+					moneyDetailM.setAliTrade(wxCode);
 					moneyDetailM.setPayType(payType);
 					moneyDetailM.setUserId(mediaPackage.getUserId());
 					super.save(moneyDetailM);
@@ -409,6 +413,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					MoneyDetail moneyDetailCC=new MoneyDetail();
 					moneyDetailCC.setCode(code);
 					moneyDetailCC.setType(3);
+					moneyDetailCC.setAliTrade(wxCode);
 					moneyDetailCC.setUserId(cards.get(0).getUserId());
 					
 					Page pageC=new Page();
@@ -439,6 +444,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						moneyDetailC.setCode(code);
 						moneyDetailC.setMoney(cardSum.doubleValue());
 						moneyDetailC.setType(3);
+						moneyDetailC.setAliTrade(wxCode);
 						moneyDetailC.setPayType(payType);
 						moneyDetailC.setUserId(cards.get(0).getUserId());
 						super.save(moneyDetailC);
@@ -476,6 +482,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetailRR.setItemId(itemId);
 					moneyDetailRR.setType(4);
 					moneyDetailRR.setUserId(itemId);
+					moneyDetailRR.setAliTrade(wxCode);
 					
 					Page pageRR=new Page();
 					List<MoneyDetail> moneyDetailsR=super.findListDataByFinder(null, pageRR, MoneyDetail.class	, moneyDetailRR);
@@ -495,7 +502,6 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						return null;
 					}
 					
-
 					//记录用户的余额记录
 					MoneyDetail moneyDetailr=new MoneyDetail();
 					moneyDetailr.setBalance(appuser.getBalance());
@@ -503,6 +509,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetailr.setItemId(itemId);
 					moneyDetailr.setMoney(money);
 					moneyDetailr.setType(4);
+					moneyDetailr.setAliTrade(wxCode);
 					moneyDetailr.setPayType(payType);
 					moneyDetailr.setUserId(itemId);
 					super.save(moneyDetailr);

@@ -271,7 +271,31 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				notificationService.notify(17, Integer.parseInt(packageId), pp.getUserId());
 			}
 			
+			if(appUser!=null){
+				appUser.setBalance(pp.getPayMoney()+appUser.getBalance());
+				super.update(appUser, true);
+				
+				//记录用户的余额记录
+				MoneyDetail moneyDetail=new MoneyDetail();
+				moneyDetail.setBalance(appUser.getBalance());
+				moneyDetail.setCreateTime(new Date());
+				moneyDetail.setItemId(pp.getId());
+				moneyDetail.setMoney(pp.getPayMoney());
+				moneyDetail.setType(11);
+				moneyDetail.setUserId(appUser.getId());
+				super.save(moneyDetail);
+				
+			}
 			
+		}else {  //审核通过
+			pp.setStatus(3);
+			pp.setSuccTime(new Date());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				//给发布人发推送
+				notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
+			}
+			
+
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());
@@ -289,14 +313,6 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			for (Attention attention : attentions) {
 				AttenThreadController attenThreadController = new AttenThreadController(pp, null, attention, null, notificationService, appUser);
 				attenThreadController.run();
-			}
-			
-		}else {  //审核通过
-			pp.setStatus(3);
-			pp.setSuccTime(new Date());
-			if(null != appUser && 1 == appUser.getIsPush()){
-				//给发布人发推送
-				notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
 			}
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
