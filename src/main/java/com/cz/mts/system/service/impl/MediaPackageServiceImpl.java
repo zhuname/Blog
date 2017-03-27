@@ -168,7 +168,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					 for (RedCity redCity : redCities) {
 						if(null != redCity.getCityId()){
 							City city = cityService.findCityById(redCity.getCityId());
-							if(StringUtils.isNotBlank(city.getName())){
+							if(null != city &&  StringUtils.isNotBlank(city.getName())){
 								redCity.setCityName(city.getName());
 							}
 						}
