@@ -126,39 +126,5 @@ public class GlobalStatic {
 	/**
 	 * ******************** end *********************
 	 */
-	
-	
-	public static Field requestField;
-	 
-	public static Field parametersParsedField;
-	 
-	public static Field coyoteRequestField;
-	 
-	public static Field parametersField;
-	 
-	public static Field hashTabArrField;
-	
-	static{
-		try {
-//            Class clazz = Class.forName("org.apache.catalina.connector.RequestFacade");
-            Class clazz = Class.forName("org.apache.shiro.web.servlet.ShiroHttpServletRequest");
-            requestField = clazz.getDeclaredField("request");
-            requestField.setAccessible(true);
- 
-            parametersParsedField = requestField.getType().getDeclaredField("parametersParsed");
-            parametersParsedField.setAccessible(true);
- 
-            coyoteRequestField = requestField.getType().getDeclaredField("coyoteRequest");
-            coyoteRequestField.setAccessible(true);
- 
-            parametersField = coyoteRequestField.getType().getDeclaredField("parameters");
-            parametersField.setAccessible(true);
- 
-//            hashTabArrField = parametersField.getType().getDeclaredField("paramHashStringArray");
-//            hashTabArrField.setAccessible(true);
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-	}
 
 }

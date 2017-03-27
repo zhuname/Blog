@@ -29,7 +29,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.cz.mts.frame.util.Des3;
 import com.cz.mts.frame.util.GlobalStatic;
-import com.cz.mts.frame.util.HttpUtil;
 import com.cz.mts.frame.util.JsonUtils;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.frame.util.SecureRSA;
@@ -80,9 +79,9 @@ public class SecurityAspect {
 		}
 	}
 	
-	@Autowired  
-	HttpServletRequest request; 
-	
+//	@Autowired  
+//	HttpServletRequest request; 
+//	
 //	@Around("securityAop()")
 //	public Object around(ProceedingJoinPoint proceedingJoinPoint){
 //		Object object = null ;
