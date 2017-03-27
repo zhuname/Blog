@@ -9,118 +9,52 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 public class ParameterRequestWrapper extends HttpServletRequestWrapper {
-	
-	
+
+	private Map<String, String[]> params = new HashMap<String, String[]>();
+
+	@SuppressWarnings("unchecked")
+	public ParameterRequestWrapper(HttpServletRequest request) {
+		// 将request交给父类，以便于调用对应方法的时候，将其输出，其实父亲类的实现方式和第一种new的方式类似
+		super(request);
+		// 将参数表，赋予给当前的Map以便于持有request中的参数
+		this.params.putAll(request.getParameterMap());
+	}
+
+	// 重载一个构造方法
 	public ParameterRequestWrapper(HttpServletRequest request,
-			Map<String, String[]> newParams) {
-		super(request);
-
-		this.params = newParams;
-	}
-
-	private Map<String, String[]> params;
-
-	private String[] exc = { "ticketId" };
-
-	public ParameterRequestWrapper(HttpServletRequest request)
-			throws UnsupportedEncodingException {
-		super(request);
-		Enumeration params = request.getParameterNames();
-		Map<String, String[]> values = new HashMap<String, String[]>();
-		while (params.hasMoreElements()) {
-			Object object = (Object) params.nextElement();
-			String key = object + "";
-			String[] vas = request.getParameterValues(object + "");
-			if (exception(key)) {// 判断是否包含例外的字段，若包含不剔除_
-				// 将key中的包含_剔除，转换成为小写字符
-				key = _2Came(key);
-				for (int i = 0; i < vas.length; i++) {
-					vas[i] = _2Came(vas[i]);
-
-				}
-			}
-			values.put(key, vas);
-		}
-		this.params = values;
-	}
-
-	// 将_转化为驼峰形式
-	public String _2Came(String str) {
-		String ret = "";
-		String[] values = str.split("_");
-		if (values.length > 1) {
-			for (String string : values) {
-				ret = ret + string.substring(0, 1).toUpperCase()
-						+ string.substring(1, string.length());
-			}
-		}
-		if (ret.length() > 0) {
-			ret = ret.substring(0, 1).toLowerCase()
-					+ ret.substring(1, ret.length());
-		} else {
-			ret = str;
-		}
-		return ret;
+			Map<String, Object> extendParams) {
+		this(request);
+		addAllParameters(extendParams);// 这里将扩展参数写入参数表
 	}
 
 	@Override
-	public String getParameter(String name) {
-		String result = "";
+	public String getParameter(String name) {// 重写getParameter，代表参数从当前类中的map获取
+		String[] values = params.get(name);
+		if (values == null || values.length == 0) {
+			return null;
+		}
+		return values[0];
+	}
 
-		Object v = params.get(name);
-		if (v == null) {
-			result = null;
-		} else if (v instanceof String[]) {
-			String[] strArr = (String[]) v;
-			if (strArr.length > 0) {
-				result = strArr[0];
+	public String[] getParameterValues(String name) {// 同上
+		return params.get(name);
+	}
+
+	public void addAllParameters(Map<String, Object> otherParams) {// 增加多个参数
+		for (Map.Entry<String, Object> entry : otherParams.entrySet()) {
+			addParameter(entry.getKey(), entry.getValue());
+		}
+	}
+
+	public void addParameter(String name, Object value) {// 增加参数
+		if (value != null) {
+			if (value instanceof String[]) {
+				params.put(name, (String[]) value);
+			} else if (value instanceof String) {
+				params.put(name, new String[] { (String) value });
 			} else {
-				result = null;
-			}
-		} else if (v instanceof String) {
-			result = (String) v;
-		} else {
-			result = v.toString();
-		}
-
-		return result;
-	}
-
-	@Override
-	public Map getParameterMap() {
-		return params;
-	}
-
-	@Override
-	public Enumeration getParameterNames() {
-		return null;
-	}
-
-	@Override
-	public String[] getParameterValues(String name) {
-		String[] result = null;
-
-		Object v = params.get(name);
-		if (v == null) {
-			result = null;
-		} else if (v instanceof String[]) {
-			result = (String[]) v;
-		} else if (v instanceof String) {
-			result = new String[] { (String) v };
-		} else {
-			result = new String[] { v.toString() };
-		}
-
-		return result;
-	}
-
-	public boolean exception(String key) {
-		for (int i = 0; i < exc.length; i++) {
-			if (exc[i].equals(key)) {
-				return false;
+				params.put(name, new String[] { String.valueOf(value) });
 			}
 		}
-		return true;
 	}
-
 }

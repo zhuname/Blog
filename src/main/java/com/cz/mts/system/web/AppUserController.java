@@ -168,7 +168,7 @@ public class AppUserController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/look/json")
-	@SecurityApi
+//	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -512,9 +512,16 @@ public class AppUserController  extends BaseController {
 		
 		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
 			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			appUser.setSign(null);
+			List<AppUser> datas=appUserService.queryForListByEntity(appUser, page) ;  //findListDataByFinder(null,page,AppUser.class,appUser);
 			if(datas!=null&&datas.size()>0){
-				returnObject.setData(datas.get(0));
+				AppUser user = datas.get(0) ;
+				if(user.getIsBlack() == 1){
+					returnObject.setStatus(ReturnDatas.WARNING);
+					returnObject.setMessage("黑名单成员！");
+				}else {
+					returnObject.setData(datas.get(0));
+				}
 			}else {
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("帐号密码错误");

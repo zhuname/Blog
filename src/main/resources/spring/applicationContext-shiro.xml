@@ -89,6 +89,7 @@
 				/weixin/f/** =anon
 				/weixin/token/** = anon
 				/system/**/json = anon
+				/app/**/json = anon
 				/fileupload=anon
 				/adminFileUpload=anon
 				/index = user,framefwlog,keepone
