@@ -168,7 +168,7 @@ public class AppUserController  extends BaseController {
 	 * @author wj
 	 */
 	@RequestMapping(value = "/look/json")
-//	@SecurityApi
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
