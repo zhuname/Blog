@@ -101,6 +101,8 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 		}else{
 			// ==执行分页查询
 			card.setIsDel(0);
+			page.setOrder("createTime");
+			page.setSort("desc");
 			List<Card> datas = findListDataByFinder(null,page,Card.class,card);
 			if(null != datas && datas.size() > 0){
 				for (Card cd : datas) {

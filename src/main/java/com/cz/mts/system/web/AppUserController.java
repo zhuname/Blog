@@ -122,6 +122,15 @@ public class AppUserController  extends BaseController {
 			finder.setParam("endTime", appUser.getEndTime());
 		}
 		
+		if(StringUtils.isNotBlank(appUser.getName())){
+			finder.append(" and name like '%"+appUser.getName()+"%'");
+			appUser.setName(null);
+		}
+		if(StringUtils.isNotBlank(appUser.getPhone())){
+			finder.append(" and phone like '%"+appUser.getPhone()+"%'");
+			appUser.setPhone(null);
+		}
+		
 		// ==执行分页查询
 		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
 			returnObject.setQueryBean(appUser);
@@ -294,6 +303,7 @@ public class AppUserController  extends BaseController {
 								appUser.setIsBlack(0);
 								appUser.setIsCloseFee(0);
 								appUser.setBalance(0.0);
+								appUser.setIsPush(1);
 								Object id = appUserService.saveorupdate(appUser);
 								
 								returnObject.setData(appUserService.findById(id, AppUser.class));
@@ -366,6 +376,22 @@ public class AppUserController  extends BaseController {
 	@RequestMapping(value = "/update/pre")
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
+		AppUser appUser = (AppUser) returnObject.getData();
+		if(null != appUser){
+			if(StringUtils.isNotBlank(appUser.getPassword())){
+				//查询是否存在该密码
+				Finder finder = Finder.getSelectFinder(Password.class).append(" where mdAfterPass = :mdAfterPass");
+				finder.setParam("mdAfterPass", appUser.getPassword());
+				Password password = appUserService.queryForObject(finder,Password.class);
+				if(null != password){
+					//将appUser表的password重置为加密前的密码
+					appUser.setPassword(password.getMdBeforePass());
+				}else{
+					appUser.setPassword("");
+				}
+			}
+		}
+		returnObject.setData(appUser);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return "/appuser/appuserCru";
 	}
@@ -547,6 +573,7 @@ public class AppUserController  extends BaseController {
 					appUser.setFrozeBanlance(0.0);
 					appUser.setLqNum(1);
 					appUser.setIsBlack(0);
+					appUser.setIsCloseFee(0);
 					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
@@ -750,30 +777,57 @@ public class AppUserController  extends BaseController {
 			returnObject.setMessage("参数缺失");
 		}else{
 			Page page = new Page();
-			AppUser appRecord = appUserService.findAppUserById(appUser.getId());
-			if(null != appRecord){
-				//判断验证码
-				Sms sms=new Sms();
-				sms.setPhone(appUser.getPhone());
-				sms.setContent(content);
-				sms.setType(5);
-				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
-				if(null != smss && smss.size() > 0 ){
-					//删除该条记录
-					smsService.deleteByEntity(smss.get(0));
-					//更新appUser表中的记录
-					appRecord.setPhone(appUser.getPhone());
-					if(StringUtils.isNotBlank(appUser.getPassword())){
-						appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+			
+			//先判断手机号是否已经存在
+			AppUser user = new AppUser();
+			if(StringUtils.isNotBlank(appUser.getPhone())){
+				user.setPhone(appUser.getPhone());
+			}
+			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+			if(null != datas && datas.size() > 0){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该用户已注册");
+			}else{
+				AppUser appRecord = appUserService.findAppUserById(appUser.getId());
+				if(null != appRecord){
+					//判断验证码
+					Sms sms=new Sms();
+					sms.setPhone(appUser.getPhone());
+					sms.setContent(content);
+					sms.setType(5);
+					List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+					if(null != smss && smss.size() > 0 ){
+						//删除该条记录
+						smsService.deleteByEntity(smss.get(0));
+						//更新appUser表中的记录
+						appRecord.setPhone(appUser.getPhone());
+						if(StringUtils.isNotBlank(appUser.getPassword())){
+							//判断该密码在密码表中是否存在
+							Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+							finder.setParam("mdBeforePass", appUser.getPassword());
+							List<Map<String, Object>> list = passwordService.queryForList(finder);
+							if(list.isEmpty()){
+								//向password表中插入数据
+								Password password = new Password();
+								password.setMdBeforePass(appUser.getPassword());
+								password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+								passwordService.save(password);
+							}
+							
+							
+							
+							
+							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						}
+						appUserService.update(appRecord);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("请再次获取验证码");
 					}
-					appUserService.update(appRecord);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
-					returnObject.setMessage("请再次获取验证码");
+					returnObject.setMessage("该用户不存在");
 				}
-			}else{
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该用户不存在");
 			}
 		}
 		return returnObject;
@@ -792,7 +846,7 @@ public class AppUserController  extends BaseController {
 	@RequestMapping("/pay/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code) throws Exception{
+	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code,String osType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		
@@ -804,7 +858,7 @@ public class AppUserController  extends BaseController {
 		}
 		try {
 			//支付 ，并且返回状态
-			Integer result=appUserService.pay(userId, type, itemId,code);
+			Integer result=appUserService.pay(userId, type, itemId,code,osType);
 			if(result==1){
 				returnObject.setMessage("支付成功");
 				returnObject.setStatus(ReturnDatas.SUCCESS);
@@ -936,8 +990,11 @@ public class AppUserController  extends BaseController {
 							applyMedal.setIntroduction("后台赋予");
 							applyMedalService.save(applyMedal);
 							
-							//给该用户发推送
-							notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+							AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
+							if(null != appUser && 1 == appUser.getIsPush()){
+								//给该用户发推送
+								notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+							}
 						}
 					}
 				}

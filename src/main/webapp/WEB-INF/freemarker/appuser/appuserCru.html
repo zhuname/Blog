@@ -23,13 +23,23 @@ jQuery(document).ready(function(){
 	*/
 	
 	
+	//回选 下拉框
+	jQuery("#isBlack option[value='${(returnDatas.data.isBlack)!''}']").prop("selected",true);
+	
+	jQuery("#isUpdate option[value='${(returnDatas.data.isUpdate)!''}']").prop("selected",true);
+	
+	jQuery("#withdrawType option[value='${(returnDatas.data.withdrawType)!''}']").prop("selected",true);
+	
+	jQuery("#isCloseFee option[value='${(returnDatas.data.isCloseFee)!''}']").prop("selected",true);
+	
+	jQuery("#sex option[value='${(returnDatas.data.sex)!''}']").prop("selected",true);
 	
 	});
 	
 	
 //-->
-
-
+	
+	
 	function headOnc(){
 		jQuery("#filed").click();
 	}
@@ -90,7 +100,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="password" >密码</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="password" class="col-xs-12 col-sm-6" id="password" value="${(returnDatas.data.password)!''}"  type="text" />
 					</div><div class="help-block" for="password"></div>
@@ -99,7 +109,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone" >电话</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="phone" class="col-xs-12 col-sm-6" id="phone" value="${(returnDatas.data.phone)!''}"  type="text" />
 					</div><div class="help-block" for="phone"></div>
@@ -107,28 +117,10 @@ jQuery(document).ready(function(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="qqNum" >qq号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="qqNum" class="col-xs-12 col-sm-6" id="qqNum" value="${(returnDatas.data.qqNum)!''}"  type="text" />
-					</div><div class="help-block" for="qqNum"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxNum" >微信号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="wxNum" class="col-xs-12 col-sm-6" id="wxNum" value="${(returnDatas.data.wxNum)!''}"  type="text" />
-					</div><div class="help-block" for="wxNum"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sex" >性别</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="sex" class="col-xs-12 col-sm-6" id="sex" value="${(returnDatas.data.sex)!''}" type="text"/>
+						<select name="sex" id="sex"><option value="男">男</option><option value="女">女</option></select>
 					</div><div class="help-block" for="sex"></div>
 				</div>
 			</div>
@@ -136,11 +128,9 @@ jQuery(document).ready(function(){
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="header" >头像</label>
 				<div class="col-xs-12 col-sm-9">
-				
-				
 						<div class="site-demo-upload">
   								<img  name="headerI" onclick="headOnc();" id="headerI" value="${(returnDatas.data.header)!''}" src="${(returnDatas.data.header)!''}">
-   								 <input type="file" id="filed" name="filed" style="display:none">
+      		    				 <input type="file" id="filed" name="filed" style="display:none">
    								  <input name="header" class="col-xs-12 col-sm-6" id="header" value="${(returnDatas.data.header)!''}" style="display:none"  type="text" />
 						</div>
 
@@ -185,7 +175,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >余额</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="balance" class="col-xs-12 col-sm-6" id="balance" value="${(returnDatas.data.balance)!''}"  type="text" />
 					</div><div class="help-block" for="balance"></div>
@@ -194,7 +184,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="frozeBanlance" >冻结余额</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="frozeBanlance" class="col-xs-12 col-sm-6" id="frozeBanlance" value="${(returnDatas.data.frozeBanlance)!''}"  type="text" />
 					</div><div class="help-block" for="frozeBanlance"></div>
@@ -203,7 +193,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="osType" >操作系统</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="osType" class="col-xs-12 col-sm-6" id="osType" value="${(returnDatas.data.osType)!''}"  type="text" />
 					</div><div class="help-block" for="osType"></div>
@@ -212,7 +202,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="bankName" >银行名称</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="bankName" class="col-xs-12 col-sm-6" id="bankName" value="${(returnDatas.data.bankName)!''}"  type="text" />
 					</div><div class="help-block" for="bankName"></div>
@@ -230,7 +220,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="ownerName" >户主名称/真实姓名</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="ownerName" class="col-xs-12 col-sm-6" id="ownerName" value="${(returnDatas.data.ownerName)!''}"  type="text" />
 					</div><div class="help-block" for="ownerName"></div>
@@ -239,7 +229,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="ownerPhone" >户主手机号</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="ownerPhone" class="col-xs-12 col-sm-6" id="ownerPhone" value="${(returnDatas.data.ownerPhone)!''}"  type="text" />
 					</div><div class="help-block" for="ownerPhone"></div>
@@ -259,14 +249,14 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="withdrawType" >1银行 2支付宝</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="withdrawType" class="col-xs-12 col-sm-6" id="withdrawType" value="${(returnDatas.data.withdrawType)!''}"  type="text" />
+						<select name="withdrawType" id="withdrawType"><option value="1">银行</option><option value="2">支付宝</option></select>
 					</div><div class="help-block" for="withdrawType"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="currentGetNum" >当前可领取次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="currentGetNum" class="col-xs-12 col-sm-6" id="currentGetNum" value="${(returnDatas.data.currentGetNum)!''}"  type="text" />
 					</div><div class="help-block" for="currentGetNum"></div>
@@ -275,7 +265,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="currentShareNum" >当前可分享次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="currentShareNum" class="col-xs-12 col-sm-6" id="currentShareNum" value="${(returnDatas.data.currentShareNum)!''}"  type="text" />
 					</div><div class="help-block" for="currentShareNum"></div>
@@ -284,7 +274,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="getNum" >可领取次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="getNum" class="col-xs-12 col-sm-6" id="getNum" value="${(returnDatas.data.getNum)!''}"  type="text" />
 					</div><div class="help-block" for="getNum"></div>
@@ -293,7 +283,7 @@ jQuery(document).ready(function(){
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="shareNum" >可分享次数</label>
-				<div class="col-xs-12 col-sm-9">
+				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
 						<input name="shareNum" class="col-xs-12 col-sm-6" id="shareNum" value="${(returnDatas.data.shareNum)!''}"  type="text" />
 					</div><div class="help-block" for="shareNum"></div>
@@ -304,7 +294,7 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isCloseFee" >是否关闭卡券手续费 0否 1是</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="isCloseFee" class="col-xs-12 col-sm-6" id="isCloseFee" value="${(returnDatas.data.isCloseFee)!''}"  type="text" />
+						<select name="isCloseFee" id="isCloseFee"><option value="0">否</option><option value="1">是</option></select>
 					</div><div class="help-block" for="isCloseFee"></div>
 				</div>
 			</div>
@@ -313,7 +303,7 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isUpdate" >是否有信息更新 0否 1是</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="isUpdate" class="col-xs-12 col-sm-6" id="isUpdate" value="${(returnDatas.data.isUpdate)!''}"  type="text" />
+						<select name="isUpdate" id="isUpdate"><option value="0">否</option><option value="1">是</option></select>
 					</div><div class="help-block" for="isUpdate"></div>
 				</div>
 			</div>
@@ -322,7 +312,7 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isBlack" >是否是黑名单 0否 1是</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="isBlack" class="col-xs-12 col-sm-6" id="isBlack" value="${(returnDatas.data.isBlack)!''}"  type="text" />
+						<select name="isBlack" id="isBlack"><option value="0">否</option><option value="1">是</option></select>
 					</div><div class="help-block" for="isBlack"></div>
 				</div>
 			</div>

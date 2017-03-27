@@ -1,8 +1,10 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -128,11 +130,11 @@ public class PosterPackageController  extends BaseController {
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
 		if(StringUtils.isNotBlank(posterPackage.getTitle())){
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
 			finder1.setParam("title", posterPackage.getTitle());
 			returnObject.setData(posterPackageService.queryForList(finder1,page));
 		} else {
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
 			if(posterPackage.getUserId()!=null){
 				
 				finder1.append(" and p.userId = :userId");
@@ -146,6 +148,7 @@ public class PosterPackageController  extends BaseController {
 				finder1.append(" and p.status = :status");
 				
 				finder1.setParam("status", posterPackage.getStatus());
+				
 			}
 			
 			if(posterPackage.getCategoryId()!=null){
@@ -167,7 +170,7 @@ public class PosterPackageController  extends BaseController {
 						 for (RedCity redCity : redCities) {
 							if(null != redCity.getCityId()){
 								City city = cityService.findCityById(redCity.getCityId());
-								if(StringUtils.isNotBlank(city.getName())){
+								if(city!=null){
 									redCity.setCityName(city.getName());
 								}
 							}
@@ -318,7 +321,7 @@ public class PosterPackageController  extends BaseController {
 				 for (RedCity redCity : redCities) {
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
-						if(StringUtils.isNotBlank(city.getName())){
+						if(null != city && StringUtils.isNotBlank(city.getName())){
 							redCity.setCityName(city.getName());
 						}
 					}
@@ -565,8 +568,10 @@ public class PosterPackageController  extends BaseController {
 					
 				}
 				
+				posterPackage.setStatus(0);
+				
 				id=posterPackageService.update(posterPackage, true);
-				returnObject.setData(posterPackageService.findPosterPackageById(id));
+				returnObject.setData(posterPackageService.findPosterPackageById(posterPackage.getId()));
 				
 			}
 			
@@ -575,7 +580,6 @@ public class PosterPackageController  extends BaseController {
 			if(posterPackage.getId()==null){
 				posterPackageService.deleteById(id, PosterPackage.class);
 			}
-			
 			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -621,7 +625,8 @@ public class PosterPackageController  extends BaseController {
 			finder.setParam("endTime", posterPackage.getEnddTime());
 		}
 		
-		
+		Double sumPayMoney = 0.0;
+		Double sumBalance = 0.0;
 		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,posterPackage);
 		if(null != datas && datas.size() > 0){
 			for (PosterPackage pc : datas) {
@@ -661,9 +666,24 @@ public class PosterPackageController  extends BaseController {
 					}
 				}
 				
+				if(null == pc.getPayMoney()){
+					pc.setPayMoney(0.0);
+				}
+				sumPayMoney += pc.getPayMoney();
+				
+				if(null == pc.getBalance()){
+					pc.setBalance(0.0);
+				}
+				sumBalance += pc.getBalance();
+				
 				
 			}
 		}
+		HashMap<String, Object> map=new HashMap<String,Object>();  
+		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		
+		returnObject.setMap(map);
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

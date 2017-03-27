@@ -47,26 +47,23 @@ $(document).on("click", ".vid", function() {
     		myalert("暂无可播放的视频");
     	}
 	});
+	//点击播放视频
+	$(document).on("click", ".sim", function() {
+    	var me=$(this).html();
+    		//iframe层-多媒体
+        	layer.open({
+			  type: 1,
+			  title: false,
+			  closeBtn: 0,
+			  area: '200px',
+			  skin: 'layui-layer-nobg', //没有背景色
+			  shadeClose: true,
+			  content:me
+			 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			});
+        	layer.msg('点击任意处关闭');
+	});
 	
-	
-		$.ajax({
-           type: "post",
-           dataType: "json",
-           url: "/mts/system/mediapackage/tongji/json",
-           success: function (msg) {
-           	
-               $("#pay").html("支付金额："+msg.data+"元 ");
-           }
-    	 });
-		$.ajax({
-           type: "post",
-           dataType: "json",
-           url: "/mts/system/mediapackage/balance/json",
-           success: function (msg) {
-               $("#bal").html("剩余金额："+msg.data+"元,");
-           }
-    	 });
-		
 		
 		function checkRefuse(id){
 			var reason = prompt("请填写拒绝原因:","");
@@ -97,6 +94,9 @@ $(document).on("click", ".vid", function() {
 			jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
 			
 		});
+		
+		
+		
 		
 </script>
 
@@ -160,8 +160,8 @@ $(document).on("click", ".vid", function() {
 				</a>
 </form>
 		</div>
-		<span style="float: right;" id="pay"></span>
-		<span style="float: right;" id="bal"></span>     
+		<span style="float: right;" id="pay">支付金额：${returnDatas.map.sumPayMoney}</span>&nbsp;&nbsp;&nbsp;
+		<span style="float: right;" id="bal">剩余金额：${returnDatas.map.sumBalance}</span>     
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/mediapackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/mediapackage/list/export');" class="btn  btn-sm  btn-primary">
@@ -378,7 +378,7 @@ $(document).on("click", ".vid", function() {
 								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls'></video>
 								
 							</td>
-							<td >
+							<td class="sim">
 								<img src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage"/>
 							</td>
 						</tr>

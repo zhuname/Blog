@@ -151,6 +151,10 @@ public class Card  extends BaseEntity {
 	private String startTime;
 	
 	
+	
+	
+	
+	
 	//columns END 数据库字段结束
 	@Transient
 	public String getEnddTime() {
@@ -198,7 +202,7 @@ public class Card  extends BaseEntity {
 
 	private java.lang.String osType;
 	
-	 @WhereSQL(sql="osType=:MediaPackage_osType")
+	 @WhereSQL(sql="osType=:card_osType")
 	public java.lang.String getOsType() {
 		return osType;
 	}

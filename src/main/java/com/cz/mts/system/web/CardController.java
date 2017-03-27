@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -138,7 +140,7 @@ public class CardController  extends BaseController {
 		return;
 	}
 	
-		/**
+	/**
 	 * 查看操作,调用APP端lookjson方法
 	 */
 	@RequestMapping(value = "/look")
@@ -390,8 +392,9 @@ public class CardController  extends BaseController {
 					}
 					
 				}
-				Object id=cardService.update(card,true);
-				returnObject.setData(cardService.findCardById(id));
+				card.setStatus(1);
+				cardService.update(card,true);
+				returnObject.setData(cardService.findCardById(card.getId()));
 			}
 			
 		} catch (Exception e) {
@@ -406,13 +409,21 @@ public class CardController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
-	 * 
+	 * 用户购买审核通过的卡券接口
+	 * @author wml
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @param num
+	 * @param cardId
+	 * @param userId
+	 * @return
+	 * @throws Exception
 	 */
 	@RequestMapping("/payCard/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas payCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Integer num,Integer cardId,Integer userId) throws Exception{
+	ReturnDatas payCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Integer num,Integer cardId,Integer userId,String osType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
@@ -446,9 +457,24 @@ public class CardController  extends BaseController {
 			for (int i = 0; i < num; i++) {
 				UserCard userCar = new UserCard();
 				
-				String userCardCode=new Date().getTime()+""+RandomUtils.nextInt(1000, 9999);
+				/***生成6位不重复的兑换码开始**/
+				String[] chars = new String[] { "a", "b", "c", "d", "e", "f",
+					"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+					"t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
+					"6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+					"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+					"W", "X", "Y", "Z" };
+
+				StringBuffer shortBuffer = new StringBuffer();
+				String uuid = UUID.randomUUID().toString().replace("-", "");
+				for (int j = 0; j < 6; j++) {
+					String str = uuid.substring(j * 4, j * 4 + 4);
+					int x = Integer.parseInt(str, 16);
+					shortBuffer.append(chars[x % 0x3E]);
+				}
+				/***生成6位不重复的兑换码结束**/
 				
-				userCar.setCardCode(userCardCode);
+				userCar.setCardCode(shortBuffer.toString());
 				
 				userCar.setUserId(userId);
 				userCar.setCardId(cardId);
@@ -466,6 +492,7 @@ public class CardController  extends BaseController {
 				userCar.setAdress(card.getAddress());
 				
 				userCar.setExpTime(card.getEndTime());
+				userCar.setOsType(osType);
 				
 				userCards.add(userCar);
 			}
@@ -500,7 +527,7 @@ public class CardController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try { 
 			
-			if(userCard.getCode()==null){
+			if(userCard.getCardCode()==null){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
 				return returnObject;
@@ -562,12 +589,18 @@ public class CardController  extends BaseController {
 			usercard.setChangeTime(new Date());
 			userCardService.update(usercard, true);
 			
-			//给发布人发推送
-			notificationService.notify(4, card.getId(), card.getUserId());
-			
-			
-			//给自己发推送
-			notificationService.notify(14, userCard.getId(), userCard.getUserId());
+			AppUser appUser1 = appUserService.findAppUserById(card.getUserId());
+			if(null != appUser1 && 1 == appUser1.getIsPush()){
+				//给发布人发推送
+				notificationService.notify(4, card.getId(), card.getUserId());
+			}
+		
+			AppUser user = appUserService.findAppUserById(usercard.getUserId());
+			if(null != user && 1 == user.getIsPush()){
+				//给自己发推送
+				notificationService.notify(14, userCard.getId(), userCard.getUserId());
+				
+			}
 			
 			
 			//手续费比例
@@ -700,11 +733,14 @@ public class CardController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		String id = request.getParameter("id");
 		card = cardService.findCardById(Integer.parseInt(id));
+		AppUser appUser = appUserService.findAppUserById(card.getUserId());
 		if(null != card){
 			card.setStatus(2);
 			card.setSuccTime(new Date());
 			cardService.update(card,true);
-			notificationService.notify(20, Integer.parseInt(id), card.getUserId());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(20, Integer.parseInt(id), card.getUserId());
+			}
 			
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
@@ -715,7 +751,7 @@ public class CardController  extends BaseController {
 			finderAppUser.setParam("itemId",  card.getUserId());
 			cardService.update(finderAppUser);
 			
-			AppUser appUser = appUserService.findAppUserById(card.getUserId());
+			
 			//查询接收推送的用户
 			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
 			finderSelect.setParam("itemId", card.getUserId());
@@ -744,12 +780,15 @@ public class CardController  extends BaseController {
 		String id = request.getParameter("id");
 		String refuseReason = request.getParameter("reason");
 		card = cardService.findCardById(Integer.parseInt(id));
+		AppUser appUser = appUserService.findAppUserById(card.getUserId());
 		if(null != card){
 			card.setStatus(3);
 			card.setFailTime(new Date());
 			card.setFailReason(refuseReason);
 			cardService.update(card,true);
-			notificationService.notify(18, Integer.parseInt(id), card.getUserId());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(18, Integer.parseInt(id), card.getUserId());
+			}
 		}
 		return returnObject;
 	}

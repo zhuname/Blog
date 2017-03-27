@@ -105,7 +105,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 		}
 
 	@Override
-	public Integer pay(Integer userId, Integer type, Integer itemId,String code)
+	public Integer pay(Integer userId, Integer type, Integer itemId,String code,String osType)
 			throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -156,6 +156,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailp.setType(6);
 			moneyDetailp.setPayType(3);
 			moneyDetailp.setUserId(userId);
+			moneyDetailp.setOsType(osType);
 			super.save(moneyDetailp);
 			
 			break;
@@ -193,6 +194,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailM.setType(5);
 			moneyDetailM.setPayType(3);
 			moneyDetailM.setUserId(userId);
+			moneyDetailM.setOsType(osType);
 			super.save(moneyDetailM);
 			
 			break;
@@ -227,17 +229,19 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			appUser.setBalance(appUser.getBalance()-cardSum.doubleValue());
 			super.update(appUser, true);
 			
-			
-			//记录用户的余额记录
-			MoneyDetail moneyDetailC=new MoneyDetail();
-			moneyDetailC.setBalance(appUser.getBalance());
-			moneyDetailC.setCreateTime(new Date());
-			moneyDetailC.setItemId(itemId);
-			moneyDetailC.setMoney(cardSum.doubleValue());
-			moneyDetailC.setType(3);
-			moneyDetailC.setPayType(3);
-			moneyDetailC.setUserId(userId);
-			super.save(moneyDetailC);
+			if(0.0 != cardSum.doubleValue()){
+				//记录用户的余额记录
+				MoneyDetail moneyDetailC=new MoneyDetail();
+				moneyDetailC.setBalance(appUser.getBalance());
+				moneyDetailC.setCreateTime(new Date());
+				moneyDetailC.setItemId(itemId);
+				moneyDetailC.setMoney(cardSum.doubleValue());
+				moneyDetailC.setType(3);
+				moneyDetailC.setPayType(3);
+				moneyDetailC.setUserId(userId);
+				moneyDetailC.setOsType(cards.get(0).getOsType());
+				super.save(moneyDetailC);
+			}
 			
 			for (UserCard userCard : cards) {
 				userCard.setPayMoney(userCard.getSumMoney());
@@ -255,10 +259,12 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				cardService.update(card, true);
 				
 				if(0 == card.getConvertNum()){
-					notificationService.notify(5, card.getId(), card.getUserId());
+					//查询用户信息
+					if(null != appUser && 1 == appUser.getIsPush()){
+						notificationService.notify(5, card.getId(), card.getUserId());
+					}
 				}
 			}
-			
 			
 			break;
 		}
@@ -425,16 +431,18 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						
 					}
 					
-					//记录用户的余额记录
-					MoneyDetail moneyDetailC=new MoneyDetail();
-					moneyDetailC.setBalance(appUserC.getBalance());
-					moneyDetailC.setCreateTime(new Date());
-					moneyDetailC.setCode(code);
-					moneyDetailC.setMoney(cardSum.doubleValue());
-					moneyDetailC.setType(3);
-					moneyDetailC.setPayType(payType);
-					moneyDetailC.setUserId(cards.get(0).getUserId());
-					super.save(moneyDetailC);
+					if(0.0 != cardSum.doubleValue()){
+						//记录用户的余额记录
+						MoneyDetail moneyDetailC=new MoneyDetail();
+						moneyDetailC.setBalance(appUserC.getBalance());
+						moneyDetailC.setCreateTime(new Date());
+						moneyDetailC.setCode(code);
+						moneyDetailC.setMoney(cardSum.doubleValue());
+						moneyDetailC.setType(3);
+						moneyDetailC.setPayType(payType);
+						moneyDetailC.setUserId(cards.get(0).getUserId());
+						super.save(moneyDetailC);
+					}
 					
 					super.update(cards, true);
 					
@@ -446,7 +454,10 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						cardService.update(card, true);
 						
 						if(0 == card.getConvertNum()){
-							notificationService.notify(5, card.getId(), card.getUserId());
+							//用户信息
+							if(null != appUserC && 1 == appUserC.getIsPush()){
+								notificationService.notify(5, card.getId(), card.getUserId());
+							}
 						}
 					}
 					

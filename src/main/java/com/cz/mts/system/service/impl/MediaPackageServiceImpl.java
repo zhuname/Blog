@@ -168,7 +168,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					 for (RedCity redCity : redCities) {
 						if(null != redCity.getCityId()){
 							City city = cityService.findCityById(redCity.getCityId());
-							if(StringUtils.isNotBlank(city.getName())){
+							if(null != city &&  StringUtils.isNotBlank(city.getName())){
 								redCity.setCityName(city.getName());
 							}
 						}
@@ -273,6 +273,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		
 		//获取红包
 		MediaPackage _package = findById(packageId, MediaPackage.class) ;
+		
+		AppUser appUser = appUserService.findAppUserById(_package.getUserId());
 		if(_package != null && _package.getStatus() == 3){  //通过审核的红包才能抢
 			if(_package.getEncrypt() == 0){  //看是否是加密红包，如果不是
 				//看这个用户是否能在此小时内能抢
@@ -314,8 +316,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			
 			if(list != null && list.size() !=0){
 				
-				//给发布人发推送
-				notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
+				if(null != appUser && 1 == appUser.getIsPush()){
+					//给发布人发推送
+					notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
+				}
 				
 				//已抢红包的list，mysql中的
 				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
@@ -381,9 +385,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
-						
-						//给发布人发推送
-						notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+						if(null != appUser && 1 == appUser.getIsPush()){
+							//给发布人发推送
+							notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+						}
 						
 					}
 					super.saveorupdate(pp) ;
@@ -399,19 +404,25 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	public Object check(String packageId, String type,String failReason) throws Exception {
 		// TODO Auto-generated method stub
 		MediaPackage pp = findById(Integer.valueOf(packageId), MediaPackage.class) ;
+		
 		if(pp == null)
 			return null ;
+		
+		AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 		if("0".equals(type)){  //拒绝
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
-			notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
+			if(null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(8, Integer.parseInt(packageId), pp.getUserId());
+			}
 			
 		}else {  //审核通过
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
-			notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
-			
+			if(null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(9, Integer.parseInt(packageId), pp.getUserId());
+			}
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());
@@ -421,7 +432,6 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finderAppUser.setParam("itemId",  pp.getUserId());
 			super.update(finderAppUser);
 			
-			AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 			//查询接收推送的用户
 			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
 			finderSelect.setParam("itemId", pp.getUserId());
@@ -433,7 +443,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			
 			//先看看分几个人，要是分一个人的话就不用分了，直接生成一个就好了
 			if(pp.getLqNum() != null && pp.getLqNum() == 1){
-				LposterPackage lp = new LposterPackage();
+				LmediaPackage lp = new LmediaPackage();
 				Double money = new Double(String.valueOf(pp.getSumMoney())) ;
 				lp.setMoney(money);
 				lp.setPackageId(Integer.valueOf(packageId));

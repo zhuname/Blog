@@ -1,5 +1,6 @@
 package com.cz.mts.system.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -77,6 +78,8 @@ public class MoneyDetail  extends BaseEntity {
 	 * 卡券code
 	 */
 	private java.lang.String code;
+	
+	private java.lang.String aliTrade;
 	//columns END 数据库字段结束
 	
 	private Integer payType;
@@ -107,8 +110,63 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private Double moneyCount;
 	
+	private Date experTime; //过期时间
 	
-    @Transient
+	private Date changeTime;//兑换时间
+	
+	private Integer status;// 兑换状态
+	
+	private String statusName;
+	
+	
+	
+	
+	@WhereSQL(sql="aliTrade=:MoneyDetail_aliTrade")
+	public java.lang.String getAliTrade() {
+		return aliTrade;
+	}
+
+	public void setAliTrade(java.lang.String aliTrade) {
+		this.aliTrade = aliTrade;
+	}
+
+	@Transient
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	@Transient
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	@Transient
+	public Date getChangeTime() {
+		return changeTime;
+	}
+
+	public void setChangeTime(Date changeTime) {
+		this.changeTime = changeTime;
+	}
+
+	@Transient
+    public Date getExperTime() {
+		return experTime;
+	}
+
+	public void setExperTime(Date experTime) {
+		this.experTime = experTime;
+	}
+
+	@Transient
 	public String getStartTime() {
 		return startTime;
 	}

@@ -347,7 +347,7 @@ public class CityController  extends BaseController {
 	 */
 	@RequestMapping(value="/open/json")
 	public @ResponseBody ReturnDatas openJosn(HttpServletRequest request,Integer id) throws Exception {
-
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 			// 执行删除
 		try {
 		 City city=cityService.findCityById(id);
@@ -360,15 +360,21 @@ public class CityController  extends BaseController {
 			}
 			 
 			 cityService.update(city, true);
-			 
+			 returnObject.setMessage("成功");
+			 returnObject.setStatus(ReturnDatas.SUCCESS);
 		 }
 		 
 		 
 		 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+			returnObject.setMessage("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
 		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+		
+		
+		
+		return returnObject;
 	}
 	
 	/**
