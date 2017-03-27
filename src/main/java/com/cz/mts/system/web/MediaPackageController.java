@@ -206,7 +206,7 @@ public class MediaPackageController  extends BaseController {
 						mediaPackage.setIsLook(0);
 					}
 			 }
-			 if(StringUtils.isNotBlank(appUserId)){
+			 if(null != mediaPackage && StringUtils.isNotBlank(appUserId) && 3 == mediaPackage.getStatus()){
 				 if(null == mediaPackage.getScanNum()){
 					 mediaPackage.setScanNum(0);
 				 }

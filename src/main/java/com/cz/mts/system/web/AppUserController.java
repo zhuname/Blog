@@ -349,14 +349,6 @@ public class AppUserController  extends BaseController {
 						}
 					}
 					
-					//判断该用户是否绑定微博
-					if(StringUtils.isNotBlank(appUser.getSinaNum())){
-						if(StringUtils.isNotBlank(aUser.getSinaNum()) && !(aUser.getSinaNum()).equals(appUser.getSinaNum())){
-							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage("该用户已经绑定微博");
-						}
-					}
-					
 					appUserService.update(appUser,true);
 					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
 				}else{
@@ -524,7 +516,7 @@ public class AppUserController  extends BaseController {
 			if(datas!=null&&datas.size()>0){
 				returnObject.setData(datas.get(0));
 			}else {
-				returnObject.setStatus(ReturnDatas.WARNING);
+				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("帐号密码错误");
 			}
 		}else {
@@ -667,9 +659,16 @@ public class AppUserController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
-			//查找该用户是否存在
-			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
-			if(null == datas || 0 == datas.size()){
+			
+			AppUser user = new AppUser();
+			if(StringUtils.isNotBlank(appUser.getPhone())){
+				user.setPhone(appUser.getPhone());
+			}
+			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+			if(null != datas && datas.size() > 0){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该手机号已被绑定");
+			}else{
 				//判断验证码
 				Sms sms=new Sms();
 				sms.setPhone(appUser.getPhone());
@@ -693,9 +692,6 @@ public class AppUserController  extends BaseController {
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("暂未收到验证码");
 				}
-			}else{
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该手机号已被绑定");
 			}
 			
 		}

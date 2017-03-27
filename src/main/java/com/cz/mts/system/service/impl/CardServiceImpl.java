@@ -108,6 +108,18 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 			}else{
 				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=3)");
 			}
+			if(null != card.getCatergoryId()){
+				finder.append(" and catergoryId=:catergoryId");
+				finder.setParam("catergoryId", card.getCatergoryId());
+			}
+			if(null != card.getUserId()){
+				finder.append(" and userId=:userId");
+				finder.setParam("userId", card.getUserId());
+			}
+			if(null != card.getStatus()){
+				finder.append(" and status=:status");
+				finder.setParam("status", card.getStatus());
+			}
 			page.setOrder("createTime");
 			page.setSort("desc");
 			

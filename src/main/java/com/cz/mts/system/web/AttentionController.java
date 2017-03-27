@@ -113,6 +113,7 @@ public class AttentionController  extends BaseController {
 								userMedal.setMedalName(medal.getName());
 							}
 						}
+						map.put("userMedals", userMedals);
 					}
 				} 
 			}

@@ -72,9 +72,8 @@ jQuery(document).ready(function(){
 		   　　 var li = document.createElement("li");
 		   　　 var img = document.createElement("img");
 		   　　 img.setAttribute("id", "newImg"+i);
-		   　　 img.setAttribute("width","50px");
-		   　　  img.setAttribute("height","50px");
-		　        // jQuery("#newImg").attr("src",arr[i]);
+		   　　 img.setAttribute("width","100px");
+		   　　  img.setAttribute("height","100px");
 		　        img.src = arr[i];
 		　        li.appendChild(img);
 		　        ul.appendChild(li);
@@ -117,7 +116,6 @@ jQuery(document).ready(function(){
 	}
 	
 	
-	
 	var res = "";
       $(function () {  
           var btn = $("#Button1").uploadFile({  
@@ -130,7 +128,6 @@ jQuery(document).ready(function(){
             	  {
             		  res += arrs[i]+";";
             	  }
-            	 
                   $("#testdiv").append(msg + "<br/>");
               },  
               onAllComplete: function () {  
@@ -154,10 +151,15 @@ jQuery(document).ready(function(){
           var upload = btn.data("uploadFileData");  
 
           $("#files").click(function () {  
-              upload.submitUpload();  
+              upload.submitUpload();
           });  
+          
       });  
       
+      
+      function clickButton(){
+  		$("#testdiv").hide();
+  	}
 	
 //-->
 </SCRIPT>
@@ -173,12 +175,11 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >海报图片</label>
 				<div class="col-xs-12 col-sm-9" id="imageDiv">
 					
-					 <input id="Button1" type="button" value="选择文件" class="btn btn-pink"/>  
+					 <input id="Button1" type="button" value="选择文件" class="btn btn-pink" onclick="clickButton()"/>  
             		 <input id="files" type="button" value="上传" class="btn btn-purple"/>
             		   
 		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
 		            </div>  
-		            <div id="showdiv" style="display: none;"></div>  
 		             <div id="testdiv"></div>  
 		            <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					
