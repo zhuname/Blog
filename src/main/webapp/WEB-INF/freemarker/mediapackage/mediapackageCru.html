@@ -271,7 +271,7 @@ jQuery(document).ready(function(){
 						<input name="mediaUrl" class="col-xs-12 col-sm-6" style="display: none;" id="mediaUrl" value="${(returnDatas.data.mediaUrl)!''}"  type="text" />
 						<div class="content">
 							<input id="v_file" type="file" style="display:none;" onChange="play()"/>
-							<video id="video_id" controls autoplay src="${(returnDatas.data.mediaUrl)!''}" ></video>
+							<video id="video_id" style="width: 500px;height: 500px;" controls autoplay src="${(returnDatas.data.mediaUrl)!''}" ></video>
 							<a class="layui-btn layui-btn-primary" id="play" onClick="yincang()">修改</a>
 							<a class="layui-btn layui-btn-primary" id="play" onClick="go()">上传</a>
 						</div>
