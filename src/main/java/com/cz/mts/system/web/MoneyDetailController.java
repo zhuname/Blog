@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -137,8 +138,21 @@ public class MoneyDetailController  extends BaseController {
 		moneyDetail.setType(3);
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		List<MoneyDetail> moneyDetails = (List<MoneyDetail>) returnObject.getData();
+		if(null != moneyDetail.getStatus()){
+			Iterator<MoneyDetail> iter = moneyDetails.iterator() ;
+			while(iter.hasNext()){
+				MoneyDetail md = iter.next();
+				if(md.getStatus() != moneyDetail.getStatus()){
+					iter.remove();
+				}
+			}
+		}
+		
+		
 		if(null != moneyDetails && moneyDetails.size() > 0){
+			
 			for (MoneyDetail moneyDetail2 : moneyDetails) {
+				
 				if(null != moneyDetail2.getItemId()){
 					Card card = cardService.findCardById(moneyDetail2.getItemId());
 					if(null != card){
