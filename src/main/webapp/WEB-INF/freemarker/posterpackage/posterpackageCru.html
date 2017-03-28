@@ -141,6 +141,7 @@ jQuery(document).ready(function(){
               },  
               onAllComplete: function () {  
                   myalert("全部上传完成");  
+                  console.log(res);
                   jQuery("#image").attr("value",res);
               },  
               isGetFileSize: true,//是否获取上传文件大小，设置此项为true时，将在onChosen回调中返回文件fileSize和获取大小时的错误提示文本errorText  
@@ -154,7 +155,7 @@ jQuery(document).ready(function(){
                   return true;//返回false将取消当前选择的文件  
               },  
               perviewElementId: "fileList", //设置预览图片的元素id  
-              perviewImgStyle: { width: '100px', height: '100px', border: '1px solid #ebebeb' }//设置预览图片的样式  
+              perviewImgStyle: { width: '100px', height: '100px'}//设置预览图片的样式  
           });  
 
           var upload = btn.data("uploadFileData");  
@@ -191,7 +192,6 @@ jQuery(document).ready(function(){
 		            </div>  
 		             <div id="testdiv"></div>  
 		            <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
-					
 					
 				</div>
 			</div>

@@ -196,7 +196,6 @@ public class AppUserController  extends BaseController {
 					 appUser.setFansNum(0);
 				 }
 
-
 				 if(StringUtils.isNotBlank(itemId)){
 					 //获取我的关注列表
 					 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
