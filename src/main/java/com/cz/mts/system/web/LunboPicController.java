@@ -184,7 +184,6 @@ public class LunboPicController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,LunboPic lunboPic,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

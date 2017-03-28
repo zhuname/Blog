@@ -33,10 +33,9 @@ jQuery(document).ready(function(){
 	});
 	
 	function submit(){
-		jQuery("#value").val(UE.getEditor('editor').getContent());
-		
+		//jQuery("#value").val(UE.getEditor('editor').getContent());
+		jQuery("#value").val(jQuery("#editort").html());
 		jQuery("#submit").click();
-		
 	}
 	
 	
@@ -49,12 +48,18 @@ jQuery(document).ready(function(){
 			<input type="hidden" id="code" name="code" value="${(returnDatas.data.code)!''}"/>	
 			<input type="hidden" id="value" name="value" value=""/>	
 	        <div>
+	        
 		    	<h1>提现说明</h1>
 		    	<br>
 		    	<br>
-		    	<script id="editor" type="text/plain" style="width:1024px;height:500px;">
+		    	
+		    	<!-- <script id="editor" type="text/plain" style="width:1024px;height:500px;">
 					${(returnDatas.data.value)!''}
-				</script>
+				</script> -->
+				
+				<textarea  id="editort"  style="width:1024px;height:500px;">
+						${(returnDatas.data.value)!''}
+				</textarea>
 				
 			</div>
 		</form>
