@@ -1,6 +1,8 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -244,6 +246,7 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
 			finder.setParam("userName", moneyDetail.getUserName());
 		}
+		Double sumMoney = 0.0;
 		List<MoneyDetail> moneyDetails = findListDataByFinder(finder, page, MoneyDetail.class, moneyDetail);
 		if(null != moneyDetails && moneyDetails.size() > 0){
 			for (MoneyDetail md : moneyDetails) {
@@ -255,8 +258,13 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 						}
 					}
 				}
+				//计算总计金额
+				sumMoney += md.getMoney();
 			}
 		}
+		HashMap<String, Object> map=new HashMap<String,Object>();  
+		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		returnObject.setMap(map);
 		returnObject.setData(moneyDetails);
 		returnObject.setPage(page);
 		returnObject.setQueryBean(moneyDetail);

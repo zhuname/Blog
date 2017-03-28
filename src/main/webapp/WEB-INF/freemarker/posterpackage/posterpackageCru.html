@@ -62,14 +62,23 @@ jQuery(document).ready(function(){
 	});
 	
 	
-	
+	 
 	var images = $("#image").val();
 	var arr = images.split(";");//
+	var arrImage=0;
 	if(arr.length>0){
+		if(arr.length==1){
+			arrImage = arr.length;
+		}
+		if(arr.length>1){
+			arrImage = arr.length-1;
+		}
 			//获得div
 	   var ul = document.getElementById("testdiv");
-		 for(var i=0;i<arr.length;i++){
+		 for(var i=0;i<arrImage;i++){
 		   　　 var li = document.createElement("li");
+		   　　  li.setAttribute("id","liImg");
+   		   　　 li.setAttribute("style","float:left;");
 		   　　 var img = document.createElement("img");
 		   　　 img.setAttribute("id", "newImg"+i);
 		   　　 img.setAttribute("width","100px");
@@ -78,7 +87,7 @@ jQuery(document).ready(function(){
 		　        li.appendChild(img);
 		　        ul.appendChild(li);
 		}
-	}
+	} 
 	
 	
 	
@@ -124,11 +133,11 @@ jQuery(document).ready(function(){
               maximumFilesUpload: 10,//最大文件上传数  
               onComplete: function (msg) { 
             	  var arrs = new Array(msg);
-            	  for (var i = 0;i<arrs.length;i++)
+            	  for (var i = 0;i<arrs.length-1;i++)
             	  {
             		  res += arrs[i]+";";
             	  }
-                  $("#testdiv").append(msg + "<br/>");
+                 $("#testdiv").append(msg + "<br/>");
               },  
               onAllComplete: function () {  
                   myalert("全部上传完成");  
@@ -139,7 +148,7 @@ jQuery(document).ready(function(){
                   if (!errorText) {  
                       $("#file_size").text(file + "文件大小为：" + fileSize + "KB");  
                   } else {  
-                      alert(errorText);  
+                	  myalert(errorText);  
                       return false;  
                   }  
                   return true;//返回false将取消当前选择的文件  
