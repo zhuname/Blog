@@ -602,7 +602,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
                 long temp = min + xRandom(min, average);  
                 result[i] = temp;  
                 total -= temp;  
-            } else {  
+            } else {
                 // 在平均线上加钱  
 //              long temp = max - sqrt(nextLong(range2));  
                 long temp = max - xRandom(average, max);  
