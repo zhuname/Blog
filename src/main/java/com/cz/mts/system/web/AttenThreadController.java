@@ -23,14 +23,14 @@ public class AttenThreadController extends Thread{
 	
 	public void run(){
 		try {
-			if(null != posterPackage && 1 == appUser.getIsPush()){
-				notificationService.notify(10,posterPackage.getId(),attention.getId(),appUser.getName(),posterPackage.getTitle(),posterPackage.getBalance()+"");
+			if(null != posterPackage && null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(10,posterPackage.getId(),attention.getUserId(),appUser.getName(),posterPackage.getTitle(),posterPackage.getBalance()+"");
 			}
-			if(null != mediaPackage && 1 == appUser.getIsPush()){
-				notificationService.notify(10,mediaPackage.getId(),attention.getId(),appUser.getName(),mediaPackage.getTitle(),mediaPackage.getBalance()+"");
+			if(null != mediaPackage && null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(10,mediaPackage.getId(),attention.getUserId(),appUser.getName(),mediaPackage.getTitle(),mediaPackage.getBalance()+"");
 			}
-			if(null != card && 1 == appUser.getIsPush()){
-				notificationService.notify(11,card.getId(),attention.getId(),appUser.getName(),card.getTitle());
+			if(null != card && null != appUser && 1 == appUser.getIsPush()){
+				notificationService.notify(11,card.getId(),attention.getUserId(),appUser.getName(),card.getTitle());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -97,6 +97,16 @@ public class AttentionController  extends BaseController {
 		/*// ==执行分页查询
 		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);*/
 		if(attention.getUserId()!=null){
+			//更新user表中的isUpdate字段
+			Finder fd1 = new Finder("UPDATE t_app_user SET isUpdate=0 WHERE id=:userId");
+			fd1.setParam("userId", attention.getUserId());
+			appUserService.update(fd1);
+			
+			//更新attention表中的isUpdate字段
+			Finder fd2 = new Finder("UPDATE t_attention SET isUpdate=0 WHERE itemId=:itemId");
+			fd2.setParam("itemId", attention.getUserId());
+			attentionService.update(fd2);
+			
 			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id  order by att.id");
 			finder.setParam("id", attention.getUserId());
 			List<Map<String, Object>> list = appUserService.queryForList(finder,page);
@@ -109,8 +119,8 @@ public class AttentionController  extends BaseController {
 					if(null != userMedals && userMedals.size() > 0){
 						for (UserMedal userMedal : userMedals) {
 							Medal medal = medalService.findMedalById(userMedal.getMedalId());
-							if(null != medal && StringUtils.isNotBlank(medal.getName())){
-								userMedal.setMedalName(medal.getName());
+							if(null != medal){
+								userMedal.setMedal(medal);
 							}
 						}
 						map.put("userMedals", userMedals);

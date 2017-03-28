@@ -449,6 +449,12 @@ public class CardController  extends BaseController {
 				return returnObject;
 			}
 			
+			//判断卡券的状态
+			if(2 != card.getStatus()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券暂不能购买");
+				return returnObject;
+			}
 			List<UserCard> userCards=new ArrayList<>();
 			
 			String code=new Date().getTime()+""+RandomUtils.nextInt(1, 9);
@@ -573,7 +579,6 @@ public class CardController  extends BaseController {
 				return returnObject;
 			}
 			
-			
 			if(usercard.getCardId()!=null){
 				card=cardService.findCardById(usercard.getCardId());
 			}
@@ -583,24 +588,27 @@ public class CardController  extends BaseController {
 				returnObject.setMessage("此卡券不存在");
 				return returnObject;
 			}
+			//判断卡券的状态
+			if(2 != card.getStatus()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券暂不能兑换");
+				return returnObject;
+			}
 			
 			//改变状态
 			usercard.setStatus(2);
 			usercard.setChangeTime(new Date());
-			userCardService.update(usercard, true);
+			Object id = userCardService.update(usercard, true);
+			UserCard uc = userCardService.findUserCardById(id);
+			if(null != uc && null != uc.getUserId()){
+				AppUser user = appUserService.findAppUserById(uc.getUserId());
+				if(null != user && 1 == user.getIsPush()){
+					//给自己发推送
+					notificationService.notify(14, uc.getCardId(), uc.getUserId());
+					
+				}
+			}
 			
-			AppUser appUser1 = appUserService.findAppUserById(card.getUserId());
-			if(null != appUser1 && 1 == appUser1.getIsPush()){
-				//给发布人发推送
-				notificationService.notify(4, card.getId(), card.getUserId());
-			}
-		
-			AppUser user = appUserService.findAppUserById(usercard.getUserId());
-			if(null != user && 1 == user.getIsPush()){
-				//给自己发推送
-				notificationService.notify(14, userCard.getId(), userCard.getUserId());
-				
-			}
 			
 			
 			//手续费比例

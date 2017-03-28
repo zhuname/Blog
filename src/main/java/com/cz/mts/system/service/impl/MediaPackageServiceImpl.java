@@ -409,7 +409,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						pp.setEndTime(new Date());
 						if(null != appUser && 1 == appUser.getIsPush()){
 							//给发布人发推送
-							notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+							notificationService.notify(3, pp.getId(), pp.getUserId());
 						}
 						
 					}
@@ -485,6 +485,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				Double money = new Double(String.valueOf(pp.getSumMoney())) ;
 				lp.setMoney(money);
 				lp.setPackageId(Integer.valueOf(packageId));
+				iLmediaPackageService.save(lp);
 			}else {
 				//开始分小红包
 				long[] moneys = generate(pp.getSumMoney().longValue() * 100, pp.getLqNum(), pp.getSumMoney().longValue() * 100, 1) ;
