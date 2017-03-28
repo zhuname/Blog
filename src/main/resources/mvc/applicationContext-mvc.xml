@@ -66,6 +66,7 @@
 	<context:component-scan base-package="com.cz.mts.frame.annotation"/>
 
 	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/shareApp/**" location="/shareApp/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/layer-v3.0.3/**" location="/layer-v3.0.3/" />
