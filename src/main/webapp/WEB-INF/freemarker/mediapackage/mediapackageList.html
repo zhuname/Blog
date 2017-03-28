@@ -66,23 +66,21 @@ $(document).on("click", ".vid", function() {
 	
 		
 		function checkRefuse(id){
-			var reason = prompt("请填写拒绝原因:","");
-			if(reason == null || reason == ""){
-				myalert("请输入拒绝原因");
-				return;
-			}
-			jQuery.post("${ctx}/system/mediapackage/check/json",{ id: id, failReason: reason ,type: 0},
-					function(_json) {
-						if (_json.status == "success") {
-							myalert("审核成功");
-							myhref("${ctx}/system/mediapackage/list")
-							return false;
-						} else {
-							myalert("审核失败");
-							return false;
-						}
+			//prompt层
+			layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+				jQuery.post("${ctx}/system/mediapackage/check/json",{ id: id, failReason: text ,type: 0},
+						function(_json) {
+							if (_json.status == "success") {
+								myalert("审核成功");
+								myhref("${ctx}/system/mediapackage/list")
+								return false;
+							} else {
+								myalert("审核失败");
+								return false;
+							}
+				});
+	  			layer.close(index);
 			});
-			
 		}
 
 		jQuery(document).ready(function(){
@@ -165,7 +163,6 @@ $(document).on("click", ".vid", function() {
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/mediapackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/mediapackage/list/export');" class="btn  btn-sm  btn-primary">
-                      
                         导出
                     </button>
 		    	</@shiro.hasPermission>
@@ -251,7 +248,7 @@ $(document).on("click", ".vid", function() {
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
+                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/mediapackage/list',null,'确认通过？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	

@@ -29,12 +29,9 @@ function deleteApplyMedal(){
 }
 
 function checkRefuse(id){
-	var reason = prompt("请填写拒绝原因:","");
-	if(reason == null || reason == ""){
-		myalert("请输入拒绝原因");
-		return;
-	}
-	jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: reason },
+	//prompt层
+			layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+			jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: text },
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -44,7 +41,9 @@ function checkRefuse(id){
 					myalert("审核失败");
 					return false;
 				}
-	});
+			});
+	  			layer.close(index);
+			});
 	
 }
 
@@ -217,7 +216,7 @@ jQuery(document).ready(function(){
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list');">
+                                                onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list',null,'确认成功？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	<button class="btn btn-xs btn-pink" title="审核失败"

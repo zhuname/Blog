@@ -159,7 +159,7 @@ public class FileUpload extends HttpServlet {
 			}
 		
 //			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+";";
-			urlList.add(httppath+"/"+userId+"/"+filename);
+			urlList.add(httppath+"/"+userId+"/"+filename+".png");
 			// 获得流，读取数据写入文件
 			InputStream in = item.getInputStream();
 			FileOutputStream fos = new FileOutputStream(file);

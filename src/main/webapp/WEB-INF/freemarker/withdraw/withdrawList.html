@@ -31,12 +31,9 @@ function deleteWithdraw(){
 
 
 function checkRefuse(id){
-	var reason = prompt("请填写拒绝原因:","");
-	if(reason == null || reason == ""){
-		myalert("请输入拒绝原因");
-		return;
-	}
-	jQuery.post("${ctx}/system/withdraw/check/refuse",{ id: id, reason: reason },
+	
+	layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+			jQuery.post("${ctx}/system/withdraw/check/refuse",{ id: id, reason: text },
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -46,8 +43,9 @@ function checkRefuse(id){
 					myalert("审核失败");
 					return false;
 				}
-	});
-	
+			});
+	  			layer.close(index);
+			});
 }
 
 jQuery(document).ready(function(){

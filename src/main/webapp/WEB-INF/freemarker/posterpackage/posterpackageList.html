@@ -51,7 +51,10 @@ function checkRefuse(id){
 		myalert("请输入拒绝原因");
 		return;
 	}
-	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type:0},
+	
+	
+	layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+			jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: text ,type:0},
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -62,6 +65,8 @@ function checkRefuse(id){
 					return false;
 				}
 	});
+	  			layer.close(index);
+			});
 	
 }
 
@@ -223,14 +228,14 @@ jQuery(document).ready(function(){
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/posterpackage/delete/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list');">
+                                                onclick="mydelete('${ctx}/system/posterpackage/delete/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list',null,'确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                         
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/posterpackage/list');">
+                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/posterpackage/list',null,'确认删除？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	
