@@ -123,7 +123,7 @@ public class SecurityAspect {
 						Integer userId = json.getInt("sessionId") ;
 						AppUser user = appUserService.findAppUserById(userId) ;
 						if(user != null){
-							if(user.getIsBlack() == 1){  //黑名单
+							if(null != user.getIsBlack() && user.getIsBlack() == 1){  //黑名单
 								return new ReturnDatas(ReturnDatas.WARNING, "黑名单成员！") ; 
 							}
 						}
