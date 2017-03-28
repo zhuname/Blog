@@ -99,11 +99,11 @@ public class SecurityAspect {
 //	       HttpServletRequest request = attr.getRequest(); 
 //	    Map<String,String[]> paramMap = HttpUtil.getRequestMap(request) ;
 	    
-	    if(!paramMap.containsKey("sign")){  //说明是非法请求
+	    if(!paramMap.containsKey("signCode")){  //说明是非法请求
 	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
 	    }else {
 	    	try {
-	    		String[] sign = (String[])paramMap.get("sign") ;
+	    		String[] sign = (String[])paramMap.get("signCode") ;
 	    		//解密
         		String params=SecureRSA.decrypt(sign[0], privateKey, "UTF-8") ;   //公钥
         		JSONObject json = JSONObject.fromObject(params) ;
