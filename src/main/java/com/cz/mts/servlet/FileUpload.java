@@ -146,7 +146,7 @@ public class FileUpload extends HttpServlet {
 			}
 			// 获得文件名
 			String filename = item.getName();
-			filename = UUID.randomUUID().toString();
+			filename = UUID.randomUUID().toString()+".png";
 			
 			File f_dir=new File(dir);
 			if(!f_dir.exists()){
@@ -159,7 +159,7 @@ public class FileUpload extends HttpServlet {
 			}
 		
 //			allhttpfile=allhttpfile+httppath+"/"+userId+"/"+filename+";";
-			urlList.add(httppath+"/"+userId+"/"+filename+".png");
+			urlList.add(httppath+"/"+userId+"/"+filename);
 			// 获得流，读取数据写入文件
 			InputStream in = item.getInputStream();
 			FileOutputStream fos = new FileOutputStream(file);

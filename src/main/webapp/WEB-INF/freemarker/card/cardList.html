@@ -55,22 +55,22 @@ jQuery(document).ready(function(){
 });
 
 
-//点击播放视频
 $(document).on("click", ".sim", function() {
-	var me=$(this).html();
-		//iframe层-多媒体
-    	layer.open({
-		  type: 1,
-		  title: false,
-		  closeBtn: 0,
-		  area: '200px',
-		  skin: 'layui-layer-nobg', //没有背景色
-		  shadeClose: true,
-		  content:me
-		 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
-		});
-    	layer.msg('点击任意处关闭');
-});
+    	var me="<img alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	console.log(me);
+    		//iframe层-多媒体
+        	layer.open({
+			  type: 1,
+			  title: false,
+			  closeBtn: 0,
+			  area: '1000px',
+			  skin: 'layui-layer-nobg', //没有背景色
+			  shadeClose: true,
+			  content:me
+			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			});
+        	layer.msg('点击任意处关闭');
+	});
 
 </script>
 
@@ -258,8 +258,8 @@ $(document).on("click", ".sim", function() {
                                 </td>
                                 <!--end_no_export-->
 
-							<td class="sim">
-								<img src="${(_data.images)!''}" height="50px;" width="200px;"/>
+							<td>
+								<img  class="sim" src="${(_data.images)!''}" height="50px;" width="200px;"/>
 							</td>
 							<td >
 								${(_data.categoryName)!''}

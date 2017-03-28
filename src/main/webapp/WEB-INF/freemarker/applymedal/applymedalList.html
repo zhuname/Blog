@@ -69,19 +69,19 @@ $(document).on("click", ".vid", function() {
 	
 	
 	
-//点击播放视频
 $(document).on("click", ".sim", function() {
-    	var me=$(this).html();
+    	var me="<img alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	console.log(me);
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '120px',
+			  area: '1000px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me
-			 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
 	});
@@ -305,8 +305,8 @@ jQuery(document).ready(function(){
 							<td >
 								<#if (_data.type) == 1 >
 									<#list "${(_data.multiAddress)!''}"?split(";") as s>
-										<a class="sim" >
-										<img height="120px" width="120px" alt="" src="${s}" >
+										<a >
+										<img class="sim"  height="120px" width="120px" alt="" src="${s}" >
 										<a>
 									</#list>
 								</#if>

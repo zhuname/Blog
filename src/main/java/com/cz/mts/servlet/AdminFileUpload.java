@@ -153,7 +153,6 @@ public class AdminFileUpload extends HttpServlet {
 				f_dir.mkdirs();
 			}
 			
-			
 			File file = new File(dir+"/"+ filename);
 			if(!file.exists()){
 				file.createNewFile();
