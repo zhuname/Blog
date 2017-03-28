@@ -55,7 +55,21 @@ function deleteCategory(){
 		return;
 	}else{
 		var _url="${ctx}/system/category/delete?id="+id;
-		mydelete(_url,listurl);
+		var style="";    
+	    
+	    if(type=="t"){
+	    	 $("#type").val(1);
+	    }
+	    
+	     if(type==1){
+	    	 $("#type").val(2);
+	    	 style=1;
+	    }
+	     if(type==2){
+	    	 $("#type").val(3);
+	    	  style=2;
+	    }
+		mydelete(_url,listurl+style);
 	}
 }
 
@@ -88,17 +102,20 @@ function updateCategory(type){
 }
 
 function saveCategory(){
+	var style="";  
 	 if(type=="t"){
     	 $("#type").val(1);
     }
     
      if(type==1){
     	 $("#type").val(2);
+    	 style=1;
     }
      if(type==2){
     	 $("#type").val(3);
+    	 style=2;
     }
-	commonUpdateForm("updateForm",listurl);
+	commonUpdateForm("updateForm",listurl+style);
 }
 
 
@@ -285,7 +302,7 @@ function headOnc(){
 					   								 <input name="image" class="form-control" id="image" style="display:none"  type="text" />
 										</div>
 										
-										<div class="form-group">
+									<!-- 	<div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="isDel" >是否可用</label>
 												 <div class="col-sm-9">
 													<select id="isDel" name="isDel" class="col-10">
@@ -293,10 +310,10 @@ function headOnc(){
 													<option value="1">不可用</option>
 													</select>
 													
-													<input name="type"  id="type" value="" class="form-control"  type="text" style="display: none;"/>
+													
 												 </div> 
-										</div>
-																		
+										</div> -->
+											<input name="type"  id="type" value="" class="form-control"  type="text" style="display: none;"/>							
 									</div>
 
 								</form>

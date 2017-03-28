@@ -207,7 +207,17 @@ public class PosterPackage  extends BaseEntity {
 	
 	private Integer cityId;
 	
+	private List<UserMedal> userMedals;
 	
+	@Transient
+	public List<UserMedal> getUserMedals() {
+		return userMedals;
+	}
+
+	public void setUserMedals(List<UserMedal> userMedals) {
+		this.userMedals = userMedals;
+	}
+
 	@Transient
 	public Integer getCityId() {
 		return cityId;

@@ -178,54 +178,58 @@ public class AppUserController  extends BaseController {
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 AppUser appUser = appUserService.findAppUserById(id);
-			 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
-			 finder.setParam("itemId", id);
-			 Page page = new Page();
-			 Attention attention = new Attention();
-			 //获取别人关注我的列表
-			 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
-			 if(null != attentions && attentions.size() > 0){
-				 appUser.setFansNum(attentions.size());
-			 }else{
-				 appUser.setFansNum(0);
-			 }
-
-
-			 if(StringUtils.isNotBlank(itemId)){
-				 //获取我的关注列表
-				 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
-				 fder.setParam("userId", id);
-				 fder.setParam("itemId", Integer.parseInt(itemId));
-				 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
-				 if(null != myAttens && myAttens.size() > 0){
-					 for (Attention at : myAttens) {
-						at.setIsUpdate(0);
-						attentionService.update(at);
-					}
+			 if(null != appUser){
+				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
+				 finder.setParam("itemId", id);
+				 Page page = new Page();
+				 Attention attention = new Attention();
+				 //获取别人关注我的列表
+				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
+				 if(null != attentions && attentions.size() > 0){
+					 appUser.setFansNum(attentions.size());
+				 }else{
+					 appUser.setFansNum(0);
 				 }
-			 }
 
-			 UserMedal userMedal=new UserMedal();
-			 userMedal.setUserId(id);
 
-			 //获取我的勋章列表
-			 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-			 for (UserMedal userMedal2 : userMedals) {
-				 
-				 if(userMedal2.getMedalId()!=null){
-					 
-					 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
-					 if(medal!=null){
-						 userMedal2.setMedal(medal);
+				 if(StringUtils.isNotBlank(itemId)){
+					 //获取我的关注列表
+					 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
+					 fder.setParam("userId", id);
+					 fder.setParam("itemId", Integer.parseInt(itemId));
+					 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+					 if(null != myAttens && myAttens.size() > 0){
+						 for (Attention at : myAttens) {
+							at.setIsUpdate(0);
+							attentionService.update(at);
+						}
 					 }
 				 }
-			 }
-			 if(null != userMedals && userMedals.size() > 0){
-				 appUser.setUserMedals(userMedals);
-			 }
 
-			 returnObject.setData(appUser);
+				 UserMedal userMedal=new UserMedal();
+				 userMedal.setUserId(id);
 
+				 //获取我的勋章列表
+				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+				 for (UserMedal userMedal2 : userMedals) {
+					 
+					 if(userMedal2.getMedalId()!=null){
+						 
+						 Medal medal=medalService.findMedalById(userMedal2.getMedalId());
+						 if(medal!=null){
+							 userMedal2.setMedal(medal);
+						 }
+					 }
+				 }
+				 if(null != userMedals && userMedals.size() > 0){
+					 appUser.setUserMedals(userMedals);
+				 }
+				 returnObject.setData(appUser);
+			 }else{
+				 returnObject.setStatus(ReturnDatas.ERROR);
+				 returnObject.setMessage("该用户不存在");
+			 }
+			 
 		}else{
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
@@ -342,14 +346,6 @@ public class AppUserController  extends BaseController {
 						if(StringUtils.isNotBlank(aUser.getWxNum()) && !(aUser.getWxNum()).equals(appUser.getWxNum())){
 							returnObject.setStatus(ReturnDatas.ERROR);
 							returnObject.setMessage("该用户已经绑定微信");
-						}
-					}
-					
-					//判断该用户是否绑定微博
-					if(StringUtils.isNotBlank(appUser.getSinaNum())){
-						if(StringUtils.isNotBlank(aUser.getSinaNum()) && !(aUser.getSinaNum()).equals(appUser.getSinaNum())){
-							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage("该用户已经绑定微博");
 						}
 					}
 					
@@ -553,11 +549,18 @@ public class AppUserController  extends BaseController {
 		
 		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
 			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
+			appUser.setSign(null);
+			List<AppUser> datas=appUserService.queryForListByEntity(appUser, page) ;  //findListDataByFinder(null,page,AppUser.class,appUser);
 			if(datas!=null&&datas.size()>0){
-				returnObject.setData(datas.get(0));
+				AppUser user = datas.get(0) ;
+				if(user.getIsBlack() == 1){
+					returnObject.setStatus(ReturnDatas.WARNING);
+					returnObject.setMessage("黑名单成员！");
+				}else {
+					returnObject.setData(datas.get(0));
+				}
 			}else {
-				returnObject.setStatus(ReturnDatas.WARNING);
+				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("帐号密码错误");
 			}
 		}else {
@@ -700,9 +703,16 @@ public class AppUserController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
-			//查找该用户是否存在
-			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,appUser);
-			if(null == datas || 0 == datas.size()){
+			
+			AppUser user = new AppUser();
+			if(StringUtils.isNotBlank(appUser.getPhone())){
+				user.setPhone(appUser.getPhone());
+			}
+			List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+			if(null != datas && datas.size() > 0){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该手机号已被绑定");
+			}else{
 				//判断验证码
 				Sms sms=new Sms();
 				sms.setPhone(appUser.getPhone());
@@ -726,9 +736,6 @@ public class AppUserController  extends BaseController {
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("暂未收到验证码");
 				}
-			}else{
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该手机号已被绑定");
 			}
 			
 		}

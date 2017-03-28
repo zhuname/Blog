@@ -548,6 +548,9 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 
 		StringBuffer valueSql = new StringBuffer(" values(");
 
+		//在下面判断sql的参数是不是第一个
+		int sqlIndex=0;
+		
 		for (int i = 0; i < fdNames.size(); i++) {
 			String fdName = fdNames.get(i);// 字段名称
 
@@ -591,8 +594,9 @@ public abstract class BaseJdbcDaoImpl extends BaseLogger implements IBaseJdbcDao
 			paramMap.put(fdName, fdValue);
 			
 			
-			if(i==0){//第一个字段
+			if(sqlIndex==0){//第一个字段
 				sql.append(fdName);
+				sqlIndex=1;
 				valueSql.append(mapKey);
 			}else{//不是第一个字段
 				sql.append(",").append(fdName);

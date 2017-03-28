@@ -243,7 +243,7 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
-			 if(StringUtils.isNotBlank(appUserId)){
+			 if(null != posterPackage && StringUtils.isNotBlank(appUserId) && 3 == posterPackage.getStatus()){
 				 if(posterPackage.getLookNum()==null){
 					 posterPackage.setLookNum(1);
 				 }else{
@@ -273,6 +273,7 @@ public class PosterPackageController  extends BaseController {
 							}
 						}
 					}
+					 posterPackage.setUserMedals(userMedals);
 				 }
 			 }
 			 

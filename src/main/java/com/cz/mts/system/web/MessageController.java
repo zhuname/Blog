@@ -77,8 +77,10 @@ public class MessageController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
+		page.setOrder("createTime");
+		page.setSort("desc");
 		List<Message> datas=messageService.findListDataByFinder(null,page,Message.class,message);
-			returnObject.setQueryBean(message);
+		returnObject.setQueryBean(message);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;

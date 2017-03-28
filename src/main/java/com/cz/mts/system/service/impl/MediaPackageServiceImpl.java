@@ -152,6 +152,22 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}else{
 			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=2)");
 		}
+		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
+			finder1.append(" and INSTR(`title`,:title)>0 ");
+			finder1.setParam("title", mediaPackage.getTitle());
+		}
+		if(null != mediaPackage.getUserId()){
+			finder1.append(" and userId=:userId");
+			finder1.setParam("userId", mediaPackage.getUserId());
+		}
+		if(null != mediaPackage.getCategoryId()){
+			finder1.append(" and categoryId=:categoryId");
+			finder1.setParam("categoryId", mediaPackage.getCategoryId());
+		}
+		if(null != mediaPackage.getStatus()){
+			finder1.append(" and status=:status");
+			finder1.setParam("status", mediaPackage.getStatus());
+		}
 		List<MediaPackage> dataList = findListDataByFinder(finder1,page,MediaPackage.class,null);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
