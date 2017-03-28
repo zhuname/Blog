@@ -130,6 +130,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		
 		//获取红包
 		PosterPackage _package = findById(packageId, PosterPackage.class) ;
+		AppUser appUser = appUserService.findAppUserById(_package.getUserId());
 		if(_package != null && _package.getStatus() == 3){  //通过审核的红包才能抢
 			if(_package.getEncrypt() == 0){  //看是否是加密红包，如果不是
 				//看这个用户是否能在此小时内能抢
@@ -240,10 +241,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
-						AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 						if(null != appUser && 1 == appUser.getIsPush()){
 							//给发布人发推送
-							notificationService.notify(16, Integer.parseInt(packageId), pp.getUserId());
+							notificationService.notify(16, pp.getId(), pp.getUserId());
 						}
 					}
 					super.saveorupdate(pp) ;
@@ -295,7 +295,6 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
 			}
 			
-
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());

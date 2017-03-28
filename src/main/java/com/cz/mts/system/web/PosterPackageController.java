@@ -268,8 +268,8 @@ public class PosterPackageController  extends BaseController {
 					 for (UserMedal userMedal : userMedals) {
 						if(null != userMedal.getMedalId()){
 							Medal medal = medalService.findMedalById(userMedal.getMedalId());
-							if(null != medal && StringUtils.isNotBlank(medal.getName())){
-								userMedal.setMedalName(medal.getName());
+							if(null != medal){
+								userMedal.setMedal(medal);
 							}
 						}
 					}

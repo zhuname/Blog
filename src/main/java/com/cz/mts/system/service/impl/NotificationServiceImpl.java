@@ -139,7 +139,7 @@ public class NotificationServiceImpl implements NotificationService {
 			case 15:
 				JPushUtil.sendJPushNotification("您发布的海报红包已被人领取哦，请及时关注领取动态", type+"", id, userId, "");
 				try {
-					message=new Message(null, 15, userId, new Date(), extend[0], id, "您发布的海报红包已被人领取哦，请及时关注领取动态", 0, "红包领取", 2);
+					message=new Message(null, 15, userId, new Date(), "您发布的海报红包已被人领取哦，请及时关注领取动态", id, null, 0, "红包领取", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
