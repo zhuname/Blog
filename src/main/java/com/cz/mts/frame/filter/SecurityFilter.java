@@ -52,30 +52,30 @@ public class SecurityFilter implements Filter{
 		    		String[] sign = (String[])paramMap.get("sign") ;
 		    		//解密
 	        		String params=SecureRSA.decrypt(sign[0], privateKey, "UTF-8") ;   //物业公钥
-	        		JSONObject json = JSONObject.fromObject(params) ;
-	        		//验证时间戳，防止爬虫请求
-	        		if(!json.containsKey("T")){
-//	        			PrintWriter out=response.getWriter(); 
-	        			
-//	        			out.print(JsonUtils.writeValueAsString(new ReturnDatas(ReturnDatas.ERROR, "非法请求")));
-	        		}else {
-	        			Iterator<String> keys = json.keys() ;
-	        			String key  = "" ;
-	        			while(keys.hasNext()){
-	        				key = keys.next() ;
-	        				if(key.equals("T")){
-	        					Long T = json.getLong(key) ;
-	        					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
-	        					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
-//	        						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
-	        					}
-	        				}
-	        				paramMap.put(key, json.get(key).toString()) ; ;
-	        			}
-//	        			ac.setParameters(parameters);
-	        			HttpServletRequest req =  new ParameterRequestWrapper(httpRequest, paramMap) ;
-	        			chain.doFilter(req, response);
-	        		}
+//	        		JSONObject json = JSONObject.fromObject(params) ;
+//	        		//验证时间戳，防止爬虫请求
+//	        		if(!json.containsKey("T")){
+////	        			PrintWriter out=response.getWriter(); 
+//	        			
+////	        			out.print(JsonUtils.writeValueAsString(new ReturnDatas(ReturnDatas.ERROR, "非法请求")));
+//	        		}else {
+//	        			Iterator<String> keys = json.keys() ;
+//	        			String key  = "" ;
+//	        			while(keys.hasNext()){
+//	        				key = keys.next() ;
+//	        				if(key.equals("T")){
+//	        					Long T = json.getLong(key) ;
+//	        					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
+//	        					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
+////	        						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
+//	        					}
+//	        				}
+//	        				paramMap.put(key, json.get(key).toString()) ; ;
+//	        			}
+////	        			ac.setParameters(parameters);
+//	        			HttpServletRequest req =  new ParameterRequestWrapper(httpRequest, paramMap) ;
+//	        			chain.doFilter(req, response);
+//	        		}
 		    	} catch (Throwable e) {
 		    		// TODO Auto-generated catch block
 		    		e.printStackTrace();
