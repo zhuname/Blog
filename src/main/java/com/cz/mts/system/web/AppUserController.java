@@ -1097,5 +1097,97 @@ public class AppUserController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	/**
+	 * 后台修改信息
+	 * 
+	 * 
+	 */
+	@RequestMapping("/admin/update")
+	public @ResponseBody
+	ReturnDatas saveorupdate(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			Page page = newPage(request);
+			if(null == appUser.getId()){
+				//判断手机号是否注册
+				AppUser user = new AppUser();
+				if(StringUtils.isNotBlank(appUser.getPhone())){
+					user.setPhone(appUser.getPhone());
+				}
+				List<AppUser> datas = appUserService.findListDataByFinder(null,page,AppUser.class,user);
+				if(null != datas && datas.size() > 0){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("该用户已注册");
+				}else{
+				
+					//判断该密码在密码表中是否存在
+					Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+					finder.setParam("mdBeforePass", appUser.getPassword());
+					List<Map<String, Object>> list = passwordService.queryForList(finder);
+					if(list.isEmpty()){
+						//向password表中插入数据
+						Password password = new Password();
+						password.setMdBeforePass(appUser.getPassword());
+						password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						passwordService.save(password);
+					}
+					
+					appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					appUser.setCreateTime(new Date());
+					appUser.setIsBlack(0);
+					appUser.setCurrentLqNum(1);
+					appUser.setCurrentShareNum(1);
+					appUser.setLqNum(1);
+					appUser.setShareNum(1);
+					appUser.setIsUpdate(0);
+					appUser.setFrozeBanlance(0.0);
+					appUser.setLqNum(1);
+					appUser.setIsBlack(0);
+					appUser.setIsCloseFee(0);
+					appUser.setBalance(0.0);
+					appUser.setIsPush(1);
+					Object id = appUserService.saveorupdate(appUser);
+					
+					returnObject.setData(appUserService.findById(id, AppUser.class));
+				}
+			}else{
+				AppUser aUser = appUserService.findAppUserById(appUser.getId());
+				if(aUser != null){
+					if(StringUtils.isNotBlank(appUser.getPassword())){
+						//判断该密码在密码表中是否存在
+						Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+						finder.setParam("mdBeforePass", appUser.getPassword());
+						List<Map<String, Object>> list = passwordService.queryForList(finder);
+						if(list.isEmpty()){
+							//向password表中插入数据
+							Password password = new Password();
+							password.setMdBeforePass(appUser.getPassword());
+							password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+							passwordService.save(password);
+						}
+						appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					}
+					
+					appUserService.update(appUser,true);
+					returnObject.setData(appUserService.findById(appUser.getId(), AppUser.class));
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("该用户不存在");
+				}
+			}
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
+	
+	
 
 }
