@@ -55,9 +55,14 @@ function deleteLunboPic(){
 
 </form>
 		</div>
-		<div class="pull-right">
-		    	
-			    <@shiro.hasPermission name="/system/lunbopic/update" >
+	</div>
+</div>
+
+
+	<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			   <@shiro.hasPermission name="/system/lunbopic/update" >
 				  <a id="btn_reload" href="javascript:location.reload();"
 				class="btn  btn-sm  btn-primary " style="display: none;" >
 				跳转至新增 >>
@@ -67,13 +72,13 @@ function deleteLunboPic(){
 			    </@shiro.hasPermission>
 			    
 			    <@shiro.hasPermission name="/system/lunbopic/update/pre" >
-				  <button onclick="myhref('${ctx}/system/lunbopic/update/pre');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myhref('${ctx}/system/lunbopic/update/pre');" class="btn  btn-sm  btn-primary"   style="width: 100px">
                      	   添加
                     </button>
 
 			    </@shiro.hasPermission>
 			    
-			    <@shiro.hasPermission name="/lunbopic/delete" >
+			    <@shiro.hasPermission name="/lunbopic/delete"   style="width: 100px">
 				  <button onclick="deleteLunboPic();" class="btn btn-sm btn-danger">
                    	 删除
                     </button>
@@ -81,7 +86,7 @@ function deleteLunboPic(){
 			
 		</div>
 	</div>
-</div>
+	</div>
 
    <div class="row">
             <div class="col-xs-12">

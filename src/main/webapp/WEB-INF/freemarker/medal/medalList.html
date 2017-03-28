@@ -72,28 +72,40 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		<div class="pull-right">
+		
+		
+		
+		
+		
+		
+	</div>
+	
+</div>
+
+
+	<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
 			    <@shiro.hasPermission name="/medal/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/medal/list/export');" class="btn  btn-sm  btn-primary">
-                      
+				  <button onclick="myexport('searchForm','${ctx}/medal/list/export');" class="btn  btn-sm  btn-primary"  style="width: 100px">
                         导出
                     </button>
 		    	</@shiro.hasPermission>
 			    <@shiro.hasPermission name="/system/medal/update" >
-				  <button onclick="myhref('${ctx}/system/medal/update/pre');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myhref('${ctx}/system/medal/update/pre');" class="btn  btn-sm  btn-primary" style="width: 100px">
                         添加
                     </button>
 			    </@shiro.hasPermission>
 			    <@shiro.hasPermission name="/medal/delete" >
 			    |
-				  <button onclick="deleteMedal();" class="btn btn-sm btn-danger">
+				  <button onclick="deleteMedal();" class="btn btn-sm btn-danger"  style="width: 100px">
                         删除
                     </button>
 			    </@shiro.hasPermission>
 			
 		</div>
 	</div>
-</div>
+	</div>
 
    <div class="row">
             <div class="col-xs-12">

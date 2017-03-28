@@ -397,6 +397,43 @@ public class AppUserController  extends BaseController {
 	}
 	
 	/**
+	 * 拉黑操作
+	 */
+	@RequestMapping(value="/isblack")
+	public @ResponseBody ReturnDatas isblack(HttpServletRequest request) throws Exception {
+		// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+				AppUser appUser=appUserService.findAppUserById(id);
+				
+				if(appUser.getIsBlack()==0){
+					appUser.setIsBlack(1);
+				}else if(appUser.getIsBlack()==1){
+					appUser.setIsBlack(0);
+				}else {
+					appUser.setIsBlack(1);
+				}
+				
+				appUserService.update(appUser,true);
+				
+			} else {
+				return new ReturnDatas(ReturnDatas.WARNING,
+						MessageUtils.DELETE_WARNING);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+	}
+	
+	
+	
+	
+	
+	/**
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")

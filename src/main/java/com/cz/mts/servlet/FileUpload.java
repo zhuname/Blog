@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.cz.mts.frame.util.ReturnDatas;
 
@@ -144,13 +146,12 @@ public class FileUpload extends HttpServlet {
 			}
 			// 获得文件名
 			String filename = item.getName();
-			filename = filename.substring(filename.lastIndexOf("\\") + 1+RandomUtils.nextInt(99999));
+			filename = UUID.randomUUID().toString();
 			
 			File f_dir=new File(dir);
 			if(!f_dir.exists()){
 				f_dir.mkdirs();
 			}
-			
 			
 			File file = new File(dir+"/"+ filename);
 			if(!file.exists()){

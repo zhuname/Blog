@@ -43,28 +43,34 @@ function deleteCategory(){
 
 </form>
 		</div>
-		<div class="pull-right">
-			    <@shiro.hasPermission name="/category/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/category/list/export');" class="btn  btn-sm  btn-primary">
+	</div>
+</div>
+
+
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			   <@shiro.hasPermission name="/category/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/category/list/export');" class="btn  btn-sm  btn-primary" style="width: 100px">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
 			    <@shiro.hasPermission name="/category/update" >
-				  <button onclick="myhref('${ctx}/category/update/pre');" class="btn  btn-sm  btn-primary">
+				  <button onclick="myhref('${ctx}/category/update/pre');" class="btn  btn-sm  btn-primary" style="width: 100px">
                         添加
                     </button>
 			    </@shiro.hasPermission>
 			    <@shiro.hasPermission name="/category/delete" >
 			    |
-				  <button onclick="deleteCategory();" class="btn btn-sm btn-danger">
+				  <button onclick="deleteCategory();" class="btn btn-sm btn-danger" style="width: 100px">
                         删除
                     </button>
 			    </@shiro.hasPermission>
 			
 		</div>
 	</div>
-</div>
+	</div>
 
    <div class="row">
             <div class="col-xs-12">

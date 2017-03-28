@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -145,7 +146,7 @@ public class AdminFileUpload extends HttpServlet {
 			}
 			// 获得文件名
 			String filename = item.getName();
-			filename = filename.substring(filename.lastIndexOf("\\") + 1+RandomUtils.nextInt(99999));
+			filename = UUID.randomUUID().toString();
 			
 			File f_dir=new File(dir);
 			if(!f_dir.exists()){
