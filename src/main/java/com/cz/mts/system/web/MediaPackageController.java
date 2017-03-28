@@ -532,15 +532,23 @@ public class MediaPackageController  extends BaseController {
 						mp.setPayName("余额支付");
 					}
 				}
-				if(null == mp.getPayMoney()){
-					mp.setPayMoney(0.0);
+			}
+		}
+		
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		List<MediaPackage> mediaPackages = mediaPackageService.findListDataByFinder(finder,pageNew,MediaPackage.class,mediaPackage);
+		if(mediaPackages != null && mediaPackages.size() > 0){
+			for (MediaPackage mpp : mediaPackages) {
+				if(null == mpp.getPayMoney()){
+					mpp.setPayMoney(0.0);
 				}
-				sumPayMoney += mp.getPayMoney();
+				sumPayMoney += mpp.getPayMoney();
 				
-				if(null == mp.getBalance()){
-					mp.setBalance(0.0);
+				if(null == mpp.getBalance()){
+					mpp.setBalance(0.0);
 				}
-				sumBalance += mp.getBalance();
+				sumBalance += mpp.getBalance();
 			}
 		}
 		HashMap<String, Object> map=new HashMap<String,Object>();  

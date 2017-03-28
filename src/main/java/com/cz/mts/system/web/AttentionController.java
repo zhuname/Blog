@@ -114,7 +114,7 @@ public class AttentionController  extends BaseController {
 				for (Map<String, Object> map : list) {
 					//返回勋章列表
 					Finder finder2 = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId");
-					finder2.setParam("userId", attention.getUserId());
+					finder2.setParam("userId", Integer.parseInt(map.get("itemId").toString()));
 					List<UserMedal> userMedals = userMedalService.queryForList(finder2,UserMedal.class);
 					if(null != userMedals && userMedals.size() > 0){
 						for (UserMedal userMedal : userMedals) {

@@ -205,7 +205,7 @@ public class AppUserController  extends BaseController {
 					 if(null != myAttens && myAttens.size() > 0){
 						 for (Attention at : myAttens) {
 							at.setIsUpdate(0);
-							attentionService.update(at);
+							attentionService.update(at,true);
 						}
 					 }
 				 }
@@ -522,7 +522,7 @@ public class AppUserController  extends BaseController {
 					passwordService.save(password);
 				}
 				
-				appUserService.update(user);
+				appUserService.update(user,true);
 				
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
@@ -671,7 +671,7 @@ public class AppUserController  extends BaseController {
 				if(null != smss && smss.size() > 0 ){
 					//删除该条记录
 					smsService.deleteByEntity(smss.get(0));
-					appUserService.saveorupdate(appUser);
+					appUserService.update(appUser,true);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("该验证码不存在");
@@ -730,7 +730,7 @@ public class AppUserController  extends BaseController {
 					AppUser appUserNewPhone = appUserService.findAppUserById(appUser.getId());
 					if(null != appUserNewPhone){
 						appUserNewPhone.setPhone(appUser.getPhone());
-						appUserService.update(appUserNewPhone);
+						appUserService.update(appUserNewPhone,true);
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("该用户不存在");
@@ -787,7 +787,7 @@ public class AppUserController  extends BaseController {
 						//判断新密码和旧密码是否相等
 						if(!appRecord.getPassword().equals(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()))){
 							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getNewPwd()));
-							appUserService.update(appRecord);
+							appUserService.update(appRecord,true);
 						}else{
 							returnObject.setStatus(ReturnDatas.ERROR);
 							returnObject.setMessage("新旧密码不能相同");
@@ -867,7 +867,7 @@ public class AppUserController  extends BaseController {
 							
 							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						}
-						appUserService.update(appRecord);
+						appUserService.update(appRecord,true);
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("请再次获取验证码");

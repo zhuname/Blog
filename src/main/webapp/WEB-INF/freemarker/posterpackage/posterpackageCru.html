@@ -62,23 +62,23 @@ jQuery(document).ready(function(){
 	});
 	
 	
-	 
+	
 	var images = $("#image").val();
 	var arr = images.split(";");//
-	var arrImage=0;
+	var arrImg = 0;
 	if(arr.length>0){
-		if(arr.length==1){
-			arrImage = arr.length;
+		if(1 == arr.length){
+			arrImg = arr.length;
 		}
-		if(arr.length>1){
-			arrImage = arr.length-1;
+		if(arr.length > 1){
+			arrImg = arr.length -1;
 		}
 			//获得div
 	   var ul = document.getElementById("testdiv");
-		 for(var i=0;i<arrImage;i++){
+		 for(var i=0;i<arrImg;i++){
 		   　　 var li = document.createElement("li");
-		   　　  li.setAttribute("id","liImg");
-   		   　　 li.setAttribute("style","float:left;");
+		   　　 li.setAttribute("id","liImg"+i);
+		   　　  li.setAttribute("style","float:left;");
 		   　　 var img = document.createElement("img");
 		   　　 img.setAttribute("id", "newImg"+i);
 		   　　 img.setAttribute("width","100px");
@@ -87,8 +87,7 @@ jQuery(document).ready(function(){
 		　        li.appendChild(img);
 		　        ul.appendChild(li);
 		}
-	} 
-	
+	}
 	
 	
 	
@@ -133,15 +132,14 @@ jQuery(document).ready(function(){
               maximumFilesUpload: 10,//最大文件上传数  
               onComplete: function (msg) { 
             	  var arrs = new Array(msg);
-            	  for (var i = 0;i<arrs.length-1;i++)
+            	  for (var i = 0;i<arrs.length;i++)
             	  {
             		  res += arrs[i]+";";
             	  }
-                 $("#testdiv").append(msg + "<br/>");
+                  $("#testdiv").append(msg + "<br/>");
               },  
               onAllComplete: function () {  
                   myalert("全部上传完成");  
-                  console.log(res);
                   jQuery("#image").attr("value",res);
               },  
               isGetFileSize: true,//是否获取上传文件大小，设置此项为true时，将在onChosen回调中返回文件fileSize和获取大小时的错误提示文本errorText  
@@ -149,13 +147,13 @@ jQuery(document).ready(function(){
                   if (!errorText) {  
                       $("#file_size").text(file + "文件大小为：" + fileSize + "KB");  
                   } else {  
-                	  myalert(errorText);  
+                      alert(errorText);  
                       return false;  
                   }  
                   return true;//返回false将取消当前选择的文件  
               },  
               perviewElementId: "fileList", //设置预览图片的元素id  
-              perviewImgStyle: { width: '100px', height: '100px'}//设置预览图片的样式  
+              perviewImgStyle: { width: '100px', height: '100px', border: '1px solid #ebebeb' }//设置预览图片的样式  
           });  
 
           var upload = btn.data("uploadFileData");  
@@ -192,6 +190,7 @@ jQuery(document).ready(function(){
 		            </div>  
 		             <div id="testdiv"></div>  
 		            <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+					
 					
 				</div>
 			</div>
