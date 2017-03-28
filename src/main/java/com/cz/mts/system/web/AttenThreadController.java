@@ -24,13 +24,13 @@ public class AttenThreadController extends Thread{
 	public void run(){
 		try {
 			if(null != posterPackage && null != appUser && 1 == appUser.getIsPush()){
-				notificationService.notify(10,posterPackage.getId(),attention.getUserId(),appUser.getName(),posterPackage.getTitle(),posterPackage.getBalance()+"");
+				notificationService.notify(10,posterPackage.getUserId(),attention.getUserId(),appUser.getName(),posterPackage.getTitle(),posterPackage.getBalance()+"");
 			}
 			if(null != mediaPackage && null != appUser && 1 == appUser.getIsPush()){
-				notificationService.notify(10,mediaPackage.getId(),attention.getUserId(),appUser.getName(),mediaPackage.getTitle(),mediaPackage.getBalance()+"");
+				notificationService.notify(10,mediaPackage.getUserId(),attention.getUserId(),appUser.getName(),mediaPackage.getTitle(),mediaPackage.getBalance()+"");
 			}
 			if(null != card && null != appUser && 1 == appUser.getIsPush()){
-				notificationService.notify(11,card.getId(),attention.getUserId(),appUser.getName(),card.getTitle());
+				notificationService.notify(11,card.getUserId(),attention.getUserId(),appUser.getName(),card.getTitle());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

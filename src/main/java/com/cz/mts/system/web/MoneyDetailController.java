@@ -256,10 +256,17 @@ public class MoneyDetailController  extends BaseController {
 				
 			}
 			
-			//计算总计金额
-			sumMoney += moneyDetail2.getMoney();
-		}
 		
+		}
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(finder,pageNew,MoneyDetail.class,moneyDetail);
+		if(null != moneyDetails && moneyDetails.size() > 0){
+			for (MoneyDetail md : moneyDetails) {
+				//计算总计金额
+				sumMoney += md.getMoney();
+			}
+		}
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		returnObject.setMap(map);

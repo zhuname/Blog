@@ -141,6 +141,7 @@ public class CategoryController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		page.setPageSize(10000);
+		category.setIsDel(0);
 		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
 			returnObject.setQueryBean(category);
 		returnObject.setPage(page);

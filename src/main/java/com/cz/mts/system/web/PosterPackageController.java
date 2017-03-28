@@ -163,7 +163,7 @@ public class PosterPackageController  extends BaseController {
 				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=1)");
 				finder1.setParam("cityId", posterPackage.getCityId());
 			}else{
-				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=1)");
+				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
 			}
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
 		
@@ -685,19 +685,26 @@ public class PosterPackageController  extends BaseController {
 					}
 				}
 				
-				if(null == pc.getPayMoney()){
-					pc.setPayMoney(0.0);
-				}
-				sumPayMoney += pc.getPayMoney();
-				
-				if(null == pc.getBalance()){
-					pc.setBalance(0.0);
-				}
-				sumBalance += pc.getBalance();
-				
-				
 			}
 		}
+		
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		List<PosterPackage> posterPackages = posterPackageService.findListDataByFinder(finder,pageNew,PosterPackage.class,posterPackage);
+		if(posterPackages != null && posterPackages.size() > 0){
+			for (PosterPackage pps : posterPackages) {
+				if(null == pps.getPayMoney()){
+					pps.setPayMoney(0.0);
+				}
+				sumPayMoney += pps.getPayMoney();
+				
+				if(null == pps.getBalance()){
+					pps.setBalance(0.0);
+				}
+				sumBalance += pps.getBalance();
+			}
+		}
+		
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
