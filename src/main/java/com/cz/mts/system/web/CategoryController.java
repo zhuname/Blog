@@ -223,9 +223,14 @@ public class CategoryController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			category.setIsDel(0);
-			categoryService.save(category);
+			if(category.getId()==null){
+				category.setIsDel(0);
+				categoryService.save(category);
+			} else {
+				categoryService.update(category,true);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);
