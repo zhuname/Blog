@@ -118,7 +118,7 @@ public class LunboPicController  extends BaseController {
 		// ==执行分页查询
 		
 		if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
-			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name= :name ");
+			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name=:name ");
 			if(StringUtils.isBlank(lunboPic.getName())){
 				finder.setParam("name", "android启动广告图");
 			}else{
