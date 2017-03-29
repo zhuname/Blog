@@ -187,6 +187,18 @@ function lunboImages(){
 	
 	
 	
+	
+	function updateLunbo(position){
+		 var listUrl = "";
+	     if(position==4){
+	    	 listUrl = "${ctx}/system/lunbopic/list4";
+	    }else{
+	    	 listUrl = "${ctx}/system/lunbopic/list1";
+		}
+	    commonUpdateForm('validation-form',listUrl);
+	}
+	
+	
 </SCRIPT>
 
 
@@ -295,7 +307,10 @@ function lunboImages(){
 	       
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/lunbopic/list');">
+			<!-- <button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/lunbopic/list');" style="float: left;margin-left: 25.4%;">
+				保存
+			</button> -->
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="updateLunbo(${(returnDatas.data.position)!''})" style="float: left;margin-left: 25.4%;">
 				保存
 			</button>
 		</div>

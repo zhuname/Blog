@@ -865,9 +865,6 @@ public class AppUserController  extends BaseController {
 								passwordService.save(password);
 							}
 							
-							
-							
-							
 							appRecord.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 						}
 						appUserService.update(appRecord,true);
