@@ -259,6 +259,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				cardService.update(card, true);
 				
 				if(0 == card.getConvertNum()){
+					
+					card.setStatus(4);
+					cardService.update(card, true);
 					//查询用户信息
 					if(null != appUser && 1 == appUser.getIsPush()){
 						notificationService.notify(5, card.getId(), card.getUserId());

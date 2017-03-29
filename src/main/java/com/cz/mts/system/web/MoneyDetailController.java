@@ -138,15 +138,15 @@ public class MoneyDetailController  extends BaseController {
 		moneyDetail.setType(3);
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		List<MoneyDetail> moneyDetails = (List<MoneyDetail>) returnObject.getData();
-		if(null != moneyDetail.getStatus()){
-			Iterator<MoneyDetail> iter = moneyDetails.iterator() ;
-			while(iter.hasNext()){
-				MoneyDetail md = iter.next();
-				if(md.getStatus() != moneyDetail.getStatus()){
-					iter.remove();
-				}
-			}
-		}
+//		if(null != moneyDetail.getStatus()){
+//			Iterator<MoneyDetail> iter = moneyDetails.iterator() ;
+//			while(iter.hasNext()){
+//				MoneyDetail md = iter.next();
+//				if(md.getStatus() != moneyDetail.getStatus()){
+//					iter.remove();
+//				}
+//			}
+//		}
 		
 		
 		if(null != moneyDetails && moneyDetails.size() > 0){
@@ -163,6 +163,7 @@ public class MoneyDetailController  extends BaseController {
 				Finder finder = new Finder("SELECT * FROM t_user_card WHERE userId=:userId AND cardId=:cardId");
 				finder.setParam("userId", moneyDetail2.getUserId());
 				finder.setParam("cardId", moneyDetail2.getItemId());
+				
 				List<UserCard> userCards = userCardService.queryForList(finder,UserCard.class);
 				if(null != userCards && userCards.size() > 0){
 					for (UserCard userCard : userCards) {
@@ -221,6 +222,13 @@ public class MoneyDetailController  extends BaseController {
 			finder.append(" and createTime < :endTime ");
 			finder.setParam("endTime", moneyDetail.getEndTime());
 		}
+		
+		if(moneyDetail.getType()==3&&moneyDetail.getStatus()!=null){
+			finder.append(" and itemId in (select cardId from t_user_card where status=:status)");
+			finder.setParam("status", moneyDetail.getStatus());
+		}
+		
+		
 		
 		// ==执行分页查询
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);

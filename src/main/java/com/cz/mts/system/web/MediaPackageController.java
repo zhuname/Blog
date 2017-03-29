@@ -165,6 +165,16 @@ public class MediaPackageController  extends BaseController {
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
+			  
+			  if(null != mediaPackage){
+				 if(null == mediaPackage.getScanNum()){
+					 mediaPackage.setScanNum(0);
+				 }
+				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
+				 mediaPackageService.update(mediaPackage,true);
+			 }
+			  
+			  
 			  //查询发红包的用户
 			 if(mediaPackage != null && mediaPackage.getUserId() != null){
 				 AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
@@ -205,13 +215,6 @@ public class MediaPackageController  extends BaseController {
 					}else{
 						mediaPackage.setIsLook(0);
 					}
-			 }
-			 if(null != mediaPackage  && 3 == mediaPackage.getStatus()){
-				 if(null == mediaPackage.getScanNum()){
-					 mediaPackage.setScanNum(0);
-				 }
-				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
-				 mediaPackageService.update(mediaPackage,true);
 			 }
 			 
 			 //返回分类名称

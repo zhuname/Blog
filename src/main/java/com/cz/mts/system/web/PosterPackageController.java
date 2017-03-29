@@ -243,15 +243,13 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
-			 if(null != posterPackage &&  3 == posterPackage.getStatus()){
+			 if(null != posterPackage){
 				 if(posterPackage.getLookNum()==null){
-					 posterPackage.setLookNum(1);
-				 }else{
-					 posterPackage.setLookNum(posterPackage.getLookNum()+1);
+					 posterPackage.setLookNum(0);
 				 }
+				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
 			 }
-			 
-			 posterPackageService.update(posterPackage);
+			 posterPackageService.update(posterPackage,true);
 			 
 			 //查询发红包的用户
 			 if(posterPackage!=null&&posterPackage.getUserId()!=null){
