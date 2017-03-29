@@ -307,7 +307,7 @@ public class PosterPackage  extends BaseEntity {
 		this.isAtt = isAtt;
 	}
 
-	@Transient
+	 @WhereSQL(sql="lookNum=:PosterPackage_lookNum")
 	public Integer getLookNum() {
 		return lookNum;
 	}
