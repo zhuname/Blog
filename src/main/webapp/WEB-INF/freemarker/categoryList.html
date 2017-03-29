@@ -52,8 +52,11 @@ function showdata(result) {
 	var type = types[types.length-1];
 
 var listurl="${ctx}/system/category/list";
+
+
 function deleteCategory(){
 	var id=jQuery("#id").val();
+	console.log(id);
 	if(!id||id==""){
 		myalert("请选择你要删除的记录");
 		return;
@@ -73,7 +76,7 @@ function deleteCategory(){
 	    	 $("#type").val(3);
 	    	  style=2;
 	    }
-		mydelete(_url,listurl+style);
+		mydelete(_url,listurl+style,null,"确认删除吗？");
 	}
 }
 
@@ -143,6 +146,7 @@ function headOnc(){
             	jQuery("#imageI").attr('src',data);
             	jQuery("#imageI").attr('value',data);
             	jQuery("#image").attr('value',data);
+            	jQuery("#image").val(data);
             },
             error : function(data, status, e) {
            		console.log(data);

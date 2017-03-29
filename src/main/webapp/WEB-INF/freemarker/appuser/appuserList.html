@@ -43,22 +43,26 @@ function showdata(result) {
 }	
 	
 
-//点击播放视频
+
+
+//点击看大图
 $(document).on("click", ".sim", function() {
-	var me=$(this).html();
+	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+	console.log(me);
 		//iframe层-多媒体
     	layer.open({
 		  type: 1,
 		  title: false,
 		  closeBtn: 0,
-		  area: '200px',
+		  area: '1000px',
 		  skin: 'layui-layer-nobg', //没有背景色
 		  shadeClose: true,
 		  content:me
-		 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+		 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 		});
     	layer.msg('点击任意处关闭');
 });
+
 
 
 var medalMultiSelectTree;
@@ -400,8 +404,8 @@ jQuery(document).ready(function(){
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td class="sim">
-								<img src="${(_data.header)!''}" height="100px;" width="100px;"/>
+							<td>
+								<img  class="sim" src="${(_data.header)!''}" height="100px;" width="100px;"/>
 							</td>
 							<td >
 								${(_data.cityName)!''}

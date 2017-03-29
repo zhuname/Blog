@@ -47,9 +47,11 @@ $(document).on("click", ".vid", function() {
     		myalert("暂无可播放的视频");
     	}
 	});
+	
+	
+	//点击看大图
 	$(document).on("click", ".sim", function() {
-    	var me="<img alt=\"\" src=\""+$(this).attr("src")+"\">";
-    	console.log(me);
+    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,

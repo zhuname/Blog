@@ -254,7 +254,6 @@ public class CategoryController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
-	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除

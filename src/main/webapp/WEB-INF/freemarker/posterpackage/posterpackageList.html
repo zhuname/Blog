@@ -16,9 +16,9 @@ $('.date-picker').datepicker({
 	$(this).prev().focus();
 });
 
-//点击播放视频
+//点击看大图
 	$(document).on("click", ".sim", function() {
-    	var me="<img alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     	console.log(me);
     		//iframe层-多媒体
         	layer.open({
