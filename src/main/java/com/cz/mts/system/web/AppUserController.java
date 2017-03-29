@@ -608,16 +608,19 @@ public class AppUserController  extends BaseController {
 				//没有找到的话就是新增接口
 				returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 				try {
-					
 					appUser.setCreateTime(new Date());
+					appUser.setIsBlack(0);
 					appUser.setCurrentLqNum(1);
 					appUser.setCurrentShareNum(1);
+					appUser.setLqNum(1);
 					appUser.setShareNum(1);
 					appUser.setIsUpdate(0);
 					appUser.setFrozeBanlance(0.0);
 					appUser.setLqNum(1);
 					appUser.setIsBlack(0);
 					appUser.setIsCloseFee(0);
+					appUser.setBalance(0.0);
+					appUser.setIsPush(1);
 					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));

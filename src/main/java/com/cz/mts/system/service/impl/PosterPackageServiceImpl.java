@@ -172,7 +172,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			
 			if(list != null && list.size() !=0){
 				AppUser _user = findById(userId, AppUser.class) ;
-				if(null != _user && 1 == _user.getIsPush()){
+				if(null != _user &&  _user.getIsPush() != null && 1 == _user.getIsPush()){
 					//给发布人发推送
 					notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
 				}
