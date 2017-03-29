@@ -143,6 +143,7 @@ public class AdminFileUpload extends HttpServlet {
 			if (item.isFormField()) {// 普通字段
 				continue;
 			}
+			
 			// 获得文件名
 			String filename = item.getName();
 			String prefix=filename.substring(filename.lastIndexOf(".")+1);

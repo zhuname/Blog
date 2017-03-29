@@ -146,6 +146,7 @@ function headOnc(){
             	jQuery("#imageI").attr('src',data);
             	jQuery("#imageI").attr('value',data);
             	jQuery("#image").attr('value',data);
+            	jQuery("#image").val(data);
             },
             error : function(data, status, e) {
            		console.log(data);
@@ -292,7 +293,6 @@ function headOnc(){
 										<input type="hidden" id="id" name="id" value=""/>	
 									
 									<div class="col-sm-6">
-								
 										
 										<div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="name" >分类名称</label>
@@ -302,8 +302,8 @@ function headOnc(){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="image" >分类图片</label>&nbsp;&nbsp;
-					  								<img  name="imageI" onclick="headOnc();" style="width:100px;height: 100px;" id="imageI" src="">
+											<label class="col-sm-3 control-label no-padding-right" for="image" >分类图片</label>
+					  								<img  name="imageI" onclick="headOnc();" style="width:100px;height: 100px;margin-left: 12px;" id="imageI" src="">
 					   								<input type="file" id="filed" name="filed" style="display:none">
 					   								<input name="image" class="form-control" id="image" style="display:none"  type="text" />
 										</div>
