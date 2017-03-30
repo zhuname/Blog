@@ -540,7 +540,7 @@ public class MoneyDetailController  extends BaseController {
 	
 	
 	/**
-	 * 获取关注人列表
+	 * 获取领卡人列表
 	 * json数据,为APP提供数据
 	 * 
 	 * @param request
@@ -557,7 +557,7 @@ public class MoneyDetailController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		if(moneyDetail.getItemId()!=null){
-			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0 GROUP BY au.id  order by mon.id");
+			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0  order by mon.id");
 			finder.setParam("itemId", moneyDetail.getItemId());
 			
 			

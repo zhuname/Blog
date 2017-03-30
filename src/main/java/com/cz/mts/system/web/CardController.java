@@ -510,6 +510,7 @@ public class CardController  extends BaseController {
 			
 			if(card.getNum().intValue()<=0){
 				card.setStatus(4);
+				notificationService.notify(6, card.getId(), card.getUserId());
 			}
 			
 			cardService.update(card, true);
