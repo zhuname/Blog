@@ -163,7 +163,7 @@ public class MediaPackageController  extends BaseController {
 		  String appUserId = request.getParameter("appUserId");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
+			 id= java.lang.Integer.valueOf(strId);
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
 			  
 			  if(null != mediaPackage){
