@@ -202,6 +202,18 @@ public class AppUser  extends BaseEntity {
 	
 	private java.lang.Integer isPush;
 	
+	private Integer cardStatus;
+	
+	
+	@Transient
+	public Integer getCardStatus() {
+		return cardStatus;
+	}
+
+	public void setCardStatus(Integer cardStatus) {
+		this.cardStatus = cardStatus;
+	}
+
 	@WhereSQL(sql="isPush=:AppUser_isPush")
 	public java.lang.Integer getIsPush() {
 		return isPush;
