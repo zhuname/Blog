@@ -195,33 +195,6 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumMoney" >红包金额</label>
-				<div class="col-xs-12 col-sm-3">
-					<div class="clearfix">
-						<input name="sumMoney" class="col-xs-12 col-sm-6" id="sumMoney" value="${(returnDatas.data.sumMoney)!''}"  type="text" />
-					</div><div class="help-block" for="sumMoney"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lqNum" >领取次数</label>
-				<div class="col-xs-12 col-sm-3">
-					<div class="clearfix">
-						<input name="lqNum" class="col-xs-12 col-sm-6" id="lqNum" value="${(returnDatas.data.lqNum)!''}"  type="text" />
-					</div><div class="help-block" for="lqNum"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group" id="topPriceDiv">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topPrice" >最高金额</label>
-				<div class="col-xs-12 col-sm-3">
-					<div class="clearfix">
-						<input name="topPrice" class="col-xs-12 col-sm-6" id="topPrice" value="${(returnDatas.data.topPrice)!''}"  type="text" />
-					</div><div class="help-block" for="topPrice"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
 					<!--日期型-->
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
@@ -234,33 +207,6 @@ jQuery(document).ready(function(){
 							</span>
 					   </div>
 					</div><div class="help-block" for="expTime"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="balance" >剩余金额</label>
-				<div class="col-xs-12 col-sm-3">
-					<div class="clearfix">
-						<input name="balance" class="col-xs-12 col-sm-6" id="balance" value="${(returnDatas.data.balance)!''}"  type="text" />
-					</div><div class="help-block" for="balance"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="num" >剩余待抢次数</label>
-				<div class="col-xs-12 col-sm-3">
-					<div class="clearfix">
-						<input name="num" class="col-xs-12 col-sm-6" id="num" value="${(returnDatas.data.num)!''}"  type="text" />
-					</div><div class="help-block" for="num"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="code" >订单编号</label>
-				<div class="col-xs-12 col-sm-9">
-					<div class="clearfix">
-						<input name="code" class="col-xs-12 col-sm-6" id="code" value="${(returnDatas.data.code)!''}"  type="text" />
-					</div><div class="help-block" for="code"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -286,11 +232,8 @@ jQuery(document).ready(function(){
   							<img  name="mediaImageI" style="height: 200px;width: 200px;"  onclick="headOnc();" id="mediaImageI" value="${(returnDatas.data.mediaImage)!''}" src="${(returnDatas.data.mediaImage)!''}">
    							<input type="file" id="filed" name="filed" style="display:none">
    							<input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}" style="display:none"  type="text" />
+   							<span style="color: red;">*请上传200*100的图片</span>
 
-					<!-- <div class="clearfix">
-						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />
-					</div><div class="help-block" for="header"></div> -->
-					
 				</div>
 			</div>
 	        <div class="space-2"></div>
