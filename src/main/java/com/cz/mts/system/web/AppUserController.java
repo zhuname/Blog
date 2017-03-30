@@ -912,16 +912,16 @@ public class AppUserController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.SUCCESS);
 			}else if (result==2) {
 				returnObject.setMessage("参数缺失");
-				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setStatus(ReturnDatas.SUCCESS);
 			}else if (result==3) {
 				returnObject.setMessage("用户不存在");
-				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setStatus(ReturnDatas.SUCCESS);
 			}else if (result==4) {
 				returnObject.setMessage("目标信息不正确");
-				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setStatus(ReturnDatas.SUCCESS);
 			}else if (result==5) {
 				returnObject.setMessage("用户余额不足");
-				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setStatus(ReturnDatas.SUCCESS);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
