@@ -505,6 +505,11 @@ public class CardController  extends BaseController {
 			userCardService.save(userCards);
 			
 			card.setNum(card.getNum()-num);
+			
+			if(card.getNum()<=0){
+				card.setStatus(4);
+			}
+			
 			cardService.update(card, true);
 			
 			card.setUserCards(userCards);
@@ -608,8 +613,6 @@ public class CardController  extends BaseController {
 					
 				}
 			}
-			
-			
 			
 			//手续费比例
 			BigDecimal cardCharge=new BigDecimal(0.0);

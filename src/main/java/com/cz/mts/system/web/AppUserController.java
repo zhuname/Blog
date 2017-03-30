@@ -924,7 +924,6 @@ public class AppUserController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.ERROR);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		
