@@ -21,8 +21,6 @@ jQuery(document).ready(function(){
 		});
 	
 	
-	
-	
 	});
 	
 	
@@ -283,10 +281,10 @@ jQuery(document).ready(function(){
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaImage" >视频图片</label>
 				<div class="col-xs-12 col-sm-9">
-  							<img  name="mediaImageI" style="height: 200px;width: 200px;"  onclick="headOnc();" id="mediaImageI" value="${(returnDatas.data.mediaImage)!''}" src="${(returnDatas.data.mediaImage)!''}">
+  							<img  name="mediaImageI" style="height: 300px;width: 150px;"  onclick="headOnc();" id="mediaImageI" value="${(returnDatas.data.mediaImage)!''}" src="${(returnDatas.data.mediaImage)!''}">
    							<input type="file" id="filed" name="filed" style="display:none">
    							<input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}" style="display:none"  type="text" />
-
+							<span style="color: red;">*修改图片尺寸比例2:1</span>
 					<!-- <div class="clearfix">
 						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />
 					</div><div class="help-block" for="header"></div> -->

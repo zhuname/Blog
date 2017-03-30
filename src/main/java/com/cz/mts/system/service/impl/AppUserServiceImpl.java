@@ -128,7 +128,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			//查询出来海报红包的数据
 			PosterPackage posterPackage=super.findById(itemId, PosterPackage.class);
-			if(posterPackage==null||posterPackage.getSumMoney()==null||userId!=posterPackage.getUserId()){
+			if(posterPackage==null||posterPackage.getSumMoney()==null||userId.intValue()!=posterPackage.getUserId().intValue()){
 				return 4;
 			}
 			
@@ -166,7 +166,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			//查询视频红包的信息
 			MediaPackage mediaPackage=super.findById(itemId, MediaPackage.class);
-			if(mediaPackage==null||mediaPackage.getSumMoney()==null||userId!=mediaPackage.getUserId()){
+			if(mediaPackage==null||mediaPackage.getSumMoney()==null||userId.intValue()!=mediaPackage.getUserId().intValue()){
 				return 4;
 			}
 			

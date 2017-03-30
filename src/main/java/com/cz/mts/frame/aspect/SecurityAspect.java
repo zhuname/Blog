@@ -144,8 +144,8 @@ public class SecurityAspect {
 //        				paramMap.put(key, new String[]{json.get(key).toString()}) ; ;
 //        			}
 //        			ac.setParameters(parameters);
-//        			paramMap.put("sign", new String[]{"1"}) ;
-//        			HttpServletRequest req =  new ParameterRequestWrapper(request, paramMap) ;
+//        			paramMap.put("sign",new String[]{"1"}) ;
+//        			HttpServletRequest req = new ParameterRequestWrapper(request, paramMap) ;
 //        			args[0] = req ;
         			object = proceedingJoinPoint.proceed() ;
         		}
