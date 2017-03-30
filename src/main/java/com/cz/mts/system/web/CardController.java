@@ -508,7 +508,7 @@ public class CardController  extends BaseController {
 			
 			card.setNum(card.getNum()-num);
 			
-			if(card.getNum()<=0){
+			if(card.getNum().intValue()<=0){
 				card.setStatus(4);
 			}
 			
