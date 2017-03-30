@@ -32,13 +32,43 @@ public class CardSchema extends BaseLogger{
 	private IAppUserService appUserService;
 	
 	/**
-	 * 卡券到期
+	 * 卡券到期前三天发推送
 	 * @throws Exception
 	 */
 	@Scheduled(cron="0 0 12 * * ?")
-	public void cardEnd() throws Exception{
-		logger.info("*****************判断卡券到期******************");
+	public void cardEnding() throws Exception{
+		logger.info("*****************判断卡券即将到期******************");
 		Finder finder = new Finder("SELECT * FROM t_card WHERE DATE_SUB(endTime,INTERVAL 3 DAY) = DATE(NOW()) AND isDel=0 AND `status`!=4");
+		List<Card> cards = cardService.queryForList(finder,Card.class);
+		if(null != cards && cards.size() > 0){
+			for (Card card : cards) {
+				//查询userCard表中是否存在该卡券的记录
+				Finder finder2 = new Finder("SELECT * FROM t_user_card WHERE `status`!=0 and `status` != 3 AND cardId=:cardId");
+				finder2.setParam("cardId", card.getId());
+				List<UserCard> userCards = userCardService.queryForList(finder2,UserCard.class);
+				if(null != userCards && userCards.size() > 0){
+					for (UserCard userCard : userCards) {
+						//查询用户信息
+						AppUser appUser2 = appUserService.findAppUserById(userCard.getUserId());
+						if(null != appUser2 && 1 == appUser2.getIsPush()){
+							//对该用户发推送
+							notificationService.notify(13, userCard.getCardId(), userCard.getUserId());
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 卡券到期
+	 * @throws Exception
+	 */
+	@Scheduled(cron="0 */5 0 * * ?")
+	public void cardEnded() throws Exception{
+		logger.info("*****************判断卡券到期******************");
+		Finder finder = new Finder("SELECT * FROM t_card WHERE DATE(endTime) = DATE(NOW()) AND isDel=0 AND `status`!=4");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
 			for (Card card : cards) {
@@ -57,19 +87,15 @@ public class CardSchema extends BaseLogger{
 				List<UserCard> userCards = userCardService.queryForList(finder2,UserCard.class);
 				if(null != userCards && userCards.size() > 0){
 					for (UserCard userCard : userCards) {
-						//查询用户信息
-						AppUser appUser2 = appUserService.findAppUserById(userCard.getUserId());
-						if(null != appUser2 && 1 == appUser2.getIsPush()){
-							//对该用户发推送
-							notificationService.notify(13, userCard.getCardId(), userCard.getUserId());
-							userCard.setStatus(3);
-							userCardService.update(userCard,true);
-						}
+						userCard.setStatus(3);
+						userCardService.update(userCard,true);
 					}
 				}
 			}
 		}
 	}
+	
+	
 	
 	@Scheduled(cron="0 0 */1 * * ?")
 	public void updateLqNum() throws Exception{

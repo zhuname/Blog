@@ -87,8 +87,8 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			case 6:
-				JPushUtil.sendJPushNotification("您发布的卡券即将过期，您可操作再次发放或查看卡券领取状况", type+"", id, userId, "");
-				message=new Message(null, 6, userId, new Date(), "您发布的卡券即将过期，您可操作再次发放或查看卡券领取状况", id, null, 0, "卡券到期", 2);
+				JPushUtil.sendJPushNotification("您发布的卡券已过期，您可操作再次发放或查看卡券领取状况", type+"", id, userId, "");
+				message=new Message(null, 6, userId, new Date(), "您发布的卡券已过期，您可操作再次发放或查看卡券领取状况", id, null, 0, "卡券到期", 2);
 				messageService.save(message);
 			break;
 			case 7:
