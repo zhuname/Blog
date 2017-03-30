@@ -172,6 +172,8 @@ public class CardController  extends BaseController {
 				 
 				 //查询勋章列表
 				 Page page = new Page();
+				 page.setOrder("createTime");
+				 page.setSort("desc");
 				 UserMedal userMedal = new UserMedal();
 				 userMedal.setUserId(card.getUserId());
 				List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);

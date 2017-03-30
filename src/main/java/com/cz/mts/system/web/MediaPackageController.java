@@ -161,9 +161,9 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
 		  String appUserId = request.getParameter("appUserId");
-		  java.lang.Integer id=null;
+		  Integer id= 0;
 		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId);
+			 id= Integer.parseInt(strId);
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
 			  
 			  if(null != mediaPackage){
