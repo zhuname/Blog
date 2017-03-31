@@ -229,7 +229,6 @@ public class MoneyDetailController  extends BaseController {
 		}
 		
 		
-		
 		// ==执行分页查询
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		
@@ -245,7 +244,6 @@ public class MoneyDetailController  extends BaseController {
 					moneyDetail2.setItemName(posterPackage.getTitle());
 					
 				}
-				
 				
 			}else if (moneyDetail2.getType()==2) {
 				

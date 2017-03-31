@@ -612,7 +612,6 @@ public class CardController  extends BaseController {
 				if(null != user && 1 == user.getIsPush()){
 					//给自己发推送
 					notificationService.notify(14, uc.getCardId(), uc.getUserId());
-					
 				}
 			}
 			
@@ -643,7 +642,6 @@ public class CardController  extends BaseController {
 				
 				appUserService.update(appUser,true);
 				
-				
 				//先保存收益记录
 				MoneyDetail moneyDetail=new MoneyDetail();
 				moneyDetail.setUserId(userId);
@@ -657,13 +655,13 @@ public class CardController  extends BaseController {
 				
 			}
 			
-			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
+		
 		return returnObject;
 	
 	}
