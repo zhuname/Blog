@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -123,6 +125,18 @@ public class WithdrawController  extends BaseController {
 				}
 			}
 		}
+		Double sumMoney = 0.0;
+		Page newPage = new Page();
+		newPage.setPageSize(10000);
+		List<Withdraw> withdraws = withdrawService.findListDataByFinder(finder,page,Withdraw.class,withdraw);
+		if(null != withdraw && withdraws.size() > 0){
+			for (Withdraw wd : withdraws) {
+				sumMoney += wd.getMoney();
+			}
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+		returnObject.setMap(map);
 		returnObject.setQueryBean(withdraw);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

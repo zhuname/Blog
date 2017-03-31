@@ -114,6 +114,7 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
+		<span style="float: right;">提现总金额：${returnDatas.map.sumMoney}</span> 
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/system/withdraw/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/withdraw/list/export');" class="btn  btn-sm  btn-primary">

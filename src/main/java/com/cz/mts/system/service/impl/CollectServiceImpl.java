@@ -172,7 +172,9 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							}
 							//获取勋章列表
 							UserMedal userMedal = new UserMedal();
-							userMedal.setUserId(mediaPackage.getUserId());
+							if(null != mediaPackage.getUserId()){
+								userMedal.setUserId(mediaPackage.getUserId());
+							}
 							//查询勋章列表
 							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
 							if(null != userMedals && userMedals.size() > 0){

@@ -562,10 +562,10 @@ public class MediaPackageController  extends BaseController {
 		List<MediaPackage> mediaPackages = mediaPackageService.findListDataByFinder(finder,pageNew,MediaPackage.class,mediaPackage);
 		if(mediaPackages != null && mediaPackages.size() > 0){
 			for (MediaPackage mpp : mediaPackages) {
-				if(null == mpp.getPayMoney()){
-					mpp.setPayMoney(0.0);
+				if(null == mpp.getSumMoney()){
+					mpp.setSumMoney(0.0);
 				}
-				sumPayMoney += mpp.getPayMoney();
+				sumPayMoney += mpp.getSumMoney();
 				
 				if(null == mpp.getBalance()){
 					mpp.setBalance(0.0);
@@ -573,9 +573,13 @@ public class MediaPackageController  extends BaseController {
 				sumBalance += mpp.getBalance();
 			}
 		}
+		
+		Double sumOverMoney = new BigDecimal(sumPayMoney).subtract(new BigDecimal(sumBalance)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("sumOverMoney", sumOverMoney);
 		
 		returnObject.setMap(map);
 		returnObject.setQueryBean(mediaPackage);

@@ -209,6 +209,18 @@ public class PosterPackage  extends BaseEntity {
 	
 	private List<UserMedal> userMedals;
 	
+	private Double sumOverMoney;
+	
+	
+	@Transient
+	public Double getSumOverMoney() {
+		return sumOverMoney;
+	}
+
+	public void setSumOverMoney(Double sumOverMoney) {
+		this.sumOverMoney = sumOverMoney;
+	}
+
 	@Transient
 	public List<UserMedal> getUserMedals() {
 		return userMedals;

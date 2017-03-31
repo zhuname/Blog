@@ -249,7 +249,7 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		<span style="float: right;">总用户量：${returnDatas.map.sumPerson}</span>
+		
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/appuser/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/appuser/list/export');" class="btn  btn-sm  btn-primary">
@@ -269,6 +269,14 @@ jQuery(document).ready(function(){
                     </button>
 			    </@shiro.hasPermission>
 			
+		</div>
+	</div>
+</div>
+
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			  <span style="float: right;">总用户量：${returnDatas.map.sumPerson}</span>
 		</div>
 	</div>
 </div>

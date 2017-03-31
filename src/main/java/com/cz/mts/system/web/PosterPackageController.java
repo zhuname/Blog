@@ -692,10 +692,10 @@ public class PosterPackageController  extends BaseController {
 		List<PosterPackage> posterPackages = posterPackageService.findListDataByFinder(finder,pageNew,PosterPackage.class,posterPackage);
 		if(posterPackages != null && posterPackages.size() > 0){
 			for (PosterPackage pps : posterPackages) {
-				if(null == pps.getPayMoney()){
-					pps.setPayMoney(0.0);
+				if(null == pps.getSumMoney()){
+					pps.setSumMoney(0.0);
 				}
-				sumPayMoney += pps.getPayMoney();
+				sumPayMoney += pps.getSumMoney();
 				
 				if(null == pps.getBalance()){
 					pps.setBalance(0.0);
@@ -704,10 +704,11 @@ public class PosterPackageController  extends BaseController {
 			}
 		}
 		
+		Double sumOverMoney = new BigDecimal(sumPayMoney).subtract(new BigDecimal(sumBalance)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-		
+		map.put("sumOverMoney", sumOverMoney);
 		returnObject.setMap(map);
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);

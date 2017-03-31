@@ -223,7 +223,18 @@ public class MediaPackage  extends BaseEntity {
 	
 	private Integer cityId;
 	
+	private Double sumOverMoney;
 	
+	
+	@Transient
+	public Double getSumOverMoney() {
+		return sumOverMoney;
+	}
+
+	public void setSumOverMoney(Double sumOverMoney) {
+		this.sumOverMoney = sumOverMoney;
+	}
+
 	@Transient
 	public Integer getCityId() {
 		return cityId;

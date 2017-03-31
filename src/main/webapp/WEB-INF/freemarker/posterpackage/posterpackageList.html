@@ -146,8 +146,7 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		<span style="float: right;" id="pay">支付金额：${returnDatas.map.sumPayMoney}</span>
-		<span style="padding-right: 3px;" id="bal">剩余金额：${returnDatas.map.sumBalance}</span>   
+		  
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/posterpackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/posterpackage/list/export');" class="btn  btn-sm  btn-primary">
@@ -170,6 +169,17 @@ jQuery(document).ready(function(){
 		</div>
 	</div>
 </div>
+
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			 <span style="float: right;" id="pay">总金额：${returnDatas.map.sumPayMoney}</span>
+			<span style="padding-right: 10px;">未抢金额：${returnDatas.map.sumBalance}</span> 
+			<span style="padding-right: 10px;">已抢金额：${returnDatas.map.sumOverMoney}</span> 
+		</div>
+	</div>
+</div>
+
 
   <div class="row" style="overflow-x:scroll;">
             <div class="col-xs-12">
