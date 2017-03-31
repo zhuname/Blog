@@ -258,6 +258,11 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				card.setConvertNum(card.getConvertNum()-cards.size());
 				cardService.update(card, true);
 				
+				if(card.getNum().intValue()<=0){
+					card.setStatus(4);
+					notificationService.notify(6, card.getId(), card.getUserId());
+				}
+				
 				if(0 == card.getConvertNum()){
 					
 					card.setStatus(4);

@@ -25,6 +25,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -52,6 +53,9 @@ public class ApplyMedalController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IMedalService medalService;
+	@Resource
+	private NotificationService notificationService;
+	
 	
 	private String listurl="/applymedal/applymedalList";
 	
@@ -310,9 +314,16 @@ public class ApplyMedalController  extends BaseController {
 					userMedal.setMedalId(applyMedal2.getMedalId());
 					userMedal.setUserId(applyMedal2.getUserId());
 					userMedal.setCreateTime(new Date());
+					Medal medal = medalService.findMedalById(userMedal.getMedalId());
+					if(null != medal && StringUtils.isNotBlank(medal.getName())){
+						notificationService.notify(7, userMedal.getMedalId(), userMedal.getUserId(), medal.getName());
+					}
+					
 				}
 				
 				userMedalService.save(userMedal);
+				
+				
 				
 			}
 		} catch (Exception e) {

@@ -508,10 +508,6 @@ public class CardController  extends BaseController {
 			
 			card.setNum(card.getNum()-num);
 			
-			if(card.getNum().intValue()<=0){
-				card.setStatus(4);
-			}
-			
 			cardService.update(card, true);
 			
 			card.setUserCards(userCards);
@@ -609,9 +605,10 @@ public class CardController  extends BaseController {
 			UserCard uc = userCardService.findUserCardById(id);
 			if(null != uc && null != uc.getUserId()){
 				AppUser user = appUserService.findAppUserById(uc.getUserId());
-				if(null != user && 1 == user.getIsPush()){
+				if(null != user && 1 == user.getIsPush() && null != uc.getCardId()){
 					//给自己发推送
-					notificationService.notify(14, uc.getCardId(), uc.getUserId());
+					notificationService.notify(14, uc.getCardId(), user.getId());
+					
 				}
 			}
 			
