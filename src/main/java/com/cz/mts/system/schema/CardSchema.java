@@ -1,16 +1,13 @@
 package com.cz.mts.system.schema;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.cz.mts.frame.common.BaseLogger;
-import com.cz.mts.frame.util.DateUtils;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
@@ -126,7 +123,7 @@ public class CardSchema extends BaseLogger{
 			for (Card card : cards) {
 
 				Finder finderUser=Finder.getSelectFinder(UserCard.class).append(" where status=0 and cardId="+card.getId());
-				List<UserCard> userCards=userCardService.queryForList(finder,UserCard.class);
+				List<UserCard> userCards=userCardService.queryForList(finderUser,UserCard.class);
 				
 				int num=0;
 				

@@ -156,8 +156,7 @@ public class JPushUtil {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("id", "47");
 		map.put("url", "www.baidu.com");
-	//	sendAllPushNotification("测试一下", "14", map, null);
-		sendJPushNotification("你你你你你你您", "14", 83,128, "");
+		sendAllPushNotification("测试一下", "14", map, null);
 	}
 	 
 }

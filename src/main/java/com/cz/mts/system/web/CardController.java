@@ -624,11 +624,12 @@ public class CardController  extends BaseController {
 			if(appUser!=null){
 				
 				BigDecimal sumMoney=new BigDecimal(0.0);
+				BigDecimal cardChargeMoney = new BigDecimal(0.0);
 				
 				//算出这次总共是多少钱的收益
 				if(usercard.getSumMoney()!=null){
-					sumMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
-					sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(sumMoney);
+					cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
+					sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
 				}
 				
 				if(appUser.getBalance()==null){
@@ -647,7 +648,7 @@ public class CardController  extends BaseController {
 				moneyDetail.setMoney(sumMoney.doubleValue());
 				moneyDetail.setItemId(usercard.getId());
 				moneyDetail.setBalance(appUser.getBalance());
-				
+				moneyDetail.setPlateMoney(cardChargeMoney.doubleValue());
 				moneyDetailService.save(moneyDetail);
 				
 			}

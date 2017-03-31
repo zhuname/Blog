@@ -28,6 +28,7 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LmediaPackage;
@@ -216,6 +217,24 @@ public class MediaPackageController  extends BaseController {
 						mediaPackage.setIsLook(0);
 					}
 			 }
+			 
+			 
+			 //是否关注
+			 if(mediaPackage!=null&&StringUtils.isNotBlank(appUserId)){
+				 Attention attention=new Attention();
+				 attention.setUserId(Integer.parseInt(appUserId));
+				 attention.setItemId(mediaPackage.getUserId());
+				// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+					if(datas!=null&&datas.size()>0){
+						mediaPackage.setIsAttention(1);
+					}else{
+						mediaPackage.setIsAttention(0);
+					}
+			 }
+			 
 			 
 			 //返回分类名称
 			 if(mediaPackage != null && mediaPackage.getCategoryId() != null){

@@ -138,17 +138,6 @@ public class MoneyDetailController  extends BaseController {
 		moneyDetail.setType(3);
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		List<MoneyDetail> moneyDetails = (List<MoneyDetail>) returnObject.getData();
-//		if(null != moneyDetail.getStatus()){
-//			Iterator<MoneyDetail> iter = moneyDetails.iterator() ;
-//			while(iter.hasNext()){
-//				MoneyDetail md = iter.next();
-//				if(md.getStatus() != moneyDetail.getStatus()){
-//					iter.remove();
-//				}
-//			}
-//		}
-		
-		
 		if(null != moneyDetails && moneyDetails.size() > 0){
 			
 			for (MoneyDetail moneyDetail2 : moneyDetails) {
@@ -233,6 +222,7 @@ public class MoneyDetailController  extends BaseController {
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		
 		Double sumMoney = 0.0;
+		Double palteMoney = 0.0;
 		for (MoneyDetail moneyDetail2 : datas) {
 			
 			if(moneyDetail2.getType()==1){
@@ -285,7 +275,14 @@ public class MoneyDetailController  extends BaseController {
 			for (MoneyDetail md : moneyDetails) {
 				//计算总计金额
 				sumMoney += md.getMoney();
+				
+				//当type=8时，计算平台总收益
+//				if(8 == md.getType()){
+//					
+//				}
+				
 			}
+			
 		}
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());

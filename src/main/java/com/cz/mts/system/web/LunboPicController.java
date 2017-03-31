@@ -355,7 +355,7 @@ public class LunboPicController  extends BaseController {
 			//1.海报    2.视频   3.卡券
 			if("1".equals(position)){
 				//查询海报
-				Finder finder = new Finder("SELECT * FROM t_poster_package WHERE isDel=0");
+				Finder finder = new Finder("SELECT * FROM t_poster_package WHERE isDel=0 AND encrypt=0");
 				List<PosterPackage> posterPackages = posterPackageService.queryForList(finder,PosterPackage.class);
 				if(null != posterPackages && posterPackages.size() > 0){
 					for (PosterPackage posterPackage : posterPackages) {
@@ -373,7 +373,7 @@ public class LunboPicController  extends BaseController {
 			}
 			if("2".equals(position)){
 				//查询视频
-				Finder finder = new Finder("SELECT * FROM t_media_package WHERE isDel=0");
+				Finder finder = new Finder("SELECT * FROM t_media_package WHERE isDel=0 AND encrypt=0");
 				List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder,MediaPackage.class);
 				if(mediaPackages != null && mediaPackages.size() > 0){
 					for (MediaPackage mediaPackage : mediaPackages) {

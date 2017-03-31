@@ -118,9 +118,18 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String statusName;
 	
+	private Double plateMoney;
 	
 	
-	
+	@WhereSQL(sql="plateMoney=:MoneyDetail_plateMoney")
+	public Double getPlateMoney() {
+		return plateMoney;
+	}
+
+	public void setPlateMoney(Double plateMoney) {
+		this.plateMoney = plateMoney;
+	}
+
 	@WhereSQL(sql="aliTrade=:MoneyDetail_aliTrade")
 	public java.lang.String getAliTrade() {
 		return aliTrade;
