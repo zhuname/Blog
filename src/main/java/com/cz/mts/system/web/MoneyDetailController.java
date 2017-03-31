@@ -222,7 +222,7 @@ public class MoneyDetailController  extends BaseController {
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		
 		Double sumMoney = 0.0;
-		Double palteMoney = 0.0;
+		Double plateMoney = 0.0;
 		for (MoneyDetail moneyDetail2 : datas) {
 			
 			if(moneyDetail2.getType()==1){
@@ -276,16 +276,31 @@ public class MoneyDetailController  extends BaseController {
 				//计算总计金额
 				sumMoney += md.getMoney();
 				
-				//当type=8时，计算平台总收益
-//				if(8 == md.getType()){
-//					
-//				}
+				
 				
 			}
 			
 		}
+		
+		pageNew.setPageSize(10000);
+		finder.append(" and type=8 ");
+		List<MoneyDetail> moneyDetails1 = moneyDetailService.findListDataByFinder(finder,pageNew,MoneyDetail.class,moneyDetail);
+		if(null != moneyDetails1 && moneyDetails1.size() > 0){
+			for (MoneyDetail md : moneyDetails) {
+				//计算总计金额
+				if(md.getPlateMoney()!=null){
+					plateMoney += md.getPlateMoney();
+				}
+				
+			}
+			
+		}
+		
+		
+		
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("plateMoney", new BigDecimal(plateMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		returnObject.setMap(map);
 		returnObject.setQueryBean(moneyDetail);
 		returnObject.setPage(page);

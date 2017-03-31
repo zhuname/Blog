@@ -79,7 +79,10 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		<span style="float: right;" id="sumMoney">购买总金额：${returnDatas.map.sumMoney}</span>
+		<div style="float: right;" >
+		<span  style="margin-right:10px;"  id="sumMoney">购买总金额：${returnDatas.map.sumMoney}</span>
+		<span id="plateMoney">平台收益：${returnDatas.map.plateMoney}</span>
+		</div>
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/moneydetail/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/moneydetail/list/export');" class="btn  btn-sm  btn-primary">
