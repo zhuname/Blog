@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
@@ -117,12 +118,24 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 				finder.setParam("userId", card.getUserId());
 			}
 			if(null != card.getStatus()){
-				finder.append(" and status=:status");
-				finder.setParam("status", card.getStatus());
+				if(2 == card.getStatus()){
+					finder.append(" and status=2 and num !=0");
+				}
+				if(4 == card.getStatus()){
+					finder.append(" and (`status`=2 and num=0) OR `status`=4  ");
+				}else{
+					finder.append(" and status=:status");
+					finder.setParam("status", card.getStatus());
+				}
+			}
+			if(StringUtils.isNotBlank(card.getTitle())){
+				finder.append(" and INSTR(`title`,:title)>0 ");
+				finder.setParam("title", card.getTitle());
 			}
 			page.setOrder("createTime");
 			page.setSort("desc");
-			
+			page.setOrder("endTime");
+			page.setSort("asc");
 			List<Card> datas = findListDataByFinder(finder,page,Card.class,null);
 			if(null != datas && datas.size() > 0){
 				for (Card cd : datas) {

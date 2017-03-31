@@ -259,19 +259,21 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				cardService.update(card, true);
 				
 				if(card.getNum().intValue()<=0){
-					card.setStatus(4);
-					notificationService.notify(6, card.getId(), card.getUserId());
-				}
-				
-				if(0 == card.getConvertNum()){
-					
-					card.setStatus(4);
-					cardService.update(card, true);
 					//查询用户信息
 					if(null != appUser && 1 == appUser.getIsPush()){
 						notificationService.notify(5, card.getId(), card.getUserId());
 					}
 				}
+				
+//				if(0 == card.getConvertNum()){
+//					
+//					card.setStatus(4);
+//					cardService.update(card, true);
+//					//查询用户信息
+//					if(null != appUser && 1 == appUser.getIsPush()){
+//						notificationService.notify(5, card.getId(), card.getUserId());
+//					}
+//				}
 			}
 			
 			break;
@@ -467,7 +469,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						card.setConvertNum(card.getConvertNum()-cards.size());
 						cardService.update(card, true);
 						
-						if(0 == card.getConvertNum()){
+						if(0 == card.getNum()){
 							//用户信息
 							if(null != appUserC && 1 == appUserC.getIsPush()){
 								notificationService.notify(5, card.getId(), card.getUserId());

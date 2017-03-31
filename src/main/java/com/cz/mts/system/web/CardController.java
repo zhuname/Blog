@@ -626,12 +626,14 @@ public class CardController  extends BaseController {
 				BigDecimal sumMoney=new BigDecimal(0.0);
 				BigDecimal cardChargeMoney = new BigDecimal(0.0);
 				
-				//算出这次总共是多少钱的收益
-				if(usercard.getSumMoney()!=null){
-					cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
-					sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
+				//判断是否关闭卡券手续费
+				if(null != appUser.getIsCloseFee() && 0 == appUser.getIsCloseFee()){
+					//算出这次总共是多少钱的收益
+					if(usercard.getSumMoney()!=null){
+						cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
+						sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
+					}
 				}
-				
 				if(appUser.getBalance()==null){
 					appUser.setBalance(sumMoney.doubleValue());
 				}else{

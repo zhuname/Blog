@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -130,10 +131,23 @@ public class AppUserController  extends BaseController {
 			finder.append(" and phone like '%"+appUser.getPhone()+"%'");
 			appUser.setPhone(null);
 		}
+		if(StringUtils.isNotBlank(appUser.getCityName())){
+			finder.append(" and cityName like '%"+appUser.getCityName()+"%'");
+		}
 		
+		Map<String, Object> hashMap = new HashMap<String, Object>();
 		// ==执行分页查询
 		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
-			returnObject.setQueryBean(appUser);
+		Page newPage = new Page();
+		newPage.setPageSize(100000);
+		List<AppUser> appUsers = appUserService.findListDataByFinder(finder,newPage,AppUser.class,appUser);
+		if(null != appUsers && appUsers.size() > 0){
+			hashMap.put("sumPerson", appUsers.size());
+		}else{
+			hashMap.put("sumPerson", 0);
+		}
+		returnObject.setMap(hashMap);
+		returnObject.setQueryBean(appUser);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -420,16 +434,13 @@ public class AppUserController  extends BaseController {
 				appUserService.update(appUser,true);
 				
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
 	}
-	
-	
 	
 	
 	
@@ -450,13 +461,12 @@ public class AppUserController  extends BaseController {
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
 	}
 	
 	/**
@@ -1184,6 +1194,42 @@ public class AppUserController  extends BaseController {
 		}
 		return returnObject;
 	
+	}
+	
+	
+	
+	/**
+	 * 关闭卡券手续费操作
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/isCloseFee")
+	public @ResponseBody ReturnDatas isCloseFee(HttpServletRequest request) throws Exception {
+		// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+				AppUser appUser=appUserService.findAppUserById(id);
+				
+				if(appUser.getIsCloseFee()==0){
+					appUser.setIsCloseFee(1);
+				}else if(appUser.getIsCloseFee()==1){
+					appUser.setIsCloseFee(0);
+				}else {
+					appUser.setIsCloseFee(1);
+				}
+				appUserService.update(appUser,true);
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
 	}
 	
 	

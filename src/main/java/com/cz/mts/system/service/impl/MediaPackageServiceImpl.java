@@ -168,6 +168,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.append(" and status=:status");
 			finder1.setParam("status", mediaPackage.getStatus());
 		}
+		finder1.append(" order by balance desc");
 		List<MediaPackage> dataList = findListDataByFinder(finder1,page,MediaPackage.class,null);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {

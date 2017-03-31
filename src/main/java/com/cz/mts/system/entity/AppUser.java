@@ -204,6 +204,18 @@ public class AppUser  extends BaseEntity {
 	
 	private Integer cardStatus;
 	
+	private Integer sumPerson;
+	
+	
+	
+	@Transient
+	public Integer getSumPerson() {
+		return sumPerson;
+	}
+
+	public void setSumPerson(Integer sumPerson) {
+		this.sumPerson = sumPerson;
+	}
 
 	@WhereSQL(sql="isPush=:AppUser_isPush")
 	public java.lang.Integer getIsPush() {
