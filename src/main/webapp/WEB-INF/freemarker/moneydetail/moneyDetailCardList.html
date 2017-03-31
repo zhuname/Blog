@@ -132,23 +132,23 @@ jQuery(document).ready(function(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-							<td >
+							<td>
 								${(_data.userName)!''}
 							</td>
-							<td >
+							<td>
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td >
+							<td>
 								${(_data.statusName)!''}
 							</td>
-							<td >
+							<td>
 								${(_data.money)!0}
 							</td>
-							<td >
+							<td>
 								${((_data.experTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td >
+							<td>
 								${((_data.changeTime)?string('yyyy-MM-dd'))!''}
 							</td>
 						</tr>
@@ -160,7 +160,7 @@ jQuery(document).ready(function(){
             </div>
             <!-- /.span -->
         </div>
-        <#if returnDatas.page??>	
+         <#if returnDatas.page??>	
             <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
          </#if>
     </div>
