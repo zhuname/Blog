@@ -196,7 +196,6 @@ jQuery(document).ready(function(){
 						<th id="th_image" >海报图片</th>
 						<th id="th_categoryId" >分类名称</th>
 						<th id="th_title" >主题</th>
-						<th id="th_descr" >简介</th>
 						<th id="th_encrypt" >是否加密</th>
 						<th id="th_command" >加密口令</th>
 						<th id="th_sumMoney" >红包金额</th>
@@ -208,7 +207,6 @@ jQuery(document).ready(function(){
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_num" >剩余待抢次数</th>
-						<th id="th_code" >订单编号</th>
 						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
                     </tr>
                     </thead>
@@ -297,9 +295,6 @@ jQuery(document).ready(function(){
 								${(_data.title)!''}
 							</td>
 							<td >
-								${(_data.descr)!''}
-							</td>
-							<td >
 								<#if (_data.encrypt) == 0 >
 									不加密
 								</#if>
@@ -354,9 +349,6 @@ jQuery(document).ready(function(){
 							</td>
 							<td >
 								${(_data.num)!0}
-							</td>
-							<td >
-								${(_data.code)!''}
 							</td>
 							<td >
 								${(_data.shareNum)!''}
