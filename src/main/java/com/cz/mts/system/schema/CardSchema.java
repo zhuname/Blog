@@ -132,7 +132,7 @@ public class CardSchema extends BaseLogger{
 						num += 1;
 					}
 
-					card.setNum(num);
+					card.setNum(card.getNum() + num);
 				}
 
 				
