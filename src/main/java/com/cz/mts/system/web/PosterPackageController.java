@@ -129,12 +129,14 @@ public class PosterPackageController  extends BaseController {
 		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
-		if(StringUtils.isNotBlank(posterPackage.getTitle())){
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 and p.isDel = 0 order by p.balance desc");
-			finder1.setParam("title", posterPackage.getTitle());
-			returnObject.setData(posterPackageService.queryForList(finder1,page));
-		} else {
 			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			
+			if(StringUtils.isNotBlank(posterPackage.getTitle())){
+				finder1.append(" p.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 "); 
+				finder1.setParam("title", posterPackage.getTitle());
+			}
+			
+			
 			if(posterPackage.getUserId()!=null){
 				
 				finder1.append(" and p.userId = :userId");
@@ -199,7 +201,6 @@ public class PosterPackageController  extends BaseController {
 				}
 			}
 			returnObject.setData(list);
-		}
 		
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);
