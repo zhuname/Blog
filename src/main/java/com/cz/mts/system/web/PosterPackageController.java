@@ -529,6 +529,8 @@ public class PosterPackageController  extends BaseController {
 				
 				posterPackage.setCreateTime(new Date());
 				
+				posterPackage.setShareNum(0);
+				
 				posterPackage.setBalance(posterPackage.getSumMoney());
 				
 				//生成验证码

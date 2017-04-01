@@ -171,6 +171,7 @@ $(document).on("click", ".sim", function() {
 						<th id="th_succTime" >通过时间</th>
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_num" >剩余兑换次数</th>
+						<th id="th_num" >分享次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -300,6 +301,9 @@ $(document).on("click", ".sim", function() {
 							</td>
 							<td >
 								${(_data.num)!0}
+							</td>
+							<td >
+								${(_data.shareNum)!0}
 							</td>
 						</tr>
 					</#list>

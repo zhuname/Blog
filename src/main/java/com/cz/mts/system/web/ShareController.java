@@ -18,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Share;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IShareService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -43,6 +49,12 @@ public class ShareController  extends BaseController {
 	private IShareService shareService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ICardService cardService;
 	
 	private String listurl="/share/shareList";
 	
@@ -143,7 +155,7 @@ public class ShareController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			if(null == share.getUserId() || null == share.getShareType()){
+			if(null == share.getUserId() || null == share.getShareType() || null == share.getId() || null == share.getType()){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
 			}else{
@@ -166,6 +178,52 @@ public class ShareController  extends BaseController {
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("该用户不存在");
 				}
+				
+				//海报红包
+				if(1 == share.getType()){
+					PosterPackage posterPackage = posterPackageService.findPosterPackageById(share.getId());
+					if(null != posterPackage){
+						if(null == posterPackage.getShareNum()){
+							posterPackage.setShareNum(0);
+						}
+						posterPackage.setShareNum(posterPackage.getShareNum() + 1);
+						posterPackageService.update(posterPackage,true);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该红包不存在");
+					}
+				}
+				
+				//视频红包
+				if(1 == share.getType()){
+					MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(share.getId());
+					if(null != mediaPackage){
+						if(null == mediaPackage.getShareNum()){
+							mediaPackage.setShareNum(0);
+						}
+						mediaPackage.setShareNum(mediaPackage.getShareNum() + 1);
+						mediaPackageService.update(mediaPackage,true);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该红包不存在");
+					}
+				}
+				
+				//卡券红包
+				if(1 == share.getType()){
+					Card card = cardService.findCardById(share.getId());
+					if(null != card){
+						if(null == card.getShareNum()){
+							card.setShareNum(0);
+						}
+						card.setShareNum(card.getShareNum() + 1);
+						cardService.update(card,true);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该卡券不存在");
+					}
+				}
+				
 			}
 			
 		} catch (Exception e) {

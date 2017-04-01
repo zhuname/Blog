@@ -361,6 +361,7 @@ public class CardController  extends BaseController {
 				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
 				card.setStatus(1);
+				card.setShareNum(0);
 				Object id=cardService.saveorupdate(card);
 				if(cityIds!=null){
 					

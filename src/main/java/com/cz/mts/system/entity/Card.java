@@ -150,8 +150,29 @@ public class Card  extends BaseEntity {
 	private String enddTime;
 	private String startTime;
 	
+	private Integer type;
+	
+	private Integer shareNum;
 	
 	
+	 @WhereSQL(sql="shareNum=:card_shareNum")
+	public Integer getShareNum() {
+		return shareNum;
+	}
+
+	public void setShareNum(Integer shareNum) {
+		this.shareNum = shareNum;
+	}
+
+	@Transient
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 	//columns END 数据库字段结束
 	@Transient
 	public String getEnddTime() {

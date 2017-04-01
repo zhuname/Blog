@@ -225,6 +225,18 @@ public class MediaPackage  extends BaseEntity {
 	
 	private Double sumOverMoney;
 	
+	private Integer shareNum;
+	
+	 @WhereSQL(sql="shareNum=:card_shareNum")
+	public Integer getShareNum() {
+		return shareNum;
+	}
+
+	public void setShareNum(Integer shareNum) {
+		this.shareNum = shareNum;
+	}
+	
+	
 	
 	@Transient
 	public Double getSumOverMoney() {

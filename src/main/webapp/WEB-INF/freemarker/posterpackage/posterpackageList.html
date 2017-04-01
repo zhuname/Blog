@@ -209,6 +209,7 @@ jQuery(document).ready(function(){
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_num" >剩余待抢次数</th>
 						<th id="th_code" >订单编号</th>
+						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -356,6 +357,9 @@ jQuery(document).ready(function(){
 							</td>
 							<td >
 								${(_data.code)!''}
+							</td>
+							<td >
+								${(_data.shareNum)!''}
 							</td>
 						</tr>
 					</#list>

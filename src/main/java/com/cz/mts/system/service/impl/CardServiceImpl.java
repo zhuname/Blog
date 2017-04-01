@@ -118,15 +118,20 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 				finder.setParam("userId", card.getUserId());
 			}
 			if(null != card.getStatus()){
-				if(2 == card.getStatus()){
-					finder.append(" and status=2 and num !=0");
-				}
-				if(4 == card.getStatus()){
-					finder.append(" and (`status`=2 and num=0) OR `status`=4  ");
+				if(null != card.getType()){
+					if(2 == card.getStatus()){
+						finder.append(" and `status`=2 and num !=0");
+					}else if(4 == card.getStatus()){
+						finder.append(" and (`status`=2 and num=0) OR `status`=4  ");
+					}else{
+						finder.append(" and status=:status");
+						finder.setParam("status", card.getStatus());
+					}
 				}else{
 					finder.append(" and status=:status");
 					finder.setParam("status", card.getStatus());
 				}
+				
 			}
 			if(StringUtils.isNotBlank(card.getTitle())){
 				finder.append(" and INSTR(`title`,:title)>0 ");

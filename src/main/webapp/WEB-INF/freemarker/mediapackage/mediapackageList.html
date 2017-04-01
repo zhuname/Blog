@@ -222,6 +222,7 @@ $(document).on("click", ".vid", function() {
 						<th  style="width: 3%"  id="th_code" >订单编号</th>
 						<th  style="width: 3%"  id="th_mediaUrl" >视频url</th>
 						<th  style="width: 3%"  id="th_mediaImage" >视频图片</th>
+						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -375,6 +376,9 @@ $(document).on("click", ".vid", function() {
 							</td>
 							<td >
 								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage"/>
+							</td>
+							<td >
+								${(_data.shareNum)!''}
 							</td>
 						</tr>
 					</#list>

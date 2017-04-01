@@ -212,6 +212,19 @@ public class PosterPackage  extends BaseEntity {
 	private Double sumOverMoney;
 	
 	
+	private Integer shareNum;
+	
+	
+	 @WhereSQL(sql="shareNum=:card_shareNum")
+	public Integer getShareNum() {
+		return shareNum;
+	}
+
+	public void setShareNum(Integer shareNum) {
+		this.shareNum = shareNum;
+	}
+	
+	
 	@Transient
 	public Double getSumOverMoney() {
 		return sumOverMoney;
