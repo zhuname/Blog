@@ -113,7 +113,7 @@ public class CardSchema extends BaseLogger{
 		
 	}
 	
-	@Scheduled(cron="0 */10 * * * ?")
+	@Scheduled(cron="0 */1 * * * ?")
 	public void updateSyNum() throws Exception{
 		logger.info("*****************剩余数量更新提醒******************");
 		
@@ -124,15 +124,17 @@ public class CardSchema extends BaseLogger{
 
 				Finder finderUser=Finder.getSelectFinder(UserCard.class).append(" where status=0 and cardId="+card.getId());
 				List<UserCard> userCards=userCardService.queryForList(finderUser,UserCard.class);
-				
-				int num=0;
-				
-				for (UserCard userCard : userCards) {
-					userCardService.deleteById(userCard.getId(), UserCard.class);
-					num += 1;
+				if(null != userCards && userCards.size() > 0){
+					int num=0;
+
+					for (UserCard userCard : userCards) {
+						userCardService.deleteById(userCard.getId(), UserCard.class);
+						num += 1;
+					}
+
+					card.setNum(num);
 				}
-				
-				card.setNum(num);
+
 				
 				cardService.update(card,true);
 				
