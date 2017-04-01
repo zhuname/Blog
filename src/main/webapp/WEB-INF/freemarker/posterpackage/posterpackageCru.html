@@ -140,7 +140,8 @@ jQuery(document).ready(function(){
               },  
               onAllComplete: function () {  
                   myalert("全部上传完成");  
-                  jQuery("#image").attr("value",res);
+                  var oldImages = $("#image").val() ;
+                  jQuery("#image").attr("value",oldImages + res);
               },  
               isGetFileSize: true,//是否获取上传文件大小，设置此项为true时，将在onChosen回调中返回文件fileSize和获取大小时的错误提示文本errorText  
               onChosen: function (file, obj, fileSize, errorText) {  
@@ -166,7 +167,7 @@ jQuery(document).ready(function(){
       
       
       function clickButton(){
-  		$("#testdiv").hide();
+  		//$("#testdiv").hide();
   	}
 	
 //-->
