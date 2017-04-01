@@ -62,7 +62,7 @@ public class CardSchema extends BaseLogger{
 	 * 卡券到期
 	 * @throws Exception
 	 */
-	@Scheduled(cron="0 */5 0 * * ?")
+	@Scheduled(cron="0 */5 * * * ?")
 	public void cardEnded() throws Exception{
 		logger.info("*****************判断卡券到期******************");
 		Finder finder = new Finder("SELECT * FROM t_card WHERE DATE(endTime) = DATE(NOW()) AND isDel=0 AND `status`!=4");
@@ -113,7 +113,7 @@ public class CardSchema extends BaseLogger{
 		
 	}
 	
-	@Scheduled(cron="0 */10 0 * * ?")
+	@Scheduled(cron="0 */10 * * * ?")
 	public void updateSyNum() throws Exception{
 		logger.info("*****************剩余数量更新提醒******************");
 		
