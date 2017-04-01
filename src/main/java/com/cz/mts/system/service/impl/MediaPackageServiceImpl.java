@@ -220,10 +220,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 							mp.setPhone(appUser.getPhone());
 						}
 					}
+					
+					Page newPage = new Page();
 					UserMedal userMedal = new UserMedal();
 					userMedal.setUserId(mp.getUserId());
 					//查询勋章列表
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
 					if(null != userMedals && userMedals.size() > 0){
 						for (UserMedal um : userMedals) {
 							if(null != um.getMedalId()){
