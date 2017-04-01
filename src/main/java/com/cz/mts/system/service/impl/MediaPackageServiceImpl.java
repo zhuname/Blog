@@ -153,7 +153,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
 		}
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
-			finder1.append(" and INSTR(`title`,:title)>0 ");
+			finder1.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE `name`= :title )) ");
 			finder1.setParam("title", mediaPackage.getTitle());
 		}
 		if(null != mediaPackage.getUserId()){
