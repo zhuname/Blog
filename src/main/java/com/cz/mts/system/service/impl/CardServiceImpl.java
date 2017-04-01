@@ -134,7 +134,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 				
 			}
 			if(StringUtils.isNotBlank(card.getTitle())){
-				finder.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE `name`= :title ))");
+				finder.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ))");
 				finder.setParam("title", card.getTitle());
 			}
 			
