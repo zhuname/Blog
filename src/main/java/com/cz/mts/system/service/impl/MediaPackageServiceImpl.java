@@ -143,7 +143,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 	@Override
-	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId) throws Exception{
+	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Finder finder1 = Finder.getSelectFinder(MediaPackage.class).append(" where isDel=0");
 		if(null != mediaPackage.getCityId()){
@@ -152,6 +152,14 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}else{
 			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
 		}
+		
+		if(personType!=null&&mediaPackage.getStatus()==3){
+			finder1.append(" and (p.status = 3 or p.status = 4 )");
+		}else if(null != mediaPackage.getStatus()){
+			finder1.append(" and status=:status");
+			finder1.setParam("status", mediaPackage.getStatus());
+		}
+		
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
 			finder1.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
 			finder1.setParam("title", mediaPackage.getTitle());
@@ -164,10 +172,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.append(" and categoryId=:categoryId");
 			finder1.setParam("categoryId", mediaPackage.getCategoryId());
 		}
-		if(null != mediaPackage.getStatus()){
-			finder1.append(" and status=:status");
-			finder1.setParam("status", mediaPackage.getStatus());
-		}
+		
 		finder1.append(" order by balance desc");
 		List<MediaPackage> dataList = findListDataByFinder(finder1,page,MediaPackage.class,null);
 		if(null != dataList && dataList.size() > 0){

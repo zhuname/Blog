@@ -116,13 +116,13 @@ public class MediaPackageController  extends BaseController {
 	@RequestMapping("/list/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,MediaPackage mediaPackage) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,MediaPackage mediaPackage ,Integer personType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
 		String appUserId = request.getParameter("appUserId");
-		returnObject = mediaPackageService.list(mediaPackage, page, appUserId);
+		returnObject = mediaPackageService.list(mediaPackage, page, appUserId , personType);
 		return returnObject;
 	}
 	
