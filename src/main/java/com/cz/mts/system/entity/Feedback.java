@@ -54,7 +54,7 @@ public class Feedback  extends BaseEntity {
 	 */
 	private java.util.Date createTime;
 	
-	
+	private String phone;
 	
 	
 	private String startTime;
@@ -137,7 +137,18 @@ public class Feedback  extends BaseEntity {
 		this.content = value;
 	}
 	
-     @WhereSQL(sql="content=:Feedback_content")
+	
+	
+	@WhereSQL(sql="phone=:Feedback_phone")
+     public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	@WhereSQL(sql="content=:Feedback_content")
 	public java.lang.String getContent() {
 		return this.content;
 	}

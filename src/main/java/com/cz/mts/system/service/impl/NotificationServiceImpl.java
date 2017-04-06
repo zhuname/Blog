@@ -92,8 +92,8 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			case 7:
-				JPushUtil.sendJPushNotification("恭喜您，您被授予"+extend[0]+"勋章。", type+"", id, userId, "");
-				message=new Message(null, 7, userId, new Date(), "恭喜您，您被授予"+extend[0]+"勋章。", id, null, 0, "勋章授予", 2);
+				JPushUtil.sendJPushNotification("恭喜您，您被授予“"+extend[0]+"”勋章。", type+"", id, userId, "");
+				message=new Message(null, 7, userId, new Date(), "恭喜您，您被授予“"+extend[0]+"”勋章。", id, null, 0, "勋章授予", 2);
 				messageService.save(message);
 			break;
 			case 8:
@@ -112,13 +112,13 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 10:
-				JPushUtil.sendJPushNotification("您关注的"+extend[0]+"发布了一个"+extend[1]+"红包，金额"+extend[2]+"，赶快去领取吧。", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”红包，金额"+extend[2]+"，赶快去领取吧。", type+"", id, userId, "");
 				message=new Message(null, 10, userId, new Date(), "您关注的"+extend[0]+"发布了一个"+extend[1]+"红包，金额"+extend[2]+"，赶快去领取吧。", id, null, 0, "关注人发布红包", 2);
 				messageService.save(message);
 			break;
 			case 11:
-				JPushUtil.sendJPushNotification("您关注的"+extend[0]+"发布了一个"+extend[1]+"卡券，赶快去领取吧", type+"", id, userId, "");
-				message=new Message(null, 11, userId, new Date(), "您关注的"+extend[0]+"发布了一个"+extend[1]+"卡券，赶快去领取吧", id, null, 0, "关注人发布卡券", 2);
+				JPushUtil.sendJPushNotification("您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”卡券，赶快去领取吧", type+"", id, userId, "");
+				message=new Message(null, 11, userId, new Date(), "您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”卡券，赶快去领取吧", id, null, 0, "关注人发布卡券", 2);
 				messageService.save(message);
 			break;
 			case 12:

@@ -143,7 +143,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 	@Override
-	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId) throws Exception{
+	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Finder finder1 = Finder.getSelectFinder(MediaPackage.class).append(" where isDel=0");
 		if(null != mediaPackage.getCityId()){
@@ -152,6 +152,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}else{
 			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
 		}
+		
+		if(personType!=null&&personType.intValue()==3){
+			finder1.append(" and (p.status = 3 or p.status = 4 )");
+		}
+		
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
 			finder1.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
 			finder1.setParam("title", mediaPackage.getTitle());

@@ -119,7 +119,7 @@ public class PosterPackageController  extends BaseController {
 	@RequestMapping("/list/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,PosterPackage posterPackage) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,PosterPackage posterPackage,Integer personType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
@@ -143,6 +143,10 @@ public class PosterPackageController  extends BaseController {
 				
 				finder1.setParam("userId", posterPackage.getUserId());
 				
+			}
+			
+			if(personType!=null&&personType.intValue()==3){
+				finder1.append(" and (p.status = 3 or p.status = 4 )");
 			}
 			
 			if(posterPackage.getStatus()!=null){

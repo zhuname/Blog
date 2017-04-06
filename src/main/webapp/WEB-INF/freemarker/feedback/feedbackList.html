@@ -101,6 +101,7 @@ function deleteFeedback(){
                         <!--first_end_no_export-->
 						<th  style="width:40%" id="th_content">反馈内容</th>
 						<th  style="width: 15%" id="th_userId" >用户名称</th>
+						<th  style="width: 15%" id="th_userId" >用户电话</th>
 						<th  style="width: 15%" id="th_createTime" >创建时间</th>
                     </tr>
                     </thead>
@@ -167,6 +168,9 @@ function deleteFeedback(){
 							</td>
 							<td >
 								${(_data.userName)!''}
+							</td>
+							<td >
+								${(_data.phone)!''}
 							</td>
 							<td >
 								<!--日期型-->
