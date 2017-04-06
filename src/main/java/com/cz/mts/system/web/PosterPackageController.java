@@ -129,12 +129,14 @@ public class PosterPackageController  extends BaseController {
 		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
 		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
 		
-		if(StringUtils.isNotBlank(posterPackage.getTitle())){
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.userId IN (SELECT id FROM t_app_user WHERE `name`= :title ) OR p.title = :title and p.isDel = 0");
-			finder1.setParam("title", posterPackage.getTitle());
-			returnObject.setData(posterPackageService.queryForList(finder1,page));
-		} else {
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			
+			if(StringUtils.isNotBlank(posterPackage.getTitle())){
+				finder1.append(" and (p.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 )"); 
+				finder1.setParam("title", posterPackage.getTitle());
+			}
+			
+			
 			if(posterPackage.getUserId()!=null){
 				
 				finder1.append(" and p.userId = :userId");
@@ -163,8 +165,9 @@ public class PosterPackageController  extends BaseController {
 				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=1)");
 				finder1.setParam("cityId", posterPackage.getCityId());
 			}else{
-				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=1)");
+				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
 			}
+			finder1.append(" order by p.balance desc");
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
 		
 			if(null != list && list.size() > 0){
@@ -198,7 +201,6 @@ public class PosterPackageController  extends BaseController {
 				}
 			}
 			returnObject.setData(list);
-		}
 		
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);
@@ -243,15 +245,13 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
-			 if(null != posterPackage && StringUtils.isNotBlank(appUserId) && 3 == posterPackage.getStatus()){
+			 if(null != posterPackage){
 				 if(posterPackage.getLookNum()==null){
-					 posterPackage.setLookNum(1);
-				 }else{
-					 posterPackage.setLookNum(posterPackage.getLookNum()+1);
+					 posterPackage.setLookNum(0);
 				 }
+				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
 			 }
-			 
-			 posterPackageService.update(posterPackage);
+			 posterPackageService.update(posterPackage,true);
 			 
 			 //查询发红包的用户
 			 if(posterPackage!=null&&posterPackage.getUserId()!=null){
@@ -268,8 +268,8 @@ public class PosterPackageController  extends BaseController {
 					 for (UserMedal userMedal : userMedals) {
 						if(null != userMedal.getMedalId()){
 							Medal medal = medalService.findMedalById(userMedal.getMedalId());
-							if(null != medal && StringUtils.isNotBlank(medal.getName())){
-								userMedal.setMedalName(medal.getName());
+							if(null != medal){
+								userMedal.setMedal(medal);
 							}
 						}
 					}
@@ -530,6 +530,8 @@ public class PosterPackageController  extends BaseController {
 				
 				posterPackage.setCreateTime(new Date());
 				
+				posterPackage.setShareNum(0);
+				
 				posterPackage.setBalance(posterPackage.getSumMoney());
 				
 				//生成验证码
@@ -685,23 +687,31 @@ public class PosterPackageController  extends BaseController {
 					}
 				}
 				
-				if(null == pc.getPayMoney()){
-					pc.setPayMoney(0.0);
-				}
-				sumPayMoney += pc.getPayMoney();
-				
-				if(null == pc.getBalance()){
-					pc.setBalance(0.0);
-				}
-				sumBalance += pc.getBalance();
-				
-				
 			}
 		}
+		
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		List<PosterPackage> posterPackages = posterPackageService.findListDataByFinder(finder,pageNew,PosterPackage.class,posterPackage);
+		if(posterPackages != null && posterPackages.size() > 0){
+			for (PosterPackage pps : posterPackages) {
+				if(null == pps.getSumMoney()){
+					pps.setSumMoney(0.0);
+				}
+				sumPayMoney += pps.getSumMoney();
+				
+				if(null == pps.getBalance()){
+					pps.setBalance(0.0);
+				}
+				sumBalance += pps.getBalance();
+			}
+		}
+		
+		Double sumOverMoney = new BigDecimal(sumPayMoney).subtract(new BigDecimal(sumBalance)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-		
+		map.put("sumOverMoney", sumOverMoney);
 		returnObject.setMap(map);
 		returnObject.setQueryBean(posterPackage);
 		returnObject.setPage(page);

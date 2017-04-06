@@ -108,12 +108,10 @@ $(document).on("change", "#filed", function() {
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
 				<div class="col-xs-12 col-sm-9">
-						<div class="site-demo-upload">
-  								<img  name="imagesI" onclick="headOnc();" id="imagesI" value="${(returnDatas.data.images)!''}" src="${(returnDatas.data.images)!''}">
-   								 <input type="file" id="filed" name="filed" style="display:none">
-   								  <input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}" style="display:none"  type="text" />
-						</div>
-
+  								<img  name="imagesI" onclick="headOnc();"  height="85px;" width="250px;" id="imagesI" value="${(returnDatas.data.images)!''}" src="${(returnDatas.data.images)!''}">
+   								<input type="file" id="filed" name="filed" style="display:none">
+   								<input name="images" class="col-xs-12 col-sm-6" id="images" value="${(returnDatas.data.images)!''}" style="display:none"  type="text" />
+								<span style="color: red;">*修改图片尺寸比例4:1.5</span>
 					<!-- <div class="clearfix">
 						<input name="header" class="col-xs-12 col-sm-6 " id="header" value="${(returnDatas.data.header)!''}"  type="text" />
 					</div><div class="help-block" for="header"></div> -->

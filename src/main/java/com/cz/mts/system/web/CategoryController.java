@@ -141,6 +141,7 @@ public class CategoryController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		page.setPageSize(10000);
+		category.setIsDel(0);
 		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
 			returnObject.setQueryBean(category);
 		returnObject.setPage(page);
@@ -222,9 +223,14 @@ public class CategoryController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			category.setIsDel(0);
-			categoryService.save(category);
+			if(category.getId()==null){
+				category.setIsDel(0);
+				categoryService.save(category);
+			} else {
+				categoryService.update(category,true);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);
@@ -248,7 +254,6 @@ public class CategoryController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
-	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除

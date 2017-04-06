@@ -172,6 +172,8 @@ public class CardController  extends BaseController {
 				 
 				 //查询勋章列表
 				 Page page = new Page();
+				 page.setOrder("createTime");
+				 page.setSort("desc");
 				 UserMedal userMedal = new UserMedal();
 				 userMedal.setUserId(card.getUserId());
 				List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
@@ -207,7 +209,7 @@ public class CardController  extends BaseController {
 				 for (RedCity redCity : redCities) {
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
-						if(StringUtils.isNotBlank(city.getName())){
+						if(null != city && StringUtils.isNotBlank(city.getName())){
 							redCity.setCityName(city.getName());
 						}
 					}
@@ -359,6 +361,7 @@ public class CardController  extends BaseController {
 				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
 				card.setStatus(1);
+				card.setShareNum(0);
 				Object id=cardService.saveorupdate(card);
 				if(cityIds!=null){
 					
@@ -449,6 +452,12 @@ public class CardController  extends BaseController {
 				return returnObject;
 			}
 			
+			//判断卡券的状态
+			if(2 != card.getStatus()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券暂不能购买");
+				return returnObject;
+			}
 			List<UserCard> userCards=new ArrayList<>();
 			
 			String code=new Date().getTime()+""+RandomUtils.nextInt(1, 9);
@@ -499,6 +508,7 @@ public class CardController  extends BaseController {
 			userCardService.save(userCards);
 			
 			card.setNum(card.getNum()-num);
+			
 			cardService.update(card, true);
 			
 			card.setUserCards(userCards);
@@ -573,7 +583,6 @@ public class CardController  extends BaseController {
 				return returnObject;
 			}
 			
-			
 			if(usercard.getCardId()!=null){
 				card=cardService.findCardById(usercard.getCardId());
 			}
@@ -583,25 +592,26 @@ public class CardController  extends BaseController {
 				returnObject.setMessage("此卡券不存在");
 				return returnObject;
 			}
+			//判断卡券的状态
+			if(2 != card.getStatus()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券暂不能兑换");
+				return returnObject;
+			}
 			
 			//改变状态
 			usercard.setStatus(2);
 			usercard.setChangeTime(new Date());
-			userCardService.update(usercard, true);
-			
-			AppUser appUser1 = appUserService.findAppUserById(card.getUserId());
-			if(null != appUser1 && 1 == appUser1.getIsPush()){
-				//给发布人发推送
-				notificationService.notify(4, card.getId(), card.getUserId());
+			Object id = userCardService.update(usercard, true);
+			UserCard uc = userCardService.findUserCardById(id);
+			if(null != uc && null != uc.getUserId()){
+				AppUser user = appUserService.findAppUserById(uc.getUserId());
+				if(null != user && 1 == user.getIsPush() && null != uc.getCardId()){
+					//给自己发推送
+					notificationService.notify(14, uc.getCardId(), user.getId());
+					
+				}
 			}
-		
-			AppUser user = appUserService.findAppUserById(usercard.getUserId());
-			if(null != user && 1 == user.getIsPush()){
-				//给自己发推送
-				notificationService.notify(14, userCard.getId(), userCard.getUserId());
-				
-			}
-			
 			
 			//手续费比例
 			BigDecimal cardCharge=new BigDecimal(0.0);
@@ -615,13 +625,16 @@ public class CardController  extends BaseController {
 			if(appUser!=null){
 				
 				BigDecimal sumMoney=new BigDecimal(0.0);
+				BigDecimal cardChargeMoney = new BigDecimal(0.0);
 				
-				//算出这次总共是多少钱的收益
-				if(usercard.getSumMoney()!=null){
-					sumMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
-					sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(sumMoney);
+				//判断是否关闭卡券手续费
+				if(null != appUser.getIsCloseFee() && 0 == appUser.getIsCloseFee()){
+					//算出这次总共是多少钱的收益
+					if(usercard.getSumMoney()!=null){
+						cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
+						sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
+					}
 				}
-				
 				if(appUser.getBalance()==null){
 					appUser.setBalance(sumMoney.doubleValue());
 				}else{
@@ -629,7 +642,6 @@ public class CardController  extends BaseController {
 				}
 				
 				appUserService.update(appUser,true);
-				
 				
 				//先保存收益记录
 				MoneyDetail moneyDetail=new MoneyDetail();
@@ -639,11 +651,10 @@ public class CardController  extends BaseController {
 				moneyDetail.setMoney(sumMoney.doubleValue());
 				moneyDetail.setItemId(usercard.getId());
 				moneyDetail.setBalance(appUser.getBalance());
-				
+				moneyDetail.setPlateMoney(cardChargeMoney.doubleValue());
 				moneyDetailService.save(moneyDetail);
 				
 			}
-			
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -651,6 +662,7 @@ public class CardController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
+		
 		return returnObject;
 	
 	}

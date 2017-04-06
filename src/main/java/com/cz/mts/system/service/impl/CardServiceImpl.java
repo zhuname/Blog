@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
@@ -106,7 +107,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=3)");
 				finder.setParam("cityId", card.getCityId());
 			}else{
-				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=3)");
+				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=3)");
 			}
 			if(null != card.getCatergoryId()){
 				finder.append(" and catergoryId=:catergoryId");
@@ -117,12 +118,28 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 				finder.setParam("userId", card.getUserId());
 			}
 			if(null != card.getStatus()){
-				finder.append(" and status=:status");
-				finder.setParam("status", card.getStatus());
+				if(null != card.getType()){
+					if(2 == card.getStatus()){
+						finder.append(" and `status`=2 and num !=0");
+					}else if(4 == card.getStatus()){
+						finder.append(" and ((`status`=2 and num=0) OR `status`=4 ) ");
+					}else{
+						finder.append(" and status=:status");
+						finder.setParam("status", card.getStatus());
+					}
+				}else{
+					finder.append(" and status=:status");
+					finder.setParam("status", card.getStatus());
+				}
+				
 			}
-			page.setOrder("createTime");
-			page.setSort("desc");
+			if(StringUtils.isNotBlank(card.getTitle())){
+				finder.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ))");
+				finder.setParam("title", card.getTitle());
+			}
 			
+			page.setOrder("endTime");
+			page.setSort("asc");
 			List<Card> datas = findListDataByFinder(finder,page,Card.class,null);
 			if(null != datas && datas.size() > 0){
 				for (Card cd : datas) {
@@ -131,10 +148,11 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 						if(null != appUser){
 							cd.setAppUser(appUser);
 						}
+						Page newPage = new Page();
 						UserMedal userMedal = new UserMedal();
 						userMedal.setUserId(cd.getUserId());
 						//查询勋章列表
-						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
 						if(null != userMedals && userMedals.size() > 0){
 							for (UserMedal um : userMedals) {
 								if(null != um.getMedalId()){

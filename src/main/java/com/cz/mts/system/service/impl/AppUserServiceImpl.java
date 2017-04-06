@@ -128,7 +128,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			//查询出来海报红包的数据
 			PosterPackage posterPackage=super.findById(itemId, PosterPackage.class);
-			if(posterPackage==null||posterPackage.getSumMoney()==null||userId!=posterPackage.getUserId()){
+			if(posterPackage==null||posterPackage.getSumMoney()==null||userId.intValue()!=posterPackage.getUserId().intValue()){
 				return 4;
 			}
 			
@@ -166,7 +166,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			//查询视频红包的信息
 			MediaPackage mediaPackage=super.findById(itemId, MediaPackage.class);
-			if(mediaPackage==null||mediaPackage.getSumMoney()==null||userId!=mediaPackage.getUserId()){
+			if(mediaPackage==null||mediaPackage.getSumMoney()==null||userId.intValue()!=mediaPackage.getUserId().intValue()){
 				return 4;
 			}
 			
@@ -258,12 +258,22 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				card.setConvertNum(card.getConvertNum()-cards.size());
 				cardService.update(card, true);
 				
-				if(0 == card.getConvertNum()){
+				if(card.getNum().intValue()<=0){
 					//查询用户信息
 					if(null != appUser && 1 == appUser.getIsPush()){
 						notificationService.notify(5, card.getId(), card.getUserId());
 					}
 				}
+				
+//				if(0 == card.getConvertNum()){
+//					
+//					card.setStatus(4);
+//					cardService.update(card, true);
+//					//查询用户信息
+//					if(null != appUser && 1 == appUser.getIsPush()){
+//						notificationService.notify(5, card.getId(), card.getUserId());
+//					}
+//				}
 			}
 			
 			break;
@@ -459,7 +469,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						card.setConvertNum(card.getConvertNum()-cards.size());
 						cardService.update(card, true);
 						
-						if(0 == card.getConvertNum()){
+						if(0 == card.getNum()){
 							//用户信息
 							if(null != appUserC && 1 == appUserC.getIsPush()){
 								notificationService.notify(5, card.getId(), card.getUserId());

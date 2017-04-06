@@ -39,14 +39,14 @@ public class JPushUtil {
 		/*通知*/
 		Map<String,Object> notificationMap = new HashMap<String,Object>();
 		notificationMap.put("alert", message);
-		notificationMap.put("title", "美天赏");
+//		notificationMap.put("title", "美天赏");
 		Map<String,Object> androidiosextra = new HashMap<String,Object>();
 		androidiosextra.put("type", type);
 		androidiosextra.put("id", id);
 		androidiosextra.put("url", url);
 		
 //		androidiosextra.put("sound", sound);
-		notificationMap.put("category", "identifier");
+//		notificationMap.put("category", "identifier");
 		Map<String,Object> android = new HashMap<String,Object>();
 		android.put("extras", androidiosextra);
 		notificationMap.put("android", android);
@@ -106,13 +106,14 @@ public class JPushUtil {
 		/*通知*/
 		Map<String,Object> notificationMap = new HashMap<String,Object>();
 		notificationMap.put("alert", message);
-		notificationMap.put("title", "美天赏");
+//		notificationMap.put("title", "美天赏");
 		Map<String,Object> androidiosextra = new HashMap<String,Object>();
 		androidiosextra.put("type", type);
 		for (Object key:other.keySet()) {			
 			androidiosextra.put(key.toString(), other.get(key));
 		}
-		notificationMap.put("category", "identifier");
+//		notificationMap.put("category", "identifier");
+//		notificationMap.put("category", "category str");
 		Map<String,Object> android = new HashMap<String,Object>();
 		android.put("extras", androidiosextra);
 		notificationMap.put("android", android);
@@ -156,7 +157,7 @@ public class JPushUtil {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("id", "47");
 		map.put("url", "www.baidu.com");
-		sendAllPushNotification("测试一下", "1", map, null);
+		sendAllPushNotification("测试一下", "14", map, null);
 	}
 	 
 }

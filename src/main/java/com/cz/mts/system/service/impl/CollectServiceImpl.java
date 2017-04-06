@@ -170,53 +170,55 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							if(null != appUser){
 								mediaPackage.setAppUser(appUser);
 							}
-						}
-						//获取勋章列表
-						UserMedal userMedal = new UserMedal();
-						userMedal.setUserId(mediaPackage.getUserId());
-						//查询勋章列表
-						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-						if(null != userMedals && userMedals.size() > 0){
-							for (UserMedal um : userMedals) {
-								if(null != um.getMedalId()){
-									Medal medal = medalService.findMedalById(um.getMedalId());
-									if(null != medal){
-										um.setMedal(medal);
+							//获取勋章列表
+							UserMedal userMedal = new UserMedal();
+							if(null != mediaPackage.getUserId()){
+								userMedal.setUserId(mediaPackage.getUserId());
+							}
+							//查询勋章列表
+							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+							if(null != userMedals && userMedals.size() > 0){
+								for (UserMedal um : userMedals) {
+									if(null != um.getMedalId()){
+										Medal medal = medalService.findMedalById(um.getMedalId());
+										if(null != medal){
+											um.setMedal(medal);
+										}
 									}
 								}
+								mediaPackage.setUserMedals(userMedals);
 							}
-							mediaPackage.setUserMedals(userMedals);
-						}
-						mediaPackage.setIsCollect(1);
-						
-						//返回是否关注
-						Attention attention = new Attention();
-						attention.setUserId(ct.getUserId());
-						attention.setItemId(mediaPackage.getUserId());
-						List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
-						if(null != attentions && attentions.size() > 0){
-							mediaPackage.setIsAttention(1);
-						}else{
-							mediaPackage.setIsAttention(0);
-						}
-						
-						//已抢红包列表
-						MoneyDetail moneyDetail = new MoneyDetail();
-						moneyDetail.setItemId(mediaPackage.getId());
-						moneyDetail.setType(2);
-						List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
-						if(null != moneyDetails && moneyDetails.size() > 0){
-							for (MoneyDetail md : moneyDetails) {
-								if(null != md.getUserId()){
-									AppUser appUser = appUserService.findAppUserById(md.getUserId());
-									if(null != appUser){
-										md.setAppUser(appUser);
+							mediaPackage.setIsCollect(1);
+							
+							//返回是否关注
+							Attention attention = new Attention();
+							attention.setUserId(ct.getUserId());
+							attention.setItemId(mediaPackage.getUserId());
+							List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+							if(null != attentions && attentions.size() > 0){
+								mediaPackage.setIsAttention(1);
+							}else{
+								mediaPackage.setIsAttention(0);
+							}
+							
+							//已抢红包列表
+							MoneyDetail moneyDetail = new MoneyDetail();
+							moneyDetail.setItemId(mediaPackage.getId());
+							moneyDetail.setType(2);
+							List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+							if(null != moneyDetails && moneyDetails.size() > 0){
+								for (MoneyDetail md : moneyDetails) {
+									if(null != md.getUserId()){
+										AppUser appUserU = appUserService.findAppUserById(md.getUserId());
+										if(null != appUserU){
+											md.setAppUser(appUserU);
+										}
 									}
 								}
+								mediaPackage.setMoneyDetails(moneyDetails);
 							}
-							mediaPackage.setMoneyDetails(moneyDetails);
+							ct.setMediaPackage(mediaPackage);
 						}
-						ct.setMediaPackage(mediaPackage);
 					}
 					
 				}

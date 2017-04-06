@@ -114,6 +114,18 @@ public class Withdraw  extends BaseEntity {
 	private String startTime;
 	private String endTime;
 	
+	private Double sumMoney;
+	
+	
+	@Transient
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+
 	@Transient
 	public String getStartTime() {
 		return startTime;

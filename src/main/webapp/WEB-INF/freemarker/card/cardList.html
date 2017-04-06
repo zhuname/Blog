@@ -30,12 +30,9 @@ function deleteCard(){
 
 
 function checkRefuse(id){
-	var reason = prompt("请填写拒绝原因:","");
-	if(reason == null || reason == ""){
-		myalert("请输入拒绝原因");
-		return;
-	}
-	jQuery.post("${ctx}/system/card/check/refuse",{ id: id, reason: reason },
+	//prompt层
+			layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+			jQuery.post("${ctx}/system/card/check/refuse",{ id: id, reason: text },
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -46,7 +43,8 @@ function checkRefuse(id){
 					return false;
 				}
 	});
-	
+	  			layer.close(index);
+			});
 }
 
 jQuery(document).ready(function(){
@@ -57,22 +55,22 @@ jQuery(document).ready(function(){
 });
 
 
-//点击播放视频
 $(document).on("click", ".sim", function() {
-	var me=$(this).html();
-		//iframe层-多媒体
-    	layer.open({
-		  type: 1,
-		  title: false,
-		  closeBtn: 0,
-		  area: '200px',
-		  skin: 'layui-layer-nobg', //没有背景色
-		  shadeClose: true,
-		  content:me
-		 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
-		});
-    	layer.msg('点击任意处关闭');
-});
+    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	console.log(me);
+    		//iframe层-多媒体
+        	layer.open({
+			  type: 1,
+			  title: false,
+			  closeBtn: 0,
+			  area: '1000px',
+			  skin: 'layui-layer-nobg', //没有背景色
+			  shadeClose: true,
+			  content:me
+			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			});
+        	layer.msg('点击任意处关闭');
+	});
 
 </script>
 
@@ -90,23 +88,22 @@ $(document).on("click", ".sim", function() {
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_status"><b>状态:</b></label> 
-			 <select id="search_status" name="status" class="col-10" >
+			<label for="search_status"><b>状态</b></label> 
+			 <select id="search_status" name="status">
 			 	<option value="">请选择</option>
 				<option value="1">审核中</option>
 				<option value="2">审核成功</option>
 				<option value="3">审核失败</option>
 				<option value="4">已过期</option>
 			</select>
-			 <label for="search_title"><b>卡券名称:</b></label> 
-			 <input type="text" id="search_title"  name="title" placeholder="请填写卡券名称"  value="${(returnDatas.queryBean.title)!''}">
-			<label for="search_phone"><b>联系电话:</b></label> 
-			 <input type="text" id="search_phone"  name="phone" placeholder="请填写联系电话"  value="${(returnDatas.queryBean.phone)!''}">
-			 <label for="search_categoryName"><b>分类名称:</b></label> 
-			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}">
-			 <label for="search_userName"><b>用户名称:</b></label> 
+			 <label for="search_title"><b>卡券名称</b></label> 
+			 <input type="text" id="search_title"  name="title" placeholder="请填写卡券名称"  value="${(returnDatas.queryBean.title)!''}" style="width: 8%;">
+			<label for="search_phone"><b>联系电话</b></label> 
+			 <input type="text" id="search_phone"  name="phone" placeholder="请填写联系电话"  value="${(returnDatas.queryBean.phone)!''}" style="width: 8%;">
+			 <label for="search_categoryName"><b>分类名称</b></label> 
+			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}" style="width: 8%;">
+			 <label for="search_userName"><b>用户名称</b></label> 
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
-			 
 			  <label for="search_state">到期开始时间</label>
 			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
 			  <span >
@@ -158,12 +155,6 @@ $(document).on("click", ".sim", function() {
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_images" >图片</th>
@@ -180,6 +171,7 @@ $(document).on("click", ".sim", function() {
 						<th id="th_succTime" >通过时间</th>
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_num" >剩余兑换次数</th>
+						<th id="th_num" >分享次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -191,12 +183,6 @@ $(document).on("click", ".sim", function() {
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info" title="编辑"
@@ -204,13 +190,13 @@ $(document).on("click", ".sim", function() {
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger" title="删除"
-                                                onclick="mydelete('${ctx}/system/card/delete?id=${(_data.id)!''}','${ctx}/system/card/list');">
+                                                onclick="mydelete('${ctx}/system/card/delete?id=${(_data.id)!''}','${ctx}/system/card/list'),null,'确认删除?';">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                         
                                          <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/card/check/confirm?id=${(_data.id)!''}','${ctx}/system/card/list');">
+                                                onclick="mydelete('${ctx}/system/card/check/confirm?id=${(_data.id)!''}','${ctx}/system/card/list',null,'确认成功？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	
@@ -260,8 +246,8 @@ $(document).on("click", ".sim", function() {
                                 </td>
                                 <!--end_no_export-->
 
-							<td class="sim">
-								<img src="${(_data.images)!''}" height="50px;" width="200px;"/>
+							<td>
+								<img  class="sim" src="${(_data.images)!''}" height="75px;" width="200px;"/>
 							</td>
 							<td >
 								${(_data.categoryName)!''}
@@ -315,6 +301,9 @@ $(document).on("click", ".sim", function() {
 							</td>
 							<td >
 								${(_data.num)!0}
+							</td>
+							<td >
+								${(_data.shareNum)!0}
 							</td>
 						</tr>
 					</#list>

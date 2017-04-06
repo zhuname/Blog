@@ -29,12 +29,9 @@ function deleteApplyMedal(){
 }
 
 function checkRefuse(id){
-	var reason = prompt("请填写拒绝原因:","");
-	if(reason == null || reason == ""){
-		myalert("请输入拒绝原因");
-		return;
-	}
-	jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: reason },
+	//prompt层
+			layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+			jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: text },
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -44,7 +41,9 @@ function checkRefuse(id){
 					myalert("审核失败");
 					return false;
 				}
-	});
+			});
+	  			layer.close(index);
+			});
 	
 }
 
@@ -70,19 +69,19 @@ $(document).on("click", ".vid", function() {
 	
 	
 	
-//点击播放视频
 $(document).on("click", ".sim", function() {
-    	var me=$(this).html();
+    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	console.log(me);
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '120px',
+			  area: '1000px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me
-			 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
 	});
@@ -179,20 +178,14 @@ jQuery(document).ready(function(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th  style="width: 3%" class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
                         <th  style="width: 5%">操作</th>
                         <!--first_end_no_export-->
 						<th  style="width: 12%" id="th_userId" >用户名称</th>
 						<th  style="width: 12%" id="th_medalId" >勋章名称</th>
 						<th  style="width: 5%" id="th_type" >类型</th>
 						<th  style="width: 5%" id="th_status" >状态</th>
-						<th  style="width: 5%" id="th_applyTime" >申请时间</th>
-						<th  style="width: 5%" id="th_operTime" >审核时间</th>
+						<th  style="width: 8%" id="th_applyTime" >申请时间</th>
+						<th  style="width: 8%" id="th_operTime" >审核时间</th>
 						<th  style="width: 20%" id="th_reason" >失败原因</th>
 						<th  style="width: 20%" id="th_multiAddress" >多媒体地址</th>
                     </tr>
@@ -206,18 +199,12 @@ jQuery(document).ready(function(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list');">
+                                                onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list',null,'确认成功？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	<button class="btn btn-xs btn-pink" title="审核失败"
@@ -306,8 +293,8 @@ jQuery(document).ready(function(){
 							<td >
 								<#if (_data.type) == 1 >
 									<#list "${(_data.multiAddress)!''}"?split(";") as s>
-										<a class="sim" >
-										<img height="120px" width="120px" alt="" src="${s}" >
+										<a >
+										<img class="sim"  height="120px" width="120px" alt="" src="${s}" >
 										<a>
 									</#list>
 								</#if>

@@ -47,42 +47,42 @@ $(document).on("click", ".vid", function() {
     		myalert("暂无可播放的视频");
     	}
 	});
-	//点击播放视频
+	
+	
+	//点击看大图
 	$(document).on("click", ".sim", function() {
-    	var me=$(this).html();
+    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '200px',
+			  area: '1000px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me
-			 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
 	});
 	
 		
 		function checkRefuse(id){
-			var reason = prompt("请填写拒绝原因:","");
-			if(reason == null || reason == ""){
-				myalert("请输入拒绝原因");
-				return;
-			}
-			jQuery.post("${ctx}/system/mediapackage/check/json",{ id: id, failReason: reason ,type: 0},
-					function(_json) {
-						if (_json.status == "success") {
-							myalert("审核成功");
-							myhref("${ctx}/system/mediapackage/list")
-							return false;
-						} else {
-							myalert("审核失败");
-							return false;
-						}
+			//prompt层
+			layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+				jQuery.post("${ctx}/system/mediapackage/check/json",{ id: id, failReason: text ,type: 0},
+						function(_json) {
+							if (_json.status == "success") {
+								myalert("审核成功");
+								myhref("${ctx}/system/mediapackage/list")
+								return false;
+							} else {
+								myalert("审核失败");
+								return false;
+							}
+				});
+	  			layer.close(index);
 			});
-			
 		}
 
 		jQuery(document).ready(function(){
@@ -115,7 +115,7 @@ $(document).on("click", ".vid", function() {
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
 			<label for="search_status"><b>状态:</b></label> 
-			 <select id="search_status" name="status" class="col-10" >
+			 <select id="search_status" name="status" >
 			 	<option value="">请选择</option>
 				<option value="0">未支付</option>
 				<option value="1">已支付</option>
@@ -124,14 +124,14 @@ $(document).on("click", ".vid", function() {
 			</select>
 			
 			<label for="search_encrypt"><b>是否加密:</b></label> 
-			 <select id="search_encrypt" name="encrypt" class="col-10" >
+			 <select id="search_encrypt" name="encrypt" >
 			 	<option value="">请选择</option>
 				<option value="0">不加密</option>
 				<option value="1">加密</option>
 			</select>
 			
 			<label for="search_payType"><b>支付类型:</b></label>
-			 <select id="search_payType" name="payType" class="col-10" >
+			 <select id="search_payType" name="payType">
 			 	<option value="">请选择</option>
 				<option value="1">支付宝</option>
 				<option value="2">微信</option>
@@ -139,17 +139,17 @@ $(document).on("click", ".vid", function() {
 			</select>
 			
 			<label for="search_categoryName"><b>分类名称:</b></label> 
-			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}">
+			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}" style="width: 8%;">
 			 <label for="search_userName"><b>用户名称:</b></label> 
-			 <input type="text" id="search_name"  name="name" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.name)!''}">
+			 <input type="text" id="search_name"  name="name" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.name)!''}" style="width: 8%;">
 			
 			 <label for="search_state">支付开始时间</label>
-			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			<input name="startTime"  class="date-picker"  style="width:100px;"   id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
 			  <span >
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 		    <label for="search_state">支付结束时间</label>
-			<input name="enddTime"  class="date-picker"  id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
+			<input name="enddTime"  class="date-picker"  style="width:100px;"    id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
 			 	<span>
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
@@ -160,12 +160,9 @@ $(document).on("click", ".vid", function() {
 				</a>
 </form>
 		</div>
-		<span style="float: right;" id="pay">支付金额：${returnDatas.map.sumPayMoney}</span>&nbsp;&nbsp;&nbsp;
-		<span style="float: right;" id="bal">剩余金额：${returnDatas.map.sumBalance}</span>     
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/mediapackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/mediapackage/list/export');" class="btn  btn-sm  btn-primary">
-                      
                         导出
                     </button>
 		    	</@shiro.hasPermission>
@@ -185,6 +182,17 @@ $(document).on("click", ".vid", function() {
 	</div>
 </div>
 
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			 <span style="float: right;" id="pay">总金额：${returnDatas.map.sumPayMoney}</span>
+			<span style="padding-right: 10px;">未抢金额：${returnDatas.map.sumBalance}</span> 
+			<span style="padding-right: 10px;">已抢金额：${returnDatas.map.sumOverMoney}</span> 
+		</div>
+	</div>
+</div>
+
+
    <div class="row" style="overflow-x:scroll;">
             <div class="col-xs-12">
 	            <!--start_export-->
@@ -193,13 +201,6 @@ $(document).on("click", ".vid", function() {
                     <!--first_start_export-->
                     <thead>
                     <tr>
-                        <!--first_start_no_export-->
-                        <th   style="width: 3%"  class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
                         <th   style="width: 5%" >操作</th>
                         <!--first_end_no_export-->
 						<th   style="width: 3%"  id="th_userId" >用户名称</th>
@@ -221,6 +222,7 @@ $(document).on("click", ".vid", function() {
 						<th  style="width: 3%"  id="th_code" >订单编号</th>
 						<th  style="width: 3%"  id="th_mediaUrl" >视频url</th>
 						<th  style="width: 3%"  id="th_mediaImage" >视频图片</th>
+						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -232,12 +234,6 @@ $(document).on("click", ".vid", function() {
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
@@ -251,7 +247,7 @@ $(document).on("click", ".vid", function() {
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/mediapackage/list');">
+                                                onclick="mydelete('${ctx}/system/mediapackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/mediapackage/list',null,'确认通过？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	
@@ -378,8 +374,11 @@ $(document).on("click", ".vid", function() {
 								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls'></video>
 								
 							</td>
-							<td class="sim">
-								<img src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage"/>
+							<td >
+								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage"/>
+							</td>
+							<td >
+								${(_data.shareNum)!''}
 							</td>
 						</tr>
 					</#list>

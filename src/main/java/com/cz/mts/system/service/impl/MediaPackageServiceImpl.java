@@ -150,10 +150,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=2)");
 			finder1.setParam("cityId", mediaPackage.getCityId());
 		}else{
-			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=0 and type=2)");
+			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
 		}
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
-			finder1.append(" and INSTR(`title`,:title)>0 ");
+			finder1.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
 			finder1.setParam("title", mediaPackage.getTitle());
 		}
 		if(null != mediaPackage.getUserId()){
@@ -168,6 +168,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.append(" and status=:status");
 			finder1.setParam("status", mediaPackage.getStatus());
 		}
+		finder1.append(" order by balance desc");
 		List<MediaPackage> dataList = findListDataByFinder(finder1,page,MediaPackage.class,null);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
@@ -219,10 +220,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 							mp.setPhone(appUser.getPhone());
 						}
 					}
+					
+					Page newPage = new Page();
 					UserMedal userMedal = new UserMedal();
 					userMedal.setUserId(mp.getUserId());
 					//查询勋章列表
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
 					if(null != userMedals && userMedals.size() > 0){
 						for (UserMedal um : userMedals) {
 							if(null != um.getMedalId()){
@@ -409,7 +412,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						pp.setEndTime(new Date());
 						if(null != appUser && 1 == appUser.getIsPush()){
 							//给发布人发推送
-							notificationService.notify(3, Integer.parseInt(packageId), pp.getUserId());
+							notificationService.notify(3, pp.getId(), pp.getUserId());
 						}
 						
 					}
@@ -485,9 +488,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				Double money = new Double(String.valueOf(pp.getSumMoney())) ;
 				lp.setMoney(money);
 				lp.setPackageId(Integer.valueOf(packageId));
+				iLmediaPackageService.save(lp);
 			}else {
 				//开始分小红包
-				long[] moneys = generate(pp.getSumMoney().longValue() * 100, pp.getLqNum(), pp.getSumMoney().longValue() * 100, 1) ;
+				Long total = (new BigDecimal(pp.getSumMoney()).multiply(new BigDecimal(100))).longValue() ;
+				long[] moneys = generate(total, pp.getLqNum(), total, 1) ;
 				List<LmediaPackage> list = new ArrayList<>() ;
 				for (int i = 0; i < moneys.length; i++) {
 					LmediaPackage lp = new LmediaPackage();
@@ -601,7 +606,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
                 long temp = min + xRandom(min, average);  
                 result[i] = temp;  
                 total -= temp;  
-            } else {  
+            } else {
                 // 在平均线上加钱  
 //              long temp = max - sqrt(nextLong(range2));  
                 long temp = max - xRandom(average, max);  

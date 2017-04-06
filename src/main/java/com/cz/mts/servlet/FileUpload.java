@@ -146,7 +146,8 @@ public class FileUpload extends HttpServlet {
 			}
 			// 获得文件名
 			String filename = item.getName();
-			filename = UUID.randomUUID().toString();
+			String prefix=filename.substring(filename.lastIndexOf(".")+1);
+			filename = UUID.randomUUID().toString()+"."+prefix;
 			
 			File f_dir=new File(dir);
 			if(!f_dir.exists()){

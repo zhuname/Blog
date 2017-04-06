@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -138,7 +139,9 @@ public class MoneyDetailController  extends BaseController {
 		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
 		List<MoneyDetail> moneyDetails = (List<MoneyDetail>) returnObject.getData();
 		if(null != moneyDetails && moneyDetails.size() > 0){
+			
 			for (MoneyDetail moneyDetail2 : moneyDetails) {
+				
 				if(null != moneyDetail2.getItemId()){
 					Card card = cardService.findCardById(moneyDetail2.getItemId());
 					if(null != card){
@@ -149,6 +152,7 @@ public class MoneyDetailController  extends BaseController {
 				Finder finder = new Finder("SELECT * FROM t_user_card WHERE userId=:userId AND cardId=:cardId");
 				finder.setParam("userId", moneyDetail2.getUserId());
 				finder.setParam("cardId", moneyDetail2.getItemId());
+				
 				List<UserCard> userCards = userCardService.queryForList(finder,UserCard.class);
 				if(null != userCards && userCards.size() > 0){
 					for (UserCard userCard : userCards) {
@@ -208,10 +212,17 @@ public class MoneyDetailController  extends BaseController {
 			finder.setParam("endTime", moneyDetail.getEndTime());
 		}
 		
+		if(moneyDetail.getType()==3&&moneyDetail.getStatus()!=null){
+			finder.append(" and itemId in (select cardId from t_user_card where status=:status)");
+			finder.setParam("status", moneyDetail.getStatus());
+		}
+		
+		
 		// ==执行分页查询
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
 		
 		Double sumMoney = 0.0;
+		Double plateMoney = 0.0;
 		for (MoneyDetail moneyDetail2 : datas) {
 			
 			if(moneyDetail2.getType()==1){
@@ -223,7 +234,6 @@ public class MoneyDetailController  extends BaseController {
 					moneyDetail2.setItemName(posterPackage.getTitle());
 					
 				}
-				
 				
 			}else if (moneyDetail2.getType()==2) {
 				
@@ -256,12 +266,41 @@ public class MoneyDetailController  extends BaseController {
 				
 			}
 			
-			//计算总计金额
-			sumMoney += moneyDetail2.getMoney();
+		
 		}
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(finder,pageNew,MoneyDetail.class,moneyDetail);
+		if(null != moneyDetails && moneyDetails.size() > 0){
+			for (MoneyDetail md : moneyDetails) {
+				//计算总计金额
+				sumMoney += md.getMoney();
+				
+				
+				
+			}
+			
+		}
+		
+		pageNew.setPageSize(10000);
+		finder.append(" and type=8 ");
+		List<MoneyDetail> moneyDetails1 = moneyDetailService.findListDataByFinder(finder,pageNew,MoneyDetail.class,moneyDetail);
+		if(null != moneyDetails1 && moneyDetails1.size() > 0){
+			for (MoneyDetail md : moneyDetails) {
+				//计算总计金额
+				if(md.getPlateMoney()!=null){
+					plateMoney += md.getPlateMoney();
+				}
+				
+			}
+			
+		}
+		
+		
 		
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("plateMoney", new BigDecimal(plateMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		returnObject.setMap(map);
 		returnObject.setQueryBean(moneyDetail);
 		returnObject.setPage(page);
@@ -511,7 +550,7 @@ public class MoneyDetailController  extends BaseController {
 	
 	
 	/**
-	 * 获取关注人列表
+	 * 获取领卡人列表
 	 * json数据,为APP提供数据
 	 * 
 	 * @param request
@@ -528,7 +567,7 @@ public class MoneyDetailController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		if(moneyDetail.getItemId()!=null){
-			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0 GROUP BY au.id  order by mon.id");
+			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0  order by mon.id");
 			finder.setParam("itemId", moneyDetail.getItemId());
 			
 			

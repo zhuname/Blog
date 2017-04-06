@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -57,9 +58,22 @@ public class Share  extends BaseEntity {
 	 * 是否增加红包领取次数
 	 */
 	private java.lang.Integer isNum;
+	
+	private Integer type;
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+	@Transient
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
 	public Share(){
 	}
@@ -74,6 +88,8 @@ public class Share  extends BaseEntity {
 	public void setId(java.lang.Integer value) {
 		this.id = value;
 	}
+	
+	
 	
 	@Id
      @WhereSQL(sql="id=:Share_id")

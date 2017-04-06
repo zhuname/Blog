@@ -441,5 +441,27 @@ public class SysSysparamController  extends BaseController {
 		return "/syssysparam/aboutImage";
 	}
 	
+	/**
+	 * 修改后台分享内容
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/apkContent")
+	public String updateApkContent(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","apkContent");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateApkContent";
+	}
+	
+	
 
 }

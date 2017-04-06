@@ -27,7 +27,12 @@ function deleteMoneyDetail(){
 	}
 }
 
-
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
+	
+});
 </script>
 
 
@@ -40,7 +45,7 @@ function deleteMoneyDetail(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/moneydetail/list1" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/moneydetail/list3" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -58,6 +63,13 @@ function deleteMoneyDetail(){
 			 	<span>
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
+			 <label for="search_status"><b>卡券状态:</b></label>
+			 <select id="search_status" name="status" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">未兑换</option>
+				<option value="2">已兑换</option>
+				<option value="3">已过期</option>
+			</select>
 			 
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
@@ -66,7 +78,10 @@ function deleteMoneyDetail(){
 
 </form>
 		</div>
-		<span style="float: right;" id="sumMoney">购买总金额：${returnDatas.map.sumMoney}</span>
+		<div style="float: right;" >
+		<span  style="margin-right:10px;"  id="sumMoney">购买总金额：${returnDatas.map.sumMoney}</span>
+		<span id="plateMoney">平台收益：${returnDatas.map.plateMoney}</span>
+		</div>
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/moneydetail/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/moneydetail/list/export');" class="btn  btn-sm  btn-primary">
@@ -117,23 +132,23 @@ function deleteMoneyDetail(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-							<td >
+							<td>
 								${(_data.userName)!''}
 							</td>
-							<td >
+							<td>
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td >
+							<td>
 								${(_data.statusName)!''}
 							</td>
-							<td >
+							<td>
 								${(_data.money)!0}
 							</td>
-							<td >
+							<td>
 								${((_data.experTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td >
+							<td>
 								${((_data.changeTime)?string('yyyy-MM-dd'))!''}
 							</td>
 						</tr>
@@ -145,7 +160,7 @@ function deleteMoneyDetail(){
             </div>
             <!-- /.span -->
         </div>
-        <#if returnDatas.page??>	
+         <#if returnDatas.page??>	
             <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
          </#if>
     </div>

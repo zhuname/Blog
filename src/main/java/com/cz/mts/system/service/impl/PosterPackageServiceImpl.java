@@ -130,6 +130,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		
 		//获取红包
 		PosterPackage _package = findById(packageId, PosterPackage.class) ;
+		AppUser appUser = appUserService.findAppUserById(_package.getUserId());
 		if(_package != null && _package.getStatus() == 3){  //通过审核的红包才能抢
 			if(_package.getEncrypt() == 0){  //看是否是加密红包，如果不是
 				//看这个用户是否能在此小时内能抢
@@ -171,7 +172,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			
 			if(list != null && list.size() !=0){
 				AppUser _user = findById(userId, AppUser.class) ;
-				if(null != _user && 1 == _user.getIsPush()){
+				if(null != _user &&  _user.getIsPush() != null && 1 == _user.getIsPush()){
 					//给发布人发推送
 					notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
 				}
@@ -240,10 +241,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 					if(pp.getNum() == 0){
 						pp.setStatus(4);
 						pp.setEndTime(new Date());
-						AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 						if(null != appUser && 1 == appUser.getIsPush()){
 							//给发布人发推送
-							notificationService.notify(16, Integer.parseInt(packageId), pp.getUserId());
+							notificationService.notify(16, pp.getId(), pp.getUserId());
 						}
 					}
 					super.saveorupdate(pp) ;
@@ -295,7 +295,6 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				notificationService.notify(19, Integer.parseInt(packageId), pp.getUserId());
 			}
 			
-
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());
@@ -324,7 +323,8 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				lposterPackageService.save(lp) ;
 			}else {
 				//开始分小红包
-				long[] moneys = generate(pp.getSumMoney().longValue() * 100, pp.getLqNum(), pp.getSumMoney().longValue() * 100, 1) ;
+				Long total = (new BigDecimal(pp.getSumMoney()).multiply(new BigDecimal(100))).longValue() ;
+				long[] moneys = generate(total, pp.getLqNum(), total, 1) ;
 				List<LposterPackage> list = new ArrayList<>() ;
 				for (int i = 0; i < moneys.length; i++) {
 					LposterPackage lp = new LposterPackage();

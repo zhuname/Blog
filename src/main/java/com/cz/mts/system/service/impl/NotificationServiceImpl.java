@@ -87,8 +87,8 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			case 6:
-				JPushUtil.sendJPushNotification("您发布的卡券即将过期，您可操作再次发放或查看卡券领取状况", type+"", id, userId, "");
-				message=new Message(null, 6, userId, new Date(), "您发布的卡券即将过期，您可操作再次发放或查看卡券领取状况", id, null, 0, "卡券到期", 2);
+				JPushUtil.sendJPushNotification("您发布的卡券已过期，您可操作再次发放或查看卡券领取状况", type+"", id, userId, "");
+				message=new Message(null, 6, userId, new Date(), "您发布的卡券已过期，您可操作再次发放或查看卡券领取状况", id, null, 0, "卡券到期", 2);
 				messageService.save(message);
 			break;
 			case 7:
@@ -139,7 +139,7 @@ public class NotificationServiceImpl implements NotificationService {
 			case 15:
 				JPushUtil.sendJPushNotification("您发布的海报红包已被人领取哦，请及时关注领取动态", type+"", id, userId, "");
 				try {
-					message=new Message(null, 15, userId, new Date(), extend[0], id, "您发布的海报红包已被人领取哦，请及时关注领取动态", 0, "红包领取", 2);
+					message=new Message(null, 15, userId, new Date(), "您发布的海报红包已被人领取哦，请及时关注领取动态", id, null, 0, "红包领取", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception

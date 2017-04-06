@@ -41,6 +41,10 @@ function showdata(result) {
 	for (var s in result.data) {
 		set_val(s, result.data[s]);
 	}
+	
+	jQuery("#imageI").attr('src',jQuery("#image").val()); 
+    jQuery("#imageI").attr('value',jQuery("#image").val()); 
+	
 }
 
 	var url=window.location.href;
@@ -48,8 +52,11 @@ function showdata(result) {
 	var type = types[types.length-1];
 
 var listurl="${ctx}/system/category/list";
+
+
 function deleteCategory(){
 	var id=jQuery("#id").val();
+	console.log(id);
 	if(!id||id==""){
 		myalert("请选择你要删除的记录");
 		return;
@@ -69,7 +76,7 @@ function deleteCategory(){
 	    	 $("#type").val(3);
 	    	  style=2;
 	    }
-		mydelete(_url,listurl+style);
+		mydelete(_url,listurl+style,null,"确认删除吗？");
 	}
 }
 
@@ -139,6 +146,7 @@ function headOnc(){
             	jQuery("#imageI").attr('src',data);
             	jQuery("#imageI").attr('value',data);
             	jQuery("#image").attr('value',data);
+            	jQuery("#image").val(data);
             },
             error : function(data, status, e) {
            		console.log(data);
@@ -148,14 +156,13 @@ function headOnc(){
 
         return false;
 
-
 	});
 
 	$(document).on("change", "#image", function() {
     //...
 		jQuery("#imageI").attr('src',jQuery("#image").val()); 
         jQuery("#imageI").attr('value',jQuery("#image").val()); 
-
+		
 	});
 	
 </script>
@@ -286,7 +293,6 @@ function headOnc(){
 										<input type="hidden" id="id" name="id" value=""/>	
 									
 									<div class="col-sm-6">
-								
 										
 										<div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="name" >分类名称</label>
@@ -297,9 +303,9 @@ function headOnc(){
 										
 										<div class="form-group">
 											<label class="col-sm-3 control-label no-padding-right" for="image" >分类图片</label>
-					  								<img  name="imageI" onclick="headOnc();" style="width:100px;height: 100px;" id="imageI" src="">
-					   								 <input type="file" id="filed" name="filed" style="display:none">
-					   								 <input name="image" class="form-control" id="image" style="display:none"  type="text" />
+					  								<img  name="imageI" onclick="headOnc();" style="width:100px;height: 100px;margin-left: 12px;" id="imageI" src="">
+					   								<input type="file" id="filed" name="filed" style="display:none">
+					   								<input name="image" class="form-control" id="image" style="display:none"  type="text" />
 										</div>
 										
 									<!-- 	<div class="form-group">

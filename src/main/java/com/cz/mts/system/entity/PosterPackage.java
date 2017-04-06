@@ -209,6 +209,31 @@ public class PosterPackage  extends BaseEntity {
 	
 	private List<UserMedal> userMedals;
 	
+	private Double sumOverMoney;
+	
+	
+	private Integer shareNum;
+	
+	
+	 @WhereSQL(sql="shareNum=:card_shareNum")
+	public Integer getShareNum() {
+		return shareNum;
+	}
+
+	public void setShareNum(Integer shareNum) {
+		this.shareNum = shareNum;
+	}
+	
+	
+	@Transient
+	public Double getSumOverMoney() {
+		return sumOverMoney;
+	}
+
+	public void setSumOverMoney(Double sumOverMoney) {
+		this.sumOverMoney = sumOverMoney;
+	}
+
 	@Transient
 	public List<UserMedal> getUserMedals() {
 		return userMedals;
@@ -307,7 +332,7 @@ public class PosterPackage  extends BaseEntity {
 		this.isAtt = isAtt;
 	}
 
-	@Transient
+	 @WhereSQL(sql="lookNum=:PosterPackage_lookNum")
 	public Integer getLookNum() {
 		return lookNum;
 	}

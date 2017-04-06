@@ -123,7 +123,7 @@ public class SecurityAspect {
 						Integer userId = json.getInt("sessionId") ;
 						AppUser user = appUserService.findAppUserById(userId) ;
 						if(user != null){
-							if(user.getIsBlack() == 1){  //黑名单
+							if(null != user.getIsBlack() && user.getIsBlack() == 1){  //黑名单
 								return new ReturnDatas(ReturnDatas.Black, "黑名单成员！") ; 
 							}
 						}
@@ -144,8 +144,8 @@ public class SecurityAspect {
 //        				paramMap.put(key, new String[]{json.get(key).toString()}) ; ;
 //        			}
 //        			ac.setParameters(parameters);
-//        			paramMap.put("sign", new String[]{"1"}) ;
-//        			HttpServletRequest req =  new ParameterRequestWrapper(request, paramMap) ;
+//        			paramMap.put("sign",new String[]{"1"}) ;
+//        			HttpServletRequest req = new ParameterRequestWrapper(request, paramMap) ;
 //        			args[0] = req ;
         			object = proceedingJoinPoint.proceed() ;
         		}

@@ -43,22 +43,26 @@ function showdata(result) {
 }	
 	
 
-//点击播放视频
+
+
+//点击看大图
 $(document).on("click", ".sim", function() {
-	var me=$(this).html();
+	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+	console.log(me);
 		//iframe层-多媒体
     	layer.open({
 		  type: 1,
 		  title: false,
 		  closeBtn: 0,
-		  area: '200px',
+		  area: '1000px',
 		  skin: 'layui-layer-nobg', //没有背景色
 		  shadeClose: true,
 		  content:me
-		 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+		 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 		});
     	layer.msg('点击任意处关闭');
 });
+
 
 
 var medalMultiSelectTree;
@@ -224,6 +228,8 @@ jQuery(document).ready(function(){
 			 <label for="search_name"><b>用户名称:</b></label> 
 			 <input type="text" id="search_name"  name="name" placeholder="请填写用户昵称"  value="${(returnDatas.queryBean.name)!''}">
 			 
+			  <label for="search_cityName"><b>城市名称:</b></label> 
+			 <input type="text" id="search_cityName"  name="cityName" placeholder="请填写城市名称"  value="${(returnDatas.queryBean.cityName)!''}">
 			 
 			 <label for="search_state">开始时间</label>
 			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
@@ -243,6 +249,7 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
+		
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/appuser/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/appuser/list/export');" class="btn  btn-sm  btn-primary">
@@ -266,6 +273,14 @@ jQuery(document).ready(function(){
 	</div>
 </div>
 
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			  <span style="float: right;">总用户量：${returnDatas.map.sumPerson}</span>
+		</div>
+	</div>
+</div>
+
    <div class="row" style="overflow-x:scroll;">
             <div class="col-xs-12">
 	            <!--start_export-->
@@ -275,12 +290,6 @@ jQuery(document).ready(function(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_name" >昵称</th>
@@ -315,12 +324,6 @@ jQuery(document).ready(function(){
 					 
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info" title="编辑"
@@ -329,7 +332,7 @@ jQuery(document).ready(function(){
                                         </button>
                                         
                                         <button class="btn btn-xs btn-danger" title="拉黑"
-                                                onclick="mydelete('${ctx}/system/appuser/isblack?id=${(_data.id)!''}','${ctx}/system/appuser/list');">
+                                                onclick="mydelete('${ctx}/system/appuser/isblack?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
                                             <i class="ace-icon fa bigger-120">
                                             	拉黑
                                             <i class=" fa  fa-trash-o"></i>
@@ -345,6 +348,12 @@ jQuery(document).ready(function(){
                                             <i class="ace-icon fa fa-certificate bigger-120"></i>
                                         </button>
                                         
+                                         <button class="btn btn-xs btn-danger" title="卡券手续费开关"
+                                                onclick="mydelete('${ctx}/system/appuser/isCloseFee?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+                                            <i class="ace-icon fa bigger-120">
+                                            <i class=" fa  fa-toggle-off"></i>
+                                            </i>
+                                        </button>
                                         
                                         
                                     </div>
@@ -400,8 +409,8 @@ jQuery(document).ready(function(){
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td class="sim">
-								<img src="${(_data.header)!''}" height="100px;" width="100px;"/>
+							<td>
+								<img  class="sim" src="${(_data.header)!''}" height="100px;" width="100px;"/>
 							</td>
 							<td >
 								${(_data.cityName)!''}

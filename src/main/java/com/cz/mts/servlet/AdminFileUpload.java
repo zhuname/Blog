@@ -45,7 +45,6 @@ public class AdminFileUpload extends HttpServlet {
 	//callback的url的key
 	private static final String callbackurlName="callbackurl";
 	
-
 	// 1. 创建工厂类
 	DiskFileItemFactory factory = new DiskFileItemFactory();
 	// 2. 创建FileUpload对象
@@ -144,9 +143,11 @@ public class AdminFileUpload extends HttpServlet {
 			if (item.isFormField()) {// 普通字段
 				continue;
 			}
+			
 			// 获得文件名
 			String filename = item.getName();
-			filename = UUID.randomUUID().toString();
+			String prefix=filename.substring(filename.lastIndexOf(".")+1);
+			filename = UUID.randomUUID().toString()+"."+prefix;
 			
 			File f_dir=new File(dir);
 			if(!f_dir.exists()){

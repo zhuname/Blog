@@ -16,19 +16,20 @@ $('.date-picker').datepicker({
 	$(this).prev().focus();
 });
 
-//点击播放视频
+//点击看大图
 	$(document).on("click", ".sim", function() {
-    	var me=$(this).html();
+    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	console.log(me);
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '200px',
+			  area: '1000px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me
-			 // content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
+			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
 	});
@@ -51,7 +52,10 @@ function checkRefuse(id){
 		myalert("请输入拒绝原因");
 		return;
 	}
-	jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: reason ,type:0},
+	
+	
+	layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+			jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: text ,type:0},
 			function(_json) {
 				if (_json.status == "success") {
 					myalert("审核成功");
@@ -62,6 +66,8 @@ function checkRefuse(id){
 					return false;
 				}
 	});
+	  			layer.close(index);
+			});
 	
 }
 
@@ -122,12 +128,12 @@ jQuery(document).ready(function(){
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
 			 
 			 <label for="search_state">支付开始时间</label>
-			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
+			<input name="startTime"  class="date-picker"  style="width:100px;"    id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
 			  <span >
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 		    <label for="search_state">支付结束时间</label>
-			<input name="enddTime"  class="date-picker"  id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
+			<input name="enddTime"  class="date-picker" style="width:100px;"    id="enddTime" value="${(returnDatas.queryBean.enddTime)!''}"  type="text"/>
 			 	<span>
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
@@ -140,8 +146,7 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		<span style="float: right;" id="pay">支付金额：${returnDatas.map.sumPayMoney}</span>&nbsp;&nbsp;&nbsp;
-		<span style="float: right;" id="bal">剩余金额：${returnDatas.map.sumBalance}</span>   
+		  
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/posterpackage/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/posterpackage/list/export');" class="btn  btn-sm  btn-primary">
@@ -165,6 +170,17 @@ jQuery(document).ready(function(){
 	</div>
 </div>
 
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			 <span style="float: right;" id="pay">总金额：${returnDatas.map.sumPayMoney}</span>
+			<span style="padding-right: 10px;">未抢金额：${returnDatas.map.sumBalance}</span> 
+			<span style="padding-right: 10px;">已抢金额：${returnDatas.map.sumOverMoney}</span> 
+		</div>
+	</div>
+</div>
+
+
   <div class="row" style="overflow-x:scroll;">
             <div class="col-xs-12">
 	            <!--start_export-->
@@ -174,19 +190,12 @@ jQuery(document).ready(function(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_userId" >用户名称</th>
 						<th id="th_image" >海报图片</th>
 						<th id="th_categoryId" >分类名称</th>
 						<th id="th_title" >主题</th>
-						<th id="th_descr" >简介</th>
 						<th id="th_encrypt" >是否加密</th>
 						<th id="th_command" >加密口令</th>
 						<th id="th_sumMoney" >红包金额</th>
@@ -198,7 +207,7 @@ jQuery(document).ready(function(){
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_num" >剩余待抢次数</th>
-						<th id="th_code" >订单编号</th>
+						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -210,12 +219,6 @@ jQuery(document).ready(function(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
@@ -223,14 +226,14 @@ jQuery(document).ready(function(){
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/posterpackage/delete/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list');">
+                                                onclick="mydelete('${ctx}/system/posterpackage/delete/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list',null,'确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                         
                                         
                                         <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/posterpackage/list');">
+                                                onclick="mydelete('${ctx}/system/posterpackage/check/json?type=1&id=${(_data.id)!''}','${ctx}/system/posterpackage/list',null,'确认删除？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	
@@ -282,17 +285,14 @@ jQuery(document).ready(function(){
 							<td>
 								${(_data.appUserName)!''}
 							</td>
-							<td class="sim">
-								<img src="${(_data.image)!''}" height="100px;" width="140px;"/>
+							<td>
+								<img  class="sim" src="${(_data.image)!''}" height="100px;" width="140px;"/>
 							</td>
 							<td >
 								${(_data.categoryName)!''}
 							</td>
 							<td >
 								${(_data.title)!''}
-							</td>
-							<td >
-								${(_data.descr)!''}
 							</td>
 							<td >
 								<#if (_data.encrypt) == 0 >
@@ -351,7 +351,7 @@ jQuery(document).ready(function(){
 								${(_data.num)!0}
 							</td>
 							<td >
-								${(_data.code)!''}
+								${(_data.shareNum)!''}
 							</td>
 						</tr>
 					</#list>

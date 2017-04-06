@@ -28,6 +28,7 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LmediaPackage;
@@ -161,10 +162,20 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
 		  String appUserId = request.getParameter("appUserId");
-		  java.lang.Integer id=null;
+		  Integer id= 0;
 		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
+			 id= Integer.parseInt(strId);
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
+			  
+			  if(null != mediaPackage){
+				 if(null == mediaPackage.getScanNum()){
+					 mediaPackage.setScanNum(0);
+				 }
+				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
+				 mediaPackageService.update(mediaPackage,true);
+			 }
+			  
+			  
 			  //查询发红包的用户
 			 if(mediaPackage != null && mediaPackage.getUserId() != null){
 				 AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
@@ -206,13 +217,24 @@ public class MediaPackageController  extends BaseController {
 						mediaPackage.setIsLook(0);
 					}
 			 }
-			 if(null != mediaPackage && StringUtils.isNotBlank(appUserId) && 3 == mediaPackage.getStatus()){
-				 if(null == mediaPackage.getScanNum()){
-					 mediaPackage.setScanNum(0);
-				 }
-				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
-				 mediaPackageService.update(mediaPackage,true);
+			 
+			 
+			 //是否关注
+			 if(mediaPackage!=null&&StringUtils.isNotBlank(appUserId)){
+				 Attention attention=new Attention();
+				 attention.setUserId(Integer.parseInt(appUserId));
+				 attention.setItemId(mediaPackage.getUserId());
+				// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+					if(datas!=null&&datas.size()>0){
+						mediaPackage.setIsAttention(1);
+					}else{
+						mediaPackage.setIsAttention(0);
+					}
 			 }
+			 
 			 
 			 //返回分类名称
 			 if(mediaPackage != null && mediaPackage.getCategoryId() != null){
@@ -399,6 +421,8 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setBalance(mediaPackage.getSumMoney());
 				mediaPackage.setNum(mediaPackage.getLqNum());
 				mediaPackage.setIsDel(0);
+				mediaPackage.setShareNum(0);
+				
 				Object id=mediaPackageService.saveorupdate(mediaPackage);
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				
@@ -532,20 +556,32 @@ public class MediaPackageController  extends BaseController {
 						mp.setPayName("余额支付");
 					}
 				}
-				if(null == mp.getPayMoney()){
-					mp.setPayMoney(0.0);
-				}
-				sumPayMoney += mp.getPayMoney();
-				
-				if(null == mp.getBalance()){
-					mp.setBalance(0.0);
-				}
-				sumBalance += mp.getBalance();
 			}
 		}
+		
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		List<MediaPackage> mediaPackages = mediaPackageService.findListDataByFinder(finder,pageNew,MediaPackage.class,mediaPackage);
+		if(mediaPackages != null && mediaPackages.size() > 0){
+			for (MediaPackage mpp : mediaPackages) {
+				if(null == mpp.getSumMoney()){
+					mpp.setSumMoney(0.0);
+				}
+				sumPayMoney += mpp.getSumMoney();
+				
+				if(null == mpp.getBalance()){
+					mpp.setBalance(0.0);
+				}
+				sumBalance += mpp.getBalance();
+			}
+		}
+		
+		Double sumOverMoney = new BigDecimal(sumPayMoney).subtract(new BigDecimal(sumBalance)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		
 		HashMap<String, Object> map=new HashMap<String,Object>();  
 		map.put("sumPayMoney", new BigDecimal(sumPayMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		map.put("sumBalance", new BigDecimal(sumBalance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("sumOverMoney", sumOverMoney);
 		
 		returnObject.setMap(map);
 		returnObject.setQueryBean(mediaPackage);

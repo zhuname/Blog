@@ -1,5 +1,7 @@
 package com.cz.mts.system.web;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
@@ -23,14 +25,30 @@ public class AttenThreadController extends Thread{
 	
 	public void run(){
 		try {
-			if(null != posterPackage && 1 == appUser.getIsPush()){
-				notificationService.notify(10,posterPackage.getId(),attention.getId(),appUser.getName(),posterPackage.getTitle(),posterPackage.getBalance()+"");
+			String name = "";
+			if(null != posterPackage && null != appUser && 1 == appUser.getIsPush()){
+				if(StringUtils.isNotBlank(appUser.getName())){
+					name = appUser.getName();
+				}else{
+					name = appUser.getPhone();
+				}
+				notificationService.notify(10,posterPackage.getUserId(),attention.getUserId(),name,posterPackage.getTitle(),posterPackage.getBalance()+"");
 			}
-			if(null != mediaPackage && 1 == appUser.getIsPush()){
-				notificationService.notify(10,mediaPackage.getId(),attention.getId(),appUser.getName(),mediaPackage.getTitle(),mediaPackage.getBalance()+"");
+			if(null != mediaPackage && null != appUser && 1 == appUser.getIsPush()){
+				if(StringUtils.isNotBlank(appUser.getName())){
+					name = appUser.getName();
+				}else{
+					name = appUser.getPhone();
+				}
+				notificationService.notify(10,mediaPackage.getUserId(),attention.getUserId(),name,mediaPackage.getTitle(),mediaPackage.getBalance()+"");
 			}
-			if(null != card && 1 == appUser.getIsPush()){
-				notificationService.notify(11,card.getId(),attention.getId(),appUser.getName(),card.getTitle());
+			if(null != card && null != appUser && 1 == appUser.getIsPush()){
+				if(StringUtils.isNotBlank(appUser.getName())){
+					name = appUser.getName();
+				}else{
+					name = appUser.getPhone();
+				}
+				notificationService.notify(11,card.getUserId(),attention.getUserId(),name,card.getTitle());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
