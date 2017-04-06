@@ -155,10 +155,11 @@ public class ShareController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-			if(null == share.getUserId() || null == share.getShareType() || null == share.getId() || null == share.getType()){
+			if( null == share.getShareType() || null == share.getId() || null == share.getType()){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
-			}else{
+			}
+			if(null == share.getUserId() ){
 				//查询appUser表中的信息
 				AppUser appUser = appUserService.findAppUserById(share.getUserId());
 				if(null != appUser){
