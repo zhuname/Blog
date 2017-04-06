@@ -105,7 +105,7 @@ public class AttentionController  extends BaseController {
 			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id  order by att.id");
 			finder.setParam("id", attention.getUserId());
 			
-			page.setOrder("id");
+			page.setOrder("att.id");
 			page.setSort("desc");
 			
 			List<Map<String, Object>> list = appUserService.queryForList(finder,page);

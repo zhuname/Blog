@@ -99,8 +99,9 @@ public class UserCardController  extends BaseController {
 		Page page = newPage(request);
 		
 		Finder finder=Finder.getSelectFinder(UserCard.class).append("where status!=0 ");
-		page.setOrder("status,expTime");
-		page.setSort("asc");
+		
+		finder.append(" ORDER BY `status` ASC,expTime ASC");
+		
 		// ==执行分页查询
 		List<UserCard> datas=userCardService.findListDataByFinder(finder,page,UserCard.class,userCard);
 		
