@@ -12,6 +12,7 @@ public class ReturnDatas implements Serializable{
 	public static final String SUCCESS = "success";
 	public static final String ERROR = "error";
 	public static final String WARNING = "warning";
+	public static final String Black = "black";
 	private String statusCode="200";
 	private String status;
 	private String message;

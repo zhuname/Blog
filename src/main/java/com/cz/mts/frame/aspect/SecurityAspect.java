@@ -124,7 +124,7 @@ public class SecurityAspect {
 						AppUser user = appUserService.findAppUserById(userId) ;
 						if(user != null){
 							if(user.getIsBlack() == 1){  //黑名单
-								return new ReturnDatas(ReturnDatas.WARNING, "黑名单成员！") ; 
+								return new ReturnDatas(ReturnDatas.Black, "黑名单成员！") ; 
 							}
 						}
 					}
