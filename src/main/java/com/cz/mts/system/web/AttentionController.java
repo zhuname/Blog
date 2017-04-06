@@ -102,7 +102,7 @@ public class AttentionController  extends BaseController {
 			fd2.setParam("userId", attention.getUserId());
 			attentionService.update(fd2);
 			
-			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id  order by att.id");
+			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id ");
 			finder.setParam("id", attention.getUserId());
 			
 			page.setOrder("att.id");
