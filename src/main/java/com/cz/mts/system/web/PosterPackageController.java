@@ -145,17 +145,16 @@ public class PosterPackageController  extends BaseController {
 				
 			}
 			
-			if(personType!=null&&personType.intValue()==3){
+			if(personType!=null&&posterPackage.getStatus()==3){
 				finder1.append(" and (p.status = 3 or p.status = 4 )");
-			}
-			
-			if(posterPackage.getStatus()!=null){
+			}else if(posterPackage.getStatus()!=null){
 				
 				finder1.append(" and p.status = :status");
 				
 				finder1.setParam("status", posterPackage.getStatus());
 				
 			}
+			
 			
 			if(posterPackage.getCategoryId()!=null){
 				

@@ -118,7 +118,6 @@ public class SecurityAspect {
 						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
 					}
 					
-					
 					if(json.containsKey("sessionId")){
 						Integer userId = json.getInt("sessionId") ;
 						AppUser user = appUserService.findAppUserById(userId) ;
