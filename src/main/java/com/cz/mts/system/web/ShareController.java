@@ -169,7 +169,10 @@ public class ShareController  extends BaseController {
 							shareService.saveorupdate(share);
 							
 							//更新appUser表中的当前可领取次数字段
-							appUser.setCurrentShareNum(appUser.getCurrentShareNum());
+							appUser.setCurrentShareNum(appUser.getCurrentShareNum()-1);
+							
+							appUser.setCurrentLqNum(appUser.getCurrentLqNum()+1);
+							
 							appUserService.update(appUser);
 						}
 					}
@@ -195,7 +198,7 @@ public class ShareController  extends BaseController {
 				}
 				
 				//视频红包
-				if(1 == share.getType()){
+				if(2 == share.getType()){
 					MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(share.getId());
 					if(null != mediaPackage){
 						if(null == mediaPackage.getShareNum()){
@@ -210,7 +213,7 @@ public class ShareController  extends BaseController {
 				}
 				
 				//卡券红包
-				if(1 == share.getType()){
+				if(3 == share.getType()){
 					Card card = cardService.findCardById(share.getId());
 					if(null != card){
 						if(null == card.getShareNum()){

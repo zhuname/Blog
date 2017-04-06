@@ -121,7 +121,7 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 		}else{
 			// ==执行分页查询
 			collect.setOsType(null);
-			page.setOrder("createTime");
+			page.setOrder("id");
 			page.setSort("desc");
 			List<Collect> datas = findListDataByFinder(null,page,Collect.class,collect);
 			if(null != datas && datas.size() > 0){
