@@ -154,7 +154,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 		if(personType!=null&&mediaPackage.getStatus()==3){
-			finder1.append(" and (p.status = 3 or p.status = 4 )");
+			finder1.append(" and (status = 3 or status = 4 )");
 		}else if(null != mediaPackage.getStatus()){
 			finder1.append(" and status=:status");
 			finder1.setParam("status", mediaPackage.getStatus());
