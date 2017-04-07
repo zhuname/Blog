@@ -493,7 +493,7 @@ public class MoneyDetailController  extends BaseController {
 					}
 					
 					if(null != md.getItemId()){
-						if(1 == md.getType()){
+						if(1 == md.getType() || 6 == md.getType()){
 							//查询海报
 							PosterPackage posterPackage = posterPackageService.findPosterPackageById(md.getItemId());
 							if(posterPackage != null && StringUtils.isNotBlank(posterPackage.getTitle())){
@@ -501,7 +501,7 @@ public class MoneyDetailController  extends BaseController {
 							}
 						}
 						
-						if(2 == md.getType()){
+						if(2 == md.getType() || 5 == md.getType()){
 							//查询视频
 							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(md.getItemId());
 							if(mediaPackage != null && StringUtils.isNotBlank(mediaPackage.getTitle())){

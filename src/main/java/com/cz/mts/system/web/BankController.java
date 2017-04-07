@@ -170,7 +170,6 @@ public class BankController  extends BaseController {
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
-	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -197,7 +196,6 @@ public class BankController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");

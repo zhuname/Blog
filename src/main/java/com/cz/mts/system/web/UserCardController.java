@@ -107,9 +107,9 @@ public class UserCardController  extends BaseController {
 		finder.append(" ORDER BY `status` ASC,expTime ASC");
 		
 		// ==执行分页查询
-		List<UserCard> datas=userCardService.findListDataByFinder(finder,page,UserCard.class,null);
+		List<UserCard> datas=userCardService.queryForList(finder,UserCard.class,page);
 		
-		if(datas.size()>0){
+		if(datas != null && datas.size()>0){
 			
 			for (UserCard userCard2 : datas) {
 				Card card = cardService.findCardById(userCard2.getCardId());

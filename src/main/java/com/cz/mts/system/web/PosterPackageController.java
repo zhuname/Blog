@@ -170,7 +170,7 @@ public class PosterPackageController  extends BaseController {
 			}else{
 				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
 			}
-			finder1.append(" order by p.balance desc");
+			finder1.append(" order by p.balance desc,p.createTime desc");
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
 		
 			if(null != list && list.size() > 0){
@@ -248,7 +248,7 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
-			 if(null != posterPackage){
+			 if(null != posterPackage && 3 == posterPackage.getStatus()){
 				 if(posterPackage.getLookNum()==null){
 					 posterPackage.setLookNum(0);
 				 }
