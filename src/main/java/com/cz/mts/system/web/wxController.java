@@ -81,7 +81,8 @@ public class wxController extends BaseController {
 					resultCode = weixinCode ;
 				//}
 				code = resultCode;
-				type = resultCode.substring(0,1);
+				type = code.substring(0, 1);
+				code = code.substring(1);
 
 				if ("SUCCESS".equals(result_code)) {
 					// c充值
