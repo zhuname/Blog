@@ -20,6 +20,7 @@ import com.cz.mts.system.entity.Bank;
 import com.cz.mts.system.service.IBankService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -39,7 +40,7 @@ public class BankController  extends BaseController {
 	@Resource
 	private IBankService bankService;
 	
-	private String listurl="/system/bank/bankList";
+	private String listurl="/bank/bankList";
 	
 	
 	   
@@ -55,7 +56,7 @@ public class BankController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Bank bank) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, bank);
+		ReturnDatas returnObject = listadminjson(request, model, bank);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -102,7 +103,7 @@ public class BankController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/bank/bankLook";
+		return "/bank/bankLook";
 	}
 
 	
@@ -133,15 +134,17 @@ public class BankController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Bank bank,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
-			bankService.saveorupdate(bank);
+			if(null == bank.getId()){
+				bankService.saveorupdate(bank);
+			}else{
+				bankService.update(bank,true);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -160,14 +163,13 @@ public class BankController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/bank/bankCru";
+		return "/bank/bankCru";
 	}
 	
 	/**
 	 * 删除操作
 	 */
 	@RequestMapping(value="/delete")
-	@SecurityApi
 	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
 
 			// 执行删除
@@ -194,7 +196,6 @@ public class BankController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/delete/more")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas deleteMore(HttpServletRequest request, Model model) {
 		String records = request.getParameter("records");
@@ -218,6 +219,46 @@ public class BankController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	
+	/**
+	 * 查看的Json格式数据,为APP端提供数据
+	 */
+	@RequestMapping(value = "/lookadmin/json")
+	public @ResponseBody
+	ReturnDatas lookAdminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+		  Bank bank = bankService.findBankById(id);
+		   returnObject.setData(bank);
+		}else{
+		returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		return returnObject;
+		
+	}
+	
+	
+	@RequestMapping("/listadmin/json")
+	public @ResponseBody
+	ReturnDatas listadminjson(HttpServletRequest request, Model model,Bank bank) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		Finder finder = Finder.getSelectFinder(Bank.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(bank.getName())){
+			finder.append(" and INSTR(`name`,:name)>0 ");
+			finder.setParam("name", bank.getName());
+		}
+		// ==执行分页查询
+		List<Bank> datas=bankService.findListDataByFinder(finder,page,Bank.class,null);
+		returnObject.setQueryBean(bank);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 
 }

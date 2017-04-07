@@ -30,20 +30,20 @@ function deleteApplyMedal(){
 
 function checkRefuse(id){
 	//prompt层
-			layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
-			jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: text },
-			function(_json) {
-				if (_json.status == "success") {
-					myalert("审核成功");
-					myhref("${ctx}/system/applymedal/list")
-					return false;
-				} else {
-					myalert("审核失败");
-					return false;
-				}
-			});
-	  			layer.close(index);
-			});
+	layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+	jQuery.post("${ctx}/system/applymedal/fail/json",{ id: id, reason: text },
+	function(_json) {
+		if (_json.status == "success") {
+			myalert("审核成功");
+			myhref("${ctx}/system/applymedal/list")
+			return false;
+		} else {
+			myalert("审核失败");
+			return false;
+		}
+	});
+ 			layer.close(index);
+	});
 	
 }
 

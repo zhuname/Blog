@@ -445,6 +445,13 @@ public class CardController  extends BaseController {
 				returnObject.setMessage("找不到此卡券");
 				return returnObject;
 			}
+			
+			//判断是否是自己购买
+			if(null != card.getUserId() && userId.intValue() == card.getUserId().intValue()){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("自己不能购买自己发布的卡券");
+				return returnObject;
+			}
 			//判断数量
 			if(card.getNum()<num){
 				returnObject.setStatus(ReturnDatas.ERROR);

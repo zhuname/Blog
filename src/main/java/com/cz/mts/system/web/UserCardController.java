@@ -99,13 +99,17 @@ public class UserCardController  extends BaseController {
 		Page page = newPage(request);
 		
 		Finder finder=Finder.getSelectFinder(UserCard.class).append("where status!=0 ");
+		if(null != userCard.getUserId()){
+			finder.append(" and userId = :userId");
+			finder.setParam("userId", userCard.getUserId());
+		}
 		
 		finder.append(" ORDER BY `status` ASC,expTime ASC");
 		
 		// ==执行分页查询
-		List<UserCard> datas=userCardService.findListDataByFinder(finder,page,UserCard.class,userCard);
+		List<UserCard> datas=userCardService.queryForList(finder,UserCard.class,page);
 		
-		if(datas.size()>0){
+		if(datas != null && datas.size()>0){
 			
 			for (UserCard userCard2 : datas) {
 				Card card = cardService.findCardById(userCard2.getCardId());

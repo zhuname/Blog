@@ -173,8 +173,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.setParam("categoryId", mediaPackage.getCategoryId());
 		}
 		
-		finder1.append(" order by balance desc");
-		List<MediaPackage> dataList = findListDataByFinder(finder1,page,MediaPackage.class,null);
+		finder1.append(" order by balance desc,createTime desc");
+		List<MediaPackage> dataList = queryForList(finder1,MediaPackage.class,page);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
 				

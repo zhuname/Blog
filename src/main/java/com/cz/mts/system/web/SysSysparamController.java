@@ -462,6 +462,69 @@ public class SysSysparamController  extends BaseController {
 		return "/syssysparam/updateApkContent";
 	}
 	
+	/**
+	 * 修改领取红包规则
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/packageRule")
+	public String updatePackageRule(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","packageRule");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updatePackageRule";
+	}
+	
+	/**
+	 * 修改海报红包温馨提示
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/posterHit")
+	public String updatePosterHit(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","posterHit");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updatePosterHit";
+	}
+	
+	/**
+	 * 修改视频红包温馨提示
+	 * @author wj
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/mediaHint")
+	public String updateMediaHint(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","mediaHint");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/updateMediaHint";
+	}
+	
 	
 
 }

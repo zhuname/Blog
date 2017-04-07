@@ -167,7 +167,7 @@ public class MediaPackageController  extends BaseController {
 			 id= Integer.parseInt(strId);
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
 			  
-			  if(null != mediaPackage){
+			  if(null != mediaPackage && 3 == mediaPackage.getStatus()){
 				 if(null == mediaPackage.getScanNum()){
 					 mediaPackage.setScanNum(0);
 				 }
