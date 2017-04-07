@@ -39,7 +39,7 @@ public class BankController  extends BaseController {
 	@Resource
 	private IBankService bankService;
 	
-	private String listurl="/system/bank/bankList";
+	private String listurl="/bank/bankList";
 	
 	
 	   
@@ -102,7 +102,7 @@ public class BankController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/bank/bankLook";
+		return "/bank/bankLook";
 	}
 
 	
@@ -140,8 +140,11 @@ public class BankController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
-			bankService.saveorupdate(bank);
+			if(null == bank.getId()){
+				bankService.saveorupdate(bank);
+			}else{
+				bankService.update(bank,true);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -160,7 +163,7 @@ public class BankController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/bank/bankCru";
+		return "/bank/bankCru";
 	}
 	
 	/**
@@ -217,6 +220,27 @@ public class BankController  extends BaseController {
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
+		
+	}
+	
+	
+	/**
+	 * 查看的Json格式数据,为APP端提供数据
+	 */
+	@RequestMapping(value = "/lookadmin/json")
+	public @ResponseBody
+	ReturnDatas lookAdminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+		  Bank bank = bankService.findBankById(id);
+		   returnObject.setData(bank);
+		}else{
+		returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		return returnObject;
 		
 	}
 
