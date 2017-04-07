@@ -47,27 +47,20 @@ function deletePosterPackage(){
 }
 
 function checkRefuse(id){
-	var reason = prompt("请填写拒绝原因:","");
-	if(reason == null || reason == ""){
-		myalert("请输入拒绝原因");
-		return;
-	}
-	
-	
 	layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
-			jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: text ,type:0},
-			function(_json) {
-				if (_json.status == "success") {
-					myalert("审核成功");
-					myhref("${ctx}/system/posterpackage/list")
-					return false;
-				} else {
-					myalert("审核失败");
-					return false;
-				}
+		jQuery.post("${ctx}/system/posterpackage/check/json",{ id: id, failReason: text ,type:0},
+		function(_json) {
+			if (_json.status == "success") {
+				myalert("审核成功");
+				myhref("${ctx}/system/posterpackage/list")
+				return false;
+			} else {
+				myalert("审核失败");
+				return false;
+			}
 	});
-	  			layer.close(index);
-			});
+  			layer.close(index);
+		});
 	
 }
 
