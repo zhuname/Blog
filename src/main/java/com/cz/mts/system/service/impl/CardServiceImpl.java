@@ -140,7 +140,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 			
 			finder.append(" ORDER BY `status` ASC,endTime ASC,createTime DESC");
 			
-			List<Card> datas = findListDataByFinder(finder,page,Card.class,null);
+			List<Card> datas = queryForList(finder,Card.class,page);
 			if(null != datas && datas.size() > 0){
 				for (Card cd : datas) {
 					if(null != cd.getUserId()){

@@ -20,6 +20,7 @@ import com.cz.mts.system.entity.Bank;
 import com.cz.mts.system.service.IBankService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -55,7 +56,7 @@ public class BankController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Bank bank) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, bank);
+		ReturnDatas returnObject = listadminjson(request, model, bank);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -133,7 +134,6 @@ public class BankController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Bank bank,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -240,6 +240,25 @@ public class BankController  extends BaseController {
 		}
 		return returnObject;
 		
+	}
+	
+	
+	@RequestMapping("/listadmin/json")
+	public @ResponseBody
+	ReturnDatas listadminjson(HttpServletRequest request, Model model,Bank bank) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		Finder finder = Finder.getSelectFinder(Bank.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(bank.getName())){
+			finder.append(" and INSTR(`name`,:name)>0 ");
+			finder.setParam("name", bank.getName());
+		}
+		// ==执行分页查询
+		List<Bank> datas=bankService.findListDataByFinder(finder,page,Bank.class,null);
+		returnObject.setQueryBean(bank);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 
 }
