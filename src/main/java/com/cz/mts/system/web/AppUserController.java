@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,7 +91,6 @@ public class AppUserController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,AppUser appUser) 
 			throws Exception {
 		ReturnDatas returnObject = listjson(request, model, appUser);
-		List<AppUser> list = new ArrayList<>()  ;
 		returnObject.setData(returnObject.getData());
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -140,12 +140,18 @@ public class AppUserController  extends BaseController {
 		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
 		Page newPage = new Page();
 		newPage.setPageSize(100000);
+		Double sumMoney = 0.0;
 		List<AppUser> appUsers = appUserService.findListDataByFinder(finder,newPage,AppUser.class,appUser);
 		if(null != appUsers && appUsers.size() > 0){
 			hashMap.put("sumPerson", appUsers.size());
+			for (AppUser au : appUsers) {
+				sumMoney += au.getBalance();
+			}
+			
 		}else{
 			hashMap.put("sumPerson", 0);
 		}
+		hashMap.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		returnObject.setMap(hashMap);
 		returnObject.setQueryBean(appUser);
 		returnObject.setPage(page);

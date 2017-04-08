@@ -206,8 +206,18 @@ public class AppUser  extends BaseEntity {
 	
 	private Integer sumPerson;
 	
+	private Double sumMoney;
 	
 	
+	@Transient
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+
 	@Transient
 	public Integer getSumPerson() {
 		return sumPerson;

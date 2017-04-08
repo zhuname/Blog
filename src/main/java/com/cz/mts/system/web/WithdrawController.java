@@ -126,16 +126,22 @@ public class WithdrawController  extends BaseController {
 			}
 		}
 		Double sumMoney = 0.0;
+		Double factorageSumMoney = 0.0;
+		Double realSumMoney = 0.0;
 		Page newPage = new Page();
 		newPage.setPageSize(10000);
 		List<Withdraw> withdraws = withdrawService.findListDataByFinder(finder,page,Withdraw.class,withdraw);
 		if(null != withdraw && withdraws.size() > 0){
 			for (Withdraw wd : withdraws) {
 				sumMoney += wd.getMoney();
+				factorageSumMoney += wd.getFactorage();
+				realSumMoney += wd.getRealMoney();
 			}
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("factorageSumMoney", new BigDecimal(factorageSumMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("realSumMoney", new BigDecimal(realSumMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
 		returnObject.setMap(map);
 		returnObject.setQueryBean(withdraw);
 		returnObject.setPage(page);
@@ -197,7 +203,6 @@ public class WithdrawController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Withdraw withdraw,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-//		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 			returnObject = withdrawService.applyWithdraw(withdraw);
 		} catch (Exception e) {

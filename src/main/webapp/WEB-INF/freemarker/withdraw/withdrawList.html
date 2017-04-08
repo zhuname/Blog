@@ -114,7 +114,6 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		<span style="float: right;">提现总金额：${returnDatas.map.sumMoney}</span> 
 		<div class="pull-right">
 			    <@shiro.hasPermission name="/system/withdraw/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/system/withdraw/list/export');" class="btn  btn-sm  btn-primary">
@@ -138,6 +137,19 @@ jQuery(document).ready(function(){
 	</div>
 </div>
 
+
+
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			<span style="padding-right: 10px;">提现总金额：${returnDatas.map.sumMoney}</span>
+			<span style="padding-right: 10px;">手续费总金额：${returnDatas.map.factorageSumMoney}</span> 
+			<span style="float: right;">实际到账总金额：${returnDatas.map.realSumMoney}</span>  
+		</div>
+	</div>
+</div>
+
+		
    <div class="row"  style="overflow-x:scroll;">
             <div class="col-xs-12">
 	            <!--start_export-->
@@ -186,7 +198,7 @@ jQuery(document).ready(function(){
                                         
                                          <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/withdraw/check/confirm?id=${(_data.id)!''}','${ctx}/system/withdraw/list');">
+                                                onclick="mydelete('${ctx}/system/withdraw/check/confirm?id=${(_data.id)!''}','${ctx}/system/withdraw/list',null,'确认通过？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
                                         	

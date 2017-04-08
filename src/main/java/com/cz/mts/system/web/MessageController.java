@@ -20,6 +20,7 @@ import com.cz.mts.system.entity.Message;
 import com.cz.mts.system.service.IMessageService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -270,6 +271,35 @@ public class MessageController  extends BaseController {
 		}
 		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
 	}
+	
+	/**
+	 * 统计未读消息个数
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/statics/unread")
+	@SecurityApi
+	public @ResponseBody ReturnDatas staticsUnread(HttpServletRequest request,Integer userId) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Integer count = 0;
+		if(null != userId){
+			returnObject.setMessage("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}else{
+			Finder finder = new Finder("SELECT * FROM t_message WHERE isRead=0 AND userId=:userId");
+			List<Message> messages = messageService.queryForList(finder,Message.class);
+			if(null != messages && messages.size() > 0){
+				count = messages.size();
+			}
+			returnObject.setData(count);
+			returnObject.setStatus(ReturnDatas.SUCCESS);
+		}
+		
+		return returnObject;
+	}
+	
 	
 
 }

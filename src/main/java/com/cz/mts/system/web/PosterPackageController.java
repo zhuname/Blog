@@ -648,6 +648,7 @@ public class PosterPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", posterPackage.getEnddTime());
 		}
+		finder.append(" and status!=0");
 		
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;

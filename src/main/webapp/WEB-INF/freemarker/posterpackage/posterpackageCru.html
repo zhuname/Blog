@@ -169,6 +169,8 @@ jQuery(document).ready(function(){
       function clickButton(){
   		//$("#testdiv").hide();
   	}
+      
+      
 	
 //-->
 </SCRIPT>
@@ -186,14 +188,13 @@ jQuery(document).ready(function(){
 					
 					 <input id="Button1" type="button" value="选择文件" class="btn btn-pink" onclick="clickButton()"/>  
             		 <input id="files" type="button" value="上传" class="btn btn-purple"/>
-            		 <span style="color: red;">*请上传100*140的图片</span>
+            		 <span style="color: red;">*修改图片尺寸比例4:1</span>
             		   
 		            <div id="fileList" style="margin-top: 10px; padding-top:10px; font-size: 13px; width:400px">  
 		            </div>  
 		             <div id="testdiv"></div>  
 		            <input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
 					
-					<span style="color: red;">*修改图片尺寸比例4:1</span>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -220,7 +221,8 @@ jQuery(document).ready(function(){
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="descr" >简介</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="descr" class="col-xs-12 col-sm-6" id="descr" value="${(returnDatas.data.descr)!''}"  type="text" />
+						<!-- <input name="descr" class="col-xs-12 col-sm-6" id="descr" value="${(returnDatas.data.descr)!''}"  type="text" /> -->
+						<textarea id="descr" name="descr" style="width: 30%;height: 100px;">${(returnDatas.data.descr)!''}</textarea>
 					</div><div class="help-block" for="descr"></div>
 				</div>
 			</div>
@@ -247,20 +249,13 @@ jQuery(document).ready(function(){
 					</div><div class="help-block" for="command"></div>
 				</div>
 			</div>
-	        <div class="space-2"></div>
-			<!--日期型-->
+			
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lookNum" >浏览次数</label>
 				<div class="col-xs-12 col-sm-3">
 					<div class="clearfix">
-					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="expTime"  class="form-control date-picker"  id="expTime" value="${(returnDatas.data.expTime)!''}"  type="text"/>
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					
-					</div><div class="help-block" for="expTime"></div>
+						<input name="lookNum" class="col-xs-12 col-sm-6" id="lookNum" value="${(returnDatas.data.lookNum)!''}"  type="text" />
+					</div><div class="help-block" for="lookNum"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>

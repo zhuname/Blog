@@ -464,7 +464,7 @@ public class MoneyDetailController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
+	 * 收支记录表
 	 * 
 	 * @param request
 	 * @param model
@@ -532,7 +532,7 @@ public class MoneyDetailController  extends BaseController {
 						if(9 == md.getType()){
 							Withdraw withdraw = withdrawService.findWithdrawById(md.getItemId());
 							if(withdraw != null && StringUtils.isNotBlank(withdraw.getReason())){
-								md.setReason(withdraw.getReason());
+								md.setContent(withdraw.getReason());
 							}
 						}
 					}

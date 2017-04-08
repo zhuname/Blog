@@ -519,7 +519,7 @@ public class MediaPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", mediaPackage.getEnddTime());
 		}
-		
+		finder.append(" and status!=0");
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
