@@ -15,8 +15,6 @@ public class ConfigBean implements Serializable{
 	private String cardNoSelect ;
 	private String cardSelect ;
 	private String jpushAppKey ;
-	private String linkAndroid ;
-	private String linkIos ;
 	private String merchantNum ;
 	private String mediaNoSelect ;
 	private String mediaSelect ;
@@ -40,6 +38,31 @@ public class ConfigBean implements Serializable{
 	private String weibovalue ;
 	private String weixinkey ;
 	private String weixinvalue ;
+	
+	private String appDownload;
+	private String appExplain;
+	private String appVersionNumber;
+	
+	
+	
+	public String getAppDownload() {
+		return appDownload;
+	}
+	public void setAppDownload(String appDownload) {
+		this.appDownload = appDownload;
+	}
+	public String getAppExplain() {
+		return appExplain;
+	}
+	public void setAppExplain(String appExplain) {
+		this.appExplain = appExplain;
+	}
+	public String getAppVersionNumber() {
+		return appVersionNumber;
+	}
+	public void setAppVersionNumber(String appVersionNumber) {
+		this.appVersionNumber = appVersionNumber;
+	}
 	public String getApiKey() {
 		return apiKey;
 	}
@@ -69,18 +92,6 @@ public class ConfigBean implements Serializable{
 	}
 	public void setJpushAppKey(String jpushAppKey) {
 		this.jpushAppKey = jpushAppKey;
-	}
-	public String getLinkAndroid() {
-		return linkAndroid;
-	}
-	public void setLinkAndroid(String linkAndroid) {
-		this.linkAndroid = linkAndroid;
-	}
-	public String getLinkIos() {
-		return linkIos;
-	}
-	public void setLinkIos(String linkIos) {
-		this.linkIos = linkIos;
 	}
 	public String getMerchantNum() {
 		return merchantNum;

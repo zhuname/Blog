@@ -12,10 +12,7 @@ public class SysParamBean implements Serializable {
 	private String apkContent ;
 	private String apkImg ;
 	private String apkUrl ;
-	private String appDownload ;
-	private String appExplain ;
 	private String appIntroduce ;
-	private String appVersionNumber ;
 	private String businessPhone ;
 	private String chargePercent ;
 	private String packageRule ;
@@ -68,29 +65,11 @@ public class SysParamBean implements Serializable {
 	public void setApkUrl(String apkUrl) {
 		this.apkUrl = apkUrl;
 	}
-	public String getAppDownload() {
-		return appDownload;
-	}
-	public void setAppDownload(String appDownload) {
-		this.appDownload = appDownload;
-	}
-	public String getAppExplain() {
-		return appExplain;
-	}
-	public void setAppExplain(String appExplain) {
-		this.appExplain = appExplain;
-	}
 	public String getAppIntroduce() {
 		return appIntroduce;
 	}
 	public void setAppIntroduce(String appIntroduce) {
 		this.appIntroduce = appIntroduce;
-	}
-	public String getAppVersionNumber() {
-		return appVersionNumber;
-	}
-	public void setAppVersionNumber(String appVersionNumber) {
-		this.appVersionNumber = appVersionNumber;
 	}
 	public String getBusinessPhone() {
 		return businessPhone;
