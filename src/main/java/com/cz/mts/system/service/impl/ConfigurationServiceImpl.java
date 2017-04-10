@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +84,8 @@ public class ConfigurationServiceImpl extends BaseSpringrainServiceImpl implemen
 		}
 		
 		@Override
-		@Cacheable(value = GlobalStatic.cacheKey, key = "'ConfigData'")
+//		@Cacheable(value = GlobalStatic.cacheKey, key = "'ConfigData'")
+		@CachePut(value = GlobalStatic.cacheKey, key = "'ConfigData'")
 		public ConfigBean findParamBean() throws Exception {
 			Finder finder=Finder.getSelectFinder(Configuration.class);
 			List<Configuration> list = super.queryForList(finder, Configuration.class);
