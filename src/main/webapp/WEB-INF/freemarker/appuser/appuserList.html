@@ -301,16 +301,8 @@ jQuery(document).ready(function(){
 						<th id="th_cityName" >城市名称 </th>
 						<th id="th_sign" >个性签名</th>
 						<th id="th_balance" >余额</th>
-						<th id="th_frozeBanlance" >冻结余额</th>
-						<th id="th_bankName" >银行名称</th>
-						<th id="th_branchBank" >开户行</th>
-						<th id="th_ownerName" >户主名称</th>
-						<th id="th_ownerPhone" >手机号</th>
-						<th id="th_cardNum" >卡号/支付宝账号</th>
 						<th id="th_currentGetNum" >当前可领取次数</th>
-						<th id="th_currentShareNum" >当前可分享次数</th>
 						<th id="th_lqNum" >可领取次数</th>
-						<th id="th_shareNum" >可分享次数</th>
 						<th id="th_isCloseFee" >是否关闭卡券手续费</th>
 						<th id="th_isBlack" >是否是黑名单</th>
                     </tr>
@@ -437,34 +429,10 @@ jQuery(document).ready(function(){
 								${(_data.balance)!0}
 							</td>
 							<td >
-								${(_data.frozeBanlance)!0}
-							</td>
-							<td >
-								${(_data.bankName)!''}
-							</td>
-							<td >
-								${(_data.branchBank)!''}
-							</td>
-							<td >
-								${(_data.ownerName)!''}
-							</td>
-							<td >
-								${(_data.ownerPhone)!''}
-							</td>
-							<td >
-								${(_data.cardNum)!''}
-							</td>
-							<td >
 								${(_data.currentLqNum)!0}
 							</td>
 							<td >
-								${(_data.currentShareNum)!0}
-							</td>
-							<td >
 								${(_data.lqNum)!0}
-							</td>
-							<td >
-								${(_data.shareNum)!0}
 							</td>
 							<td >
 								<#if (_data.isCloseFee) == 0>

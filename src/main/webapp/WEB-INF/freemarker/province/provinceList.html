@@ -40,9 +40,9 @@ function deleteProvince(){
 		        		var open="";
 		        		
 		        		if(obj1[int].open=="1"){
-		        			open="开通";
-		        		}else{
 		        			open="已开通";
+		        		}else{
+		        			open="未开通";
 		        		}
 		        	
 						$($('#'+id+'')).after("<tr class=\"province"+id+"\"><td><div class=\"hidden-sm hidden-xs btn-group\"><button class=\"btn btn-xs btn-danger\" onclick=\"mydelete('${ctx}/system/city/open/json?id="+obj1[int].id+"','${ctx}/system/province/list/json');\"><i class=\"ace-icon fa fa-pencil bigger-120\"></i></button></div><div class=\"hidden-md hidden-lg\"><div class=\"inline position-relative\"><button class=\"btn btn-xs btn-primary dropdown-toggle\"  data-toggle=\"dropdown\" data-position=\"auto\"><i class=\"ace-icon fa fa-cog icon-only bigger-110\"></i></button><ul class=\"dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close\"><li><a data-original-title=\"Delete\" href=\"javascript:mydelete('${ctx}/city/open/json?id=${(_data.id)!''}','${ctx}/province/list');\" class=\"tooltip-error\" data-rel=\"tooltip\" title=\"\"><span class=\"red\"><i class=\"ace-icon fa fa-trash-o bigger-120\"></i></span></a></li></ul></div></div></td><td ></td><td >"+obj1[int].name+"</td><td >   "+open+"       </td><td >"+obj1[int].capital+"</td></tr>");

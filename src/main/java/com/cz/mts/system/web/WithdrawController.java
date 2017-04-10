@@ -379,9 +379,9 @@ public class WithdrawController  extends BaseController {
 				}
 				
 				//查询该用户的申请中的状态
-				Finder finder = new Finder("select * from t_money_detail where userId = :userId and type=10 and payType = :payType");
+				Finder finder = new Finder("select * from t_money_detail where userId = :userId and type=10 and itemId = :itemId");
 				finder.setParam("userId", withdraw.getUserId());
-				finder.setParam("payType", withdraw.getWithdrawType());
+				finder.setParam("itemId", withdraw.getId());
 				List<MoneyDetail> moneyDetails = moneyDetailService.queryForList(finder,MoneyDetail.class);
 				if(moneyDetails != null && moneyDetails.size() > 0){
 					MoneyDetail moneyDetail = moneyDetails.get(0);

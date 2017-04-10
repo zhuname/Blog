@@ -457,7 +457,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setItemId(pp.getId());
 				moneyDetail.setMoney(pp.getPayMoney());
-				moneyDetail.setType(11);
+				moneyDetail.setType(12);
 				moneyDetail.setUserId(appUser.getId());
 				super.save(moneyDetail);
 				
