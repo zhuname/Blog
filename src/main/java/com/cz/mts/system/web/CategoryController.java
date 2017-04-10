@@ -20,6 +20,7 @@ import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -55,7 +56,7 @@ public class CategoryController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
 		category.setType(1);
-		category.setIsDel(0);
+//		category.setIsDel(0);
 		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -74,7 +75,7 @@ public class CategoryController  extends BaseController {
 	public String list1(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
 		category.setType(2);
-		category.setIsDel(0);
+//		category.setIsDel(0);
 		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -93,7 +94,7 @@ public class CategoryController  extends BaseController {
 	public String list2(HttpServletRequest request, Model model,Category category) 
 			throws Exception {
 		category.setType(3);
-		category.setIsDel(0);
+//		category.setIsDel(0);
 		ReturnDatas returnObject = listadminjson(request, model, category);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -116,8 +117,18 @@ public class CategoryController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		page.setPageSize(10000);
-		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
-			returnObject.setQueryBean(category);
+		Finder finder = Finder.getSelectFinder(Category.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(category.getName())){
+			finder.append(" and INSTR(`name`,:name)>0 ");
+			finder.setParam("name", category.getName());
+		}
+		if(null != category.getType()){
+			finder.append(" and type=:type");
+			finder.setParam("type", category.getType());
+		}
+		finder.append(" and isDel=0");
+		List<Category> datas=categoryService.findListDataByFinder(finder,page,Category.class,null);
+		returnObject.setQueryBean(category);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
