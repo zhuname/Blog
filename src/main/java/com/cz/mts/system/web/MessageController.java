@@ -81,6 +81,12 @@ public class MessageController  extends BaseController {
 		page.setOrder("createTime");
 		page.setSort("desc");
 		List<Message> datas=messageService.findListDataByFinder(null,page,Message.class,message);
+		if(null != datas && datas.size() > 0){
+			for (Message mess : datas) {
+				mess.setIsRead(1);
+				messageService.update(mess,true);
+			}
+		}
 		returnObject.setQueryBean(message);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
