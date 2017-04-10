@@ -359,17 +359,28 @@ public class AppUserController  extends BaseController {
 					
 					//判断该用户是否绑定qq
 					if(StringUtils.isNotBlank(appUser.getQqNum())){
-						if(StringUtils.isNotBlank(aUser.getQqNum()) && !(aUser.getQqNum()).equals(appUser.getQqNum())){
+						//查询该账号是否被其他用户绑定过
+						AppUser auQq = new AppUser();
+						auQq.setQqNum(appUser.getQqNum());
+						List<AppUser> appUsers = appUserService.findListDataByFinder(null, page, AppUser.class, auQq);
+						if(null != appUsers && appUsers.size() > 0){
 							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage("该用户已经绑定qq");
+							returnObject.setMessage("该qq已被其他用户绑定");
+							return returnObject;
 						}
+						
 					}
 					
 					//判断该用户是否绑定微信
 					if(StringUtils.isNotBlank(appUser.getWxNum())){
-						if(StringUtils.isNotBlank(aUser.getWxNum()) && !(aUser.getWxNum()).equals(appUser.getWxNum())){
+						//查询该账号是否被其他用户绑定过
+						AppUser auWx = new AppUser();
+						auWx.setWxNum(appUser.getWxNum());
+						List<AppUser> appUsers = appUserService.findListDataByFinder(null, page, AppUser.class, auWx);
+						if(null != appUsers && appUsers.size() > 0){
 							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage("该用户已经绑定微信");
+							returnObject.setMessage("该微信已被其他用户绑定");
+							return returnObject;
 						}
 					}
 					
@@ -610,11 +621,10 @@ public class AppUserController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null||appUser.getSinaNum()!=null){
+		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null){
 			
 			AppUser appUser2=new AppUser();
 			appUser2.setQqNum(appUser.getQqNum());
-			appUser2.setSinaNum(appUser.getSinaNum());
 			appUser2.setWxNum(appUser.getWxNum());
 			
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser2);

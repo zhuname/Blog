@@ -41,6 +41,7 @@ import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
@@ -83,7 +84,8 @@ public class CardController  extends BaseController {
 	private IRedCityService redCityService;
 	@Resource
 	private ICityService cityService;
-	
+	@Resource
+	private IAttentionService attentionService;
 	@Resource
 	private NotificationService notificationService;
 	
@@ -709,10 +711,35 @@ public class CardController  extends BaseController {
 			finder.append(" and endTime < :endTime ");
 			finder.setParam("endTime", card.getEnddTime());
 		}
+		if(null != card.getStatus()){
+			if(5 == card.getStatus()){
+				card.setStatus(null);
+				finder.append(" and status=2 and num=0");
+			}
+		}
 		
 		List<Card> datas = cardService.findListDataByFinder(finder,page,Card.class,card);
 		if(null != datas && datas.size() > 0){
 			for (Card cd : datas) {
+				if(null != cd.getStatus()){
+					if(1 == cd.getStatus()){
+						cd.setCardStatus("审核中");
+					}
+					if(2 == cd.getStatus()){
+						cd.setCardStatus("审核成功");
+					}
+					if(3 == cd.getStatus()){
+						cd.setCardStatus("审核失败");
+					}
+					if(4 == cd.getStatus()){
+						cd.setCardStatus("已过期");
+					}
+					if(2 == cd.getStatus() && 0 == cd.getNum()){
+						cd.setCardStatus("已领完");
+					}
+				}
+				
+				
 				if(null != cd.getUserId()){
 					AppUser appUser = appUserService.findAppUserById(cd.getUserId());
 					if(null != appUser){
@@ -764,11 +791,11 @@ public class CardController  extends BaseController {
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", card.getUserId());
-			cardService.update(finderAtte);
+			attentionService.update(finderAtte);
 			//更新appUser表中的isUpdate字段
 			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  card.getUserId());
-			cardService.update(finderAppUser);
+			appUserService.update(finderAppUser);
 			
 			
 			//查询接收推送的用户

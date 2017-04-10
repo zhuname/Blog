@@ -472,11 +472,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());
-			super.update(finderAtte);
+			attentionService.update(finderAtte);
 			//更新appUser表中的isUpdate字段
 			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  pp.getUserId());
-			super.update(finderAppUser);
+			appUserService.update(finderAppUser);
 			
 			//查询接收推送的用户
 			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
@@ -554,6 +554,9 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
      * @return 
      */  
     static long xRandom(long min, long max) {  
+    	if(max-min == 0){   //防止0开方
+    		return 1 ;  //此时随机生成的都是1分钱
+    	}
         return sqrt(nextLong(sqr(max - min)));  
     }
     
