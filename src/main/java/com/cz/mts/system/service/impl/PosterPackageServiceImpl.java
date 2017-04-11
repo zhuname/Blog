@@ -379,6 +379,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
      * @return 
      */  
     static long xRandom(long min, long max) {  
+    	if(max-min == 0){   //防止0开方
+    		return 1 ;  //此时随机生成的都是1分钱
+    	}
         return sqrt(nextLong(sqr(max - min)));  
     }
     
