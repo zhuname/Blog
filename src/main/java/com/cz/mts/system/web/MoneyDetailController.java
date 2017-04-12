@@ -535,6 +535,14 @@ public class MoneyDetailController  extends BaseController {
 								md.setContent(withdraw.getReason());
 							}
 						}
+						
+						if(3 == md.getType()){
+							Card card = cardService.findCardById(md.getItemId());
+							if(null != card && StringUtils.isNotBlank(card.getTitle())){
+								md.setContent(card.getTitle());
+							}
+						}
+						
 					}
 				}
 			}

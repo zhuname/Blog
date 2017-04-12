@@ -125,23 +125,29 @@ public class AppUserController  extends BaseController {
 		
 		if(StringUtils.isNotBlank(appUser.getName())){
 			finder.append(" and name like '%"+appUser.getName()+"%'");
-			appUser.setName(null);
 		}
 		if(StringUtils.isNotBlank(appUser.getPhone())){
 			finder.append(" and phone like '%"+appUser.getPhone()+"%'");
-			appUser.setPhone(null);
 		}
 		if(StringUtils.isNotBlank(appUser.getCityName())){
 			finder.append(" and cityName like '%"+appUser.getCityName()+"%'");
 		}
+		if(null != appUser.getIsBlack()){
+			finder.append(" and isBlack = :isBlack");
+			finder.setParam("isBlack", appUser.getIsBlack());
+		}
+		if(StringUtils.isNotBlank(appUser.getSex())){
+			finder.append(" and sex = :sex");
+			finder.setParam("sex", appUser.getSex());
+		}
 		
 		Map<String, Object> hashMap = new HashMap<String, Object>();
 		// ==执行分页查询
-		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
+		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,null);
 		Page newPage = new Page();
 		newPage.setPageSize(100000);
 		Double sumMoney = 0.0;
-		List<AppUser> appUsers = appUserService.findListDataByFinder(finder,newPage,AppUser.class,appUser);
+		List<AppUser> appUsers = appUserService.findListDataByFinder(finder,newPage,AppUser.class,null);
 		if(null != appUsers && appUsers.size() > 0){
 			hashMap.put("sumPerson", appUsers.size());
 			for (AppUser au : appUsers) {

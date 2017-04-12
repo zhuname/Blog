@@ -323,6 +323,33 @@ public class CardController  extends BaseController {
 		
 	}
 	
+	/**
+	 * 后台删除操作
+	 */
+	@RequestMapping(value="/deleteadmin")
+	public @ResponseBody ReturnDatas deleteadmin(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+			  String  strId=request.getParameter("id");
+			  java.lang.Integer id=null;
+			  if(StringUtils.isNotBlank(strId)){
+				 id= java.lang.Integer.valueOf(strId.trim());
+					Card card = cardService.findCardById(id);
+					if(null != card){
+						card.setIsDel(1);
+						cardService.update(card,true);
+					}
+					return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+				} else {
+					return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+			return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+	}
+	
 	
 	/**
 	 * 发布卡券

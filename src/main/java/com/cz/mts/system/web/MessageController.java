@@ -81,8 +81,11 @@ public class MessageController  extends BaseController {
 		page.setOrder("createTime");
 		page.setSort("desc");
 		List<Message> datas=messageService.findListDataByFinder(null,page,Message.class,message);
-		if(null != datas && datas.size() > 0){
-			for (Message mess : datas) {
+		Page newPage = new Page();
+		newPage.setPageSize(100000);
+		List<Message> messages=messageService.findListDataByFinder(null,newPage,Message.class,message);
+		if(null != messages && messages.size() > 0){
+			for (Message mess : messages) {
 				mess.setIsRead(1);
 				messageService.update(mess,true);
 			}

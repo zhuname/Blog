@@ -95,7 +95,11 @@ $(document).on("click", ".vid", function() {
 			
 		});
 		
-		
+		//点击查询按钮
+		$(document).on("click", ".selectBtn", function() {
+			jQuery('#pageIndex').val(1);
+			jQuery('#selectA')[0].click();
+		});
 		
 		
 </script>
@@ -154,9 +158,12 @@ $(document).on("click", ".vid", function() {
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 			
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 </form>
 		</div>
@@ -240,7 +247,7 @@ $(document).on("click", ".vid", function() {
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/mediapackage/delete/json?id=${(_data.id)!''}','${ctx}/system/mediapackage/list',null,'确认删除？');">
+                                                onclick="mydelete('${ctx}/system/mediapackage/deleteadmin?id=${(_data.id)!''}','${ctx}/system/mediapackage/list',null,'确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                         

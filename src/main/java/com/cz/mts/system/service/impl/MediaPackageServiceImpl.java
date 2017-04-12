@@ -242,24 +242,27 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						}
 						mp.setUserMedals(userMedals);
 					}
+					
+					Page attPage = new Page();
 					//返回是否关注
 					if(StringUtils.isNotBlank(appUserId)){
 						Attention attention = new Attention();
 						attention.setUserId(Integer.parseInt(appUserId));
 						attention.setItemId(mp.getUserId());
-						List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+						List<Attention> attentions = attentionService.findListDataByFinder(null, attPage, Attention.class, attention);
 						if(null != attentions && attentions.size() > 0){
 							mp.setIsAttention(1);
 						}else{
 							mp.setIsAttention(0);
 						}
 						
+						Page collPage = new Page();
 						//返回是否收藏
 						Collect collect = new Collect();
 						collect.setUserId(Integer.parseInt(appUserId));
 						collect.setItemId(mp.getId());
 						collect.setType(2);
-						List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
+						List<Collect> collects = collectService.findListDataByFinder(null, collPage, Collect.class, collect);
 						if(null != collects && collects.size() > 0){
 							mp.setIsCollect(1);
 						}else{
@@ -268,12 +271,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					}
 				}
 				
-				
+				Page moneyPage = new Page();
 				//已抢红包列表
 				MoneyDetail moneyDetail = new MoneyDetail();
 				moneyDetail.setItemId(mp.getId());
 				moneyDetail.setType(2);
-				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, moneyPage, MoneyDetail.class, moneyDetail);
 				if(null != moneyDetails && moneyDetails.size() > 0){
 					for (MoneyDetail md : moneyDetails) {
 						if(null != md.getUserId()){

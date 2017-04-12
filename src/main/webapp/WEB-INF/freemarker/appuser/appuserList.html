@@ -192,6 +192,12 @@ jQuery(document).ready(function(){
 
 
 
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
 </script>
 
 
@@ -242,11 +248,13 @@ jQuery(document).ready(function(){
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 			 
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
 				</a>
-
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
 </form>
 		</div>
 		
