@@ -128,7 +128,6 @@ $(document).on("change", "#province", function() {
 
 //多选城市
 function checkCityIds(itemId,tableId){
-	
 	var cityId=jQuery("#city").val();
 	
 	var cityName=$("#city").find("option:selected").text();

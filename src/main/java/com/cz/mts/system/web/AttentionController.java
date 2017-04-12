@@ -98,7 +98,7 @@ public class AttentionController  extends BaseController {
 		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);*/
 		if(attention.getUserId()!=null){
 			//更新appUser表中的isUpdate字段
-			Finder fd2 = new Finder("UPDATE t_app_user SET isUpdate = 0 WHERE id in (SELECT userId FROM t_attention WHERE userId=:userId");
+			Finder fd2 = new Finder("UPDATE t_app_user SET isUpdate = 0 WHERE id in (SELECT userId FROM t_attention WHERE userId=:userId)");
 			fd2.setParam("userId", attention.getUserId());
 			appUserService.update(fd2);
 			
