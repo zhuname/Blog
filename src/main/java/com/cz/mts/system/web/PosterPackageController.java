@@ -323,13 +323,16 @@ public class PosterPackageController  extends BaseController {
 				 }
 			 }
 			 
-			 
+			String cityIds= ""; 
 			 //返回城市名称
 			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=1");
 			 finder.setParam("id", Integer.parseInt(strId));
 			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
 			 if(null != redCities && redCities.size() > 0){
 				 for (RedCity redCity : redCities) {
+					 if(null != redCity.getCityId() && 0 != redCity.getCityId()){
+						 cityIds += redCity.getCityId()+",";
+					 }
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
 						if(null != city && StringUtils.isNotBlank(city.getName())){
@@ -337,6 +340,7 @@ public class PosterPackageController  extends BaseController {
 						}
 					}
 				}
+				 posterPackage.setCityIds(cityIds);
 				 posterPackage.setRedCities(redCities);
 			 }
 			 
@@ -363,6 +367,23 @@ public class PosterPackageController  extends BaseController {
 			if(posterPackage.getId() == null){
 				posterPackageService.saveorupdate(posterPackage);
 			}else{
+				//cityIds是否为空
+				if(StringUtils.isNotBlank(posterPackage.getCityIds())){
+					String cityIds[] = posterPackage.getCityIds().split(",");
+					//删除红包表中的记录
+					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=1 and packageId=:packageId");
+					finder.setParam("packageId", posterPackage.getId());
+					redCityService.update(finder);
+					for (String cid : cityIds) {
+						Integer cityId = Integer.parseInt(cid);
+						//更新redCity表
+						RedCity redCity = new RedCity();
+						redCity.setCityId(cityId);
+						redCity.setPackageId(posterPackage.getId());
+						redCity.setType(1);
+						redCityService.save(redCity);
+					}
+				}
 				posterPackageService.update(posterPackage,true);
 			}
 		} catch (Exception e) {

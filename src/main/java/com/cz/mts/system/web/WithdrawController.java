@@ -130,7 +130,7 @@ public class WithdrawController  extends BaseController {
 		Double realSumMoney = 0.0;
 		Page newPage = new Page();
 		newPage.setPageSize(10000);
-		List<Withdraw> withdraws = withdrawService.findListDataByFinder(finder,page,Withdraw.class,withdraw);
+		List<Withdraw> withdraws = withdrawService.findListDataByFinder(finder,newPage,Withdraw.class,withdraw);
 		if(null != withdraw && withdraws.size() > 0){
 			for (Withdraw wd : withdraws) {
 				sumMoney += wd.getMoney();
