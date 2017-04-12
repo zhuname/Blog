@@ -477,7 +477,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finderAtte.setParam("itemId", pp.getUserId());
 			attentionService.update(finderAtte);
 			//更新appUser表中的isUpdate字段
-			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT itemId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  pp.getUserId());
 			appUserService.update(finderAppUser);
 			

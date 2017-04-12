@@ -300,7 +300,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			finderAtte.setParam("itemId", pp.getUserId());
 			super.update(finderAtte);
 			//更新appUser表中的isUpdate字段
-			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT itemId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  pp.getUserId());
 			super.update(finderAppUser);
 			
