@@ -213,9 +213,8 @@ public class AppUserController  extends BaseController {
 				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
 				 finder.setParam("itemId", id);
 				 Page page = new Page();
-				 Attention attention = new Attention();
 				 //获取别人关注我的列表
-				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
+				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, null);
 				 if(null != attentions && attentions.size() > 0){
 					 appUser.setFansNum(attentions.size());
 				 }else{
@@ -225,9 +224,9 @@ public class AppUserController  extends BaseController {
 				 if(StringUtils.isNotBlank(itemId)){
 					 //获取我的关注列表
 					 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
-					 fder.setParam("userId", id);
-					 fder.setParam("itemId", Integer.parseInt(itemId));
-					 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+					 fder.setParam("userId", Integer.parseInt(itemId));
+					 fder.setParam("itemId", id);
+					 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, null);
 					 if(null != myAttens && myAttens.size() > 0){
 						 for (Attention at : myAttens) {
 							at.setIsUpdate(0);

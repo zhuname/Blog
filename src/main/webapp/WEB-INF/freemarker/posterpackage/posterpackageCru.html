@@ -178,10 +178,15 @@ jQuery(document).ready(function(){
       
       $(document).on("change", "#city", function() {
   		var cityId=jQuery("#city").val();
-  		
   		jQuery("#cityId").val(cityId);
   		
   	});
+     /*  $(document).on("change", "#cityIds", function() {
+    		var cityIds=jQuery("#cityIds").val();
+    		console.log(cityIds);
+    		jQuery("#cityIds").val(cityIds);
+    		
+    	}); */
       
 //-->
 </SCRIPT>
@@ -295,8 +300,7 @@ jQuery(document).ready(function(){
 						  </tbody>
 						</table>
 						
-						<input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="632500,542500," style="display:none"  type="text" />
-							
+						<input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
 							</div>
 						</div>
 			</div>
