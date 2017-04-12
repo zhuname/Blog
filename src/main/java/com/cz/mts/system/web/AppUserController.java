@@ -207,8 +207,8 @@ public class AppUserController  extends BaseController {
 			 if(null != appUser){
 				 
 				 //更新该用户的isUpdate字段
-				 appUser.setIsUpdate(0);
-				 appUserService.update(appUser,true);
+//				 appUser.setIsUpdate(0);
+//				 appUserService.update(appUser,true);
 				 
 				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
 				 finder.setParam("itemId", id);
