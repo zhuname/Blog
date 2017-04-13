@@ -156,6 +156,17 @@ public class Card  extends BaseEntity {
 	
 	private String cardStatus;
 	
+	private String cityIds;
+	
+	@Transient
+	 public String getCityIds() {
+		return cityIds;
+	}
+
+	public void setCityIds(String cityIds) {
+		this.cityIds = cityIds;
+	}
+	
 	@Transient
 	 public String getCardStatus() {
 		return cardStatus;

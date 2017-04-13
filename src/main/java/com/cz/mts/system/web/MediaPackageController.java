@@ -246,12 +246,16 @@ public class MediaPackageController  extends BaseController {
 				 }
 			 }
 			 
+			 String cityIds= ""; 
 			//返回城市名称
 			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=2");
 			 finder.setParam("id", Integer.parseInt(strId));
 			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
 			 if(null != redCities && redCities.size() > 0){
 				 for (RedCity redCity : redCities) {
+					 if(null != redCity.getCityId() && 0 != redCity.getCityId()){
+						 cityIds += redCity.getCityId()+",";
+					 }
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
 						if(city!=null){
@@ -259,6 +263,7 @@ public class MediaPackageController  extends BaseController {
 						}
 					}
 				}
+				 mediaPackage.setCityIds(cityIds);
 				 mediaPackage.setRedCities(redCities);
 			 }
 			 
@@ -282,8 +287,29 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-			mediaPackageService.update(mediaPackage,true);
+			if(null == mediaPackage.getId()){
+				mediaPackageService.saveorupdate(mediaPackage);
+			}else{
+				//cityIds是否为空
+				if(StringUtils.isNotBlank(mediaPackage.getCityIds())){
+					String cityIds[] = mediaPackage.getCityIds().split(",");
+					//删除红包表中的记录
+					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=2 and packageId=:packageId");
+					finder.setParam("packageId", mediaPackage.getId());
+					redCityService.update(finder);
+					for (String cid : cityIds) {
+						Integer cityId = Integer.parseInt(cid);
+						//更新redCity表
+						RedCity redCity = new RedCity();
+						redCity.setCityId(cityId);
+						redCity.setPackageId(mediaPackage.getId());
+						redCity.setType(2);
+						redCityService.save(redCity);
+					}
+				}
+				
+				mediaPackageService.update(mediaPackage,true);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -499,7 +525,7 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-//		mediaPackage.setIsDel(0);
+		mediaPackage.setIsDel(0);
 		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1 = 1");
 		if(StringUtils.isNotBlank(mediaPackage.getCategoryName())){
 			finder.append(" and categoryId in(select id from t_category where type=2 and INSTR(`name`,:categoryName)>0 )");
@@ -519,8 +545,8 @@ public class MediaPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", mediaPackage.getEnddTime());
 		}
-		finder.append(" and status!=0 and isDel=0");
-		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,null);
+		finder.append(" and status!=0");
+		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
 		if(null != datas && datas.size() > 0){
@@ -561,7 +587,7 @@ public class MediaPackageController  extends BaseController {
 		
 		Page pageNew = new Page();
 		pageNew.setPageSize(10000);
-		List<MediaPackage> mediaPackages = mediaPackageService.findListDataByFinder(finder,pageNew,MediaPackage.class,null);
+		List<MediaPackage> mediaPackages = mediaPackageService.findListDataByFinder(finder,pageNew,MediaPackage.class,mediaPackage);
 		if(mediaPackages != null && mediaPackages.size() > 0){
 			for (MediaPackage mpp : mediaPackages) {
 				if(null == mpp.getSumMoney()){

@@ -227,7 +227,18 @@ public class MediaPackage  extends BaseEntity {
 	
 	private Integer shareNum;
 	
-	 @WhereSQL(sql="shareNum=:card_shareNum")
+	private String cityIds;
+	
+	@Transient
+	 public String getCityIds() {
+		return cityIds;
+	}
+
+	public void setCityIds(String cityIds) {
+		this.cityIds = cityIds;
+	}
+
+	@WhereSQL(sql="shareNum=:card_shareNum")
 	public Integer getShareNum() {
 		return shareNum;
 	}
