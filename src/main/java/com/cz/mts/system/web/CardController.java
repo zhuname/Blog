@@ -249,19 +249,31 @@ public class CardController  extends BaseController {
 				//cityIds是否为空
 				if(StringUtils.isNotBlank(card.getCityIds())){
 					String cityIds[] = card.getCityIds().split(",");
+					if(null != cityIds && cityIds.length > 0){
+						//删除红包表中的记录
+						Finder finder = new Finder("DELETE FROM t_red_city WHERE type=3 and packageId=:packageId");
+						finder.setParam("packageId", card.getId());
+						redCityService.update(finder);
+						for (String cid : cityIds) {
+							Integer cityId = Integer.parseInt(cid);
+							//更新redCity表
+							RedCity redCity = new RedCity();
+							redCity.setCityId(cityId);
+							redCity.setPackageId(card.getId());
+							redCity.setType(3);
+							redCityService.save(redCity);
+						}
+					}
+				}else{
 					//删除红包表中的记录
 					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=3 and packageId=:packageId");
 					finder.setParam("packageId", card.getId());
 					redCityService.update(finder);
-					for (String cid : cityIds) {
-						Integer cityId = Integer.parseInt(cid);
-						//更新redCity表
-						RedCity redCity = new RedCity();
-						redCity.setCityId(cityId);
-						redCity.setPackageId(card.getId());
-						redCity.setType(3);
-						redCityService.save(redCity);
-					}
+					RedCity redCity = new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(card.getId());
+					redCity.setType(3);
+					redCityService.save(redCity);
 				}
 				cardService.update(card,true);
 			}
@@ -642,19 +654,26 @@ public class CardController  extends BaseController {
 			
 			if(usercard.getCardId()!=null){
 				card=cardService.findCardById(usercard.getCardId());
+				if(card==null){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券不存在");
+					return returnObject;
+				}
+				//判断卡券的状态
+				if(2 != card.getStatus() ){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券暂不能兑换");
+					return returnObject;
+				}
+				if(userId!=card.getUserId()){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("仅能兑换自己发布的卡券");
+					return returnObject;
+				}
 			}
 			
-			if(card==null&&userId!=card.getUserId()){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("此卡券不存在");
-				return returnObject;
-			}
-			//判断卡券的状态
-			if(2 != card.getStatus()){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("此卡券暂不能兑换");
-				return returnObject;
-			}
+			
+			
 			
 			//改变状态
 			usercard.setStatus(2);

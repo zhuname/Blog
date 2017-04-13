@@ -293,19 +293,32 @@ public class MediaPackageController  extends BaseController {
 				//cityIds是否为空
 				if(StringUtils.isNotBlank(mediaPackage.getCityIds())){
 					String cityIds[] = mediaPackage.getCityIds().split(",");
+					if(null != cityIds && cityIds.length > 0){
+						//删除红包表中的记录
+						Finder finder = new Finder("DELETE FROM t_red_city WHERE type=2 and packageId=:packageId");
+						finder.setParam("packageId", mediaPackage.getId());
+						redCityService.update(finder);
+						for (String cid : cityIds) {
+							Integer cityId = Integer.parseInt(cid);
+							//更新redCity表
+							RedCity redCity = new RedCity();
+							redCity.setCityId(cityId);
+							redCity.setPackageId(mediaPackage.getId());
+							redCity.setType(2);
+							redCityService.save(redCity);
+						}
+					}
+				}else{
 					//删除红包表中的记录
 					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=2 and packageId=:packageId");
 					finder.setParam("packageId", mediaPackage.getId());
 					redCityService.update(finder);
-					for (String cid : cityIds) {
-						Integer cityId = Integer.parseInt(cid);
-						//更新redCity表
-						RedCity redCity = new RedCity();
-						redCity.setCityId(cityId);
-						redCity.setPackageId(mediaPackage.getId());
-						redCity.setType(2);
-						redCityService.save(redCity);
-					}
+					//更新redCity表
+					RedCity redCity = new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(mediaPackage.getId());
+					redCity.setType(2);
+					redCityService.save(redCity);
 				}
 				
 				mediaPackageService.update(mediaPackage,true);
