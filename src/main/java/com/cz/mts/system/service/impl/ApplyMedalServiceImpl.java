@@ -2,8 +2,11 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.cz.mts.system.entity.ApplyMedal;
+import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
@@ -74,5 +77,22 @@ public class ApplyMedalServiceImpl extends BaseSpringrainServiceImpl implements 
 			throws Exception {
 			 return super.findDataExportExcel(finder,ftlurl,page,clazz,o);
 		}
+		
+		
+		
+		@Override
+	    public Integer statics() throws Exception{
+	    	Integer count = 0;
+	    	ApplyMedal applyMedal = new ApplyMedal();
+	    	applyMedal.setStatus(1);
+	    	Page page = new Page();
+	    	List<ApplyMedal> applyMedals = findListDataByFinder(null, page, ApplyMedal.class, applyMedal);
+	    	if(null != applyMedals && applyMedals.size() > 0){
+	    		count = applyMedals.size();
+	    	}else{
+	    		count = 0;
+	    	}
+	    	return count;
+	    }
 
 }

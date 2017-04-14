@@ -38,8 +38,25 @@ public class NotificationController extends BaseController{
 	ReturnDatas listjson() throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		NotificationBean notificationBean = new NotificationBean();
+		
 		Integer posterpackageCount = posterPackageService.statics();
 		notificationBean.setPosterpackageCount(posterpackageCount);
+		
+		Integer mediapackageCount = mediaPackageService.statics();
+		notificationBean.setMediapackageCount(mediapackageCount);
+		
+		Integer cardCount = cardService.statics();
+		notificationBean.setCardCount(cardCount);
+		
+		Integer applyMedalCount = applyMedalService.statics();
+		notificationBean.setApplyMedalCount(applyMedalCount);
+		
+		Integer applyWithdrawCount = withdrawService.statics();
+		notificationBean.setApplyWithdrawCount(applyWithdrawCount);
+		
+		Integer sumCount = posterpackageCount+mediapackageCount+cardCount+applyMedalCount+applyWithdrawCount;
+		notificationBean.setSumCount(sumCount);
+		
 		returnObject.setData(notificationBean);
 		return returnObject;
 	}

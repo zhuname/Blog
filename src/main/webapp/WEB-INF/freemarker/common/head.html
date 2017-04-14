@@ -137,6 +137,8 @@
 	<script type="text/javascript" src="${ctx}/js/coms/common/localtion.js"></script>
 	<script type="text/javascript" src="${ctx}/js/coms/common/image.js"></script>
 	
+	<script type="text/javascript" src="${ctx}/js/message/notify.js"></script>
+	
 	
 	    
 	    
@@ -223,13 +225,13 @@
 				<li class="purple">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="ace-icon fa fa-bell"></i>
-								<span class="badge badge-important">0</span>
+								<span class="badge badge-important" id="sumStatics">0</span>
 							</a>
 
 							<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close navbar-pink">
-								<li class="dropdown-header">
+								<li class="dropdown-header" >
 									<i class="icon-warning-sign"></i>
-									0条通知
+									<span id="sumCount">0</span>条通知
 								</li>
 
 								<li>
@@ -239,7 +241,7 @@
 												<i class="btn btn-xs no-hover btn-pink icon-comment"></i>
 												海报红包待审核
 											</span>
-											<span class="pull-right badge badge-info">+0</span>
+											<span class="pull-right badge badge-info" id="posterpackageCount">+0</span>
 										</div>
 									</a>
 								</li>
@@ -252,7 +254,7 @@
 												<i class="btn btn-xs btn-primary icon-user"></i>
 												视频红包待审核
 											</span>
-											<span class="pull-right badge badge-info">+0</span>
+											<span class="pull-right badge badge-info" id="mediapackageCount">+0</span>
 										</div>
 									</a>
 								</li>
@@ -264,7 +266,7 @@
 												<i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
 												卡券待审核
 											</span>
-											<span class="pull-right badge badge-success">+0</span>
+											<span class="pull-right badge badge-success" id="cardCount">+0</span>
 										</div>
 									</a>
 								</li>
@@ -276,7 +278,7 @@
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
 												申请勋章待审核
 											</span>
-											<span class="pull-right badge badge-info">+0</span>
+											<span class="pull-right badge badge-info" id="applyMedalCount">+0</span>
 										</div>
 									</a>
 								</li>
@@ -287,7 +289,7 @@
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
 												申请提现待审核
 											</span>
-											<span class="pull-right badge badge-info">+0</span>
+											<span class="pull-right badge badge-info" id="applyWithdrawCount">+0</span>
 										</div>
 									</a>
 								</li>

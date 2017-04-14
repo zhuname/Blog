@@ -650,5 +650,21 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	 * *********************************生成红包工具-----end------*************************************
 	 * ********************************************************************************
 	 */
+    
+    @Override
+    public Integer statics() throws Exception{
+    	Integer count = 0;
+    	MediaPackage mediaPackage = new MediaPackage();
+    	mediaPackage.setIsDel(0);
+    	mediaPackage.setStatus(1);
+    	Page page = new Page();
+    	List<MediaPackage> mediaPackages = findListDataByFinder(null, page, MediaPackage.class, mediaPackage);
+    	if(null != mediaPackages && mediaPackages.size() > 0){
+    		count = mediaPackages.size();
+    	}else{
+    		count = 0;
+    	}
+    	return count;
+    }
 
 }

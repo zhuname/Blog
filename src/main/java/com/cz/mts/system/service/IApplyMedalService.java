@@ -20,5 +20,14 @@ public interface IApplyMedalService extends IBaseSpringrainService {
 	ApplyMedal findApplyMedalById(Object id) throws Exception;
 	
 	
+	/**
+	 * 待审核统计接口
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statics() throws Exception;
+	
+	
 	
 }

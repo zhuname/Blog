@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
@@ -164,5 +165,22 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 		}
 		return returnObject;
 	}
+	
+	
+	
+	@Override
+    public Integer statics() throws Exception{
+    	Integer count = 0;
+    	Withdraw withdraw = new Withdraw();
+    	withdraw.setStatus(1);
+    	Page page = new Page();
+    	List<Withdraw> withdraws = findListDataByFinder(null, page, Withdraw.class, withdraw);
+    	if(null != withdraws && withdraws.size() > 0){
+    		count = withdraws.size();
+    	}else{
+    		count = 0;
+    	}
+    	return count;
+    }
 
 }

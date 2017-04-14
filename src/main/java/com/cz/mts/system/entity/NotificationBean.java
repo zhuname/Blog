@@ -13,6 +13,15 @@ public class NotificationBean implements Serializable {
 	private Integer cardCount;
 	private Integer applyMedalCount;
 	private Integer applyWithdrawCount;
+	private Integer sumCount;
+	
+	
+	public Integer getSumCount() {
+		return sumCount;
+	}
+	public void setSumCount(Integer sumCount) {
+		this.sumCount = sumCount;
+	}
 	public Integer getPosterpackageCount() {
 		return posterpackageCount;
 	}

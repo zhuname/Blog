@@ -3,6 +3,7 @@ package com.cz.mts.system.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -120,7 +121,18 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private Double plateMoney;
 	
+	private String banlanceString;
 	
+	
+	@Transient
+	public String getBanlanceString() {
+		return banlanceString;
+	}
+
+	public void setBanlanceString(String banlanceString) {
+		this.banlanceString = banlanceString;
+	}
+
 	@WhereSQL(sql="plateMoney=:MoneyDetail_plateMoney")
 	public Double getPlateMoney() {
 		return plateMoney;
@@ -347,7 +359,6 @@ public class MoneyDetail  extends BaseEntity {
 	public void setMoney(java.lang.Double value) {
 		this.money = value;
 	}
-	
      @WhereSQL(sql="money=:MoneyDetail_money")
 	public java.lang.Double getMoney() {
 		return this.money;
