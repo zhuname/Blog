@@ -335,6 +335,7 @@ public class CityController  extends BaseController {
 		}else if(level==2){
 			if(fatherId!=null){
 				city.setFatherId(fatherId);
+				city.setOpen(1);
 			}else {
 				returnObject.setMessage("参数缺失");
 				returnObject.setStatusCode(ReturnDatas.ERROR);

@@ -135,6 +135,7 @@
 	<script type="text/javascript" src="${ctx}/js/coms/ztree/js/jquery.ztree.all-3.5.js"></script>
 	<script type="text/javascript" src="${ctx}/js/coms/common/ztreeUtils.js"></script>
 	<script type="text/javascript" src="${ctx}/js/coms/common/localtion.js"></script>
+	<script type="text/javascript" src="${ctx}/js/coms/common/image.js"></script>
 	
 	
 	    
@@ -156,6 +157,23 @@
 	.site-demo-upload{position: relative; background: #e2e2e2;}
 	.site-demo-upload .site-demo-upbar{position: absolute; top: 50%; left: 50%; margin: -18px 0 0 -56px;}
 	.site-demo-upload .layui-upload-button{background-color: rgba(0,0,0,.2); color: rgba(255,255,255,1);}
+	
+	
+	.addgoods_photo{width:97%;overflow:hidden;margin:0 auto;margin-top:8px;margin-left:38px}
+	.addgoods_photo li{float:left}
+	.addgoods_photo .addgoods_photo_a{width:100px;height:150px;border:1px solid #e6e6e6;padding:0px 16px 0px 16px;margin-right:20px}
+	.addgoods_photo_img {width:100px;height:100px;margin-left: -8px;margin-top: -15px;}
+	.addgoods_photo_img img{width:100px;height:100px;margin-left: -8px;margin-top: -8px;}
+	.move_Box {width:81px;height:12px;overflow:hidden;margin:0 auto;margin-bottom:5px;}
+	.move_left, .move_right {display:block;width:40px;overflow:hidden;float:left;color:#7a7a7a;line-height:12px;margin-left: -8px;margin-top: -8px;}
+	.move_left {border-right:1px solid #d5d5d5;text-indent:12px;background:url(../images/button_03.png) no-repeat 4px 2px;margin-left: -8px;margin-top: -8px;}
+	.move_left:hover {color:#4a4a49}
+	.move_right {text-indent:4px;background:url(../images/button_02.png) no-repeat 31px 2px}
+	.move_right:hover {color:#4a4a49}
+	.addgoods_photo_button{width:90px;height:22px;margin-top:5px;cursor: pointer;margin-left: -8px;}
+	.addgoods_photo_button input{width:40px;height:22px;cursor: pointer;margin-left: -8px}
+	.addgoods_photo_button .button_float{float:right;cursor: pointer;margin-left: -8px;}
+	
     
     </style>
     
@@ -179,6 +197,24 @@
 				</small>
 			</a>
 		</div>
+		
+		
+		<div id="photoTmpel" style="display:none;">
+
+			<li class="addgoods_photo_a" style="float:left;width:100px;height:150px;border:1px solid #e6e6e6;padding:5px 16px 0px 16px;margin-right:20px">
+				<div class="move_Box" style="width:40px;"></div>
+				<div class="addgoods_photo_img">
+					<img  class="photoImgsVal"  />
+				</div>
+				<ul class="addgoods_photo_button">
+					<li><div class="layui-btn layui-btn-primary layui-btn-mini promise_edit1" photo_no="1" style="float: left;width:46px;height:25px;line-height:25px;font-size:12px;margin-left: -8px;">上传</div>
+					</li>
+					<li class="button_float promise_deleteBt1"><div class="layui-btn layui-btn-primary layui-btn-mini promise_delete" photo_no="1" style="float: left;width:46px;height:25px;line-height:25px;font-size:12px;background:#ccc;margin-left: -12px;">删除</div></li>
+				</ul>
+			</li>
+
+
+</div>
 
 		<div class="navbar-buttons navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">
@@ -187,98 +223,79 @@
 				<li class="purple">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="ace-icon fa fa-bell"></i>
-								<span class="badge badge-important">8</span>
+								<span class="badge badge-important">0</span>
 							</a>
 
-							<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+							<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close navbar-pink">
 								<li class="dropdown-header">
 									<i class="icon-warning-sign"></i>
-									8条通知
+									0条通知
 								</li>
 
 								<li>
-									<a href="/mts/index?id=6e43c1c21f4544fdb3c538daca7a7316&t=1492056133668#href=${ctx}/system/posterpackage/list">
+									<a href="/mts/index?id=6e43c1c21f4544fdb3c538daca7a7316&t=1492056133668#href=${ctx}/system/posterpackage/list?isDel=0&status=1">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-pink icon-comment"></i>
 												海报红包待审核
 											</span>
-											<span class="pull-right badge badge-info">+12</span>
+											<span class="pull-right badge badge-info">+0</span>
 										</div>
 									</a>
 								</li>
 
 								<li>
 									
-									<a href="#">
+									<a href="/mts/index?id=e3d2ede7f54440879387bf007fb3f1a3&t=1492069195298#href=${ctx}/system/mediapackage/list?isDel=0&status=1">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs btn-primary icon-user"></i>
 												视频红包待审核
 											</span>
-											<span class="pull-right badge badge-info">+12</span>
+											<span class="pull-right badge badge-info">+0</span>
 										</div>
 									</a>
 								</li>
 
 								<li>
-									<a href="#">
+									<a href="/mts/index?id=f4472c4bde7143c39926894b8a371d1e&t=1492069311616#href=${ctx}/system/card/list?isDel=0&status=1">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
 												卡券待审核
 											</span>
-											<span class="pull-right badge badge-success">+8</span>
+											<span class="pull-right badge badge-success">+0</span>
 										</div>
 									</a>
 								</li>
 
 								<li>
-									<a href="#">
+									<a href="/mts/index?id=7a49584ba39d4047880e32241a51f22a&t=1492069247988#href=${ctx}/system/applymedal/list?status=1">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
 												申请勋章待审核
 											</span>
-											<span class="pull-right badge badge-info">+11</span>
+											<span class="pull-right badge badge-info">+0</span>
 										</div>
 									</a>
 								</li>
 								<li>
-									<a href="#">
+									<a href="/mts/index?id=d133a2245abb4c209124add3aa91351c&t=1492069202203#href=${ctx}/system/withdraw/list?status=1">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
 												申请提现待审核
 											</span>
-											<span class="pull-right badge badge-info">+11</span>
+											<span class="pull-right badge badge-info">+0</span>
 										</div>
 									</a>
 								</li>
 
-								<li>
-									<a href="#">
-										查看所有通知
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
 							</ul>
 						</li>
 						
 						
-						<li class="green">
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-						<i class="ace-icon fa fa-envelope "></i>
-						<span class="badge badge-success">0</span>
-					</a>
-
-					<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-						<li class="dropdown-header">
-							<i class="ace-icon fa fa-envelope-o"></i>
-							0信息
-						</li>
-					</ul>
-				</li>
 
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle">

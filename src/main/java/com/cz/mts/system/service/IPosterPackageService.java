@@ -44,4 +44,12 @@ public interface IPosterPackageService extends IBaseSpringrainService {
 	 */
 	Object check(String packageId,String type,String failReason) throws Exception ;
 	
+	/**
+	 * 待审核统计
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statics() throws Exception;
+	
 }

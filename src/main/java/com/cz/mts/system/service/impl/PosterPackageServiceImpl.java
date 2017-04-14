@@ -472,5 +472,21 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 	 * *********************************生成红包工具-----end------*************************************
 	 * ********************************************************************************
 	 */
+    
+    @Override
+    public Integer statics() throws Exception{
+    	Integer count = 0;
+    	PosterPackage posterPackage = new PosterPackage();
+    	posterPackage.setIsDel(0);
+    	posterPackage.setStatus(1);
+    	Page page = new Page();
+    	List<PosterPackage> posterPackages = findListDataByFinder(null, page, PosterPackage.class, posterPackage);
+    	if(null != posterPackages && posterPackages.size() > 0){
+    		count = posterPackages.size();
+    	}else{
+    		count = 0;
+    	}
+    	return count;
+    }
 
 }
