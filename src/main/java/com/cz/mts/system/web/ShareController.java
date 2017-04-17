@@ -159,9 +159,9 @@ public class ShareController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
 			}
-			if(null == share.getUserId() ){
+//			if(null != share.getUserId() ){
 				//查询appUser表中的信息
-				AppUser appUser = appUserService.findAppUserById(share.getUserId());
+				/*AppUser appUser = appUserService.findAppUserById(share.getUserId());
 				if(null != appUser){
 					if(null != appUser.getCurrentShareNum()){
 						if(appUser.getCurrentShareNum() > 0){
@@ -181,7 +181,9 @@ public class ShareController  extends BaseController {
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("该用户不存在");
-				}
+				}*/
+				
+				shareService.saveorupdate(share);
 				
 				//海报红包
 				if(1 == share.getType()){
@@ -228,7 +230,7 @@ public class ShareController  extends BaseController {
 					}
 				}
 				
-			}
+//			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
