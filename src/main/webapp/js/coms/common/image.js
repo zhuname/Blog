@@ -105,7 +105,16 @@
             dataType : 'text',
             data : {},
             success : function(data, status) {
-            	$('#'+fiedId+'').next().val($('#'+fiedId+'').next().val()+data+';');
+            	
+            	console.log($($('#'+fiedId+'').parent().children()[1]).val());
+            	var valueS=$($('#'+fiedId+'').parent().children()[1]).val().split(';');
+    			if(valueS.length>0&&valueS.length<2){
+    				$('#'+fiedId+'').next().val($('#'+fiedId+'').next().val()+';'++data+';');
+    			}else{
+    				$('#'+fiedId+'').next().val($('#'+fiedId+'').next().val()+data+';');
+    			}
+            	
+            	
             	var wait=document.getElementsByName('waitPhoto');
             	if(wait.length>0){
             		
@@ -114,6 +123,7 @@
             		if(src!=undefined||src!=""){
             			console.log($('#'+fiedId+''));
             			console.log($('#'+fiedId+'').parent().children()[1]);
+            			
             			var value=$($('#'+fiedId+'').parent().children()[1]).val().replace(src+';','');
             			$($('#'+fiedId+'').parent().children()[1]).val(value);
             			var value1=$($('#'+fiedId+'').parent().children()[1]).val().replace(src,'');
