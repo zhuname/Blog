@@ -656,7 +656,7 @@ public class PosterPackageController  extends BaseController {
 					for (String string : cityId) {
 						RedCity redCity=new RedCity();
 						redCity.setCityId(Integer.parseInt(string));
-						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setPackageId(posterPackage.getId());
 						redCity.setType(1);
 						redCityService.save(redCity);
 					}
@@ -664,7 +664,7 @@ public class PosterPackageController  extends BaseController {
 				}else {
 					RedCity redCity=new RedCity();
 					redCity.setCityId(0);
-					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setPackageId(posterPackage.getId());
 					redCity.setType(1);
 					redCityService.save(redCity);
 				}
