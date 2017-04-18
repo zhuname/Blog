@@ -146,7 +146,12 @@ public class SecurityAspect {
 //        			paramMap.put("sign",new String[]{"1"}) ;
 //        			HttpServletRequest req = new ParameterRequestWrapper(request, paramMap) ;
 //        			args[0] = req ;
-        			object = proceedingJoinPoint.proceed() ;
+        			try {
+						object = proceedingJoinPoint.proceed() ;
+					} catch (Throwable e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
         		}
 //	    		object = proceedingJoinPoint.proceed() ;
 	    	}catch ( BadPaddingException e){

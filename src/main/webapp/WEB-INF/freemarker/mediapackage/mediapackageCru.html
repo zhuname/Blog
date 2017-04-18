@@ -130,6 +130,46 @@ jQuery(document).ready(function(){
 	$("#lqNum").attr("disabled","disabled");
 	$("#topPriceDiv").hide();
 	
+	
+	
+	var encrypt = $("#encrypt").val();
+	if(1 == encrypt){
+		$("#divCommand").show();
+	}else{
+		$("#divCommand").hide();
+	}
+	
+	
+	$("#inputEncrypt").on('change',function(){
+		if(1 == $("#inputEncrypt").val()){
+			$("#divCommand").show();
+		}else{
+			$("#divCommand").hide();
+		}
+		
+		jQuery("#encrypt").attr('value',$("#inputEncrypt").val());
+	});
+	
+	//修改下拉框默认选中
+	var encrypt1 = $("#encrypt1").val();
+	var encrypt2 = $("#encrypt2").val();
+	if(encrypt1 == encrypt){
+		$("#encrypt1").attr("selected","selected");
+	}
+	if(encrypt2 == encrypt){
+		$("#encrypt2").attr("selected","selected");
+	}
+	
+	initCity("localtion",null,"cityId");
+    
+    initCitys("tableIds","cityIds");
+    
+    $(document).on("change", "#city", function() {
+		var cityId=jQuery("#city").val();
+		jQuery("#cityId").val(cityId);
+		
+	});
+	
 //-->
 </SCRIPT>
 
@@ -176,9 +216,9 @@ jQuery(document).ready(function(){
 				<input type="text" id="encrypt" name="encrypt" class="col-xs-12 col-sm-6" value="${(returnDatas.data.encrypt)!''}" style="display: none;"/>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<select id="inputPosition">
-							<option value="0">否</option>
-							<option value="1">是</option>
+						<select id="inputEncrypt">
+							<option value="0" id="encrypt1">否</option>
+							<option value="1" id="encrypt2">是</option>
 						</select>
 					</div><div class="help-block" for="encrypt"></div>
 				</div>
@@ -186,27 +226,12 @@ jQuery(document).ready(function(){
 			
 			
 	        <div class="space-2"></div>
-			<div class="form-group">
+			<div class="form-group" id="divCommand">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="command" >加密口令</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 						<input name="command" class="col-xs-12 col-sm-6" id="command" value="${(returnDatas.data.command)!''}"  type="text" />
 					</div><div class="help-block" for="command"></div>
-				</div>
-			</div>
-	        <div class="space-2"></div>
-					<!--日期型-->
-			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="expTime" >到期时间</label>
-				<div class="col-xs-12 col-sm-3">
-					<div class="clearfix">
-					 	<div class="input-group col-xs-12 col-sm-6">
-							<input name="expTime"  class="form-control date-picker"  id="expTime" value="${(returnDatas.data.expTime)!''}"  type="text" />
-					        <span class="input-group-addon">
-								<i class="fa fa-calendar bigger-110"></i>
-							</span>
-					   </div>
-					</div><div class="help-block" for="expTime"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -249,7 +274,37 @@ jQuery(document).ready(function(){
 					</div><div class="help-block" for="scanNum"></div>
 				</div>
 			</div>
+			
 	        <div class="space-2"></div>
+	        
+	        <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityId" >投放城市</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<div class="layui-form-item" id="localtion"> 
+						
+						</div>
+						<span class="layui-btn layui-btn-primary" onclick="checkCityIds('cityIds','tableIds');">添加</span>
+						<div class="help-block" for="cityId"></div>
+						<input name="cityId" class="col-xs-12 col-sm-6" id="cityId" value="${(returnDatas.data.cityId)!''}" style="display:none"  type="text" />
+						
+						<table class="layui-table" style="width:50%" >
+						  <thead>
+						    <tr>
+						      <th>省</th>
+						      <th>市</th>
+						      <th>操作</th>
+						    </tr>
+						  </thead>
+						  <tbody id="tableIds" class="cityIds">
+						  </tbody>
+						</table>
+						
+						<input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
+							</div>
+						</div>
+			</div>
+	        
 		</form>
 		<div class="wizard-actions">
 			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/mediapackage/list');" style="float: left;margin-left: 25.4%;">

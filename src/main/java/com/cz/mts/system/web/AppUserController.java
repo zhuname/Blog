@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,7 +91,6 @@ public class AppUserController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,AppUser appUser) 
 			throws Exception {
 		ReturnDatas returnObject = listjson(request, model, appUser);
-		List<AppUser> list = new ArrayList<>()  ;
 		returnObject.setData(returnObject.getData());
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
@@ -125,27 +125,39 @@ public class AppUserController  extends BaseController {
 		
 		if(StringUtils.isNotBlank(appUser.getName())){
 			finder.append(" and name like '%"+appUser.getName()+"%'");
-			appUser.setName(null);
 		}
 		if(StringUtils.isNotBlank(appUser.getPhone())){
 			finder.append(" and phone like '%"+appUser.getPhone()+"%'");
-			appUser.setPhone(null);
 		}
 		if(StringUtils.isNotBlank(appUser.getCityName())){
 			finder.append(" and cityName like '%"+appUser.getCityName()+"%'");
 		}
+		if(null != appUser.getIsBlack()){
+			finder.append(" and isBlack = :isBlack");
+			finder.setParam("isBlack", appUser.getIsBlack());
+		}
+		if(StringUtils.isNotBlank(appUser.getSex())){
+			finder.append(" and sex = :sex");
+			finder.setParam("sex", appUser.getSex());
+		}
 		
 		Map<String, Object> hashMap = new HashMap<String, Object>();
 		// ==执行分页查询
-		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,appUser);
+		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,null);
 		Page newPage = new Page();
 		newPage.setPageSize(100000);
-		List<AppUser> appUsers = appUserService.findListDataByFinder(finder,newPage,AppUser.class,appUser);
+		Double sumMoney = 0.0;
+		List<AppUser> appUsers = appUserService.findListDataByFinder(finder,newPage,AppUser.class,null);
 		if(null != appUsers && appUsers.size() > 0){
 			hashMap.put("sumPerson", appUsers.size());
+			for (AppUser au : appUsers) {
+				sumMoney += au.getBalance();
+			}
+			
 		}else{
 			hashMap.put("sumPerson", 0);
 		}
+		hashMap.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		returnObject.setMap(hashMap);
 		returnObject.setQueryBean(appUser);
 		returnObject.setPage(page);
@@ -195,15 +207,14 @@ public class AppUserController  extends BaseController {
 			 if(null != appUser){
 				 
 				 //更新该用户的isUpdate字段
-				 appUser.setIsUpdate(0);
-				 appUserService.update(appUser,true);
+//				 appUser.setIsUpdate(0);
+//				 appUserService.update(appUser,true);
 				 
 				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
 				 finder.setParam("itemId", id);
 				 Page page = new Page();
-				 Attention attention = new Attention();
 				 //获取别人关注我的列表
-				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, attention);
+				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, null);
 				 if(null != attentions && attentions.size() > 0){
 					 appUser.setFansNum(attentions.size());
 				 }else{
@@ -213,9 +224,9 @@ public class AppUserController  extends BaseController {
 				 if(StringUtils.isNotBlank(itemId)){
 					 //获取我的关注列表
 					 Finder fder = Finder.getSelectFinder(Attention.class).append("where userId = :userId and itemId = :itemId");
-					 fder.setParam("userId", id);
-					 fder.setParam("itemId", Integer.parseInt(itemId));
-					 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, attention);
+					 fder.setParam("userId", Integer.parseInt(itemId));
+					 fder.setParam("itemId", id);
+					 List<Attention> myAttens = attentionService.findListDataByFinder(fder, page, Attention.class, null);
 					 if(null != myAttens && myAttens.size() > 0){
 						 for (Attention at : myAttens) {
 							at.setIsUpdate(0);
@@ -353,17 +364,28 @@ public class AppUserController  extends BaseController {
 					
 					//判断该用户是否绑定qq
 					if(StringUtils.isNotBlank(appUser.getQqNum())){
-						if(StringUtils.isNotBlank(aUser.getQqNum()) && !(aUser.getQqNum()).equals(appUser.getQqNum())){
+						//查询该账号是否被其他用户绑定过
+						AppUser auQq = new AppUser();
+						auQq.setQqNum(appUser.getQqNum());
+						List<AppUser> appUsers = appUserService.findListDataByFinder(null, page, AppUser.class, auQq);
+						if(null != appUsers && appUsers.size() > 0){
 							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage("该用户已经绑定qq");
+							returnObject.setMessage("该qq已被其他用户绑定");
+							return returnObject;
 						}
+						
 					}
 					
 					//判断该用户是否绑定微信
 					if(StringUtils.isNotBlank(appUser.getWxNum())){
-						if(StringUtils.isNotBlank(aUser.getWxNum()) && !(aUser.getWxNum()).equals(appUser.getWxNum())){
+						//查询该账号是否被其他用户绑定过
+						AppUser auWx = new AppUser();
+						auWx.setWxNum(appUser.getWxNum());
+						List<AppUser> appUsers = appUserService.findListDataByFinder(null, page, AppUser.class, auWx);
+						if(null != appUsers && appUsers.size() > 0){
 							returnObject.setStatus(ReturnDatas.ERROR);
-							returnObject.setMessage("该用户已经绑定微信");
+							returnObject.setMessage("该微信已被其他用户绑定");
+							return returnObject;
 						}
 					}
 					
@@ -604,11 +626,10 @@ public class AppUserController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null||appUser.getSinaNum()!=null){
+		if(appUser.getQqNum()!=null||appUser.getWxNum()!=null){
 			
 			AppUser appUser2=new AppUser();
 			appUser2.setQqNum(appUser.getQqNum());
-			appUser2.setSinaNum(appUser.getSinaNum());
 			appUser2.setWxNum(appUser.getWxNum());
 			
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser2);

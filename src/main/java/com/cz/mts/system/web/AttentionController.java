@@ -97,10 +97,10 @@ public class AttentionController  extends BaseController {
 		/*// ==执行分页查询
 		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);*/
 		if(attention.getUserId()!=null){
-			//更新attention表中的isUpdate字段
-			Finder fd2 = new Finder("UPDATE t_attention SET isUpdate=0 WHERE userId=:userId");
+			//更新appUser表中的isUpdate字段
+			Finder fd2 = new Finder("UPDATE t_app_user SET isUpdate = 0 WHERE id in (SELECT userId FROM t_attention WHERE userId=:userId)");
 			fd2.setParam("userId", attention.getUserId());
-			attentionService.update(fd2);
+			appUserService.update(fd2);
 			
 			Finder finder=new Finder("SELECT *,att.isUpdate as isUpdate2 FROM t_app_user au LEFT JOIN t_attention att ON att.itemId = au.id WHERE att.userId= :id ");
 			finder.setParam("id", attention.getUserId());

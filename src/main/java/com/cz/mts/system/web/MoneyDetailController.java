@@ -464,7 +464,7 @@ public class MoneyDetailController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
+	 * 收支记录表
 	 * 
 	 * @param request
 	 * @param model
@@ -493,7 +493,7 @@ public class MoneyDetailController  extends BaseController {
 					}
 					
 					if(null != md.getItemId()){
-						if(1 == md.getType() || 6 == md.getType()){
+						if(1 == md.getType() || 6 == md.getType() || 11 == md.getType()){
 							//查询海报
 							PosterPackage posterPackage = posterPackageService.findPosterPackageById(md.getItemId());
 							if(posterPackage != null && StringUtils.isNotBlank(posterPackage.getTitle())){
@@ -501,7 +501,7 @@ public class MoneyDetailController  extends BaseController {
 							}
 						}
 						
-						if(2 == md.getType() || 5 == md.getType()){
+						if(2 == md.getType() || 5 == md.getType() || 12 == md.getType()){
 							//查询视频
 							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(md.getItemId());
 							if(mediaPackage != null && StringUtils.isNotBlank(mediaPackage.getTitle())){
@@ -532,9 +532,17 @@ public class MoneyDetailController  extends BaseController {
 						if(9 == md.getType()){
 							Withdraw withdraw = withdrawService.findWithdrawById(md.getItemId());
 							if(withdraw != null && StringUtils.isNotBlank(withdraw.getReason())){
-								md.setReason(withdraw.getReason());
+								md.setContent(withdraw.getReason());
 							}
 						}
+						
+						if(3 == md.getType()){
+							Card card = cardService.findCardById(md.getItemId());
+							if(null != card && StringUtils.isNotBlank(card.getTitle())){
+								md.setContent(card.getTitle());
+							}
+						}
+						
 					}
 				}
 			}

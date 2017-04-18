@@ -44,7 +44,7 @@ $(document).on("click", ".sim", function() {
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/lunbopic/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/lunbopic/list4" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -53,7 +53,7 @@ $(document).on("click", ".sim", function() {
 			 <select id="search_type" name="type" class="col-10">
 			 	<option value="">请选择</option>
 				<option value="1">url</option>
-				<option value="2">红包</option>
+				<option value="2">海报</option>
 				<option value="3">视频</option>
 				<option value="4">卡券</option>
 			</select>

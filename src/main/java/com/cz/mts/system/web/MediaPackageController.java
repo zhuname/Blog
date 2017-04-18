@@ -246,12 +246,16 @@ public class MediaPackageController  extends BaseController {
 				 }
 			 }
 			 
+			 String cityIds= ""; 
 			//返回城市名称
 			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=2");
 			 finder.setParam("id", Integer.parseInt(strId));
 			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
 			 if(null != redCities && redCities.size() > 0){
 				 for (RedCity redCity : redCities) {
+					 if(null != redCity.getCityId() && 0 != redCity.getCityId()){
+						 cityIds += redCity.getCityId()+",";
+					 }
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
 						if(city!=null){
@@ -259,6 +263,7 @@ public class MediaPackageController  extends BaseController {
 						}
 					}
 				}
+				 mediaPackage.setCityIds(cityIds);
 				 mediaPackage.setRedCities(redCities);
 			 }
 			 
@@ -282,8 +287,42 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-			mediaPackageService.update(mediaPackage,true);
+			if(null == mediaPackage.getId()){
+				mediaPackageService.saveorupdate(mediaPackage);
+			}else{
+				//cityIds是否为空
+				if(StringUtils.isNotBlank(mediaPackage.getCityIds())){
+					String cityIds[] = mediaPackage.getCityIds().split(",");
+					if(null != cityIds && cityIds.length > 0){
+						//删除红包表中的记录
+						Finder finder = new Finder("DELETE FROM t_red_city WHERE type=2 and packageId=:packageId");
+						finder.setParam("packageId", mediaPackage.getId());
+						redCityService.update(finder);
+						for (String cid : cityIds) {
+							Integer cityId = Integer.parseInt(cid);
+							//更新redCity表
+							RedCity redCity = new RedCity();
+							redCity.setCityId(cityId);
+							redCity.setPackageId(mediaPackage.getId());
+							redCity.setType(2);
+							redCityService.save(redCity);
+						}
+					}
+				}else{
+					//删除红包表中的记录
+					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=2 and packageId=:packageId");
+					finder.setParam("packageId", mediaPackage.getId());
+					redCityService.update(finder);
+					//更新redCity表
+					RedCity redCity = new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(mediaPackage.getId());
+					redCity.setType(2);
+					redCityService.save(redCity);
+				}
+				
+				mediaPackageService.update(mediaPackage,true);
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -478,6 +517,43 @@ public class MediaPackageController  extends BaseController {
 				
 				mediaPackage.setTradeNo(null);
 				
+				RedCity redCitySelect = new RedCity();
+				
+				redCitySelect.setPackageId(mediaPackage.getId());
+				redCitySelect.setType(2);
+				
+				// ==构造分页请求
+				Page page = newPage(request);
+				// ==执行分页查询
+				List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
+				
+				for (RedCity redCity : datas) {
+					
+					redCityService.deleteByEntity(redCity);
+					
+				}
+				
+				if(cityIds!=null){
+					
+					String[] cityId=cityIds.split(",");
+				
+						for (String string : cityId) {
+							RedCity redCity=new RedCity();
+							redCity.setCityId(Integer.parseInt(string));
+							redCity.setPackageId(mediaPackage.getId());
+							redCity.setType(2);
+							redCityService.save(redCity);
+						}
+				
+				}else{
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(mediaPackage.getId());
+					redCity.setType(2);
+					redCityService.save(redCity);
+				}
+				
+				
 				Object id=mediaPackageService.update(mediaPackage,true);
 				
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));
@@ -521,7 +597,7 @@ public class MediaPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", mediaPackage.getEnddTime());
 		}
-		
+		finder.append(" and status!=0");
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
@@ -718,6 +794,38 @@ public class MediaPackageController  extends BaseController {
 				return new ReturnDatas(ReturnDatas.ERROR, "系统异常") ;
 			}
 		}
+	}
+	
+	
+	/**
+	 * 删除视频红包
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/deleteadmin")
+	public @ResponseBody ReturnDatas deleteadmin(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+				MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
+				if(null != mediaPackage){
+					mediaPackage.setIsDel(1);
+					mediaPackageService.update(mediaPackage,true);
+				}
+				return new ReturnDatas(ReturnDatas.SUCCESS,
+						MessageUtils.DELETE_SUCCESS);
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 	}
 	
 	

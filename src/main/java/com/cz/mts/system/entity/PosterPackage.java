@@ -214,8 +214,20 @@ public class PosterPackage  extends BaseEntity {
 	
 	private Integer shareNum;
 	
+	private String cityIds;
 	
-	 @WhereSQL(sql="shareNum=:card_shareNum")
+	
+	
+	@Transient
+	 public String getCityIds() {
+		return cityIds;
+	}
+
+	public void setCityIds(String cityIds) {
+		this.cityIds = cityIds;
+	}
+
+	@WhereSQL(sql="shareNum=:card_shareNum")
 	public Integer getShareNum() {
 		return shareNum;
 	}
@@ -704,6 +716,7 @@ public class PosterPackage  extends BaseEntity {
 			.append("交易流水号[").append(getTradeNo()).append("],")
 			.append("是否删除: 0否 1是[").append(getIsDel()).append("],")
 			.append("操作系统").append(getOsType()).append("],")
+			.append("投放城市").append(getCityIds()).append("],")
 			.toString();
 	}
 	

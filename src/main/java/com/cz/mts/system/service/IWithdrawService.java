@@ -28,5 +28,14 @@ public interface IWithdrawService extends IBaseSpringrainService {
 	ReturnDatas applyWithdraw(Withdraw withdraw) throws Exception;
 	
 	
+	/**
+	 * 待审核统计
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statics() throws Exception;
+	
+	
 	
 }

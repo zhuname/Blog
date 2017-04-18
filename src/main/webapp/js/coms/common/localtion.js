@@ -1,4 +1,5 @@
-
+//省市县选择插件，
+//by：wml
 
 function initCity(localtion,provinceId,cityId){
 	//初始化
@@ -19,7 +20,7 @@ function initCity(localtion,provinceId,cityId){
 				var cityFatherId=null;
 				
 				//有cityId的
-				if(cityIdVal!=""){
+				if(cityIdVal!=""&&undefined!=cityIdVal){
 				
 					$.ajax({
 						url : '/mts/system/city/lookAdmin/json?id='+cityIdVal,
@@ -28,7 +29,6 @@ function initCity(localtion,provinceId,cityId){
 						data : {},
 						success : function(data, status) {
 							cityFatherId=data.data.fatherId;
-							
 							
 							for (var int = 0; int < obj1.length; int++) {
 								
@@ -90,7 +90,6 @@ function initCity(localtion,provinceId,cityId){
 }
 
 
-
 $(document).on("change", "#province", function() {
 	
 	var fatherId=jQuery("#province").val();
@@ -108,9 +107,14 @@ $(document).on("change", "#province", function() {
         	if(obj1==undefined){
         		jQuery("#city").html(pro);
         	}
+<<<<<<< HEAD
         	
         	for (var int = 0; int < obj1.length; int++) {
+=======
+>>>>>>> f72b260615a15adda6088f4762671c33b58db4fc
         	
+        	for (var int = 0; int < obj1.length; int++) {
+        		
 				pro += "<option value='"+obj1[int].id+"'>"+obj1[int].name+"</option>";
 				
 			}
@@ -124,4 +128,84 @@ $(document).on("change", "#province", function() {
 
 
 });
+
+
+
+//多选城市
+function checkCityIds(itemId,tableId){
+	var cityId=jQuery("#city").val();
+	
+	var cityName=$("#city").find("option:selected").text();
+	
+	var provinceName=$("#province").find("option:selected").text();
+	
+	if(cityId==null||undefined==cityId||""==cityId){
+		return ;
+	}
+	
+	//循环看有没有重复的cityId
+	var cityIdsVal=$('#'+itemId+'').val();
+	
+	var cityIdVal=cityIdsVal.split(",");
+	
+	for (var int = 0; int < cityIdVal.length; int++) {
+		
+		if(cityIdVal[int]==cityId){
+			return;
+		}
+		
+	}
+	
+	$('#'+itemId+'').val($('#'+itemId+'').val()+cityId+",");
+	
+	
+	$('#'+tableId+'').append("<tr id="+cityId+"><td>"+provinceName+""+"</td><td>"+cityName+""+"</td><td class=\"deleteCityId\">×</td></tr>");
+	
+}
+
+$(document).on("click", ".deleteCityId", function() {
+	
+	
+	var id = $(this).parent().attr("id");
+	
+	var itemId=$(this).parent().parent().attr("class");
+	
+	var itemValue=$('#'+itemId+'').val();
+	
+	itemValue=itemValue.replace(id+",","");
+	
+	$('#'+itemId+'').val(itemValue);
+	
+	$(this).parent().remove();
+	
+	
+});
+
+function initCitys(tableId,itemId){
+	
+	var cityIdsVal=$('#'+itemId+'').val();
+	
+	var cityIdVal=cityIdsVal.split(",");
+	
+	for (var int = 0; int < cityIdVal.length; int++) {
+		
+				$.ajax({
+					url : '/mts/system/city/look/json?id='+cityIdVal[int],
+					secureuri : false,
+					dataType : 'json',
+					data : {},
+					success : function(data, status) {
+						
+						//这浏览器会报错，但是，并不影响使用！ 	     ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+						$('#'+tableId+'').append("<tr id="+data.data.id+"><td>"+data.data.fatherName+""+"</td><td>"+data.data.name+""+"</td><td class=\"deleteCityId\">×</td></tr>");
+						
+					},
+					error : function(data, status, e) {
+						console.log(data);
+					}
+				})
+		
+	}
+	
+}
 

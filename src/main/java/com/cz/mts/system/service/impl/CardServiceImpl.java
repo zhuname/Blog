@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
@@ -173,5 +174,22 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 		}
 		return returnObject;
 	}
+	
+	
+	 @Override
+	    public Integer statics() throws Exception{
+	    	Integer count = 0;
+	    	Card card = new Card();
+	    	card.setIsDel(0);
+	    	card.setStatus(1);
+	    	Page page = new Page();
+	    	List<Card> cards = findListDataByFinder(null, page, Card.class, card);
+	    	if(null != cards && cards.size() > 0){
+	    		count = cards.size();
+	    	}else{
+	    		count = 0;
+	    	}
+	    	return count;
+	    }
 
 }

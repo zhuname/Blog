@@ -525,6 +525,4 @@ public class SysSysparamController  extends BaseController {
 		return "/syssysparam/updateMediaHint";
 	}
 	
-	
-
 }

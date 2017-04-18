@@ -2,6 +2,20 @@
 
 <script type="text/javascript" src="${ctx}/js/system/moneydetail/moneydetail.js"></script>
 <script type="text/javascript">
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
+	
+});
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
+
 </script>
 
 
@@ -20,11 +34,19 @@
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
 			 <label for="search_userName"><b>充值用户名称:</b></label> 
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写充值用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 <label for="search_payType"><b>充值方式:</b></label>
+			 <select id="search_payType" name="payType">
+			 	<option value="">请选择</option>
+				<option value="1">支付宝</option>
+				<option value="2">微信</option>
+			 </select>
 			 
-			 
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 </form>
 		</div>
@@ -47,6 +69,7 @@
 						<th id="th_money" >充值金额</th>
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_createTime" >充值时间</th>
+						<th id="th_payType" >充值方式</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -70,6 +93,14 @@
 							</td>
 							<td >
 								${(_data.createTime)!0}
+							</td>
+							<td >
+								<#if (_data.payType) == 1>
+									支付宝
+								</#if>
+								<#if (_data.payType) == 2>
+									微信
+								</#if>
 							</td>
 						</tr>
 					</#list>

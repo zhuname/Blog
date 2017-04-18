@@ -33,6 +33,14 @@ $('.date-picker').datepicker({
 			});
         	layer.msg('点击任意处关闭');
 	});
+	
+	
+	//点击查询按钮
+	$(document).on("click", ".selectBtn", function() {
+		jQuery('#pageIndex').val(1);
+		jQuery('#selectA')[0].click();
+	});
+	
 
 function deletePosterPackage(){
 	var id=jQuery("#id").val();
@@ -94,10 +102,10 @@ jQuery(document).ready(function(){
 			<label for="search_status"><b>状态:</b></label> 
 			 <select id="search_status" name="status" class="col-10" >
 			 	<option value="">请选择</option>
-				<option value="0">未支付</option>
 				<option value="1">已支付</option>
 				<option value="2">审核失败</option>
 				<option value="3">审核成功</option>
+				<option value="4">已抢完</option>
 			</select>
 			
 			<label for="search_encrypt"><b>是否加密:</b></label> 
@@ -132,10 +140,14 @@ jQuery(document).ready(function(){
 				</span>
 			 
 			 
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+				<a id="selectA" href="javascript:mySubmitForm('searchForm');">
 				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
+				
 
 </form>
 		</div>
@@ -219,7 +231,7 @@ jQuery(document).ready(function(){
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/posterpackage/delete/json?id=${(_data.id)!''}','${ctx}/system/posterpackage/list',null,'确认删除？');">
+                                                onclick="mydelete('${ctx}/system/posterpackage/deleteadmin?id=${(_data.id)!''}','${ctx}/system/posterpackage/list',null,'确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                         

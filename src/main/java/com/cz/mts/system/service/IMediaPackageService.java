@@ -59,5 +59,13 @@ public interface IMediaPackageService extends IBaseSpringrainService {
 	 */
 	Object check(String packageId,String type,String failReason) throws Exception ;
 	
+	/**
+	 * 统计待审核
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statics() throws Exception;
+	
 	
 }

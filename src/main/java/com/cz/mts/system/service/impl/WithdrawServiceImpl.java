@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
@@ -145,7 +146,7 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 					Double realMoney = new BigDecimal(withdraw.getMoney()).subtract(new BigDecimal(factorage)).doubleValue();
 					withdraw.setFactorage(factorage);
 					withdraw.setRealMoney(realMoney);
-					saveorupdate(withdraw);
+					Object id = saveorupdate(withdraw);
 					//向moneyDetail表中增加记录,申请成功和申请失败都需要更新moneyDetail表中的信息
 					MoneyDetail moneyDetail = new MoneyDetail();
 					moneyDetail.setUserId(withdraw.getUserId());
@@ -153,8 +154,9 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 					moneyDetail.setType(10);
 					moneyDetail.setMoney(withdraw.getMoney());
 					moneyDetail.setBalance(appUserRecord.getBalance());
+					moneyDetail.setPayType(withdraw.getWithdrawType());
+					moneyDetail.setItemId(Integer.parseInt(String.valueOf(id)));
 					moneyDetailService.saveorupdate(moneyDetail);
-//					returnObject.setStatus(MessageUtils.UPDATE_SUCCESS);
 				}else{
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("请绑定手机号");
@@ -163,5 +165,22 @@ public class WithdrawServiceImpl extends BaseSpringrainServiceImpl implements IW
 		}
 		return returnObject;
 	}
+	
+	
+	
+	@Override
+    public Integer statics() throws Exception{
+    	Integer count = 0;
+    	Withdraw withdraw = new Withdraw();
+    	withdraw.setStatus(1);
+    	Page page = new Page();
+    	List<Withdraw> withdraws = findListDataByFinder(null, page, Withdraw.class, withdraw);
+    	if(null != withdraws && withdraws.size() > 0){
+    		count = withdraws.size();
+    	}else{
+    		count = 0;
+    	}
+    	return count;
+    }
 
 }

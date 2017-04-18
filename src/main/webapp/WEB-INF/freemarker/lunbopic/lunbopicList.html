@@ -33,6 +33,17 @@ $(document).on("click", ".sim", function() {
 		});
     	layer.msg('点击任意处关闭');
 });
+
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_position option[value='${(returnDatas.queryBean.position)!''}']").prop("selected",true);
+	
+	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
+	
+});
+
+
 </script>
 
 
@@ -45,7 +56,7 @@ $(document).on("click", ".sim", function() {
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/lunbopic/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/lunbopic/list1" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -53,7 +64,7 @@ $(document).on("click", ".sim", function() {
             <label for="search_position"><b>位置:</b></label>
 			 <select id="search_position" name="position" class="col-10" >
 			 	<option value="">请选择</option>
-				<option value="1">红包</option>
+				<option value="1">海报</option>
 				<option value="2">视频</option>
 				<option value="3">卡券</option>
 			</select>
@@ -62,7 +73,7 @@ $(document).on("click", ".sim", function() {
 			 <select id="search_type" name="type" class="col-10">
 			 	<option value="">请选择</option>
 				<option value="1">url</option>
-				<option value="2">红包</option>
+				<option value="2">海报</option>
 				<option value="3">视频</option>
 				<option value="4">卡券</option>
 			</select>
@@ -191,7 +202,7 @@ $(document).on("click", ".sim", function() {
 									url
 								</#if>
 								<#if (_data.type) == 2 >
-									红包
+									海报
 								</#if>
 								<#if (_data.type) == 3 >
 									视频
@@ -209,7 +220,7 @@ $(document).on("click", ".sim", function() {
 							</td>
 							<td >
 								<#if (_data.position) == 1 >
-									红包
+									海报
 								</#if>
 								<#if (_data.position) == 2 >
 									视频

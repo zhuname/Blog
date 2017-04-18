@@ -165,6 +165,24 @@ function headOnc(){
 		
 	});
 	
+	function searchCategory(type){
+		var style="";
+		 if(type=="t"){
+	    	 $("#type").val(1);
+	    }
+	    
+	     if(type==1){
+	    	 $("#type").val(2);
+	    	 style=1;
+	    }
+	     if(type==2){
+	    	 $("#type").val(3);
+	    	 style=2;
+	    }
+	     mySubmitForm("searchForm",listurl+style);
+	}
+	
+	
 </script>
 
 <div class="operate panel panel-default" style="height: 65px;">
@@ -183,7 +201,8 @@ function headOnc(){
 					<option value="是">是</option>
 					<option value="否">否</option>
 				</select> -->
-				<a href="javascript:mySubmitForm('searchForm');" class="btn btn-purple btn-sm"> 
+				<!-- <a href="javascript:mySubmitForm('searchForm');" class="btn btn-purple btn-sm">  -->
+				<a href="javascript:searchCategory(type);" class="btn btn-purple btn-sm">
 				    查询 
 					<i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>

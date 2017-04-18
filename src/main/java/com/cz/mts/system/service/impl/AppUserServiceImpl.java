@@ -138,7 +138,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//扣除余额并且加到余额记录
-			appUser.setBalance(appUser.getBalance()-posterPackage.getSumMoney());
+			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(posterPackage.getSumMoney())).doubleValue());
 			super.update(appUser, true);
 			//改变红包状态
 			posterPackage.setStatus(1);
@@ -176,7 +176,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//扣除余额并且加到余额记录
-			appUser.setBalance(appUser.getBalance()-mediaPackage.getSumMoney());
+			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(mediaPackage.getSumMoney())).doubleValue());
 			super.update(appUser, true);
 			//改变红包状态
 			mediaPackage.setStatus(1);
@@ -226,7 +226,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//扣除余额并且加到余额记录
-			appUser.setBalance(appUser.getBalance()-cardSum.doubleValue());
+			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(cardSum).doubleValue());
 			super.update(appUser, true);
 			
 			if(0.0 != cardSum.doubleValue()){

@@ -242,24 +242,27 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						}
 						mp.setUserMedals(userMedals);
 					}
+					
+					Page attPage = new Page();
 					//返回是否关注
 					if(StringUtils.isNotBlank(appUserId)){
 						Attention attention = new Attention();
 						attention.setUserId(Integer.parseInt(appUserId));
 						attention.setItemId(mp.getUserId());
-						List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+						List<Attention> attentions = attentionService.findListDataByFinder(null, attPage, Attention.class, attention);
 						if(null != attentions && attentions.size() > 0){
 							mp.setIsAttention(1);
 						}else{
 							mp.setIsAttention(0);
 						}
 						
+						Page collPage = new Page();
 						//返回是否收藏
 						Collect collect = new Collect();
 						collect.setUserId(Integer.parseInt(appUserId));
 						collect.setItemId(mp.getId());
 						collect.setType(2);
-						List<Collect> collects = collectService.findListDataByFinder(null, page, Collect.class, collect);
+						List<Collect> collects = collectService.findListDataByFinder(null, collPage, Collect.class, collect);
 						if(null != collects && collects.size() > 0){
 							mp.setIsCollect(1);
 						}else{
@@ -268,12 +271,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 					}
 				}
 				
-				
+				Page moneyPage = new Page();
 				//已抢红包列表
 				MoneyDetail moneyDetail = new MoneyDetail();
 				moneyDetail.setItemId(mp.getId());
 				moneyDetail.setType(2);
-				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, moneyPage, MoneyDetail.class, moneyDetail);
 				if(null != moneyDetails && moneyDetails.size() > 0){
 					for (MoneyDetail md : moneyDetails) {
 						if(null != md.getUserId()){
@@ -457,7 +460,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setItemId(pp.getId());
 				moneyDetail.setMoney(pp.getPayMoney());
-				moneyDetail.setType(11);
+				moneyDetail.setType(12);
 				moneyDetail.setUserId(appUser.getId());
 				super.save(moneyDetail);
 				
@@ -472,11 +475,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", pp.getUserId());
-			super.update(finderAtte);
+			attentionService.update(finderAtte);
 			//更新appUser表中的isUpdate字段
-			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  pp.getUserId());
-			super.update(finderAppUser);
+			appUserService.update(finderAppUser);
 			
 			//查询接收推送的用户
 			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
@@ -554,6 +557,9 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
      * @return 
      */  
     static long xRandom(long min, long max) {  
+    	if(max-min == 0){   //防止0开方
+    		return 1 ;  //此时随机生成的都是1分钱
+    	}
         return sqrt(nextLong(sqr(max - min)));  
     }
     
@@ -644,5 +650,21 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	 * *********************************生成红包工具-----end------*************************************
 	 * ********************************************************************************
 	 */
+    
+    @Override
+    public Integer statics() throws Exception{
+    	Integer count = 0;
+    	MediaPackage mediaPackage = new MediaPackage();
+    	mediaPackage.setIsDel(0);
+    	mediaPackage.setStatus(1);
+    	Page page = new Page();
+    	List<MediaPackage> mediaPackages = findListDataByFinder(null, page, MediaPackage.class, mediaPackage);
+    	if(null != mediaPackages && mediaPackages.size() > 0){
+    		count = mediaPackages.size();
+    	}else{
+    		count = 0;
+    	}
+    	return count;
+    }
 
 }

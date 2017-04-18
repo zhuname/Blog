@@ -41,6 +41,7 @@ import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
@@ -83,7 +84,8 @@ public class CardController  extends BaseController {
 	private IRedCityService redCityService;
 	@Resource
 	private ICityService cityService;
-	
+	@Resource
+	private IAttentionService attentionService;
 	@Resource
 	private NotificationService notificationService;
 	
@@ -200,13 +202,16 @@ public class CardController  extends BaseController {
 				 }
 			 }
 			 
-			 
+			 String cityIds= ""; 
 			 //返回城市名称
 			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=3");
 			 finder.setParam("id", Integer.parseInt(strId));
 			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
 			 if(null != redCities && redCities.size() > 0){
 				 for (RedCity redCity : redCities) {
+					 if(null != redCity.getCityId() && 0 != redCity.getCityId()){
+						 cityIds += redCity.getCityId()+",";
+					 }
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
 						if(null != city && StringUtils.isNotBlank(city.getName())){
@@ -214,6 +219,7 @@ public class CardController  extends BaseController {
 						}
 					}
 				}
+				 card.setCityIds(cityIds);
 				 card.setRedCities(redCities);
 			 }
 			 
@@ -240,6 +246,35 @@ public class CardController  extends BaseController {
 			if(card.getId()==null){
 				cardService.saveorupdate(card);
 			}else{
+				//cityIds是否为空
+				if(StringUtils.isNotBlank(card.getCityIds())){
+					String cityIds[] = card.getCityIds().split(",");
+					if(null != cityIds && cityIds.length > 0){
+						//删除红包表中的记录
+						Finder finder = new Finder("DELETE FROM t_red_city WHERE type=3 and packageId=:packageId");
+						finder.setParam("packageId", card.getId());
+						redCityService.update(finder);
+						for (String cid : cityIds) {
+							Integer cityId = Integer.parseInt(cid);
+							//更新redCity表
+							RedCity redCity = new RedCity();
+							redCity.setCityId(cityId);
+							redCity.setPackageId(card.getId());
+							redCity.setType(3);
+							redCityService.save(redCity);
+						}
+					}
+				}else{
+					//删除红包表中的记录
+					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=3 and packageId=:packageId");
+					finder.setParam("packageId", card.getId());
+					redCityService.update(finder);
+					RedCity redCity = new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(card.getId());
+					redCity.setType(3);
+					redCityService.save(redCity);
+				}
 				cardService.update(card,true);
 			}
 		} catch (Exception e) {
@@ -319,6 +354,33 @@ public class CardController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 后台删除操作
+	 */
+	@RequestMapping(value="/deleteadmin")
+	public @ResponseBody ReturnDatas deleteadmin(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+			  String  strId=request.getParameter("id");
+			  java.lang.Integer id=null;
+			  if(StringUtils.isNotBlank(strId)){
+				 id= java.lang.Integer.valueOf(strId.trim());
+					Card card = cardService.findCardById(id);
+					if(null != card){
+						card.setIsDel(1);
+						cardService.update(card,true);
+					}
+					return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+				} else {
+					return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+			return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 	}
 	
 	
@@ -592,19 +654,26 @@ public class CardController  extends BaseController {
 			
 			if(usercard.getCardId()!=null){
 				card=cardService.findCardById(usercard.getCardId());
+				if(card==null){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券不存在");
+					return returnObject;
+				}
+				//判断卡券的状态
+				if(2 != card.getStatus() ){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券暂不能兑换");
+					return returnObject;
+				}
+				if(userId!=card.getUserId()){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("仅能兑换自己发布的卡券");
+					return returnObject;
+				}
 			}
 			
-			if(card==null&&userId!=card.getUserId()){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("此卡券不存在");
-				return returnObject;
-			}
-			//判断卡券的状态
-			if(2 != card.getStatus()){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("此卡券暂不能兑换");
-				return returnObject;
-			}
+			
+			
 			
 			//改变状态
 			usercard.setStatus(2);
@@ -709,10 +778,35 @@ public class CardController  extends BaseController {
 			finder.append(" and endTime < :endTime ");
 			finder.setParam("endTime", card.getEnddTime());
 		}
+		if(null != card.getStatus()){
+			if(5 == card.getStatus()){
+				card.setStatus(null);
+				finder.append(" and status=2 and num=0");
+			}
+		}
 		
 		List<Card> datas = cardService.findListDataByFinder(finder,page,Card.class,card);
 		if(null != datas && datas.size() > 0){
 			for (Card cd : datas) {
+				if(null != cd.getStatus()){
+					if(1 == cd.getStatus()){
+						cd.setCardStatus("审核中");
+					}
+					if(2 == cd.getStatus()){
+						cd.setCardStatus("审核成功");
+					}
+					if(3 == cd.getStatus()){
+						cd.setCardStatus("审核失败");
+					}
+					if(4 == cd.getStatus()){
+						cd.setCardStatus("已过期");
+					}
+					if(2 == cd.getStatus() && 0 == cd.getNum()){
+						cd.setCardStatus("已领完");
+					}
+				}
+				
+				
 				if(null != cd.getUserId()){
 					AppUser appUser = appUserService.findAppUserById(cd.getUserId());
 					if(null != appUser){
@@ -764,11 +858,11 @@ public class CardController  extends BaseController {
 			//更新attention表中的isUpdate字段
 			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
 			finderAtte.setParam("itemId", card.getUserId());
-			cardService.update(finderAtte);
+			attentionService.update(finderAtte);
 			//更新appUser表中的isUpdate字段
-			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  card.getUserId());
-			cardService.update(finderAppUser);
+			appUserService.update(finderAppUser);
 			
 			
 			//查询接收推送的用户

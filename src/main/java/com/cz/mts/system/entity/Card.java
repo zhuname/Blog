@@ -154,8 +154,29 @@ public class Card  extends BaseEntity {
 	
 	private Integer shareNum;
 	
+	private String cardStatus;
 	
-	 @WhereSQL(sql="shareNum=:card_shareNum")
+	private String cityIds;
+	
+	@Transient
+	 public String getCityIds() {
+		return cityIds;
+	}
+
+	public void setCityIds(String cityIds) {
+		this.cityIds = cityIds;
+	}
+	
+	@Transient
+	 public String getCardStatus() {
+		return cardStatus;
+	}
+
+	public void setCardStatus(String cardStatus) {
+		this.cardStatus = cardStatus;
+	}
+
+	@WhereSQL(sql="shareNum=:card_shareNum")
 	public Integer getShareNum() {
 		return shareNum;
 	}

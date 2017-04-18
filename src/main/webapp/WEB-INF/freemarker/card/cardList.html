@@ -72,6 +72,11 @@ $(document).on("click", ".sim", function() {
         	layer.msg('点击任意处关闭');
 	});
 
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
 </script>
 
 
@@ -95,6 +100,7 @@ $(document).on("click", ".sim", function() {
 				<option value="2">审核成功</option>
 				<option value="3">审核失败</option>
 				<option value="4">已过期</option>
+				<option value="5">已领完</option>
 			</select>
 			 <label for="search_title"><b>卡券名称</b></label> 
 			 <input type="text" id="search_title"  name="title" placeholder="请填写卡券名称"  value="${(returnDatas.queryBean.title)!''}" style="width: 8%;">
@@ -116,9 +122,12 @@ $(document).on("click", ".sim", function() {
 				</span>
 			 
 			 
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 
 </form>
@@ -190,7 +199,7 @@ $(document).on("click", ".sim", function() {
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger" title="删除"
-                                                onclick="mydelete('${ctx}/system/card/delete?id=${(_data.id)!''}','${ctx}/system/card/list'),null,'确认删除?';">
+                                                onclick="mydelete('${ctx}/system/card/deleteadmin?id=${(_data.id)!''}','${ctx}/system/card/list',null,'确认删除?');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                         
@@ -259,18 +268,7 @@ $(document).on("click", ".sim", function() {
 								${(_data.title)!''}
 							</td>
 							<td >
-								<#if (_data.status) == 1>
-									申请中
-								</#if>
-								<#if (_data.status) == 2>
-									审核成功
-								</#if>
-								<#if (_data.status) == 3>
-									审核失败
-								</#if>
-								<#if (_data.status) == 4>
-									已过期
-								</#if>
+								${(_data.cardStatus)!''}
 							</td>
 							<td >
 								${(_data.convertMoney)!0}

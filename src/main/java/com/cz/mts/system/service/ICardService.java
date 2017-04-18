@@ -32,6 +32,14 @@ public interface ICardService extends IBaseSpringrainService {
 	 */
 	ReturnDatas list(Card card,Page page) throws Exception;
 	
+	/**
+	 * 统计待审核
+	 * @author wj
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statics() throws Exception;
+	
 	
 	
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Province;
 import com.cz.mts.system.service.ICityService;
+import com.cz.mts.system.service.IProvinceService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -43,6 +44,8 @@ import com.sun.tools.classfile.Annotation.element_value;
 public class CityController  extends BaseController {
 	@Resource
 	private ICityService cityService;
+	@Resource
+	private IProvinceService provinceService;
 	
 	private String listurl="/system/city/cityList";
 	
@@ -116,7 +119,6 @@ public class CityController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -125,6 +127,16 @@ public class CityController  extends BaseController {
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 		  City city = cityService.findCityById(id);
+		  
+		  if(city!=null){
+			  
+			  Province province=provinceService.findProvinceById(city.getFatherId());
+			  if(province!=null){
+				  city.setFatherName(province.getName());
+			  }
+			  
+		  }
+		  
 		   returnObject.setData(city);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
@@ -323,6 +335,7 @@ public class CityController  extends BaseController {
 		}else if(level==2){
 			if(fatherId!=null){
 				city.setFatherId(fatherId);
+				city.setOpen(1);
 			}else {
 				returnObject.setMessage("参数缺失");
 				returnObject.setStatusCode(ReturnDatas.ERROR);

@@ -300,7 +300,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			finderAtte.setParam("itemId", pp.getUserId());
 			super.update(finderAtte);
 			//更新appUser表中的isUpdate字段
-			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT userId FROM t_attention WHERE itemId = :itemId)");
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
 			finderAppUser.setParam("itemId",  pp.getUserId());
 			super.update(finderAppUser);
 			
@@ -379,6 +379,9 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
      * @return 
      */  
     static long xRandom(long min, long max) {  
+    	if(max-min == 0){   //防止0开方
+    		return 1 ;  //此时随机生成的都是1分钱
+    	}
         return sqrt(nextLong(sqr(max - min)));  
     }
     
@@ -469,5 +472,21 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 	 * *********************************生成红包工具-----end------*************************************
 	 * ********************************************************************************
 	 */
+    
+    @Override
+    public Integer statics() throws Exception{
+    	Integer count = 0;
+    	PosterPackage posterPackage = new PosterPackage();
+    	posterPackage.setIsDel(0);
+    	posterPackage.setStatus(1);
+    	Page page = new Page();
+    	List<PosterPackage> posterPackages = findListDataByFinder(null, page, PosterPackage.class, posterPackage);
+    	if(null != posterPackages && posterPackages.size() > 0){
+    		count = posterPackages.size();
+    	}else{
+    		count = 0;
+    	}
+    	return count;
+    }
 
 }

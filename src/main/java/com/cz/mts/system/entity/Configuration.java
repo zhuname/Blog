@@ -49,6 +49,8 @@ public class Configuration  extends BaseEntity {
 	 */
 	private java.lang.String chooseFlag;
 	
+	private java.lang.Integer isImage;
+	
 	private java.lang.Integer id;
 	//columns END 数据库字段结束
 	
@@ -71,7 +73,17 @@ public class Configuration  extends BaseEntity {
 		this.code = value;
 	}
 	
-	 @WhereSQL(sql="id=:SysSysparam_id")
+	
+	@WhereSQL(sql="isImage=:SysSysparam_isImage")
+	 public java.lang.Integer getIsImage() {
+		return isImage;
+	}
+
+	public void setIsImage(java.lang.Integer isImage) {
+		this.isImage = isImage;
+	}
+
+	@WhereSQL(sql="id=:SysSysparam_id")
 	public java.lang.Integer getId() {
 		return this.id;
 	}

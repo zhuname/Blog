@@ -323,13 +323,16 @@ public class PosterPackageController  extends BaseController {
 				 }
 			 }
 			 
-			 
+			String cityIds= ""; 
 			 //返回城市名称
 			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=1");
 			 finder.setParam("id", Integer.parseInt(strId));
 			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
 			 if(null != redCities && redCities.size() > 0){
 				 for (RedCity redCity : redCities) {
+					 if(null != redCity.getCityId() && 0 != redCity.getCityId()){
+						 cityIds += redCity.getCityId()+",";
+					 }
 					if(null != redCity.getCityId()){
 						City city = cityService.findCityById(redCity.getCityId());
 						if(null != city && StringUtils.isNotBlank(city.getName())){
@@ -337,6 +340,7 @@ public class PosterPackageController  extends BaseController {
 						}
 					}
 				}
+				 posterPackage.setCityIds(cityIds);
 				 posterPackage.setRedCities(redCities);
 			 }
 			 
@@ -363,6 +367,37 @@ public class PosterPackageController  extends BaseController {
 			if(posterPackage.getId() == null){
 				posterPackageService.saveorupdate(posterPackage);
 			}else{
+				//cityIds是否为空
+				if(StringUtils.isNotBlank(posterPackage.getCityIds())){
+					String cityIds[] = posterPackage.getCityIds().split(",");
+					if(null != cityIds && cityIds.length > 0){
+						//删除红包表中的记录
+						Finder finder = new Finder("DELETE FROM t_red_city WHERE type=1 and packageId=:packageId");
+						finder.setParam("packageId", posterPackage.getId());
+						redCityService.update(finder);
+						for (String cid : cityIds) {
+							Integer cityId = Integer.parseInt(cid);
+							//更新redCity表
+							RedCity redCity = new RedCity();
+							redCity.setCityId(cityId);
+							redCity.setPackageId(posterPackage.getId());
+							redCity.setType(1);
+							redCityService.save(redCity);
+						}
+					}
+					
+				}else{
+					//删除红包表中的记录
+					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=1 and packageId=:packageId");
+					finder.setParam("packageId", posterPackage.getId());
+					redCityService.update(finder);
+					//更新redCity表
+					RedCity redCity = new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(posterPackage.getId());
+					redCity.setType(1);
+					redCityService.save(redCity);
+				}
 				posterPackageService.update(posterPackage,true);
 			}
 		} catch (Exception e) {
@@ -597,6 +632,44 @@ public class PosterPackageController  extends BaseController {
 				
 				id=posterPackageService.update(posterPackage, true);
 				
+				RedCity redCitySelect = new RedCity();
+				
+				redCitySelect.setPackageId(posterPackage.getId());
+				redCitySelect.setType(1);
+				
+				// ==构造分页请求
+				Page page = newPage(request);
+				// ==执行分页查询
+				List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
+				
+				for (RedCity redCity : datas) {
+					
+					redCityService.deleteByEntity(redCity);
+					
+				}
+				
+				
+				if(cityIds!=null){
+					
+					String[] cityId=cityIds.split(",");
+					
+					for (String string : cityId) {
+						RedCity redCity=new RedCity();
+						redCity.setCityId(Integer.parseInt(string));
+						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setType(1);
+						redCityService.save(redCity);
+					}
+					
+				}else {
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(Integer.parseInt(id.toString()));
+					redCity.setType(1);
+					redCityService.save(redCity);
+				}
+				
+				
 				returnObject.setData(posterPackageService.findPosterPackageById(posterPackage.getId()));
 				
 			}
@@ -650,6 +723,7 @@ public class PosterPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", posterPackage.getEnddTime());
 		}
+		finder.append(" and status!=0");
 		
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
@@ -813,6 +887,39 @@ public class PosterPackageController  extends BaseController {
 		
 		return returnObject;
 	}
+	
+	
+	/**
+	 * 删除海报红包
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/deleteadmin")
+	public @ResponseBody ReturnDatas deleteadmin(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+				PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
+				if(null != posterPackage){
+					posterPackage.setIsDel(1);
+					posterPackageService.update(posterPackage,true);
+				}
+				return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+	}
+	
 	
 	
 	

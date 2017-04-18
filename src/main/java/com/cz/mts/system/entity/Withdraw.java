@@ -116,7 +116,29 @@ public class Withdraw  extends BaseEntity {
 	
 	private Double sumMoney;
 	
+	private Double factorageSumMoney;
 	
+	private Double realSumMoney;
+	
+	
+	@Transient
+	public Double getFactorageSumMoney() {
+		return factorageSumMoney;
+	}
+
+	public void setFactorageSumMoney(Double factorageSumMoney) {
+		this.factorageSumMoney = factorageSumMoney;
+	}
+
+	@Transient
+	public Double getRealSumMoney() {
+		return realSumMoney;
+	}
+
+	public void setRealSumMoney(Double realSumMoney) {
+		this.realSumMoney = realSumMoney;
+	}
+
 	@Transient
 	public Double getSumMoney() {
 		return sumMoney;

@@ -192,6 +192,12 @@ jQuery(document).ready(function(){
 
 
 
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
 </script>
 
 
@@ -242,11 +248,13 @@ jQuery(document).ready(function(){
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 			 
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
 				</a>
-
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
 </form>
 		</div>
 		
@@ -276,7 +284,8 @@ jQuery(document).ready(function(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
-			  <span style="float: right;">总用户量：${returnDatas.map.sumPerson}</span>
+			  <span style="padding-right: 10px;">总用户量：${returnDatas.map.sumPerson}</span>
+			   <span style="float: right;">总金额：${returnDatas.map.sumMoney}</span>
 		</div>
 	</div>
 </div>
@@ -300,16 +309,8 @@ jQuery(document).ready(function(){
 						<th id="th_cityName" >城市名称 </th>
 						<th id="th_sign" >个性签名</th>
 						<th id="th_balance" >余额</th>
-						<th id="th_frozeBanlance" >冻结余额</th>
-						<th id="th_bankName" >银行名称</th>
-						<th id="th_branchBank" >开户行</th>
-						<th id="th_ownerName" >户主名称</th>
-						<th id="th_ownerPhone" >手机号</th>
-						<th id="th_cardNum" >卡号/支付宝账号</th>
-						<th id="th_currentGetNum" >可领取次数</th>
-						<th id="th_currentShareNum" >可分享次数</th>
-						<th id="th_getNum" >可领取次数</th>
-						<th id="th_shareNum" >可分享次数</th>
+						<th id="th_currentGetNum" >当前可领取次数</th>
+						<th id="th_lqNum" >可领取次数</th>
 						<th id="th_isCloseFee" >是否关闭卡券手续费</th>
 						<th id="th_isBlack" >是否是黑名单</th>
                     </tr>
@@ -330,14 +331,19 @@ jQuery(document).ready(function(){
                                                 onclick="myhref('${ctx}/system/appuser/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
-                                        
-                                        <button class="btn btn-xs btn-danger" title="拉黑"
-                                                onclick="mydelete('${ctx}/system/appuser/isblack?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
-                                            <i class="ace-icon fa bigger-120">
-                                            	拉黑
-                                            <i class=" fa  fa-trash-o"></i>
-                                            </i>
-                                        </button>
+                                        <#if (_data.isBlack) == 0>
+	                                        <button class="btn btn-xs btn-inverse" title="拉黑"
+	                                                onclick="mydelete('${ctx}/system/appuser/isblack?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+	                                            <i class="ace-icon fa  fa-circle bigger-120"></i>
+	                                        </button>
+	                                    </#if>
+	                                    
+	                                    <#if (_data.isBlack) == 1>
+	                                        <button class="btn btn-xs btn-purple" title="取消拉黑"
+	                                                onclick="mydelete('${ctx}/system/appuser/isblack?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+	                                            <i class="ace-icon fa fa-circle-thin bigger-120"></i>
+	                                        </button>
+	                                    </#if>
                                         
                                         <!-- 赋予勋章 -->
                                          <button class="btn btn-xs btn-pink" title="赋予勋章"
@@ -347,13 +353,22 @@ jQuery(document).ready(function(){
 											  <input type="hidden" name="mainid" id="mainid" value="${(_data.id)!''}"/>
                                             <i class="ace-icon fa fa-certificate bigger-120"></i>
                                         </button>
-                                        
-                                         <button class="btn btn-xs btn-danger" title="卡券手续费开关"
-                                                onclick="mydelete('${ctx}/system/appuser/isCloseFee?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
-                                            <i class="ace-icon fa bigger-120">
-                                            <i class=" fa  fa-toggle-off"></i>
-                                            </i>
-                                        </button>
+                                        <#if (_data.isCloseFee) == 0>
+	                                         <button class="btn btn-xs btn-warning" title="卡券手续费关闭"
+	                                                onclick="mydelete('${ctx}/system/appuser/isCloseFee?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+	                                            <i class="ace-icon fa bigger-120">
+	                                            <i class=" fa  fa-toggle-off"></i>
+	                                            </i>
+	                                        </button>
+                                        </#if>
+                                        <#if (_data.isCloseFee) == 1>
+	                                        <button class="btn btn-xs btn-danger" title="卡券手续费开启"
+	                                                onclick="mydelete('${ctx}/system/appuser/isCloseFee?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+	                                            <i class="ace-icon fa bigger-120">
+	                                            <i class=" fa  fa-toggle-on"></i>
+	                                            </i>
+	                                        </button>
+                                        </#if>
                                         
                                         
                                     </div>
@@ -422,34 +437,10 @@ jQuery(document).ready(function(){
 								${(_data.balance)!0}
 							</td>
 							<td >
-								${(_data.frozeBanlance)!0}
-							</td>
-							<td >
-								${(_data.bankName)!''}
-							</td>
-							<td >
-								${(_data.branchBank)!''}
-							</td>
-							<td >
-								${(_data.ownerName)!''}
-							</td>
-							<td >
-								${(_data.ownerPhone)!''}
-							</td>
-							<td >
-								${(_data.cardNum)!''}
-							</td>
-							<td >
 								${(_data.currentLqNum)!0}
 							</td>
 							<td >
-								${(_data.currentShareNum)!0}
-							</td>
-							<td >
-								${(_data.LqNum)!0}
-							</td>
-							<td >
-								${(_data.shareNum)!0}
+								${(_data.lqNum)!0}
 							</td>
 							<td >
 								<#if (_data.isCloseFee) == 0>

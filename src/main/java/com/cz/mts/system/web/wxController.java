@@ -97,7 +97,9 @@ public class wxController extends BaseController {
 						break;
 					case"C":
 						appUserService.alipay(code, 3, Double.parseDouble(total_fee)/100, transaction_id, 1);
-						
+						break;
+					case"R":
+						appUserService.alipay(code, 4, Double.parseDouble(total_fee)/100, transaction_id, 1);
 						break;
 					}
 				} 

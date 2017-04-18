@@ -206,8 +206,18 @@ public class AppUser  extends BaseEntity {
 	
 	private Integer sumPerson;
 	
+	private Double sumMoney;
 	
 	
+	@Transient
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+
 	@Transient
 	public Integer getSumPerson() {
 		return sumPerson;
@@ -380,7 +390,7 @@ public class AppUser  extends BaseEntity {
 		this.name = value;
 	}
 	
-     @WhereSQL(sql="name=:AppUser_name")
+     @WhereSQL(sql="name =:AppUser_name")
 	public java.lang.String getName() {
 		return this.name;
 	}
@@ -402,7 +412,7 @@ public class AppUser  extends BaseEntity {
 		this.phone = value;
 	}
 	
-     @WhereSQL(sql="phone=:AppUser_phone")
+     @WhereSQL(sql="phone =:AppUser_phone")
 	public java.lang.String getPhone() {
 		return this.phone;
 	}

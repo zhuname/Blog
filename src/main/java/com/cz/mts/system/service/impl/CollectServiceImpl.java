@@ -150,7 +150,8 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							UserMedal userMedal = new UserMedal();
 							userMedal.setUserId(card.getUserId());
 							//查询勋章列表
-							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+							Page umpage = new Page();
+							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, umpage, UserMedal.class, userMedal);
 							if(null != userMedals && userMedals.size() > 0){
 								for (UserMedal um : userMedals) {
 									if(null != um.getMedalId()){
@@ -177,8 +178,9 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							if(null != mediaPackage.getUserId()){
 								userMedal.setUserId(mediaPackage.getUserId());
 							}
+							Page meUmPage = new Page();
 							//查询勋章列表
-							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, meUmPage, UserMedal.class, userMedal);
 							if(null != userMedals && userMedals.size() > 0){
 								for (UserMedal um : userMedals) {
 									if(null != um.getMedalId()){
@@ -196,7 +198,8 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							Attention attention = new Attention();
 							attention.setUserId(ct.getUserId());
 							attention.setItemId(mediaPackage.getUserId());
-							List<Attention> attentions = attentionService.findListDataByFinder(null, page, Attention.class, attention);
+							Page attePage = new Page();
+							List<Attention> attentions = attentionService.findListDataByFinder(null, attePage, Attention.class, attention);
 							if(null != attentions && attentions.size() > 0){
 								mediaPackage.setIsAttention(1);
 							}else{
@@ -207,7 +210,8 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							MoneyDetail moneyDetail = new MoneyDetail();
 							moneyDetail.setItemId(mediaPackage.getId());
 							moneyDetail.setType(2);
-							List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
+							Page moneyPage = new Page();
+							List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, moneyPage, MoneyDetail.class, moneyDetail);
 							if(null != moneyDetails && moneyDetails.size() > 0){
 								for (MoneyDetail md : moneyDetails) {
 									if(null != md.getUserId()){
