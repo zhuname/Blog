@@ -585,6 +585,8 @@ public class PosterPackageController  extends BaseController {
 				
 				posterPackage.setStatus(0);
 				
+				posterPackage.setBalance(posterPackage.getSumMoney());
+				
 				posterPackage.setPayType(null);
 				
 				posterPackage.setPayTime(null);

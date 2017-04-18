@@ -464,6 +464,8 @@ public class MediaPackageController  extends BaseController {
 				
 				}
 				
+				mediaPackage.setBalance(mediaPackage.getSumMoney());
+				
 				mediaPackage.setPayMoney(0.0);
 				
 				mediaPackage.setStatus(0);

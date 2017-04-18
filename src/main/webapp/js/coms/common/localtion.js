@@ -105,6 +105,10 @@ $(document).on("change", "#province", function() {
         	
         	var pro="<option value=\"\">请选择市</option>";
         	
+        	if(obj1==undefined){
+        		jQuery("#city").html(pro);
+        	}
+        	
         	for (var int = 0; int < obj1.length; int++) {
         	
 				pro += "<option value='"+obj1[int].id+"'>"+obj1[int].name+"</option>";
