@@ -392,7 +392,9 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						AppUser user = super.findById(_userId, AppUser.class) ;
 						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
 						user.setBalance(nowBalance.doubleValue());
-						user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
+						if(_package.getEncrypt().intValue()==0){
+							user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
+						}
 						//更新用户余额
 						appUserService.saveorupdate(user) ;
 						//更新明细表

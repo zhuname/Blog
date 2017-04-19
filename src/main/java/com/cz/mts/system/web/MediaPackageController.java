@@ -511,6 +511,8 @@ public class MediaPackageController  extends BaseController {
 				
 				mediaPackage.setPayType(null);
 				
+				mediaPackage.setNum(mediaPackage.getLqNum());
+				
 				mediaPackage.setPayTime(null);
 				
 				mediaPackage.setWxCode(null);

@@ -665,14 +665,12 @@ public class CardController  extends BaseController {
 					returnObject.setMessage("此卡券暂不能兑换");
 					return returnObject;
 				}
-				if(userId!=card.getUserId()){
+				if(userId.intValue()!=card.getUserId().intValue()){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("仅能兑换自己发布的卡券");
 					return returnObject;
 				}
 			}
-			
-			
 			
 			
 			//改变状态
