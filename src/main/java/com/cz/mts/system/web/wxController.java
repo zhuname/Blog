@@ -90,16 +90,16 @@ public class wxController extends BaseController {
 					int returnvalue = 0;
 					switch (type) {
 					case"P":
-						appUserService.alipay(code, 1, Double.parseDouble(total_fee)/100, transaction_id, 1);
+						appUserService.alipay(code, 1, Double.parseDouble(total_fee)/100, transaction_id, 2);
 						break;
 					case"V":
-						appUserService.alipay(code, 2, Double.parseDouble(total_fee)/100, transaction_id, 1);
+						appUserService.alipay(code, 2, Double.parseDouble(total_fee)/100, transaction_id, 2);
 						break;
 					case"C":
-						appUserService.alipay(code, 3, Double.parseDouble(total_fee)/100, transaction_id, 1);
+						appUserService.alipay(code, 3, Double.parseDouble(total_fee)/100, transaction_id, 2);
 						break;
 					case"R":
-						appUserService.alipay(code, 4, Double.parseDouble(total_fee)/100, transaction_id, 1);
+						appUserService.alipay(code, 4, Double.parseDouble(total_fee)/100, transaction_id, 2);
 						break;
 					}
 				} 

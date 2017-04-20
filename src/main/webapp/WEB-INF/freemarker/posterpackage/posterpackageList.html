@@ -17,15 +17,14 @@ $('.date-picker').datepicker({
 });
 
 //点击看大图
-	$(document).on("click", ".sim", function() {
-    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
-    	console.log(me);
+	$(document).unbind('click').on("click", ".sim", function() {
+    	var me="<img style=\"height:420px;width:300px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '1000px',
+			  area: '300px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me
@@ -291,7 +290,7 @@ jQuery(document).ready(function(){
 								${(_data.appUserName)!''}
 							</td>
 							<td>
-								<img  class="sim" src="${(_data.image)!''}" height="100px;" width="140px;"/>
+								<img  class="sim" src="${(_data.image)!''}" height="140px;" width="100px;"/>
 							</td>
 							<td >
 								${(_data.categoryName)!''}

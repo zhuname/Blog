@@ -69,21 +69,25 @@ $(document).on("click", ".vid", function() {
 	
 	
 	
-$(document).on("click", ".sim", function() {
-    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
-    	console.log(me);
+$(document).unbind('click').on("click", ".sim", function() {
+    	var me="<img style=\"height:360px;width:360px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+    	var a = $(this).attr("src");
+    	if(a != ""){
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '1000px',
+			  area: '360px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me
-			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
+    	}else{
+    		myalert('暂无图片')
+    	}
+    		
 	});
 	
 jQuery(document).ready(function(){
@@ -299,7 +303,7 @@ jQuery(document).ready(function(){
 									</#list>
 								</#if>
 								<#if (_data.type) == 2 >
-									<video class="vid" poster="" width='200px' src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls'></video>
+									<video class="vid" poster="" width='240px' height="120px" src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls'></video>
 								</#if>
 							</td>
 						</tr>

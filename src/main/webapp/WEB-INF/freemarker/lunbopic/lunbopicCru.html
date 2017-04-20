@@ -20,8 +20,20 @@ jQuery(document).ready(function(){
 			$(this).prev().focus();
 		});
 	*/
-	
-	
+	//编辑时元素的默认
+	//跳转类型
+	var typeCode = $('#type').attr('code') ;
+	if(typeCode !=0){
+        $('#type').val(typeCode) ;
+	}
+	//位置
+	var positionCode = $('#position').attr('code') ;
+    if( positionCode!=0){
+        $('#position').val(positionCode) ;
+    }
+    
+    
+    $("#nameDiv").hide();
 	
 	});
 	
@@ -59,7 +71,7 @@ function lunboImages(){
 	});
 	
 	
-	initCity("localtion",null,"cityIds");
+	initDcity("localtion",null,"cityIds");
 
 	$(document).on("change", "#city", function() {
 		var cityId=jQuery("#city").val();
@@ -79,67 +91,36 @@ function lunboImages(){
 		$("#urlDiv").hide();
 	}
 	
-	$("#inputType").on('change',function(){
-		if(1 == $("#inputType").val()){
+	
+	
+	//修改展示位置默认选中
+	$("#position").on('change',function(){
+		var position = $("#position").val();
+
+		if(4 == position){
+			$("#nameDiv").show();
+			$("#urlDiv").hide();
+		}else{
+			$("#nameDiv").hide();
+			$("#urlDiv").hide();
+		}
+	});
+	
+	
+	
+	$("#type").on('change',function(){
+		if(1 == $("#type").val()){
 			$("#itemIdDiv").hide();
 			$("#urlDiv").show();
 		}else{
 			$("#itemIdDiv").show();
 			$("#urlDiv").hide();
 		}
-		
-		jQuery("#type").attr('value',$("#inputType").val());
-	});
-	
-	//修改跳转类型下拉框默认选中
-	var type1 = $("#type1").val();
-	var type2 = $("#type2").val();
-	var type3 = $("#type3").val();
-	var type4 = $("#type4").val();
-	if(type1 == type){
-		$("#type1").attr("selected","selected");
-	}
-	if(type2 == type){
-		$("#type2").attr("selected","selected");
-	}
-	if(type3 == type){
-		$("#type3").attr("selected","selected");
-	}
-	
-	//修改展示位置默认选中
-	var position = $("#position").val();
-	var position1 = $("#position1").val();
-	var position2 = $("#position2").val();
-	var position3 = $("#position3").val();
-	var position4 = $("#position4").val();
-	
-
-	if(4 == position){
-		$("#positionDiv").hide();
-		$("#cityDiv").hide();
-		$("#itemIdDiv").hide();
-		$("#urlDiv").hide();
-		$("#name").attr("disabled","disabled");
-	}else{
-		$("#name").removeAttr("disabled");
-		$("#itemIdDiv").show();
-		$("#urlDiv").hide();
-	}
-	
-	
-	$("#inputPosition").on('change',function(){
-		if(4 == $("#inputPosition").val()){
-			$("#itemIdDiv").hide();
-			$("#urlDiv").hide();
-		}else{
-			$("#itemIdDiv").show();
-			$("#urlDiv").hide();
-		}
-		jQuery("#position").attr('value',$("#inputPosition").val());
+		//jQuery("#position").attr('value',$("#inputPosition").val());
 		
 		//加载链接目标
 		jQuery.ajax({
-			url : ctx+"/system/lunbopic/position/list?position="+$("#inputPosition").val(),
+			url : ctx+"/system/lunbopic/position/list?position="+$("#type").val(),
 			type : "post",
 			dataType : "json",
 			success : function(_json) {
@@ -149,7 +130,7 @@ function lunboImages(){
 				//先清除原来的数据
 				$("#itemId").empty();
 				jQuery(_json.data).each(function(i,_obj){
-					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.userName+"------标题："+_obj.title+"</option>");
+					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"------标题："+_obj.title+"</option>");
 				});
 				
 				jQuery("#itemId").select2();
@@ -157,19 +138,10 @@ function lunboImages(){
 		});
 		
 	});
-	if(position1 == position){
-		$("#position1").attr("selected","selected");
-	}
-	if(position2 == position){
-		$("#position2").attr("selected","selected");
-	}
-	if(position3 == position){
-		$("#position3").attr("selected","selected");
-	}
 	
 	//加载链接目标
 	jQuery.ajax({
-		url : ctx+"/system/lunbopic/position/list?position="+$("#inputPosition").val(),
+		url : ctx+"/system/lunbopic/position/list?position="+$("#type").val(),
 		type : "post",
 		dataType : "json",
 		success : function(_json) {
@@ -178,10 +150,11 @@ function lunboImages(){
 			}
 			
 			jQuery(_json.data).each(function(i,_obj){
-				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.userName+"------标题："+_obj.title+"</option>");
+				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"------标题："+_obj.title+"</option>");
 			});
 			
 			jQuery("#itemId").select2();
+			 $('#itemId').select2('val',$('#itemId').attr("code")) ;
 		}
 	});
 	
@@ -220,7 +193,7 @@ function lunboImages(){
 	        
 	         
 			<div class="form-group"  id="cityDiv" >
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityName" >城市名称 </label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityName" >城市名称</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 					
@@ -228,7 +201,7 @@ function lunboImages(){
 					  <div class="layui-form-item" id="localtion">
 					  </div>
 					
-					 <input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
+					 <input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text"/>
 					
 					</div><div class="help-block" for="cityId"></div>
 				</div>
@@ -237,13 +210,14 @@ function lunboImages(){
 	        
 	        <div class="form-group"  id="positionDiv">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="position" >展示位置</label>
-				<input type="text" id="position" name="position" class="col-xs-12 col-sm-6" value="${(returnDatas.data.position)!''}" style="display: none;"/>
+				<!-- <input type="text" id="inputPosition" name="position" class="col-xs-12 col-sm-6" value="${(returnDatas.data.position)!''}" style="display: none;"/> -->
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<select id="inputPosition">
-							<option value="1" id="position1">海报</option>
-							<option value="2" id="position2">视频</option>
-							<option value="3" id="position3">卡券</option>
+						<select id="position" name="position" code="${(returnDatas.data.position)!'0'}">
+							<option value="1" >海报</option>
+							<option value="2" >视频</option>
+							<option value="3" >卡券</option>
+							<option value="4" >广告位</option>
 						</select>
 					</div><div class="help-block" for="position"></div>
 				</div>
@@ -252,14 +226,14 @@ function lunboImages(){
 	        
 			<div class="form-group" >
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >跳转类型</label>
-				<input type="text" class="col-xs-12 col-sm-6" value="${(returnDatas.data.type)!''}" id="type" name="type" style="display: none;"/>
+				<!-- <input type="text" class="col-xs-12 col-sm-6" value="${(returnDatas.data.type)!''}" id="inputType" name="type" style="display: none;"/> -->
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<select id="inputType">
-							<option value="2" id="type2">海报</option>
-							<option value="3" id="type3">视频</option>
-							<option value="4" id="type4">卡券</option>
-							<option value="1" id="type1">url</option>
+						<select id="type" name="type" code="${(returnDatas.data.type)!'0'}">
+							<option value="2" >海报</option>
+							<option value="3" >视频</option>
+							<option value="4" >卡券</option>
+							<option value="1" >url</option>
 						</select>
 					</div><div class="help-block" for="type"></div>
 				</div>
@@ -286,6 +260,8 @@ function lunboImages(){
 				</div>
 			</div>
 			
+			 <div class="space-2"></div> 
+			 
 			<div class="form-group" id="nameDiv">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name" >广告位名称</label>
 				<div class="col-xs-12 col-sm-9">
@@ -294,14 +270,15 @@ function lunboImages(){
 					</div><div class="help-block" for="name"></div>
 				</div>
 			</div>
+			 <div class="space-2"></div> 
 			
 			<div class="form-group" id="itemIdDiv">
-				<label class="col-sm-3 control-label no-padding-right" for="itemId"> 链接目标</label>
-				<div class="col-sm-9">
-					<select  id="itemId" name="itemId"   class="form-control">
-					</select>
+					<label class="col-sm-3 control-label no-padding-right" for="itemId"> 链接目标</label>
+					<div class="col-sm-6">
+						<select  id="itemId" name="itemId" code="${(returnDatas.data.itemId)!''}"   class="form-control">
+						</select>
+					</div>
 				</div>
-			</div>
 			
 	        <div class="space-2"></div>
 	       

@@ -9,7 +9,7 @@
 		var fiedId=$(this).attr("id");
 		
 		$.ajaxFileUpload({
-            url : '/mts/adminFileUpload',
+            url : '/jkdw/adminFileUpload',
             secureuri : false,
             fileElementId : $(this).attr("id"),
             dataType : 'text',
@@ -99,22 +99,13 @@
 		var fiedId=$(this).attr("id");
 		
 		$.ajaxFileUpload({
-            url : '/mts/adminFileUpload',
+            url : '/jkdw/adminFileUpload',
             secureuri : false,
             fileElementId : fiedId,
             dataType : 'text',
             data : {},
             success : function(data, status) {
-            	
-            	console.log($($('#'+fiedId+'').parent().children()[1]).val());
-            	var valueS=$($('#'+fiedId+'').parent().children()[1]).val().split(';');
-    			if(valueS.length>0&&valueS.length<2){
-    				$('#'+fiedId+'').next().val($('#'+fiedId+'').next().val()+';'++data+';');
-    			}else{
-    				$('#'+fiedId+'').next().val($('#'+fiedId+'').next().val()+data+';');
-    			}
-            	
-            	
+            	$('#'+fiedId+'').next().val($('#'+fiedId+'').next().val()+data+';');
             	var wait=document.getElementsByName('waitPhoto');
             	if(wait.length>0){
             		
@@ -123,7 +114,6 @@
             		if(src!=undefined||src!=""){
             			console.log($('#'+fiedId+''));
             			console.log($('#'+fiedId+'').parent().children()[1]);
-            			
             			var value=$($('#'+fiedId+'').parent().children()[1]).val().replace(src+';','');
             			$($('#'+fiedId+'').parent().children()[1]).val(value);
             			var value1=$($('#'+fiedId+'').parent().children()[1]).val().replace(src,'');
@@ -150,8 +140,11 @@
 		var imageVals=imageVal.split(";");
 		
 		if(imageVals.length>0){
-			$($('#'+ulId+'').children()[2]).remove();
-			
+
+			if(imageVals[0]!=""){
+                $($('#'+ulId+'').children()[2]).remove();
+            }
+
 			for (var int = 0; int < imageVals.length; int++) {
 				
 				if(imageVals[int]!=""&&imageVals[int]!=undefined){

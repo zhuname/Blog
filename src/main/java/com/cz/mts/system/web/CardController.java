@@ -457,6 +457,7 @@ public class CardController  extends BaseController {
 					}
 					
 				}
+				card.setNum(card.getConvertNum());
 				card.setStatus(1);
 				cardService.update(card,true);
 				returnObject.setData(cardService.findCardById(card.getId()));
@@ -672,20 +673,20 @@ public class CardController  extends BaseController {
 				}
 			}
 			
-			
 			//改变状态
 			usercard.setStatus(2);
 			usercard.setChangeTime(new Date());
-			Object id = userCardService.update(usercard, true);
-			UserCard uc = userCardService.findUserCardById(id);
-			if(null != uc && null != uc.getUserId()){
-				AppUser user = appUserService.findAppUserById(uc.getUserId());
-				if(null != user && 1 == user.getIsPush() && null != uc.getCardId()){
+			
+			if(null != usercard && null != usercard.getUserId()){
+				AppUser user = appUserService.findAppUserById(usercard.getUserId());
+				if(null != user && 1 == user.getIsPush() && null != usercard.getCardId()){
 					//给自己发推送
-					notificationService.notify(14, uc.getCardId(), user.getId());
+					notificationService.notify(14, usercard.getCardId(), usercard.getUserId());
 					
 				}
 			}
+			userCardService.update(usercard,true);
+			
 			
 			//手续费比例
 			BigDecimal cardCharge=new BigDecimal(0.0);

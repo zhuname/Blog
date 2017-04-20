@@ -49,15 +49,16 @@ $(document).on("click", ".vid", function() {
 	});
 	
 	
+	
 	//点击看大图
-	$(document).on("click", ".sim", function() {
-    	var me="<img style=\"height:1000px;width:1000px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
+	$(document).unbind('click').on("click", ".sim", function() {
+    	var me="<img style=\"height:300px;width:600px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
 			  closeBtn: 0,
-			  area: '1000px',
+			  area: '600px',
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,
 			  content:me

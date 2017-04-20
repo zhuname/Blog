@@ -87,7 +87,7 @@ public class CityController  extends BaseController {
 		page.setPageSize(100000);
 		// ==执行分页查询
 		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
-			returnObject.setQueryBean(city);
+		returnObject.setQueryBean(city);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -318,6 +318,52 @@ public class CityController  extends BaseController {
 	@RequestMapping("/getAreaAdmin/json")
 	public @ResponseBody
 	ReturnDatas getAreaAdminjson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		Province province=new Province();
+		
+		City city=new City();
+		
+		// ==构造分页请求
+		Page page = newPage(request);
+		page.setPageSize(10000);
+		// ==执行分页查询
+		if(level==1){
+			List<Province> datas=cityService.findListDataByFinder(null,page,Province.class,province);
+			returnObject.setQueryBean(province);
+			returnObject.setData(datas);
+		}else if(level==2){
+			if(fatherId!=null){
+				city.setFatherId(fatherId);
+				//city.setOpen(1);
+			}else {
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatusCode(ReturnDatas.ERROR);
+				return returnObject;
+			}
+			List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
+			returnObject.setQueryBean(city);
+			returnObject.setData(datas);
+		}
+		
+		
+		returnObject.setPage(page);
+		return returnObject;
+	}
+	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param city
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getMutilyAreaAdmin/json")
+	public @ResponseBody
+	ReturnDatas getMutilyAreaAdminjson(HttpServletRequest request, Model model,Integer level,Integer fatherId) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		
 		Province province=new Province();

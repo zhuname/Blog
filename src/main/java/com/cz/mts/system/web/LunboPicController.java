@@ -352,60 +352,27 @@ public class LunboPicController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		String position = request.getParameter("position");
 		if(StringUtils.isNotBlank(position)){
-			//1.海报    2.视频   3.卡券
-			if("1".equals(position)){
-				//查询海报
-				Finder finder = new Finder("SELECT * FROM t_poster_package WHERE isDel=0 AND encrypt=0");
-				List<PosterPackage> posterPackages = posterPackageService.queryForList(finder,PosterPackage.class);
-				if(null != posterPackages && posterPackages.size() > 0){
-					for (PosterPackage posterPackage : posterPackages) {
-						if(posterPackage.getUserId() != null){
-							AppUser appUser = appUserService.findAppUserById(posterPackage.getUserId());
-							if(appUser != null){
-								if(StringUtils.isNotBlank(appUser.getName())){
-									posterPackage.setUserName(appUser.getName());
-								}
-							}
-						}
-					}
-				}
-				returnObject.setData(posterPackages);
-			}
+			//2.海报    3.视频   4.卡券
 			if("2".equals(position)){
-				//查询视频
-				Finder finder = new Finder("SELECT * FROM t_media_package WHERE isDel=0 AND encrypt=0");
-				List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder,MediaPackage.class);
-				if(mediaPackages != null && mediaPackages.size() > 0){
-					for (MediaPackage mediaPackage : mediaPackages) {
-						if(mediaPackage.getUserId() != null){
-							AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
-							if(appUser != null){
-								if(StringUtils.isNotBlank(appUser.getName())){
-									mediaPackage.setUserName(appUser.getName());
-								}
-							}
-						}
-					}
-				}
-				returnObject.setData(mediaPackages);
+				//查询海报
+				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(PosterPackage.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.encrypt=0") ;
+				List list = posterPackageService.queryForList(finder) ;
+				returnObject.setData(list);
 			}
 			if("3".equals(position)){
+				//查询视频
+				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(MediaPackage.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.encrypt=0") ;
+				List list = mediaPackageService.queryForList(finder) ;
+				returnObject.setData(list);
+			}
+			if("4".equals(position)){
 				//查询卡券
-				Finder finder = new Finder("SELECT * FROM t_card WHERE isDel=0");
-				List<Card> cards = cardService.queryForList(finder,Card.class);
-				if(cards != null && cards.size() > 0){
-					for (Card card : cards) {
-						if(card.getUserId() != null){
-							AppUser appUser = appUserService.findAppUserById(card.getUserId());
-							if(appUser != null){
-								if(StringUtils.isNotBlank(appUser.getName())){
-									card.setUserName(appUser.getName());
-								}
-							}
-						}
-					}
-				}
-				returnObject.setData(cards);
+				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(Card.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0") ;
+				List list = cardService.queryForList(finder) ;
+				returnObject.setData(list);
 			}
 		}
 		return returnObject;

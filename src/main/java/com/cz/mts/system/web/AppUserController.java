@@ -144,6 +144,13 @@ public class AppUserController  extends BaseController {
 		Map<String, Object> hashMap = new HashMap<String, Object>();
 		// ==执行分页查询
 		List<AppUser> datas=appUserService.findListDataByFinder(finder,page,AppUser.class,null);
+		if(datas != null && datas.size() > 0){
+			for (AppUser au : datas) {
+				if(StringUtils.isBlank(au.getHeader())){
+					au.setHeader("http://106.15.60.65:22222/images/mts/share/header.png");
+				}
+			}
+		}
 		Page newPage = new Page();
 		newPage.setPageSize(100000);
 		Double sumMoney = 0.0;

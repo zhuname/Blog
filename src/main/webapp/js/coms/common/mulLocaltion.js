@@ -1,7 +1,7 @@
 //省市县选择插件，
 //by：wml
 
-function initDcity(localtion,provinceId,cityId){
+function initCity(localtion,provinceId,cityId){
 	//初始化
 	$('#'+localtion+'').html("<div class=\"layui-form-item\"><div class=\"layui-input-inline\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div class=\"layui-input-inline\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
 	
@@ -42,7 +42,7 @@ function initDcity(localtion,provinceId,cityId){
 								
 							}
 							$.ajax({
-								url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+cityFatherId,
+								url : '/mts/system/city/getMutilyAreaAdmin/json?level=2&fatherId='+cityFatherId,
 								secureuri : false,
 								dataType : 'json',
 								data : {},
@@ -95,7 +95,7 @@ $(document).on("change", "#province", function() {
 	var fatherId=jQuery("#province").val();
 
     $.ajax({
-        url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+fatherId,
+        url : '/mts/system/city/getMutilyAreaAdmin/json?level=2&fatherId='+fatherId,
         secureuri : false,
         dataType : 'json',
         data : {},
@@ -176,7 +176,7 @@ $(document).on("click", ".deleteCityId", function() {
 	
 });
 
-function initCitys(tableId,itemId){
+function initMCitys(tableId,itemId){
 	
 	var cityIdsVal=$('#'+itemId+'').val();
 	

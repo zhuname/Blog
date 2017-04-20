@@ -40,7 +40,6 @@ public class AliPayController extends BaseController {
 	}
 
 	@RequestMapping("/getzfb/json")
-	@SecurityApi
 	public @ResponseBody String getzfb(HttpServletRequest request) throws Exception {
 		log.info("************支付宝回调**************");
 
