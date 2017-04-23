@@ -3,7 +3,7 @@
 
 function initCity(localtion,provinceId,cityId){
 	//初始化
-	$('#'+localtion+'').html("<div class=\"layui-form-item\"><div class=\"layui-input-inline\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div class=\"layui-input-inline\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
+	$('#'+localtion+'').html("<div  style=\"display:inline-block;\"><div style=\"display:inline-block;\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div  style=\"display:inline-block;\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
 	
 		$.ajax({
 			url : '/mts/system/city/getAreaAdmin/json?level=1',

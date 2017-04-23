@@ -725,6 +725,10 @@ public class PosterPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", posterPackage.getEnddTime());
 		}
+		if(StringUtils.isNotBlank(posterPackage.getCityIds())){
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId) ");
+			finder.setParam("cityId", Integer.parseInt(posterPackage.getCityIds()));
+		}
 		finder.append(" and status!=0");
 		
 		Double sumPayMoney = 0.0;

@@ -28,6 +28,13 @@ jQuery(document).ready(function(){
 	}
 	//位置
 	var positionCode = $('#position').attr('code') ;
+	if(positionCode == 4){
+		$("#positionDiv").hide();
+	}else{
+		$("#positionDiv").show();
+		$("#attention").html("请上传5:2的图片");
+	}
+	
     if( positionCode!=0){
         $('#position').val(positionCode) ;
     }
@@ -70,11 +77,11 @@ function lunboImages(){
 
 	});
 	
-	
+	var cityId = null;
 	initDcity("localtion",null,"cityIds");
 
 	$(document).on("change", "#city", function() {
-		var cityId=jQuery("#city").val();
+		cityId=jQuery("#city").val();
 
 		jQuery("#cityIds").val(cityId);
 		
@@ -101,6 +108,7 @@ function lunboImages(){
 			$("#nameDiv").show();
 			$("#urlDiv").hide();
 		}else{
+			
 			$("#nameDiv").hide();
 			$("#urlDiv").hide();
 		}
@@ -168,6 +176,12 @@ function lunboImages(){
 	    }else{
 	    	 listUrl = "${ctx}/system/lunbopic/list1";
 		}
+	    var cityIds = $("#cityIds").val();
+	 	if(cityIds == null || cityIds == undefined || cityIds == ""){
+	 		myalert("请选择城市");
+	 		return;
+	 	} 
+	     
 	    commonUpdateForm('validation-form',listUrl);
 	}
 	
@@ -187,7 +201,9 @@ function lunboImages(){
 							<img  name="lunboI" style="height: 200px;width: 200px;" onclick="lunboImages();" id="lunboI" value="${(returnDatas.data.image)!''}" src="${(returnDatas.data.image)!''}">
  							<input type="file" id="filed" name="filed" style="display:none">
  							<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+				<span style="color: red;" id="attention"></span>
 				</div>
+				
 			</div>
 	        <div class="space-2"></div>
 	        

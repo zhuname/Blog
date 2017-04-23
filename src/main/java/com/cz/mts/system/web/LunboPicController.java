@@ -356,21 +356,21 @@ public class LunboPicController  extends BaseController {
 			if("2".equals(position)){
 				//查询海报
 				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(PosterPackage.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
-				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.encrypt=0") ;
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.encrypt=0 and pp.status=3") ;
 				List list = posterPackageService.queryForList(finder) ;
 				returnObject.setData(list);
 			}
 			if("3".equals(position)){
 				//查询视频
 				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(MediaPackage.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
-				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.encrypt=0") ;
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.encrypt=0 and pp.status=3") ;
 				List list = mediaPackageService.queryForList(finder) ;
 				returnObject.setData(list);
 			}
 			if("4".equals(position)){
 				//查询卡券
 				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(Card.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
-				finder.append(" u on pp.userId = u.id where pp.isDel = 0") ;
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.status=2") ;
 				List list = cardService.queryForList(finder) ;
 				returnObject.setData(list);
 			}

@@ -777,12 +777,20 @@ public class CardController  extends BaseController {
 			finder.append(" and endTime < :endTime ");
 			finder.setParam("endTime", card.getEnddTime());
 		}
+		
+		if(StringUtils.isNotBlank(card.getCityIds())){
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId)");
+			finder.setParam("cityId", Integer.parseInt(card.getCityIds()));
+		}
+		
 		if(null != card.getStatus()){
 			if(5 == card.getStatus()){
 				card.setStatus(null);
 				finder.append(" and status=2 and num=0");
 			}
 		}
+		
+		
 		
 		List<Card> datas = cardService.findListDataByFinder(finder,page,Card.class,card);
 		if(null != datas && datas.size() > 0){

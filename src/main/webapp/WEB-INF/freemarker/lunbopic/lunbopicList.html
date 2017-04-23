@@ -44,6 +44,22 @@ jQuery(document).ready(function(){
 });
 
 
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
+
+initDcity("localtion",null,"cityIds");
+
+$(document).on("change", "#city", function() {
+	var cityId=jQuery("#city").val();
+	jQuery("#cityIds").val(cityId);
+	
+});
+
+
 </script>
 
 
@@ -56,7 +72,7 @@ jQuery(document).ready(function(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/lunbopic/list1" role="form">
+ <form class="form-horizontal" name="searchForm" style="width: 100%;" id="searchForm" action="${ctx}/system/lunbopic/list1" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -77,10 +93,18 @@ jQuery(document).ready(function(){
 				<option value="3">视频</option>
 				<option value="4">卡券</option>
 			</select>
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
-				</a>
+			<label for="search_cityIds" ><b>城市名称:</b></label>
+			  <div id="localtion" style="display: inline-block;">
+			  </div>
+			 <input name="cityIds" id="cityIds" value="${(returnDatas.queryBean.cityIds)!''}" style="display:none"  type="text"/>
+			
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+			</a>
+				
+			<a 
+			class="btn btn-purple btn-sm selectBtn">
+				查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+			</a>
 
 </form>
 		</div>

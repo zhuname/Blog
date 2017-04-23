@@ -599,6 +599,10 @@ public class MediaPackageController  extends BaseController {
 			finder.append(" and payTime < :endTime ");
 			finder.setParam("endTime", mediaPackage.getEnddTime());
 		}
+		if(StringUtils.isNotBlank(mediaPackage.getCityIds())){
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId)");
+			finder.setParam("cityId", Integer.parseInt(mediaPackage.getCityIds()));
+		}
 		finder.append(" and status!=0");
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		Double sumPayMoney = 0.0;

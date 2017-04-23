@@ -50,6 +50,6 @@ public interface IPosterPackageService extends IBaseSpringrainService {
 	 * @return
 	 * @throws Exception
 	 */
-	Integer statics() throws Exception;
+	String statics() throws Exception;
 	
 }

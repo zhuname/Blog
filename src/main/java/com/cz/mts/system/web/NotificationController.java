@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.NotificationBean;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.IApplyMedalService;
@@ -35,23 +37,27 @@ public class NotificationController extends BaseController{
 	
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson() throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,NotificationBean notificationBean) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		NotificationBean notificationBean = new NotificationBean();
-		
-		Integer posterpackageCount = posterPackageService.statics();
+		String countNum = posterPackageService.statics();
+		String arr[] = countNum.split("=");
+		String result = arr[1];
+		String arr1[] = result.split("}");
+		String result1 = arr1[0];
+		String res[] = result1.split(",");
+		Integer posterpackageCount = Integer.parseInt(res[0]);
 		notificationBean.setPosterpackageCount(posterpackageCount);
 		
-		Integer mediapackageCount = mediaPackageService.statics();
+		Integer mediapackageCount = Integer.parseInt(res[1]);
 		notificationBean.setMediapackageCount(mediapackageCount);
 		
-		Integer cardCount = cardService.statics();
+		Integer cardCount = Integer.parseInt(res[2]);
 		notificationBean.setCardCount(cardCount);
 		
-		Integer applyMedalCount = applyMedalService.statics();
+		Integer applyMedalCount = Integer.parseInt(res[3]);
 		notificationBean.setApplyMedalCount(applyMedalCount);
 		
-		Integer applyWithdrawCount = withdrawService.statics();
+		Integer applyWithdrawCount = Integer.parseInt(res[4]);
 		notificationBean.setApplyWithdrawCount(applyWithdrawCount);
 		
 		Integer sumCount = posterpackageCount+mediapackageCount+cardCount+applyMedalCount+applyWithdrawCount;
@@ -59,6 +65,16 @@ public class NotificationController extends BaseController{
 		
 		returnObject.setData(notificationBean);
 		return returnObject;
+	}
+	
+	
+	@RequestMapping("/list")
+	public String list(HttpServletRequest request, Model model,NotificationBean notificationBean) 
+			throws Exception {
+		ReturnDatas returnObject = listjson(request, model, notificationBean);
+		returnObject.setData(returnObject.getData());
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/common/head";
 	}
 
 }

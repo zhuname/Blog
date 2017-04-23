@@ -82,6 +82,15 @@ jQuery(document).ready(function(){
 });
 
 
+initCity("localtion",null,"cityIds");
+
+$(document).on("change", "#city", function() {
+	var cityId=jQuery("#city").val();
+	console.log(cityId);
+	jQuery("#cityIds").val(cityId);
+	
+});
+
 </script>
 
 
@@ -91,10 +100,11 @@ jQuery(document).ready(function(){
 
 <div class="row">
     <div class="col-xs-12">
+     <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/posterpackage/list" role="form">
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/posterpackage/list" role="form">
+
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
@@ -137,18 +147,7 @@ jQuery(document).ready(function(){
 			 	<span>
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
-			 
-			 
-				<a id="selectA" href="javascript:mySubmitForm('searchForm');">
-				</a>
-				
-				<a 
-				class="btn btn-purple btn-sm selectBtn">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
-				</a>
-				
 
-</form>
 		</div>
 		  
 		<div class="pull-right">
@@ -173,6 +172,31 @@ jQuery(document).ready(function(){
 		</div>
 	</div>
 </div>
+
+
+
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			<label for="search_cityIds" ><b>城市名称:</b></label>
+			  <div id="localtion" style="display: inline-block;">
+			  </div>
+			 <input name="cityIds" id="cityIds" value="${(returnDatas.queryBean.cityIds)!''}" style="display:none"  type="text"/>
+		
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
+		</div>
+	</div>
+</div>
+</form>
+
+
+
 
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
