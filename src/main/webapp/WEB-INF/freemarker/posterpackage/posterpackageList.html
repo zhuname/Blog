@@ -17,7 +17,7 @@ $('.date-picker').datepicker({
 });
 
 //点击看大图
-	$(document).unbind('click').on("click", ".sim", function() {
+	/* $(document).unbind('click').on("click", ".sim", function() {
     	var me="<img style=\"height:420px;width:300px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     		//iframe层-多媒体
         	layer.open({
@@ -31,7 +31,7 @@ $('.date-picker').datepicker({
 			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
-	});
+	}); */
 	
 	
 	//点击查询按钮
@@ -314,7 +314,7 @@ $(document).on("change", "#city", function() {
 								${(_data.appUserName)!''}
 							</td>
 							<td>
-								<img  class="sim" src="${(_data.image)!''}" height="140px;" width="100px;"/>
+								<img  class="sim" src="${(_data.image)!''}" height="140px;" width="100px;" onclick="checkImg('${(_data.image)!''}','300px','420px');"/>
 							</td>
 							<td >
 								${(_data.categoryName)!''}

@@ -51,7 +51,7 @@ $(document).on("click", ".vid", function() {
 	
 	
 	//点击看大图
-	$(document).unbind('click').on("click", ".sim", function() {
+	/* $(document).unbind('click').on("click", ".sim", function() {
     	var me="<img style=\"height:300px;width:600px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
     		//iframe层-多媒体
         	layer.open({
@@ -65,7 +65,7 @@ $(document).on("click", ".vid", function() {
 			 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
 			});
         	layer.msg('点击任意处关闭');
-	});
+	}); */
 	
 		
 		function checkRefuse(id){
@@ -400,7 +400,7 @@ $(document).on("click", ".vid", function() {
 								
 							</td>
 							<td >
-								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage"/>
+								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage" onclick="checkImg('${(_data.mediaImage)!''}','600px','300px');"/>
 							</td>
 							<td >
 								${(_data.shareNum)!''}

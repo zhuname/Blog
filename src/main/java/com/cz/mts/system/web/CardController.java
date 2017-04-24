@@ -457,6 +457,27 @@ public class CardController  extends BaseController {
 					}
 					
 				}
+				
+				if(cityIds!=null){
+					
+					String[] cityId=cityIds.split(",");
+					
+					for (String string : cityId) {
+						RedCity redCity=new RedCity();
+						redCity.setCityId(Integer.parseInt(string));
+						redCity.setPackageId(card.getId());
+						redCity.setType(3);
+						redCityService.save(redCity);
+					}
+					
+				}else{
+					RedCity redCity=new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(card.getId());
+					redCity.setType(3);
+					redCityService.save(redCity);
+				}
+				
 				card.setNum(card.getConvertNum());
 				card.setStatus(1);
 				cardService.update(card,true);

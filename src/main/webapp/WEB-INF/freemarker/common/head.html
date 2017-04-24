@@ -224,7 +224,7 @@
 			
 				
 				<li class="purple">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+							<a data-toggle="dropdown"  href="#" class="dropdown-toggle" >
 								<i class="ace-icon fa fa-bell"></i>
 								<span class="badge badge-important" id="sumStatics"></span>
 							</a>
@@ -236,7 +236,8 @@
 								</li>
 
 								<li>
-									<a href="/mts/index?id=6e43c1c21f4544fdb3c538daca7a7316&t=${.now?long}#href=${ctx}/system/posterpackage/list?isDel=0&status=1">
+									<!-- <a href="/mts/index?id=6e43c1c21f4544fdb3c538daca7a7316&t=${.now?long}#href=${ctx}/system/posterpackage/list?isDel=0&status=1"> -->
+									<a href="JavaScript:myhref('${ctx}/system/posterpackage/list?isDel=0&status=1','e3d2ede7f54440879387bf007fb3f1a3');">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-pink icon-comment"></i>
@@ -249,7 +250,8 @@
 
 								<li>
 									
-									<a href="/mts/index?id=e3d2ede7f54440879387bf007fb3f1a3&t=${.now?long}#href=${ctx}/system/mediapackage/list?isDel=0&status=1">
+									<!-- <a href="/mts/index?id=e3d2ede7f54440879387bf007fb3f1a3&t=${.now?long}#href=${ctx}/system/mediapackage/list?isDel=0&status=1"> -->
+									<a href="JavaScript:myhref('${ctx}/system/mediapackage/list?isDel=0&status=1','e3d2ede7f54440879387bf007fb3f1a3');">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs btn-primary icon-user"></i>
@@ -261,10 +263,11 @@
 								</li>
 
 								<li>
-									<a href="/mts/index?id=f4472c4bde7143c39926894b8a371d1e&t=${.now?long}#href=${ctx}/system/card/list?isDel=0&status=1">
+									<!-- <a href="/mts/index?id=f4472c4bde7143c39926894b8a371d1e&t=${.now?long}#href=${ctx}/system/card/list?isDel=0&status=1"> -->
+									<a href="JavaScript:myhref('${ctx}/system/card/list?isDel=0&status=1','f4472c4bde7143c39926894b8a371d1e');">
 										<div class="clearfix">
 											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
+												<i class="btn btn-xs no-hover btn-squccess icon-shopping-cart"></i>
 												卡券待审核
 											</span>
 											<span class="pull-right badge badge-success" id="cardCount"></span>
@@ -273,7 +276,8 @@
 								</li>
 
 								<li>
-									<a href="/mts/index?id=7a49584ba39d4047880e32241a51f22a&t=${.now?long}#href=${ctx}/system/applymedal/list?status=1">
+									<!-- <a href="/mts/index?id=7a49584ba39d4047880e32241a51f22a&t=${.now?long}#href=${ctx}/system/applymedal/list?status=1"> -->
+									<a href="JavaScript:myhref('${ctx}/system/applymedal/list?status=1','7a49584ba39d4047880e32241a51f22a');">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
@@ -284,7 +288,8 @@
 									</a>
 								</li>
 								<li>
-									<a href="/mts/index?id=d133a2245abb4c209124add3aa91351c&t=${.now?long}#href=${ctx}/system/withdraw/list?status=1">
+									<!-- <a href="/mts/index?id=d133a2245abb4c209124add3aa91351c&t=${.now?long}#href=${ctx}/system/withdraw/list?status=1"> -->
+									<a href="JavaScript:myhref('${ctx}/system/withdraw/list?status=1','d133a2245abb4c209124add3aa91351c');">
 										<div class="clearfix">
 											<span class="pull-left">
 												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
@@ -320,10 +325,11 @@
 						</li>-->
 
 						<li>
-							<a href="javascript:myhref('${ctx}/system/user/update/currentUserResetPwd');">
-								<i class="ace-icon fa fa-user"></i>
-								修改密码
-							</a>
+							
+							<a href="javascript:myhref('${ctx}/system/user/modifiypwd/pre');" data-tab="true" data-url="user.html">
+									<i class="ace-icon fa fa-user"></i>
+									<cite>修改密码</cite>
+								</a>
 						</li> 
 
 						<li class="divider"></li>

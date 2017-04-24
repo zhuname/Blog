@@ -48,7 +48,7 @@ function checkRefuse(id){
 }
 
 //点击播放视频
-$(document).on("click", ".vid", function() {
+ $(document).on("click", ".vid", function() {
     	var a = $(this).attr("src");
     	if(a != ""){
     		//iframe层-多媒体
@@ -67,29 +67,7 @@ $(document).on("click", ".vid", function() {
     	}
 	});
 	
-	
-	
-$(document).unbind('click').on("click", ".sim", function() {
-    	var me="<img style=\"height:360px;width:360px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
-    	var a = $(this).attr("src");
-    	if(a != ""){
-    		//iframe层-多媒体
-        	layer.open({
-			  type: 1,
-			  title: false,
-			  closeBtn: 0,
-			  area: '360px',
-			  skin: 'layui-layer-nobg', //没有背景色
-			  shadeClose: true,
-			  content:me
-			});
-        	layer.msg('点击任意处关闭');
-    	}else{
-    		myalert('暂无图片')
-    	}
-    		
-	});
-	
+
 jQuery(document).ready(function(){
 	
 	//回选 下拉框
@@ -298,7 +276,7 @@ jQuery(document).ready(function(){
 								<#if (_data.type) == 1 >
 									<#list "${(_data.multiAddress)!''}"?split(";") as s>
 										<a >
-										<img class="sim"  height="120px" width="120px" alt="" src="${s}" >
+										<img class="sim"  height="120px" width="120px" alt="" src="${s}" onclick="checkImg('${s}','360px','360px');" >
 										<a>
 									</#list>
 								</#if>

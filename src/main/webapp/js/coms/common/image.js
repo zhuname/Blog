@@ -156,3 +156,26 @@
 		}
 		
 	}
+	
+	
+	
+	function checkImg(s,width,height){
+		var me="<img style=\"height:"+height+";width:"+width+";\" alt=\"\" src=\""+s+"\">";
+    	var a = s;
+    	if(a != ""){
+    		//iframe层-多媒体
+        	layer.open({
+			  type: 1,
+			  title: false,
+			  closeBtn: 0,
+			  area: width,
+			  skin: 'layui-layer-nobg', //没有背景色
+			  shadeClose: true,
+			  content:me
+			});
+        	layer.msg('点击任意处关闭');
+    	}else{
+    		myalert('暂无图片')
+    	}
+	}
+	
