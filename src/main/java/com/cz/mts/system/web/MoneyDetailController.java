@@ -638,6 +638,8 @@ public class MoneyDetailController  extends BaseController {
 	ReturnDatas rechargeStatics(HttpServletRequest request,Model model,MoneyDetail moneyDetail) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Page page = new Page();
+		page.setOrder("createTime");
+		page.setSort("desc");
 		returnObject = moneyDetailService.rechargeStatics(moneyDetail, page);
 		return returnObject;
 	}
