@@ -77,7 +77,7 @@ $(document).on("click", ".selectBtn", function() {
 				<option value="2">已兑换</option>
 				<option value="3">已过期</option>
 			</select>
-			 <label for="search_publishUserName"><b>购买人名称:</b></label> 
+			 <label for="search_publishUserName"><b>发布人名称:</b></label> 
 			 <input type="text" id="search_publishUserName"  name="publishUserName" placeholder="请填写发布人名称"  value="${(returnDatas.queryBean.publishUserName)!''}">
 			 
 			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
@@ -91,7 +91,7 @@ $(document).on("click", ".selectBtn", function() {
 </form>
 		</div>
 		<div style="float: right;" >
-		<span  style="margin-right:10px;"  id="sumMoney">购买总金额：${returnDatas.map.sumMoney}</span>
+		<span  style="margin-right:10px;"  id="sumMoney">总金额：${returnDatas.map.sumMoney}</span>
 		<span id="plateMoney">平台收益：${returnDatas.map.plateMoney}</span>
 		</div>
 		<div class="pull-right">
