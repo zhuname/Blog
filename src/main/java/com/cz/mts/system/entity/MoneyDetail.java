@@ -123,7 +123,30 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String banlanceString;
 	
+	private Integer publishUserId;
 	
+	private String publishUserName;
+	
+	
+	
+	@Transient
+	public String getPublishUserName() {
+		return publishUserName;
+	}
+
+	public void setPublishUserName(String publishUserName) {
+		this.publishUserName = publishUserName;
+	}
+
+	@WhereSQL(sql="publishUserId=:MoneyDetail_publishUserId")
+	public Integer getPublishUserId() {
+		return publishUserId;
+	}
+
+	public void setPublishUserId(Integer publishUserId) {
+		this.publishUserId = publishUserId;
+	}
+
 	@Transient
 	public String getBanlanceString() {
 		return banlanceString;
@@ -412,6 +435,8 @@ public class MoneyDetail  extends BaseEntity {
 			.append("剩余金额[").append(getBalance()).append("],")
 			.append("目标id[").append(getItemId()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
+			.append("平台金额[").append(getPlateMoney()).append("],")
+			.append("发布人id[").append(getPublishUserId()).append("],")
 			.toString();
 	}
 	

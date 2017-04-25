@@ -193,6 +193,9 @@ public class LunboPicController  extends BaseController {
 				lunboPic.setCreateTime(new Date());
 				lunboPicService.saveorupdate(lunboPic);
 			}else{
+				if(4 == lunboPic.getPosition()){
+					lunboPic.setCreateTime(new Date());
+				}
 				lunboPicService.update(lunboPic,true);
 			}
 			

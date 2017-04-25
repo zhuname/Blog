@@ -43,26 +43,6 @@ function showdata(result) {
 }	
 	
 
-
-
-//点击看大图
-$(document).unbind('click').on("click", ".sim", function() {
-	var me="<img style=\"height:200px;width:200px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
-		//iframe层-多媒体
-    	layer.open({
-		  type: 1,
-		  title: false,
-		  closeBtn: 0,
-		  area: '200px',
-		  skin: 'layui-layer-nobg', //没有背景色
-		  shadeClose: true,
-		  content:me
-		});
-    	layer.msg('点击任意处关闭');
-});
-
-
-
 var medalMultiSelectTree;
 function showZtreeMedal(userId){
 	/* if(!medalMultiSelectTree){ */
@@ -422,7 +402,7 @@ $(document).on("click", ".selectBtn", function() {
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td>
-								<img  class="sim" src="${(_data.header)}" height="100px;" width="100px;"/>
+								<img  class="sim" src="${(_data.header)}" height="100px;" width="100px;" onclick="checkImg('${(_data.header)}','200px','200px');"/>
 								
 							</td>
 							<td >

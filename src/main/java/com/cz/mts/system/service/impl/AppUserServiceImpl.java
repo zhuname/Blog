@@ -228,7 +228,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			//扣除余额并且加到余额记录
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(cardSum).doubleValue());
 			super.update(appUser, true);
-			
+			Card card = cardService.findCardById(cards.get(0).getCardId());
 			if(0.0 != cardSum.doubleValue()){
 				//记录用户的余额记录
 				MoneyDetail moneyDetailC=new MoneyDetail();
@@ -240,6 +240,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				moneyDetailC.setPayType(3);
 				moneyDetailC.setUserId(userId);
 				moneyDetailC.setOsType(cards.get(0).getOsType());
+				moneyDetailC.setPublishUserId(card.getUserId());
 				super.save(moneyDetailC);
 			}
 			
@@ -248,12 +249,12 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				userCard.setPayType(3);
 				userCard.setPayTime(new Date());
 				userCard.setStatus(1);
+				userCard.setPublishUserId(card.getUserId());
 			}
 			
 			super.update(cards, true);
 			
 			//更新card中的convertNum字段
-			Card card = cardService.findCardById(cards.get(0).getCardId());
 			if(null != card){
 				card.setConvertNum(card.getConvertNum()-cards.size());
 				cardService.update(card, true);
@@ -432,7 +433,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					if(moneyDetailsC.size()>0){
 						return 4;
 					}
-					
+					Card card = cardService.findCardById(cards.get(0).getCardId());
 					for (UserCard userCard : cards) {
 						userCard.setPayMoney(userCard.getSumMoney());
 						userCard.setPayType(payType);
@@ -444,7 +445,10 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 							userCard.setWxCode(wxCode);
 						}
 						
+						userCard.setPublishUserId(card.getUserId());
+						
 					}
+					
 					
 					if(0.0 != cardSum.doubleValue()){
 						//记录用户的余额记录
@@ -456,7 +460,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						moneyDetailC.setType(3);
 						moneyDetailC.setAliTrade(wxCode);
 						moneyDetailC.setPayType(payType);
-						moneyDetailC.setUserId(cards.get(0).getUserId());
+						moneyDetailC.setUserId(card.getUserId());
 						super.save(moneyDetailC);
 					}
 					
@@ -464,7 +468,6 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					
 					//更新card中的convertNum字段
-					Card card = cardService.findCardById(cards.get(0).getCardId());
 					if(null != card){
 						card.setConvertNum(card.getConvertNum()-cards.size());
 						cardService.update(card, true);

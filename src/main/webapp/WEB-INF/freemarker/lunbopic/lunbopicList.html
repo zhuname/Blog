@@ -18,22 +18,6 @@ function deleteLunboPic(){
 
 
 
-$(document).unbind('click').on("click", ".sim", function() {
-	var me="<img style=\"height:400px;width:600px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
-		//iframe层-多媒体
-    	layer.open({
-		  type: 1,
-		  title: false,
-		  closeBtn: 0,
-		  area: '600px',
-		  skin: 'layui-layer-nobg', //没有背景色
-		  shadeClose: true,
-		  content:me
-		 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
-		});
-    	layer.msg('点击任意处关闭');
-});
-
 jQuery(document).ready(function(){
 	
 	//回选 下拉框
@@ -219,7 +203,7 @@ $(document).on("change", "#city", function() {
                                 <!--end_no_export-->
 
 							<td >
-								<img class="sim" src="${(_data.image)!''}" height="100px;" width="200px;"/>
+								<img class="sim" src="${(_data.image)!''}" height="100px;" width="200px;" onclick="checkImg('${(_data.image)!''}','600px','400px');"/>
 							</td>
 							<td >
 								<#if (_data.type) == 1 >

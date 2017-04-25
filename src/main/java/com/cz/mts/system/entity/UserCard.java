@@ -125,6 +125,74 @@ public class UserCard  extends BaseEntity {
 	
 	private java.lang.String osType;
 	
+	
+	private Integer publishUserId;
+	
+	private String publishUserName;
+	
+	private String userName;
+	
+	private String startTime;
+	
+	private String endTime;
+	
+	private String statusName;
+	
+	
+	
+	@Transient
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	@Transient
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	@Transient
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Transient
+	public String getPublishUserName() {
+		return publishUserName;
+	}
+
+	public void setPublishUserName(String publishUserName) {
+		this.publishUserName = publishUserName;
+	}
+
+	@WhereSQL(sql="publishUserId=:MoneyDetail_publishUserId")
+	public Integer getPublishUserId() {
+		return publishUserId;
+	}
+
+	public void setPublishUserId(Integer publishUserId) {
+		this.publishUserId = publishUserId;
+	}
+	
 	 @WhereSQL(sql="osType=:UserCard_osType")
 	public java.lang.String getOsType() {
 		return osType;
@@ -369,6 +437,7 @@ public class UserCard  extends BaseEntity {
 			.append("支付时间[").append(getPayTime()).append("],")
 			.append("微信交易流水号[").append(getWxCode()).append("],")
 			.append("交易流水号[").append(getTradeNo()).append("],")
+			.append("发布人id[").append(getPublishUserId()).append("],")
 			.toString();
 	}
 	

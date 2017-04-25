@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -132,45 +133,39 @@ public class MoneyDetailController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list3")
-	public String list3(HttpServletRequest request, Model model,MoneyDetail moneyDetail) 
+	public String list3(HttpServletRequest request, Model model,UserCard userCard) 
 			throws Exception {
 		
-		moneyDetail.setType(3);
-		ReturnDatas returnObject = listadminjson(request, model, moneyDetail);
-		List<MoneyDetail> moneyDetails = (List<MoneyDetail>) returnObject.getData();
-		if(null != moneyDetails && moneyDetails.size() > 0){
+		ReturnDatas returnObject = adminCardjson(request, model, userCard);
+		List<UserCard> userCards = (List<UserCard>) returnObject.getData();
+		if(null != userCards && userCards.size() > 0){
 			
-			for (MoneyDetail moneyDetail2 : moneyDetails) {
+			for (UserCard uc : userCards) {
 				
-				if(null != moneyDetail2.getItemId()){
-					Card card = cardService.findCardById(moneyDetail2.getItemId());
-					if(null != card){
-						moneyDetail2.setExperTime(card.getEndTime());
+				
+				if(null != uc.getPublishUserId()){
+					AppUser appUser = appUserService.findAppUserById(uc.getPublishUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						uc.setPublishUserName(appUser.getName());
 					}
 				}
 				
-				Finder finder = new Finder("SELECT * FROM t_user_card WHERE userId=:userId AND cardId=:cardId");
-				finder.setParam("userId", moneyDetail2.getUserId());
-				finder.setParam("cardId", moneyDetail2.getItemId());
+				if(null != uc.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(uc.getUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						uc.setUserName(appUser.getName());
+					}
+				}
 				
-				List<UserCard> userCards = userCardService.queryForList(finder,UserCard.class);
-				if(null != userCards && userCards.size() > 0){
-					for (UserCard userCard : userCards) {
-						if(null != userCard.getStatus()){
-							if(0 == userCard.getStatus()){
-								moneyDetail2.setStatusName("待支付");
-							}
-							if(1 == userCard.getStatus()){
-								moneyDetail2.setStatusName("未兑换");
-							}
-							if(2 == userCard.getStatus()){
-								moneyDetail2.setStatusName("已兑换");
-							}
-							if(3 == userCard.getStatus()){
-								moneyDetail2.setStatusName("已过期");
-							}
-						}
-						moneyDetail2.setChangeTime(userCard.getChangeTime());
+				if(null != uc.getStatus()){
+					if(1 == uc.getStatus()){
+						uc.setStatusName("未兑换");
+					}
+					if(2 == uc.getStatus()){
+						uc.setStatusName("已兑换");
+					}
+					if(3 == uc.getStatus()){
+						uc.setStatusName("已过期");
 					}
 				}
 			}
@@ -213,10 +208,17 @@ public class MoneyDetailController  extends BaseController {
 		}
 		
 		if(moneyDetail.getType()==3&&moneyDetail.getStatus()!=null){
-			finder.append(" and itemId in (select cardId from t_user_card where status=:status)");
+			if(2 == moneyDetail.getStatus()){
+				finder.append(" and itemId in (select cardId from t_user_card where status=:status)");
+			}
+			
 			finder.setParam("status", moneyDetail.getStatus());
 		}
 		
+		if(StringUtils.isNotBlank(moneyDetail.getPublishUserName())){
+			finder.append(" and publishUserId in(select id from t_app_user where INSTR(`name`,:publishUserName)>0 )");
+			finder.setParam("publishUserName", moneyDetail.getPublishUserName());
+		}
 		
 		// ==执行分页查询
 		List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(finder,page,MoneyDetail.class,moneyDetail);
@@ -275,18 +277,15 @@ public class MoneyDetailController  extends BaseController {
 			for (MoneyDetail md : moneyDetails) {
 				//计算总计金额
 				sumMoney += md.getMoney();
-				
-				
-				
 			}
 			
 		}
 		
-		pageNew.setPageSize(10000);
-		finder.append(" and type=8 ");
+//		finder.append(" and type=8 ");
+		moneyDetail.setType(8);
 		List<MoneyDetail> moneyDetails1 = moneyDetailService.findListDataByFinder(finder,pageNew,MoneyDetail.class,moneyDetail);
 		if(null != moneyDetails1 && moneyDetails1.size() > 0){
-			for (MoneyDetail md : moneyDetails) {
+			for (MoneyDetail md : moneyDetails1) {
 				//计算总计金额
 				if(md.getPlateMoney()!=null){
 					plateMoney += md.getPlateMoney();
@@ -307,6 +306,84 @@ public class MoneyDetailController  extends BaseController {
 		returnObject.setData(datas);
 		return returnObject;
 		
+		
+	}
+	
+	
+	
+	
+	@RequestMapping("/adminCard/json")
+	public @ResponseBody
+	ReturnDatas adminCardjson(HttpServletRequest request, Model model,UserCard userCard) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		// ==构造分页请求
+		Page page = newPage(request);
+		
+		Finder finder=Finder.getSelectFinder(UserCard.class).append("where status!=0 ");
+		if(StringUtils.isNotBlank(userCard.getUserName())){
+			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
+			finder.setParam("userName", userCard.getUserName());
+		}
+		
+		if(StringUtils.isNotBlank(userCard.getStartTime())){
+			finder.append(" and createTime > :startTime ");
+			finder.setParam("startTime", userCard.getStartTime());
+		}
+		
+		if(StringUtils.isNotBlank(userCard.getEndTime())){
+			finder.append(" and createTime < :endTime ");
+			finder.setParam("endTime", userCard.getEndTime());
+		}
+		
+		if(null != userCard.getStatus()){
+			finder.append(" and status=:status");
+			finder.setParam("status", userCard.getStatus());
+		}
+		if(StringUtils.isNotBlank(userCard.getPublishUserName())){
+			finder.append(" and publishUserId in(select id from t_app_user where INSTR(`name`,:publishUserName)>0 )");
+			finder.setParam("publishUserName", userCard.getPublishUserName());
+		}
+		
+		
+		// ==执行分页查询
+		List<UserCard> datas=userCardService.queryForList(finder,UserCard.class,page);
+		Double sumMoney = 0.0;
+		Double plateMoney = 0.0;
+		Page pageNew = new Page();
+		pageNew.setPageSize(10000);
+		
+		List<UserCard> userCards = userCardService.queryForList(finder, UserCard.class);
+		if(null != userCards && userCards.size() > 0){
+			for (UserCard uc : userCards) {
+				//计算总计金额
+				if(null != uc.getPayMoney()){
+					sumMoney += uc.getPayMoney();
+				}
+			}
+		}
+		MoneyDetail moneyDetail = new MoneyDetail();
+		moneyDetail.setType(8);
+		List<MoneyDetail> moneyDetails1 = moneyDetailService.findListDataByFinder(null, pageNew, MoneyDetail.class, moneyDetail);
+		if(null != moneyDetails1 && moneyDetails1.size() > 0){
+			for (MoneyDetail md : moneyDetails1) {
+				//计算总计金额
+				if(md.getPlateMoney()!=null){
+					plateMoney += md.getPlateMoney();
+				}
+				
+			}
+			
+		}
+		
+		HashMap<String, Object> map=new HashMap<String,Object>();  
+		map.put("sumMoney", new BigDecimal(sumMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		map.put("plateMoney", new BigDecimal(plateMoney).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		returnObject.setMap(map);
+		returnObject.setQueryBean(userCard);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 		
 	}
 	

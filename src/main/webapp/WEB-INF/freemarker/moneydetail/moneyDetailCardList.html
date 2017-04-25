@@ -57,8 +57,8 @@ $(document).on("click", ".selectBtn", function() {
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
 			
-			 <label for="search_userName"><b>用户名称:</b></label> 
-			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 <label for="search_userName"><b>购买人名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写购买人名称"  value="${(returnDatas.queryBean.userName)!''}">
 			 
 			 <label for="search_state">开始时间</label>
 			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
@@ -77,6 +77,8 @@ $(document).on("click", ".selectBtn", function() {
 				<option value="2">已兑换</option>
 				<option value="3">已过期</option>
 			</select>
+			 <label for="search_publishUserName"><b>购买人名称:</b></label> 
+			 <input type="text" id="search_publishUserName"  name="publishUserName" placeholder="请填写发布人名称"  value="${(returnDatas.queryBean.publishUserName)!''}">
 			 
 			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
 			</a>
@@ -125,12 +127,13 @@ $(document).on("click", ".selectBtn", function() {
                     <tr>
                         <!--first_start_no_export-->
                         <!--first_end_no_export-->
-                        <th id="th_userName" style="width: 16.6%;">购买人</th>
-						<th id="th_createTime" style="width: 16.6%;">购买时间</th>
-						<th id="th_money" style="width: 16.6%;">卡券状态</th>
-						<th id="th_balance" style="width: 16.6%;">变换金额</th>
-						<th id="th_itemId" style="width: 16.6%;">过期时间</th>
-						<th id="th_itemId" style="width: 16.6%;">兑换时间</th>
+                        <th id="th_userName" style="width: 14.2%;">购买人</th>
+						<th id="th_createTime" style="width: 14.2%;">购买时间</th>
+						<th id="th_money" style="width: 14.2%;">卡券状态</th>
+						<th id="th_balance" style="width: 14.2%;">变换金额</th>
+						<th id="th_itemId" style="width: 14.2%;">过期时间</th>
+						<th id="th_itemId" style="width: 14.2%;">兑换时间</th>
+						<th id="th_itemId" style="width: 14.2%;">发布人</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -153,13 +156,16 @@ $(document).on("click", ".selectBtn", function() {
 								${(_data.statusName)!''}
 							</td>
 							<td>
-								${(_data.money)!0}
+								${(_data.payMoney)!0}
 							</td>
 							<td>
 								${((_data.experTime)?string('yyyy-MM-dd'))!''}
 							</td>
 							<td>
 								${((_data.changeTime)?string('yyyy-MM-dd'))!''}
+							</td>
+							<td>
+								${(_data.publishUserName)!''}
 							</td>
 						</tr>
 					</#list>
