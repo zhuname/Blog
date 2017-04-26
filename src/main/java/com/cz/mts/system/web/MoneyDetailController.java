@@ -142,6 +142,13 @@ public class MoneyDetailController  extends BaseController {
 			
 			for (UserCard uc : userCards) {
 				
+				if(null != uc.getCardId()){
+					Card card = cardService.findCardById(uc.getCardId());
+					if(null != card && null != card.getEndTime()){
+						uc.setGqTime(card.getEndTime());
+					}
+				}
+				
 				
 				if(null != uc.getPublishUserId()){
 					AppUser appUser = appUserService.findAppUserById(uc.getPublishUserId());

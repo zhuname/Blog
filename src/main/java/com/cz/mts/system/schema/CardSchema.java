@@ -79,7 +79,7 @@ public class CardSchema extends BaseLogger{
 				cardService.update(card,true);
 				
 				//查询userCard表中是否存在该卡券的记录
-				Finder finder2 = new Finder("SELECT * FROM t_user_card WHERE `status`!=0 and `status` != 3 AND cardId=:cardId");
+				Finder finder2 = new Finder("SELECT * FROM t_user_card WHERE `status`=1 AND cardId=:cardId");
 				finder2.setParam("cardId", card.getId());
 				List<UserCard> userCards = userCardService.queryForList(finder2,UserCard.class);
 				if(null != userCards && userCards.size() > 0){

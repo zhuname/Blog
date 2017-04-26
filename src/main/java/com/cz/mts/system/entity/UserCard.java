@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -139,7 +140,18 @@ public class UserCard  extends BaseEntity {
 	private String statusName;
 	
 	
+	private Date gqTime;
 	
+	
+	@Transient
+	public Date getGqTime() {
+		return gqTime;
+	}
+
+	public void setGqTime(Date gqTime) {
+		this.gqTime = gqTime;
+	}
+
 	@Transient
 	public String getStatusName() {
 		return statusName;
