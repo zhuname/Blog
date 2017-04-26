@@ -127,13 +127,14 @@ $(document).on("click", ".selectBtn", function() {
                     <tr>
                         <!--first_start_no_export-->
                         <!--first_end_no_export-->
-                        <th id="th_userName" style="width: 14.2%;">购买人</th>
-						<th id="th_createTime" style="width: 14.2%;">购买时间</th>
-						<th id="th_money" style="width: 14.2%;">卡券状态</th>
-						<th id="th_balance" style="width: 14.2%;">变换金额</th>
-						<th id="th_itemId" style="width: 14.2%;">过期时间</th>
-						<th id="th_itemId" style="width: 14.2%;">兑换时间</th>
-						<th id="th_itemId" style="width: 14.2%;">发布人</th>
+                        <th id="th_userName" style="width: 12.5%;">购买人</th>
+						<th id="th_createTime" style="width: 12.5%;">购买时间</th>
+						<th id="th_money" style="width: 12.5%;">卡券状态</th>
+						<th id="th_balance" style="width: 12.5%;">购买金额</th>
+						<th id="th_itemId" style="width: 12.5%;">过期时间</th>
+						<th id="th_itemId" style="width: 12.5%;">兑换时间</th>
+						<th id="th_itemId" style="width: 12.5%;">发布人</th>
+						<th id="th_itemId" style="width: 12.5%;">卡券名称</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -166,6 +167,9 @@ $(document).on("click", ".selectBtn", function() {
 							</td>
 							<td>
 								${(_data.publishUserName)!''}
+							</td>
+							<td>
+								${(_data.cardName)!''}
 							</td>
 						</tr>
 					</#list>

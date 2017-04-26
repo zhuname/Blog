@@ -738,7 +738,8 @@ public class CardController  extends BaseController {
 				}
 				
 				appUserService.update(appUser,true);
-				
+				userCard.setPlateMoney(cardChargeMoney.doubleValue());
+				userCardService.update(usercard,true);
 				//先保存收益记录
 				MoneyDetail moneyDetail=new MoneyDetail();
 				moneyDetail.setUserId(userId);

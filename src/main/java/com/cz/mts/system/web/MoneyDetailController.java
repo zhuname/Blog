@@ -147,6 +147,9 @@ public class MoneyDetailController  extends BaseController {
 					if(null != card && null != card.getEndTime()){
 						uc.setGqTime(card.getEndTime());
 					}
+					if(null != card && StringUtils.isNotBlank(card.getTitle())){
+						uc.setCardName(card.getTitle());
+					}
 				}
 				
 				
@@ -367,20 +370,10 @@ public class MoneyDetailController  extends BaseController {
 				if(null != uc.getPayMoney()){
 					sumMoney += uc.getPayMoney();
 				}
-			}
-		}
-		MoneyDetail moneyDetail = new MoneyDetail();
-		moneyDetail.setType(8);
-		List<MoneyDetail> moneyDetails1 = moneyDetailService.findListDataByFinder(null, pageNew, MoneyDetail.class, moneyDetail);
-		if(null != moneyDetails1 && moneyDetails1.size() > 0){
-			for (MoneyDetail md : moneyDetails1) {
-				//计算总计金额
-				if(md.getPlateMoney()!=null){
-					plateMoney += md.getPlateMoney();
+				if(null != uc.getPlateMoney()){
+					plateMoney += uc.getPlateMoney();
 				}
-				
 			}
-			
 		}
 		
 		HashMap<String, Object> map=new HashMap<String,Object>();  

@@ -142,7 +142,31 @@ public class UserCard  extends BaseEntity {
 	
 	private Date gqTime;
 	
+	private String cardName;
 	
+	private Double plateMoney;
+
+	
+	
+	
+	@WhereSQL(sql="plateMoney=:UserCard_plateMoney")
+	public Double getPlateMoney() {
+		return plateMoney;
+	}
+
+	public void setPlateMoney(Double plateMoney) {
+		this.plateMoney = plateMoney;
+	}
+
+	@Transient
+	public String getCardName() {
+		return cardName;
+	}
+
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
+	}
+
 	@Transient
 	public Date getGqTime() {
 		return gqTime;
@@ -450,6 +474,7 @@ public class UserCard  extends BaseEntity {
 			.append("微信交易流水号[").append(getWxCode()).append("],")
 			.append("交易流水号[").append(getTradeNo()).append("],")
 			.append("发布人id[").append(getPublishUserId()).append("],")
+			.append("平台金额[").append(getPlateMoney()).append("],")
 			.toString();
 	}
 	
