@@ -159,9 +159,7 @@ $(document).on("click", ".selectBtn", function() {
 							<td>
 								${(_data.payMoney)!0}
 							</td>
-							<td>
-								${((_data.gqTime)?string('yyyy-MM-dd'))!''}
-							</td>
+							
 							<td>
 								${((_data.changeTime)?string('yyyy-MM-dd'))!''}
 							</td>
@@ -170,6 +168,9 @@ $(document).on("click", ".selectBtn", function() {
 							</td>
 							<td>
 								${(_data.cardName)!''}
+							</td>
+							<td>
+								${((_data.gqTime)?string('yyyy-MM-dd'))!''}
 							</td>
 						</tr>
 					</#list>
