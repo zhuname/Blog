@@ -151,7 +151,8 @@ public class SysSysparamController  extends BaseController {
 				
 				sysSysparams.get(0).setValue(sysSysparam.getValue());
 				
-				sysSysparamService.update(sysSysparams.get(0), true);
+//				sysSysparamService.update(sysSysparams.get(0), true);
+				sysSysparamService.saveOrUpdate(sysSysparams.get(0));
 				
 			}
 			

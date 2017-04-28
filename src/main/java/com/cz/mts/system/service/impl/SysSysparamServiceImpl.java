@@ -109,5 +109,20 @@ public class SysSysparamServiceImpl extends BaseSpringrainServiceImpl implements
 			}
 			return param ;
 		}
+		
+		
+		
+		@CachePut(value = GlobalStatic.cacheKey, key = "'sysParamData'")
+		@Override
+		public SysParamBean saveOrUpdate(SysSysparam param) throws Exception {
+			SysParamBean sys = null ;
+			if(param != null){
+					//更新数据库
+					update(param, true);
+					sys = findParamBean() ;
+				}
+			return sys;
+		}
+
 
 }

@@ -30,6 +30,15 @@ public interface ISysSysparamService extends IBaseSpringrainService {
 	 */
 	SysParamBean findParamBean() throws Exception;
 	
+	/**
+	 * 新增或者修改公共参数
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	SysParamBean saveOrUpdate(SysSysparam param) throws  Exception ;
+
+	
 	
 	
 }
