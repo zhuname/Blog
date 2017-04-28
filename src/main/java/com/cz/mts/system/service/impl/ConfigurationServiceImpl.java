@@ -107,5 +107,20 @@ public class ConfigurationServiceImpl extends BaseSpringrainServiceImpl implemen
 			}
 			return config ;
 		}
+		
+		
+		
+		@CachePut(value = GlobalStatic.cacheKey, key = "'ConfigData'")
+		@Override
+		public ConfigBean saveOrUpdate(Configuration config) throws Exception {
+			ConfigBean configBean = null ;
+			if(config != null){
+				//更新数据库
+				update(config, true);
+				configBean = findParamBean() ;
+			}
+			return configBean;
+		}
+
 
 }

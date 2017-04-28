@@ -32,5 +32,15 @@ public interface IConfigurationService extends IBaseSpringrainService {
 	ConfigBean findParamBean() throws Exception;
 	
 	
+	/**
+	 * 新增或者修改公共参数
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	ConfigBean saveOrUpdate(Configuration config) throws  Exception ;
+
+	
+	
 	
 }
