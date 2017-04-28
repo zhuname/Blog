@@ -78,6 +78,7 @@ public class BankController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(1000);
 		// ==执行分页查询
 		List<Bank> datas=bankService.findListDataByFinder(null,page,Bank.class,bank);
 		returnObject.setQueryBean(bank);
