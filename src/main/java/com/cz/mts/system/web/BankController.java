@@ -249,6 +249,7 @@ public class BankController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(10000);
 		Finder finder = Finder.getSelectFinder(Bank.class).append(" where 1=1");
 		if(StringUtils.isNotBlank(bank.getName())){
 			finder.append(" and INSTR(`name`,:name)>0 ");
