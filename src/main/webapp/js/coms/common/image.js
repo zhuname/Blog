@@ -9,7 +9,7 @@
 		var fiedId=$(this).attr("id");
 		
 		$.ajaxFileUpload({
-            url : '/jkdw/adminFileUpload',
+            url : '/mts/adminFileUpload',
             secureuri : false,
             fileElementId : $(this).attr("id"),
             dataType : 'text',
@@ -99,7 +99,7 @@
 		var fiedId=$(this).attr("id");
 		
 		$.ajaxFileUpload({
-            url : '/jkdw/adminFileUpload',
+            url : '/mts/adminFileUpload',
             secureuri : false,
             fileElementId : fiedId,
             dataType : 'text',

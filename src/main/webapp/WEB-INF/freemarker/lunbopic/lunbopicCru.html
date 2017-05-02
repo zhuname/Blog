@@ -155,16 +155,23 @@ function lunboImages(){
 		type : "post",
 		dataType : "json",
 		success : function(_json) {
+			
 			if(_json.status=="error"){
 				return;
 			}
 			
 			jQuery(_json.data).each(function(i,_obj){
+				
+				console.log(_obj.id);
+				
 				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"------标题："+_obj.title+"</option>");
 			});
 			
 			jQuery("#itemId").select2();
-			 $('#itemId').select2('val',$('#itemId').attr("code")) ;
+			console.log($('#itemId').attr("code"));
+			//$('#itemId').select2('val',$('#itemId').attr("code")) ;
+			$('#itemId').select2().val($('#itemId').attr("code"));
+			$('#itemId').select2().val($('#itemId').attr("code"));
 		}
 	});
 	

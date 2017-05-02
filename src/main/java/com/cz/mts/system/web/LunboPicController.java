@@ -301,9 +301,9 @@ public class LunboPicController  extends BaseController {
 		if(null != datas && datas.size() > 0){
 			for (LunboPic lp : datas) {
 				if(null != lp.getItemId()){
-					//1红包 2视频 3卡券 4广告位
-					if(null != lp.getPosition()){
-						if(1 == lp.getPosition()){
+					//1.url 2红包 3视频 4卡券 
+					if(null != lp.getType()){
+						if(2 == lp.getType()){
 							PosterPackage posterPackage = posterPackageService.findPosterPackageById(lp.getItemId());
 							if(null != posterPackage){
 								if(StringUtils.isNotBlank(posterPackage.getTitle())){
@@ -312,7 +312,7 @@ public class LunboPicController  extends BaseController {
 							}
 						}
 						
-						if(2 == lp.getPosition()){
+						if(3 == lp.getType()){
 							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(lp.getItemId());
 							if(null != mediaPackage){
 								if(StringUtils.isNotBlank(mediaPackage.getTitle())){
@@ -321,7 +321,7 @@ public class LunboPicController  extends BaseController {
 							}
 						}
 						
-						if(3 == lp.getPosition()){
+						if(4 == lp.getType()){
 							Card card = cardService.findCardById(lp.getItemId());
 							if(null != card){
 								if(StringUtils.isNotBlank(card.getTitle())){
