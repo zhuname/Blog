@@ -113,11 +113,11 @@ public class SecurityAspect {
 	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
         		}else {
         			
-        			Long T = json.getLong("T") ;
+        			/*Long T = json.getLong("T") ;
 					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
 					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
 						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
-					}
+					}*/
 					
 					if(json.containsKey("sessionId")){
 						Integer userId = json.getInt("sessionId") ;
