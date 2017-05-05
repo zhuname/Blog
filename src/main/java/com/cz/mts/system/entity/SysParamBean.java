@@ -27,8 +27,15 @@ public class SysParamBean implements Serializable {
 	private String cardCharge ;
 	private String withdrawIntroduce;
 	private String aboutImage;
+	private String iosCheck;
 	
 	
+	public String getIosCheck() {
+		return iosCheck;
+	}
+	public void setIosCheck(String iosCheck) {
+		this.iosCheck = iosCheck;
+	}
 	public String getAboutImage() {
 		return aboutImage;
 	}
