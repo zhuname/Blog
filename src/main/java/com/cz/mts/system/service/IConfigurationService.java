@@ -39,6 +39,14 @@ public interface IConfigurationService extends IBaseSpringrainService {
 	 * @throws Exception
 	 */
 	ConfigBean saveOrUpdate(Configuration config) throws  Exception ;
+	
+	/**
+	 * 批量修改
+	 * @param configBean
+	 * @return
+	 * @throws Exception
+	 */
+	ConfigBean remoteUpdate(ConfigBean configBean) throws Exception ;
 
 	
 	

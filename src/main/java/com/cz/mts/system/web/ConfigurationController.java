@@ -210,5 +210,23 @@ public class ConfigurationController  extends BaseController {
 		
 		
 	}
+	
+	
+	@RequestMapping("/remoteUpdate")
+	public @ResponseBody
+	ReturnDatas remoteUpdate(HttpServletRequest request, Model model,ConfigBean configBean) {
+
+		try {
+			configurationService.remoteUpdate(configBean) ;
+		}catch (Exception e){
+			e.printStackTrace();
+			return  new ReturnDatas(ReturnDatas.ERROR,
+					"内部错误！");
+		}
+
+		return new ReturnDatas(ReturnDatas.SUCCESS,
+				MessageUtils.DELETE_ALL_SUCCESS);
+	}
+	
 
 }

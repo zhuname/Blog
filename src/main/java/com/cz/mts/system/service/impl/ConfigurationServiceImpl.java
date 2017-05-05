@@ -2,14 +2,17 @@ package com.cz.mts.system.service.impl;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.frame.entity.IBaseEntity;
+import com.cz.mts.frame.util.ClassUtils;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.Page;
@@ -120,6 +123,30 @@ public class ConfigurationServiceImpl extends BaseSpringrainServiceImpl implemen
 				configBean = findParamBean() ;
 			}
 			return configBean;
+		}
+		
+		
+		@CachePut(value = GlobalStatic.cacheKey, key = "'ConfigData'")
+		@Override
+		public ConfigBean remoteUpdate(ConfigBean configBean) throws Exception {
+			Set<String> set = ClassUtils.getAllFieldNames(ConfigBean.class) ;
+			Iterator<String> it = set.iterator();
+			Configuration config = null ;
+			List<Configuration> list = new ArrayList<Configuration>() ;
+			while (it.hasNext()) {
+				String code = it.next();
+				config = new Configuration( ) ;
+				Object value = ClassUtils.getPropertieValue(code,configBean) ;
+				config.setCode(code);
+				config.setValue(value == null?null:value.toString());
+				list.add(config) ;
+			}
+
+			update(list,true) ;
+
+			ConfigBean result = findParamBean() ;
+
+			return result;
 		}
 
 
