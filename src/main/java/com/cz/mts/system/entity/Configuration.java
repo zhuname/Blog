@@ -74,7 +74,7 @@ public class Configuration  extends BaseEntity {
 	}
 	
 	
-	@WhereSQL(sql="isImage=:SysSysparam_isImage")
+	@WhereSQL(sql="isImage=:Configuration_isImage")
 	 public java.lang.Integer getIsImage() {
 		return isImage;
 	}
@@ -83,7 +83,7 @@ public class Configuration  extends BaseEntity {
 		this.isImage = isImage;
 	}
 
-	@WhereSQL(sql="id=:SysSysparam_id")
+	@WhereSQL(sql="id=:Configuration_id")
 	public java.lang.Integer getId() {
 		return this.id;
 	}
