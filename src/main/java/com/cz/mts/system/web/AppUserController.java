@@ -330,6 +330,14 @@ public class AppUserController  extends BaseController {
 									passwordService.save(password);
 								}
 								
+								
+								if(StringUtils.isNotBlank(appUser.getName())){
+									
+									appUser.setName(appUser.getPhone());
+									
+								}
+								
+								
 								appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 								appUser.setCreateTime(new Date());
 								appUser.setIsBlack(0);
