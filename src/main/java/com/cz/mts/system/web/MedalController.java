@@ -85,6 +85,7 @@ public class MedalController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(10000);
 		// ==执行分页查询
 		Finder finder = Finder.getSelectFinder(Medal.class).append(" where 1=1 ");
 		if(StringUtils.isNotBlank(medal.getName())){
