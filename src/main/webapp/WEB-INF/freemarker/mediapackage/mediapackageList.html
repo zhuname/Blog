@@ -29,7 +29,7 @@ function deleteMediaPackage(){
 }
 
 //点击播放视频
-$(document).on("click", ".vid", function() {
+/* $(document).on("click", ".vid", function() {
     	var a = $(this).attr("src");
     	if(a != ""){
     		//iframe层-多媒体
@@ -47,7 +47,7 @@ $(document).on("click", ".vid", function() {
     		myalert("暂无可播放的视频");
     	}
 	});
-	
+	 */
 	
 	
 	//点击看大图
@@ -396,7 +396,7 @@ $(document).on("click", ".vid", function() {
 								${(_data.code)!''}
 							</td>
 							<td >
-								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls'></video>
+								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
 								
 							</td>
 							<td >

@@ -48,7 +48,7 @@ function checkRefuse(id){
 }
 
 //点击播放视频
- $(document).on("click", ".vid", function() {
+ /* $(document).on("click", ".vid", function() {
     	var a = $(this).attr("src");
     	if(a != ""){
     		//iframe层-多媒体
@@ -65,7 +65,7 @@ function checkRefuse(id){
     	}else{
     		myalert("暂无可播放的视频");
     	}
-	});
+	}); */
 	
 
 jQuery(document).ready(function(){
@@ -281,7 +281,7 @@ jQuery(document).ready(function(){
 									</#list>
 								</#if>
 								<#if (_data.type) == 2 >
-									<video class="vid" poster="" width='240px' height="120px" src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls'></video>
+									<video class="vid" poster="" width='240px' height="120px" src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
 								</#if>
 							</td>
 						</tr>

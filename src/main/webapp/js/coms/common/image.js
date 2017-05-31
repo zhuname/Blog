@@ -179,3 +179,25 @@
     	}
 	}
 	
+	
+	function checkVideo(s){
+		//var a = $(this).attr("src");
+    	if(s != ""){
+    		//iframe层-多媒体
+        	layer.open({
+        	  type: 2,
+        	  title: false,
+        	  area: ['630px', '360px'],
+        	  shade: 0.8,
+        	  closeBtn: 0,
+        	  shadeClose: true,
+        	  content: s
+        	});
+        	layer.msg('点击任意处关闭');
+    	}else{
+    		myalert("暂无可播放的视频");
+    	}
+	}
+	
+	
+	
