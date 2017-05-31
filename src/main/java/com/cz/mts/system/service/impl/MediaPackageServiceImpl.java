@@ -273,10 +273,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				
 				Page moneyPage = new Page();
 				//已抢红包列表
-				MoneyDetail moneyDetail = new MoneyDetail();
-				moneyDetail.setItemId(mp.getId());
-				moneyDetail.setType(2);
-				List<MoneyDetail> moneyDetails = moneyDetailService.findListDataByFinder(null, moneyPage, MoneyDetail.class, moneyDetail);
+				Finder finderAll = Finder.getSelectFinder(MoneyDetail.class).append(" where itemId=:itemId and type=:type order by createTime desc");
+				finderAll.setParam("itemId", mp.getId());
+				finderAll.setParam("type", 2);
+				
+				List<MoneyDetail> moneyDetails = moneyDetailService.queryForList(finderAll, MoneyDetail.class, moneyPage);
 				if(null != moneyDetails && moneyDetails.size() > 0){
 					for (MoneyDetail md : moneyDetails) {
 						if(null != md.getUserId()){

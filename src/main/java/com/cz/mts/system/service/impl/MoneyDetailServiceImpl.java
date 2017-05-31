@@ -108,6 +108,7 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 	public ReturnDatas statics(MoneyDetail moneyDetail,Page page) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		if(null != moneyDetail.getItemId() && null != moneyDetail.getType()){
+			page.setPageSize(10000);
 			List<MoneyDetail> moneyDetails = findListDataByFinder(null, page, MoneyDetail.class, moneyDetail);
 			MoneyDetail monDetail = new MoneyDetail();
 			if(null != moneyDetails && moneyDetails.size() > 0){
@@ -115,7 +116,8 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 				for (MoneyDetail md : moneyDetails) {
 					sumMoney += md.getMoney();
 				}
-				monDetail.setSumMoney(sumMoney);
+				
+				monDetail.setSumMoney(new BigDecimal(sumMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
 				monDetail.setSumPerson(moneyDetails.size());
 			}else{
 				monDetail.setSumMoney(0.0);
@@ -139,6 +141,9 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 		Double remainMoney = 0.0;
 		
 		if(null != moneyDetail.getType() && null != moneyDetail.getItemId()){
+			Finder finderAll = Finder.getSelectFinder(MoneyDetail.class).append(" where itemId=:itemId and type=:type");
+			finderAll.setParam("itemId", moneyDetail.getItemId());
+			finderAll.setParam("type", moneyDetail.getType());
 			//如果是海报红包
 			if(1 == moneyDetail.getType()){
 				//查询已抢金额
@@ -193,7 +198,7 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 					}
 				}
 			}
-			List<MoneyDetail> datas = findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+			List<MoneyDetail> datas = queryForList(finderAll, MoneyDetail.class, page);
 			if(null != datas && datas.size() > 0){
 				for (MoneyDetail md : datas) {
 					if(null == md.getMoney()){
@@ -210,8 +215,9 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 					
 					UserMedal userMedal = new UserMedal();
 					userMedal.setUserId(md.getUserId());
+					Page newPage = new Page();
 					//获取勋章列表
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
 					if(null != userMedals && userMedals.size() > 0){
 						for (UserMedal um : userMedals) {
 							if(null != um.getMedalId()){

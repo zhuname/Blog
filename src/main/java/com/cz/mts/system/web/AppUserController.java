@@ -329,15 +329,11 @@ public class AppUserController  extends BaseController {
 									password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 									passwordService.save(password);
 								}
-								
-								
 								if(StringUtils.isNotBlank(appUser.getName())){
-									
+									appUser.setName(appUser.getName());
+								}else{
 									appUser.setName(appUser.getPhone());
-									
 								}
-								
-								
 								appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 								appUser.setCreateTime(new Date());
 								appUser.setIsBlack(0);
@@ -1049,6 +1045,16 @@ public class AppUserController  extends BaseController {
 		String userId = request.getParameter("userId");
 		if(StringUtils.isBlank(str_medalIds)){
 			userMedal.setMedalId(null);
+			//同时清除关于该用户的勋章记录
+			//清除t_apply_medal表中关于该用户的记录
+			Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2");
+			finder2.setParam("userId", Integer.parseInt(userId));
+			applyMedalService.update(finder2);
+			
+			Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
+			finder.setParam("userId", Integer.parseInt(userId));
+			userMedalService.update(finder);
+			
 		}else{
 			String[] medalIds = str_medalIds.split(",");
 			if(medalIds != null && medalIds.length > 0 ){
