@@ -151,7 +151,7 @@ $(document).on("click", ".selectBtn", function() {
 							</td>
 							<td>
 								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td>
 								${(_data.statusName)!''}
@@ -161,7 +161,7 @@ $(document).on("click", ".selectBtn", function() {
 							</td>
 							
 							<td>
-								${((_data.changeTime)?string('yyyy-MM-dd'))!''}
+								${((_data.changeTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td>
 								${(_data.publishUserName)!''}
@@ -170,7 +170,7 @@ $(document).on("click", ".selectBtn", function() {
 								${(_data.cardName)!''}
 							</td>
 							<td>
-								${((_data.gqTime)?string('yyyy-MM-dd'))!''}
+								${((_data.gqTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 						</tr>
 					</#list>
