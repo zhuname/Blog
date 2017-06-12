@@ -537,7 +537,7 @@ public class CardController  extends BaseController {
 				return returnObject;
 			}
 			//判断数量
-			if(card.getNum()<num){
+			if((card.getNum() <= 0) || (card.getNum()<num)){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("卡券数量不足");
 				return returnObject;
@@ -581,6 +581,7 @@ public class CardController  extends BaseController {
 				
 				if(card.getConvertMoney()==null||card.getConvertMoney()==0.0){
 					userCar.setStatus(1);
+					userCar.setPublishUserId(card.getUserId());
 				}else{
 					userCar.setStatus(0);
 				}

@@ -135,13 +135,28 @@ public class CardSchema extends BaseLogger{
 
 					card.setNum(card.getNum() + num);
 				}
-
-				
 				cardService.update(card,true);
-				
 			}
 		}
 		
 	}
+	
+	
+//	public void updateNum() throws Exception{
+//		logger.info("card表剩余数量更新");
+//		Finder finder = Finder.getSelectFinder(Card.class).append(" where 1=1 and status = 2 ");
+//		List<Card> cards = cardService.queryForList(finder,Card.class);
+//		if(null != cards && cards.size() > 0){
+//			for (Card card : cards) {
+//
+//				Finder finderUser=Finder.getSelectFinder(UserCard.class).append(" where status != 0 and cardId="+card.getId());
+//				List<UserCard> userCards=userCardService.queryForList(finderUser,UserCard.class);
+//				if(null != userCards && userCards.size() > 0){
+//					card.setNum(card.getConvertNum() - userCards.size());
+//				}
+//				cardService.update(card,true);
+//			}
+//		}
+//	}
 
 }
