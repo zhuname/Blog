@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -61,7 +62,8 @@ public class UserMedal  extends BaseEntity {
 	private List<Medal> medals;
 	
 	private String medalName;
-	
+	private Date endMedalTime;
+	private Integer isEndStatus;
 	
 	
 	
@@ -147,12 +149,32 @@ public class UserMedal  extends BaseEntity {
 		return this.createTime;
 	}
 	
+	 @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+     @WhereSQL(sql="endMedalTime=:UserMedal_endMedalTime")
+	public Date getEndMedalTime() {
+		return endMedalTime;
+	}
+
+	public void setEndMedalTime(Date endMedalTime) {
+		this.endMedalTime = endMedalTime;
+	}
+
+	 @WhereSQL(sql="isEndStatus=:UserMedal_isEndStatus")
+	public Integer getIsEndStatus() {
+		return isEndStatus;
+	}
+
+	public void setIsEndStatus(Integer isEndStatus) {
+		this.isEndStatus = isEndStatus;
+	}
 	public String toString() {
 		return new StringBuffer()
 			.append("用户id[").append(getId()).append("],")
 			.append("用户id[").append(getUserId()).append("],")
 			.append("勋章id[").append(getMedalId()).append("],")
 			.append("创建时间[").append(getCreateTime()).append("],")
+			.append("勋章过期时间").append(getEndMedalTime()).append("],")
+			.append("是否过期").append(getIsEndStatus()).append("],")
 			.toString();
 	}
 	

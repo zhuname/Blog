@@ -225,7 +225,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 						md.setCreateTime(new Date());
 						md.setUserId(_userId);
 						md.setType(1);  //海报红包
-						md.setMoney(lpp.getMoney());
+						md.setMoney(+lpp.getMoney());
 						md.setBalance(nowBalance.doubleValue());
 						md.setItemId(lpp.getPackageId());
 						md.setOsType(osType);
@@ -282,7 +282,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 				moneyDetail.setBalance(appUser.getBalance());
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setItemId(pp.getId());
-				moneyDetail.setMoney(pp.getPayMoney());
+				moneyDetail.setMoney(+pp.getPayMoney());
 				moneyDetail.setType(11);
 				moneyDetail.setUserId(appUser.getId());
 				super.save(moneyDetail);

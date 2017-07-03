@@ -1,5 +1,6 @@
 package com.cz.mts.system.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -207,6 +208,19 @@ public class AppUser  extends BaseEntity {
 	private Integer sumPerson;
 	
 	private Double sumMoney;
+	
+	private Integer provinceId;
+	private String provinceName;
+	private Date posterScanTime; 
+	private Date mediaScanTime;
+	private Date activityScanTime;
+	private Date circleScanTime;
+	private Double sumAllMoney;
+	private Integer viewedCount;
+	private Integer commentedCount;
+	private Integer topedCount;
+	private Integer attenedCount;
+	
 	
 	
 	@Transient
@@ -449,6 +463,10 @@ public class AppUser  extends BaseEntity {
 	public java.lang.String getSex() {
 		return this.sex;
 	}
+     
+     
+     
+     
 		/*
 	public String getcreateTimeString() {
 		return DateUtils.convertDate2String(FORMAT_CREATETIME, getcreateTime());
@@ -456,7 +474,109 @@ public class AppUser  extends BaseEntity {
 	public void setcreateTimeString(String value) throws ParseException{
 		setcreateTime(DateUtils.convertString2Date(FORMAT_CREATETIME,value));
 	}*/
-	
+     @WhereSQL(sql="provinceId=:AppUser_provinceId")
+	public Integer getProvinceId() {
+		return provinceId;
+	}
+
+	public void setProvinceId(Integer provinceId) {
+		this.provinceId = provinceId;
+	}
+
+	@WhereSQL(sql="provinceName=:AppUser_provinceName")
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+    @WhereSQL(sql="posterScanTime=:AppUser_posterScanTime")
+	public Date getPosterScanTime() {
+		return posterScanTime;
+	}
+
+	public void setPosterScanTime(Date posterScanTime) {
+		this.posterScanTime = posterScanTime;
+	}
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+    @WhereSQL(sql="mediaScanTime=:AppUser_mediaScanTime")
+	public Date getMediaScanTime() {
+		return mediaScanTime;
+	}
+
+	public void setMediaScanTime(Date mediaScanTime) {
+		this.mediaScanTime = mediaScanTime;
+	}
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+    @WhereSQL(sql="activityScanTime=:AppUser_activityScanTime")
+	public Date getActivityScanTime() {
+		return activityScanTime;
+	}
+
+	public void setActivityScanTime(Date activityScanTime) {
+		this.activityScanTime = activityScanTime;
+	}
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+    @WhereSQL(sql="circleScanTime=:AppUser_circleScanTime")
+	public Date getCircleScanTime() {
+		return circleScanTime;
+	}
+
+	public void setCircleScanTime(Date circleScanTime) {
+		this.circleScanTime = circleScanTime;
+	}
+
+	@WhereSQL(sql="sumAllMoney=:AppUser_sumAllMoney")
+	public Double getSumAllMoney() {
+		return sumAllMoney;
+	}
+
+	public void setSumAllMoney(Double sumAllMoney) {
+		this.sumAllMoney = sumAllMoney;
+	}
+
+	@WhereSQL(sql="viewedCount=:AppUser_viewedCount")
+	public Integer getViewedCount() {
+		return viewedCount;
+	}
+
+	public void setViewedCount(Integer viewedCount) {
+		this.viewedCount = viewedCount;
+	}
+
+	@WhereSQL(sql="commentedCount=:AppUser_commentedCount")
+	public Integer getCommentedCount() {
+		return commentedCount;
+	}
+
+	public void setCommentedCount(Integer commentedCount) {
+		this.commentedCount = commentedCount;
+	}
+
+	@WhereSQL(sql="topedCount=:AppUser_topedCount")
+	public Integer getTopedCount() {
+		return topedCount;
+	}
+
+	public void setTopedCount(Integer topedCount) {
+		this.topedCount = topedCount;
+	}
+
+	@WhereSQL(sql="attenedCount=:AppUser_attenedCount")
+	public Integer getAttenedCount() {
+		return attenedCount;
+	}
+
+	public void setAttenedCount(Integer attenedCount) {
+		this.attenedCount = attenedCount;
+	}
+
 	public void setCreateTime(java.util.Date value) {
 		this.createTime = value;
 	}
@@ -687,6 +807,18 @@ public class AppUser  extends BaseEntity {
 			.append("是否有信息更新 0否 1是[").append(getIsUpdate()).append("],")
 			.append("是否是黑名单 0否 1是[").append(getIsBlack()).append("],")
 			.append("推送开关[").append(getIsPush()).append("],")
+			.append("城市id[").append(getCityId()).append("],")
+			.append("省份id[").append(getProvinceId()).append("],")
+			.append("省名称[").append(getProvinceName()).append("],")
+			.append("海报最后浏览时间[").append(getPosterScanTime()).append("],")
+			.append("视频最后浏览时间[").append(getMediaScanTime()).append("],")
+			.append("同城活动最后浏览时间[").append(getActivityScanTime()).append("],")
+			.append("同城圈最后浏览时间[").append(getCircleScanTime()).append("],")
+			.append("总收入[").append(getSumAllMoney()).append("],")
+			.append("被浏览次数[").append(getViewedCount()).append("],")
+			.append("被评论次数[").append(getCommentedCount()).append("],")
+			.append("被点赞次数[").append(getTopedCount()).append("],")
+			.append("被关注次数[").append(getAttenedCount()).append("],")
 			.toString();
 	}
 	

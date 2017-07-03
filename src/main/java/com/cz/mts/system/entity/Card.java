@@ -158,6 +158,18 @@ public class Card  extends BaseEntity {
 	
 	private String cityIds;
 	
+	private Integer limitNumber;
+	
+	
+	@WhereSQL(sql="limitNumber=:Card_limitNumber")
+	public Integer getLimitNumber() {
+		return limitNumber;
+	}
+
+	public void setLimitNumber(Integer limitNumber) {
+		this.limitNumber = limitNumber;
+	}
+
 	@Transient
 	 public String getCityIds() {
 		return cityIds;
@@ -241,7 +253,7 @@ public class Card  extends BaseEntity {
 
 	private java.lang.String osType;
 	
-	 @WhereSQL(sql="osType=:card_osType")
+	 @WhereSQL(sql="osType=:Card_osType")
 	public java.lang.String getOsType() {
 		return osType;
 	}
@@ -560,6 +572,7 @@ public class Card  extends BaseEntity {
 			.append("状态：[").append(getStatus()).append("],")
 			.append("定位地址：[").append(getLocation()).append("],")
 			.append("操作系统").append(getOsType()).append("],")
+			.append("限领次数").append(getLimitNumber()).append("],")
 			.toString();
 	}
 	

@@ -216,8 +216,99 @@ public class PosterPackage  extends BaseEntity {
 	
 	private String cityIds;
 	
+	private Integer isAppoint;
+	private Integer isRelevance;
+	private String appointExplain;
+	private Integer cardId;
+	private Integer topCount;
+	private Integer commentCount;
+	private Integer appointCount;
+	private Integer cardLqNum;
+	private Integer cardCategoryId;
 	
 	
+	
+	@WhereSQL(sql="isAppoint=:PosterPackage_shareNum")
+	public Integer getIsAppoint() {
+		return isAppoint;
+	}
+
+	public void setIsAppoint(Integer isAppoint) {
+		this.isAppoint = isAppoint;
+	}
+
+	@WhereSQL(sql="isRelevance=:PosterPackage_isRelevance")
+	public Integer getIsRelevance() {
+		return isRelevance;
+	}
+
+	public void setIsRelevance(Integer isRelevance) {
+		this.isRelevance = isRelevance;
+	}
+
+	@WhereSQL(sql="appointExplain=:PosterPackage_appointExplain")
+	public String getAppointExplain() {
+		return appointExplain;
+	}
+
+	public void setAppointExplain(String appointExplain) {
+		this.appointExplain = appointExplain;
+	}
+
+	@WhereSQL(sql="cardId=:PosterPackage_cardId")
+	public Integer getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(Integer cardId) {
+		this.cardId = cardId;
+	}
+
+	@WhereSQL(sql="topCount=:PosterPackage_topCount")
+	public Integer getTopCount() {
+		return topCount;
+	}
+
+	public void setTopCount(Integer topCount) {
+		this.topCount = topCount;
+	}
+
+	@WhereSQL(sql="commentCount=:PosterPackage_commentCount")
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	@WhereSQL(sql="appointCount=:PosterPackage_appointCount")
+	public Integer getAppointCount() {
+		return appointCount;
+	}
+
+	public void setAppointCount(Integer appointCount) {
+		this.appointCount = appointCount;
+	}
+
+	@WhereSQL(sql="cardLqNum=:PosterPackage_cardLqNum")
+	public Integer getCardLqNum() {
+		return cardLqNum;
+	}
+
+	public void setCardLqNum(Integer cardLqNum) {
+		this.cardLqNum = cardLqNum;
+	}
+
+	@WhereSQL(sql="cardCategoryId=:PosterPackage_cardCategoryId")
+	public Integer getCardCategoryId() {
+		return cardCategoryId;
+	}
+
+	public void setCardCategoryId(Integer cardCategoryId) {
+		this.cardCategoryId = cardCategoryId;
+	}
+
 	@Transient
 	 public String getCityIds() {
 		return cityIds;
@@ -227,7 +318,7 @@ public class PosterPackage  extends BaseEntity {
 		this.cityIds = cityIds;
 	}
 
-	@WhereSQL(sql="shareNum=:card_shareNum")
+	@WhereSQL(sql="shareNum=:PosterPackage_shareNum")
 	public Integer getShareNum() {
 		return shareNum;
 	}
@@ -299,7 +390,7 @@ public class PosterPackage  extends BaseEntity {
 		this.redCities = redCities;
 	}
 
-	@WhereSQL(sql="osType=:MediaPackage_osType")
+	@WhereSQL(sql="osType=:PosterPackage_osType")
 	public java.lang.String getOsType() {
 		return osType;
 	}
@@ -717,6 +808,16 @@ public class PosterPackage  extends BaseEntity {
 			.append("是否删除: 0否 1是[").append(getIsDel()).append("],")
 			.append("操作系统").append(getOsType()).append("],")
 			.append("投放城市").append(getCityIds()).append("],")
+			.append("是否开启预约").append(getIsAppoint()).append("],")
+			.append("是否关联卡券").append(getIsRelevance()).append("],")
+			.append("预约说明").append(getAppointExplain()).append("],")
+			.append("卡券id").append(getCardId()).append("],")
+			.append("点赞次数").append(getTopCount()).append("],")
+			.append("评论次数").append(getCommentCount()).append("],")
+			.append("预约次数").append(getAppointCount()).append("],")
+			.append("预约说明").append(getAppointExplain()).append("],")
+			.append("卡券已领取次数").append(getCardLqNum()).append("],")
+			.append("卡券分类id").append(getCardCategoryId()).append("],")
 			.toString();
 	}
 	

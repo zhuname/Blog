@@ -64,6 +64,8 @@ public class Medal  extends BaseEntity {
 	//concstructor
 	private Integer userId;
 	
+	private Integer isAvoidAudit;
+	
 	
 	@Transient
 	public Integer getUserId() {
@@ -145,7 +147,16 @@ public class Medal  extends BaseEntity {
 	public java.lang.String getApplyInstructions() {
 		return this.applyInstructions;
 	}
-	
+     
+     @WhereSQL(sql="isAvoidAudit=:Medal_isAvoidAudit")
+	public Integer getIsAvoidAudit() {
+		return isAvoidAudit;
+	}
+
+	public void setIsAvoidAudit(Integer isAvoidAudit) {
+		this.isAvoidAudit = isAvoidAudit;
+	}
+
 	public String toString() {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
@@ -154,6 +165,7 @@ public class Medal  extends BaseEntity {
 			.append("简介[").append(getDescr()).append("],")
 			.append("类型：1图片认证 2视频认证[").append(getType()).append("],")
 			.append("申请说明[").append(getApplyInstructions()).append("],")
+			.append("是否免审核[").append(getIsAvoidAudit()).append("],")
 			.toString();
 	}
 	

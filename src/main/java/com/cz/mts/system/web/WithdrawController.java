@@ -329,7 +329,7 @@ public class WithdrawController  extends BaseController {
 					moneyDetail.setUserId(withdraw.getUserId());
 					moneyDetail.setCreateTime(new Date());
 					moneyDetail.setType(9);
-					moneyDetail.setMoney(withdraw.getMoney());
+					moneyDetail.setMoney(+withdraw.getMoney());
 					moneyDetail.setBalance(appUser.getBalance());
 					moneyDetail.setPayType(appUser.getWithdrawType());
 					moneyDetail.setItemId(Integer.parseInt(id));

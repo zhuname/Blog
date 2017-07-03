@@ -28,8 +28,17 @@ public class SysParamBean implements Serializable {
 	private String withdrawIntroduce;
 	private String aboutImage;
 	private String iosCheck;
+	private String publishRule;
 	
 	
+	
+	
+	public String getPublishRule() {
+		return publishRule;
+	}
+	public void setPublishRule(String publishRule) {
+		this.publishRule = publishRule;
+	}
 	public String getIosCheck() {
 		return iosCheck;
 	}

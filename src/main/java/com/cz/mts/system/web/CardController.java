@@ -746,7 +746,7 @@ public class CardController  extends BaseController {
 				moneyDetail.setUserId(userId);
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setType(8);
-				moneyDetail.setMoney(sumMoney.doubleValue());
+				moneyDetail.setMoney(+sumMoney.doubleValue());
 				moneyDetail.setItemId(usercard.getId());
 				moneyDetail.setBalance(appUser.getBalance());
 				moneyDetail.setPlateMoney(cardChargeMoney.doubleValue());

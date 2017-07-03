@@ -152,7 +152,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailp.setBalance(appUser.getBalance());
 			moneyDetailp.setCreateTime(new Date());
 			moneyDetailp.setItemId(itemId);
-			moneyDetailp.setMoney(posterPackage.getSumMoney());
+			moneyDetailp.setMoney(-posterPackage.getSumMoney());
 			moneyDetailp.setType(6);
 			moneyDetailp.setPayType(3);
 			moneyDetailp.setUserId(userId);
@@ -190,7 +190,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailM.setBalance(appUser.getBalance());
 			moneyDetailM.setCreateTime(new Date());
 			moneyDetailM.setItemId(itemId);
-			moneyDetailM.setMoney(mediaPackage.getSumMoney());
+			moneyDetailM.setMoney(-mediaPackage.getSumMoney());
 			moneyDetailM.setType(5);
 			moneyDetailM.setPayType(3);
 			moneyDetailM.setUserId(userId);
@@ -235,7 +235,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				moneyDetailC.setBalance(appUser.getBalance());
 				moneyDetailC.setCreateTime(new Date());
 				moneyDetailC.setItemId(itemId);
-				moneyDetailC.setMoney(cardSum.doubleValue());
+				moneyDetailC.setMoney(-cardSum.doubleValue());
 				moneyDetailC.setType(3);
 				moneyDetailC.setPayType(3);
 				moneyDetailC.setUserId(userId);
@@ -344,7 +344,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetail.setBalance(appUser.getBalance());
 					moneyDetail.setCreateTime(new Date());
 					moneyDetail.setItemId(itemId);
-					moneyDetail.setMoney(posterPackage.getSumMoney());
+					moneyDetail.setMoney(-posterPackage.getSumMoney());
 					moneyDetail.setType(6);
 					moneyDetail.setAliTrade(wxCode);
 					moneyDetail.setPayType(payType);
@@ -392,7 +392,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetailM.setBalance(appUserM.getBalance());
 					moneyDetailM.setCreateTime(new Date());
 					moneyDetailM.setItemId(itemId);
-					moneyDetailM.setMoney(mediaPackage.getSumMoney());
+					moneyDetailM.setMoney(-mediaPackage.getSumMoney());
 					moneyDetailM.setType(5);
 					moneyDetailM.setAliTrade(wxCode);
 					moneyDetailM.setPayType(payType);
@@ -456,7 +456,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						moneyDetailC.setBalance(appUserC.getBalance());
 						moneyDetailC.setCreateTime(new Date());
 						moneyDetailC.setCode(code);
-						moneyDetailC.setMoney(cardSum.doubleValue());
+						moneyDetailC.setMoney(-cardSum.doubleValue());
 						moneyDetailC.setType(3);
 						moneyDetailC.setAliTrade(wxCode);
 						moneyDetailC.setPayType(payType);
@@ -520,7 +520,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetailr.setBalance(appuser.getBalance());
 					moneyDetailr.setCreateTime(new Date());
 					moneyDetailr.setItemId(itemId);
-					moneyDetailr.setMoney(money);
+					moneyDetailr.setMoney(+money);
 					moneyDetailr.setType(4);
 					moneyDetailr.setAliTrade(wxCode);
 					moneyDetailr.setPayType(payType);

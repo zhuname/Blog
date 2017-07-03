@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -90,6 +91,9 @@ public class ApplyMedal  extends BaseEntity {
 	private String startTime;
 	
 	private String endTime;
+	
+	private Date endMedalTime;
+	private Integer isEndStatus;
 	
 	@Transient
 	public String getStartTime() {
@@ -253,7 +257,28 @@ public class ApplyMedal  extends BaseEntity {
 	public java.lang.Integer getType() {
 		return this.type;
 	}
-	
+     
+     
+     
+     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+     @WhereSQL(sql="endMedalTime=:ApplyMedal_endMedalTime")
+	public Date getEndMedalTime() {
+		return endMedalTime;
+	}
+
+	public void setEndMedalTime(Date endMedalTime) {
+		this.endMedalTime = endMedalTime;
+	}
+
+	 @WhereSQL(sql="isEndStatus=:ApplyMedal_isEndStatus")
+	public Integer getIsEndStatus() {
+		return isEndStatus;
+	}
+
+	public void setIsEndStatus(Integer isEndStatus) {
+		this.isEndStatus = isEndStatus;
+	}
+
 	public String toString() {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
@@ -266,6 +291,8 @@ public class ApplyMedal  extends BaseEntity {
 			.append("多媒体地址（图片以分号分开）[").append(getMultiAddress()).append("],")
 			.append("类型：1图片 2视频[").append(getType()).append("],")
 			.append("视频第一帧图片").append(getMediaFirstImg()).append("],")
+			.append("勋章过期时间").append(getEndMedalTime()).append("],")
+			.append("是否过期").append(getIsEndStatus()).append("],")
 			.toString();
 	}
 	

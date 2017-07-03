@@ -53,6 +53,8 @@ public class Category  extends BaseEntity {
 	 * 0否1是
 	 */
 	private java.lang.Integer isDel;
+	
+	private Integer sort;
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -114,7 +116,17 @@ public class Category  extends BaseEntity {
 	public java.lang.Integer getIsDel() {
 		return this.isDel;
 	}
-	
+     
+     
+     @WhereSQL(sql="sort=:Category_sort")
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
 	public String toString() {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
@@ -122,6 +134,7 @@ public class Category  extends BaseEntity {
 			.append("类型：1海报红包 2视频红包 3卡券[").append(getType()).append("],")
 			.append("分类图片[").append(getImage()).append("],")
 			.append("0否1是[").append(getIsDel()).append("],")
+			.append("排序[").append(getSort()).append("],")
 			.toString();
 	}
 	

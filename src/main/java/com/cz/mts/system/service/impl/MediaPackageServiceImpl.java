@@ -403,7 +403,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						md.setCreateTime(new Date());
 						md.setUserId(_userId);
 						md.setType(2);  //海报红包
-						md.setMoney(lpp.getMoney());
+						md.setMoney(+lpp.getMoney());
 						md.setBalance(nowBalance.doubleValue());
 						md.setItemId(lpp.getPackageId());
 						md.setOsType(osType);
@@ -462,7 +462,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				moneyDetail.setBalance(appUser.getBalance());
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setItemId(pp.getId());
-				moneyDetail.setMoney(pp.getPayMoney());
+				moneyDetail.setMoney(+pp.getPayMoney());
 				moneyDetail.setType(12);
 				moneyDetail.setUserId(appUser.getId());
 				super.save(moneyDetail);
