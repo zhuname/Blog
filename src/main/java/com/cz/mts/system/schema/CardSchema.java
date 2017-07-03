@@ -4,17 +4,23 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.eclipse.jetty.util.log.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.cz.mts.frame.common.BaseLogger;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.UserCard;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IUserCardService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
 @Component
 public class CardSchema extends BaseLogger{
@@ -27,6 +33,12 @@ public class CardSchema extends BaseLogger{
 	private IUserCardService userCardService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IApplyMedalService applyMedalService;
+	@Resource
+	private IMedalService medalService;
+	@Resource
+	private IUserMedalService userMedalService;
 	
 	/**
 	 * 卡券到期前三天发推送
@@ -62,7 +74,7 @@ public class CardSchema extends BaseLogger{
 	 * 卡券到期
 	 * @throws Exception
 	 */
-	@Scheduled(cron="0 */5 * * * ?")
+	@Scheduled(cron="0 0/10 * * * ?")
 	public void cardEnded() throws Exception{
 		logger.info("*****************判断卡券到期******************");
 		Finder finder = new Finder("SELECT * FROM t_card WHERE endTime <= NOW() AND isDel=0 AND `status`!=4");
@@ -94,7 +106,9 @@ public class CardSchema extends BaseLogger{
 	}
 	
 	
-	
+	/**
+	 *领取次数更新提醒
+	 */
 	@Scheduled(cron="0 0 */1 * * ?")
 	public void updateLqNum() throws Exception{
 		logger.info("*****************领取次数更新提醒******************");
@@ -114,10 +128,12 @@ public class CardSchema extends BaseLogger{
 		
 	}
 	
-	@Scheduled(cron="0 */1 * * * ?")
+	/**
+	 * 剩余数量更新提醒
+	 */
+	@Scheduled(cron="0 0/10 * * * ?")
 	public void updateSyNum() throws Exception{
 		logger.info("*****************剩余数量更新提醒******************");
-		
 		Finder finder = Finder.getSelectFinder(Card.class).append(" where 1=1 and status = 2 ");
 		List<Card> cards = cardService.queryForList(finder,Card.class);
 		if(null != cards && cards.size() > 0){
@@ -158,5 +174,32 @@ public class CardSchema extends BaseLogger{
 //			}
 //		}
 //	}
+	
+	
+	/**
+	 * 勋章过期更改成已过期
+	 */
+	@Scheduled(cron="0 0/10 * * * ?")
+	public void updateMedalStatus() throws Exception{
+		logger.info("勋章过期定时任务");
+		Finder finder = Finder.getSelectFinder(ApplyMedal.class).append("where 1=1 and `status`=2 AND endMedalTime <= NOW() AND isEndStatus!=1 ");
+		List<ApplyMedal> applyMedals = applyMedalService.queryForList(finder,ApplyMedal.class);
+		if(null != applyMedals && applyMedals.size() > 0){
+			for (ApplyMedal applyMedal : applyMedals) {
+				applyMedal.setIsEndStatus(1);
+				applyMedalService.update(applyMedal,true);
+			}
+		}
+		
+		Finder finder2 = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and endMedalTime <= NOW() AND isEndStatus!=1");
+		List<UserMedal> userMedals = userMedalService.queryForList(finder2, UserMedal.class);
+		if(null != userMedals && userMedals.size() > 0){
+			for (UserMedal userMedal : userMedals) {
+				userMedal.setIsEndStatus(1);
+				userMedalService.update(userMedal,true);
+			}
+		}
+		
+	}
 
 }

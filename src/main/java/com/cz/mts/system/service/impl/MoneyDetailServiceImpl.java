@@ -11,12 +11,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.LmediaPackage;
+import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ILmediaPackageService;
+import com.cz.mts.system.service.ILposterPackageService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
@@ -50,6 +54,11 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 	private IPosterPackageService posterPackageService;
 	@Resource
 	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ILposterPackageService lposterPackageService;
+	@Resource
+	private ILmediaPackageService lmediaPackageService;
+	
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -140,6 +149,9 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 		//红包剩余金额
 		Double remainMoney = 0.0;
 		
+		LposterPackage lposterPackage = null;
+		LmediaPackage lmediaPackage = null;
+		
 		if(null != moneyDetail.getType() && null != moneyDetail.getItemId()){
 			Finder finderAll = Finder.getSelectFinder(MoneyDetail.class).append(" where itemId=:itemId and type=:type");
 			finderAll.setParam("itemId", moneyDetail.getItemId());
@@ -169,6 +181,18 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 					}else{
 						remainMoney = 0.0;
 					}
+					
+					//判断红包剩余待抢次数是否为0
+					if(null != posterPackage.getNum() && 0 == posterPackage.getNum()){
+						Finder finderMax = new Finder("SELECT userId FROM t_l_poster_package WHERE money=(SELECT MAX(money) FROM t_l_poster_package WHERE packageId=:packageId) AND packageId=:packageId");
+						finderMax.setParam("packageId", posterPackage.getId());
+						List<LposterPackage> lposterPackages = queryForList(finderMax, LposterPackage.class);
+						if(null != lposterPackages && lposterPackages.size() > 0){
+							lposterPackage = lposterPackages.get(0);
+						}
+						
+					}
+					
 				}
 			}
 			//如果是视频红包
@@ -196,11 +220,50 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 					}else{
 						remainMoney = 0.0;
 					}
+					
+					//判断红包剩余待抢次数是否为0
+					if(null != mediaPackage.getNum() && 0 == mediaPackage.getNum()){
+						Finder finderMax = new Finder("SELECT userId FROM t_l_media_package WHERE money=(SELECT MAX(money) FROM t_l_media_package WHERE packageId=:packageId) AND packageId=:packageId");
+						finderMax.setParam("packageId", mediaPackage.getId());
+						List<LmediaPackage> lmediaPackages = queryForList(finderMax, LmediaPackage.class);
+						if(null != lmediaPackages && lmediaPackages.size() > 0){
+							lmediaPackage = lmediaPackages.get(0);
+						}
+						
+					}
+					
 				}
 			}
 			List<MoneyDetail> datas = queryForList(finderAll, MoneyDetail.class, page);
 			if(null != datas && datas.size() > 0){
 				for (MoneyDetail md : datas) {
+					//1.海报红包 2视频红包
+					if(1 == md.getType()){
+						if(null != lposterPackage){
+							if(null != md.getUserId() && md.getUserId().intValue() == lposterPackage.getUserId().intValue()){
+								md.setIsLuck(1);
+							}else{
+								md.setIsLuck(0);
+							}
+						}else{
+							md.setIsLuck(0);
+						}
+						
+					}
+					
+					if(2 == md.getType()){
+						if(null != lmediaPackage){
+							if(null != md.getUserId() && md.getUserId().intValue() == lmediaPackage.getUserId().intValue()){
+								md.setIsLuck(1);
+							}else{
+								md.setIsLuck(0);
+							}
+						}else{
+							md.setIsLuck(0);
+						}
+					}
+					
+					
 					if(null == md.getMoney()){
 						md.setMoney(0.0);
 					}
@@ -213,21 +276,24 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 						returnObject.setMessage("该用户不存在");
 					}
 					
-					UserMedal userMedal = new UserMedal();
-					userMedal.setUserId(md.getUserId());
-					Page newPage = new Page();
-					//获取勋章列表
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-					if(null != userMedals && userMedals.size() > 0){
-						for (UserMedal um : userMedals) {
-							if(null != um.getMedalId()){
-								Medal medal = medalService.findMedalById(um.getMedalId());
-								if(null != medal){
-									um.setMedal(medal);
-								}
-							}
-						}
-						md.setUserMedals(userMedals);
+//					UserMedal userMedal = new UserMedal();
+//					userMedal.setUserId(md.getUserId());
+//					Page newPage = new Page();
+//					//获取勋章列表
+//					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
+//					if(null != userMedals && userMedals.size() > 0){
+//						for (UserMedal um : userMedals) {
+//							if(null != um.getMedalId()){
+//								Medal medal = medalService.findMedalById(um.getMedalId());
+//								if(null != medal){
+//									um.setMedal(medal);
+//								}
+//							}
+//						}
+//						md.setUserMedals(userMedals);
+//					}
+					if(null != appUser.getUserMedals()){
+						md.setUserMedals(appUser.getUserMedals());
 					}
 					md.setRemainMoney(remainMoney);
 					md.setMoneyCount(moneyCount);

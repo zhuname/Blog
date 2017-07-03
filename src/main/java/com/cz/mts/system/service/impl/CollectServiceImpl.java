@@ -147,21 +147,24 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							if(null != appUser){
 								card.setAppUser(appUser);
 							}
-							UserMedal userMedal = new UserMedal();
-							userMedal.setUserId(card.getUserId());
-							//查询勋章列表
-							Page umpage = new Page();
-							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, umpage, UserMedal.class, userMedal);
-							if(null != userMedals && userMedals.size() > 0){
-								for (UserMedal um : userMedals) {
-									if(null != um.getMedalId()){
-										Medal medal = medalService.findMedalById(um.getMedalId());
-										if(null != medal){
-											um.setMedal(medal);
-										}
-									}
-								}
-								card.setUserMedals(userMedals);
+//							UserMedal userMedal = new UserMedal();
+//							userMedal.setUserId(card.getUserId());
+//							//查询勋章列表
+//							Page umpage = new Page();
+//							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, umpage, UserMedal.class, userMedal);
+//							if(null != userMedals && userMedals.size() > 0){
+//								for (UserMedal um : userMedals) {
+//									if(null != um.getMedalId()){
+//										Medal medal = medalService.findMedalById(um.getMedalId());
+//										if(null != medal){
+//											um.setMedal(medal);
+//										}
+//									}
+//								}
+//								card.setUserMedals(userMedals);
+//							}
+							if(null != appUser.getUserMedals()){
+								card.setUserMedals(appUser.getUserMedals());
 							}
 						}
 						ct.setCard(card);
@@ -174,23 +177,26 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 								mediaPackage.setAppUser(appUser);
 							}
 							//获取勋章列表
-							UserMedal userMedal = new UserMedal();
-							if(null != mediaPackage.getUserId()){
-								userMedal.setUserId(mediaPackage.getUserId());
-							}
-							Page meUmPage = new Page();
-							//查询勋章列表
-							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, meUmPage, UserMedal.class, userMedal);
-							if(null != userMedals && userMedals.size() > 0){
-								for (UserMedal um : userMedals) {
-									if(null != um.getMedalId()){
-										Medal medal = medalService.findMedalById(um.getMedalId());
-										if(null != medal){
-											um.setMedal(medal);
-										}
-									}
-								}
-								mediaPackage.setUserMedals(userMedals);
+//							UserMedal userMedal = new UserMedal();
+//							if(null != mediaPackage.getUserId()){
+//								userMedal.setUserId(mediaPackage.getUserId());
+//							}
+//							Page meUmPage = new Page();
+//							//查询勋章列表
+//							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, meUmPage, UserMedal.class, userMedal);
+//							if(null != userMedals && userMedals.size() > 0){
+//								for (UserMedal um : userMedals) {
+//									if(null != um.getMedalId()){
+//										Medal medal = medalService.findMedalById(um.getMedalId());
+//										if(null != medal){
+//											um.setMedal(medal);
+//										}
+//									}
+//								}
+//								mediaPackage.setUserMedals(userMedals);
+//							}
+							if(null != appUser.getUserMedals()){
+								mediaPackage.setUserMedals(appUser.getUserMedals());
 							}
 							mediaPackage.setIsCollect(1);
 							

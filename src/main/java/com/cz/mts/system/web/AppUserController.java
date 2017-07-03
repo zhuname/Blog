@@ -244,6 +244,7 @@ public class AppUserController  extends BaseController {
 
 				 UserMedal userMedal=new UserMedal();
 				 userMedal.setUserId(id);
+				 userMedal.setIsEndStatus(0);
 
 				 //获取我的勋章列表
 				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);

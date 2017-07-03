@@ -149,21 +149,24 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 						if(null != appUser){
 							cd.setAppUser(appUser);
 						}
-						Page newPage = new Page();
-						UserMedal userMedal = new UserMedal();
-						userMedal.setUserId(cd.getUserId());
-						//查询勋章列表
-						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-						if(null != userMedals && userMedals.size() > 0){
-							for (UserMedal um : userMedals) {
-								if(null != um.getMedalId()){
-									Medal medal = medalService.findMedalById(um.getMedalId());
-									if(null != medal){
-										um.setMedal(medal);
-									}
-								}
-							}
-							cd.setUserMedals(userMedals);
+//						Page newPage = new Page();
+//						UserMedal userMedal = new UserMedal();
+//						userMedal.setUserId(cd.getUserId());
+//						//查询勋章列表
+//						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
+//						if(null != userMedals && userMedals.size() > 0){
+//							for (UserMedal um : userMedals) {
+//								if(null != um.getMedalId()){
+//									Medal medal = medalService.findMedalById(um.getMedalId());
+//									if(null != medal){
+//										um.setMedal(medal);
+//									}
+//								}
+//							}
+//							cd.setUserMedals(userMedals);
+//						}
+						if(null != appUser.getUserMedals()){
+							cd.setUserMedals(appUser.getUserMedals());
 						}
 					}
 				}

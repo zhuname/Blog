@@ -76,7 +76,7 @@ public class UserMedalController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<UserMedal> datas=userMedalService.findListDataByFinder(null,page,UserMedal.class,userMedal);
-			returnObject.setQueryBean(userMedal);
+		returnObject.setQueryBean(userMedal);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;

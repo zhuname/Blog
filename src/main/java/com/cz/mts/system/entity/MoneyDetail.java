@@ -127,8 +127,18 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String publishUserName;
 	
+	private Integer isLuck;
 	
 	
+	@Transient
+	public Integer getIsLuck() {
+		return isLuck;
+	}
+
+	public void setIsLuck(Integer isLuck) {
+		this.isLuck = isLuck;
+	}
+
 	@Transient
 	public String getPublishUserName() {
 		return publishUserName;

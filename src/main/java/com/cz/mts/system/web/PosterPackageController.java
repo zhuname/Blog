@@ -264,19 +264,22 @@ public class PosterPackageController  extends BaseController {
 				 }
 				 
 				 //返回勋章信息
-				 Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId");
-				 finder.setParam("userId", posterPackage.getUserId());
-				 List<UserMedal> userMedals = userMedalService.queryForList(finder,UserMedal.class);
-				 if(null != userMedals && userMedals.size() > 0){
-					 for (UserMedal userMedal : userMedals) {
-						if(null != userMedal.getMedalId()){
-							Medal medal = medalService.findMedalById(userMedal.getMedalId());
-							if(null != medal){
-								userMedal.setMedal(medal);
-							}
-						}
-					}
-					 posterPackage.setUserMedals(userMedals);
+//				Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId");
+//				 finder.setParam("userId", posterPackage.getUserId());
+//				 List<UserMedal> userMedals = userMedalService.queryForList(finder,UserMedal.class);
+//				 if(null != userMedals && userMedals.size() > 0){
+//					 for (UserMedal userMedal : userMedals) {
+//						if(null != userMedal.getMedalId()){
+//							Medal medal = medalService.findMedalById(userMedal.getMedalId());
+//							if(null != medal){
+//								userMedal.setMedal(medal);
+//							}
+//						}
+//					}
+//					 posterPackage.setUserMedals(userMedals);
+//				 }
+				 if(null != appUser.getUserMedals()){
+					 posterPackage.setUserMedals(appUser.getUserMedals());
 				 }
 			 }
 			 

@@ -184,21 +184,24 @@ public class MediaPackageController  extends BaseController {
 				 }
 				 
 				 //查询该用户的勋章列表
-				 UserMedal userMedal = new UserMedal();
-				 userMedal.setUserId(mediaPackage.getUserId());
-				 Page page = new Page();
-				 //查询勋章列表
-				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-				 if(null != userMedals && userMedals.size() > 0){
-					for (UserMedal um : userMedals) {
-						if(null != um.getMedalId()){
-							Medal medal = medalService.findMedalById(um.getMedalId());
-							if(null != medal){
-								um.setMedal(medal);
-							}
-						}
-					 }
-					mediaPackage.setUserMedals(userMedals);
+//				 UserMedal userMedal = new UserMedal();
+//				 userMedal.setUserId(mediaPackage.getUserId());
+//				 Page page = new Page();
+//				 //查询勋章列表
+//				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+//				 if(null != userMedals && userMedals.size() > 0){
+//					for (UserMedal um : userMedals) {
+//						if(null != um.getMedalId()){
+//							Medal medal = medalService.findMedalById(um.getMedalId());
+//							if(null != medal){
+//								um.setMedal(medal);
+//							}
+//						}
+//					 }
+//					mediaPackage.setUserMedals(userMedals);
+//				 }
+				 if(null != appUser.getUserMedals()){
+					 mediaPackage.setUserMedals(appUser.getUserMedals());
 				 }
 			  }
 			 //是否领取  look 1 为领取过的

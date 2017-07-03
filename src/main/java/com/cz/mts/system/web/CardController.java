@@ -172,24 +172,27 @@ public class CardController  extends BaseController {
 					 card.setAppUser(appUser);
 				 }
 				 
-				 //查询勋章列表
-				 Page page = new Page();
-				 page.setOrder("createTime");
-				 page.setSort("desc");
-				 UserMedal userMedal = new UserMedal();
-				 userMedal.setUserId(card.getUserId());
-				List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-				if(null != userMedals && userMedals.size() > 0){
-					for (UserMedal um : userMedals) {
-						if(null != um.getMedalId()){
-							Medal medal = medalService.findMedalById(um.getMedalId());
-							if(null != medal){
-								um.setMedal(medal);
-							}
-						}
-					}
-					card.setUserMedals(userMedals);
-				}
+//				 //查询勋章列表
+//				 Page page = new Page();
+//				 page.setOrder("createTime");
+//				 page.setSort("desc");
+//				 UserMedal userMedal = new UserMedal();
+//				 userMedal.setUserId(card.getUserId());
+//				List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
+//				if(null != userMedals && userMedals.size() > 0){
+//					for (UserMedal um : userMedals) {
+//						if(null != um.getMedalId()){
+//							Medal medal = medalService.findMedalById(um.getMedalId());
+//							if(null != medal){
+//								um.setMedal(medal);
+//							}
+//						}
+//					}
+//					card.setUserMedals(userMedals);
+//				}
+				 if(null != appUser.getUserMedals()){
+					 card.setUserMedals(appUser.getUserMedals());
+				 }
 			 }
 			 
 			 //返回分类名称

@@ -124,6 +124,8 @@ public class AliPayController extends BaseController {
 			case"R":
 				appUserService.alipay(code, 4, Double.parseDouble(money), tradeNo, 1);
 				break;
+			case "":
+				break;
 			}
 			
 		} else {

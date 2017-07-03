@@ -226,21 +226,25 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						}
 					}
 					
-					Page newPage = new Page();
-					UserMedal userMedal = new UserMedal();
-					userMedal.setUserId(mp.getUserId());
-					//查询勋章列表
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-					if(null != userMedals && userMedals.size() > 0){
-						for (UserMedal um : userMedals) {
-							if(null != um.getMedalId()){
-								Medal medal = medalService.findMedalById(um.getMedalId());
-								if(null != medal){
-									um.setMedal(medal);
-								}
-							}
-						}
-						mp.setUserMedals(userMedals);
+//					Page newPage = new Page();
+//					UserMedal userMedal = new UserMedal();
+//					userMedal.setUserId(mp.getUserId());
+//					//查询勋章列表
+//					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
+//					if(null != userMedals && userMedals.size() > 0){
+//						for (UserMedal um : userMedals) {
+//							if(null != um.getMedalId()){
+//								Medal medal = medalService.findMedalById(um.getMedalId());
+//								if(null != medal){
+//									um.setMedal(medal);
+//								}
+//							}
+//						}
+//						mp.setUserMedals(userMedals);
+//					}
+					
+					if(null != appUser.getUserMedals()){
+						mp.setUserMedals(appUser.getUserMedals());
 					}
 					
 					Page attPage = new Page();
@@ -425,6 +429,9 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 							//给发布人发推送
 							notificationService.notify(3, pp.getId(), pp.getUserId());
 						}
+						
+						
+						
 						
 					}
 					super.saveorupdate(pp) ;
