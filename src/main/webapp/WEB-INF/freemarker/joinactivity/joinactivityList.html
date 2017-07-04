@@ -1,45 +1,20 @@
 <#escape x as x?html>
 
-<script type="text/javascript" src="${ctx}/js/system/medal/medal.js"></script>
+<script type="text/javascript" src="${ctx}/js/system/joinactivity/joinactivity.js"></script>
 
 <script type="text/javascript">
 
-function deleteMedal(){
+function deleteJoinActivity(){
 	var id=jQuery("#id").val();
 	if(!id||id==""){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/system/medal/delete?id="+id;
-		var listurl="${ctx}/system/medal/list";
+		var _url="${ctx}/joinactivity/delete?id="+id;
+		var listurl="${ctx}/joinactivity/list";
 		mydelete(_url,listurl);
 	}
 }
-
-
-
-/* $(document).unbind('click').on("click", ".sim", function() {
-	var me="<img style=\"height:500px;width:500px;\" alt=\"\" src=\""+$(this).attr("src")+"\">";
-		//iframe层-多媒体
-    	layer.open({
-		  type: 1,
-		  title: false,
-		  closeBtn: 0,
-		  area: '500px',
-		  skin: 'layui-layer-nobg', //没有背景色
-		  shadeClose: true,
-		  content:me
-		 //content: "<img alt=\"\" class=\"sim\" width=\"200px\" height=\"200px\" src=\"http://layer.layui.com/images/tong.jpg\">"
-		});
-    	layer.msg('点击任意处关闭');
-}); */
-
-jQuery(document).ready(function(){
-	
-	//回选 下拉框
-	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
-
-});
 </script>
 
 
@@ -52,17 +27,14 @@ jQuery(document).ready(function(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/medal/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/joinactivity/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-            <label for="search_name"><b>勋章名称:</b></label> 
-			 <input type="text" id="search_name"  name="name" placeholder="请填写勋章名称"  value="${(returnDatas.queryBean.name)!''}">
-			<label for="search_type"><b>认证类型:</b></label> 
-			 <select id="search_type" name="type" class="col-10" >
-			 	<option value="">请选择</option>
-				<option value="1">图片认证</option>
-				<option value="2">视频认证</option>
+			<label for="search_state"><b>是否可用:</b></label> 
+			 <select id="search_state" name="state" class="col-10" >
+				<option value="是">是</option>
+				<option value="否">否</option>
 			</select>
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
@@ -71,40 +43,28 @@ jQuery(document).ready(function(){
 
 </form>
 		</div>
-		
-		
-		
-		
-		
-		
-	</div>
-	
-</div>
-
-
-	<div class="operate panel panel-default" style="height:65px;">
-	<div class="panel-body">
-		<div class="pull-left">
-			    <@shiro.hasPermission name="/medal/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/medal/list/export');" class="btn  btn-sm  btn-primary"  style="width: 100px">
+		<div class="pull-right">
+			    <@shiro.hasPermission name="/joinactivity/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/joinactivity/list/export');" class="btn  btn-sm  btn-primary">
+                      
                         导出
                     </button>
 		    	</@shiro.hasPermission>
-			    <@shiro.hasPermission name="/system/medal/update" >
-				  <button onclick="myhref('${ctx}/system/medal/update/pre');" class="btn  btn-sm  btn-primary" style="width: 100px">
+			    <@shiro.hasPermission name="/joinactivity/update" >
+				  <button onclick="myhref('${ctx}/joinactivity/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
-			    <@shiro.hasPermission name="/medal/delete" >
+			    <@shiro.hasPermission name="/joinactivity/delete" >
 			    |
-				  <button onclick="deleteMedal();" class="btn btn-sm btn-danger"  style="width: 100px">
+				  <button onclick="deleteJoinActivity();" class="btn btn-sm btn-danger">
                         删除
                     </button>
 			    </@shiro.hasPermission>
 			
 		</div>
 	</div>
-	</div>
+</div>
 
    <div class="row">
             <div class="col-xs-12">
@@ -114,13 +74,25 @@ jQuery(document).ready(function(){
                     <!--first_start_export-->
                     <thead>
                     <tr>
-                        <th style="width: 5%">操作</th>
+                        <!--first_start_no_export-->
+                        <th class="center">
+                            <label class="position-relative">
+                                <input class="ace" type="checkbox">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>操作</th>
                         <!--first_end_no_export-->
-						<th  style="width: 10%" id="th_name" >勋章名称</th>
-						<th  style="width: 10%" id="th_image" >勋章图片</th>
-						<th  style="width: 25%" id="th_descr" >简介</th>
-						<th  style="width: 8%" id="th_type" >认证类型</th>
-						<th   style="width: 25%" id="th_applyInstructions" >申请说明</th>
+						<th id="th_type" >1图片 2视频</th>
+						<th id="th_image" >图片</th>
+						<th id="th_mediaUrl" >视频url</th>
+						<th id="th_mediaImage" >视频封面</th>
+						<th id="th_content" >内容</th>
+						<th id="th_createTime" >创建时间</th>
+						<th id="th_userId" >参与人的userId</th>
+						<th id="th_awardId" >奖项id</th>
+						<th id="th_topCount" >点赞次数</th>
+						<th id="th_commentCount" >评论次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -132,14 +104,20 @@ jQuery(document).ready(function(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
+                                <td class="center">
+                                    <label class="position-relative">
+                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/system/medal/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/joinactivity/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/medal/delete?id=${(_data.id)!''}','${ctx}/system/medal/list',null,'确认删除？');">
+                                                onclick="mydelete('${ctx}/joinactivity/delete?id=${(_data.id)!''}','${ctx}/joinactivity/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -151,15 +129,15 @@ jQuery(document).ready(function(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/system/medal/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/joinactivity/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
 													</a>
-											  </li>
+											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/system/medal/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/joinactivity/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -168,7 +146,7 @@ jQuery(document).ready(function(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/system/medal/delete?id=${(_data.id)!''}','${ctx}/medal/list');"
+                                                       href="javascript:mydelete('${ctx}/joinactivity/delete?id=${(_data.id)!''}','${ctx}/joinactivity/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -182,25 +160,35 @@ jQuery(document).ready(function(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.name)!''}
+								${(_data.type)!0}
 							</td>
 							<td >
-								
-								<img  class="sim" alt=""  src="${(_data.image)!''}">
+								${(_data.image)!''}
 							</td>
 							<td >
-								${(_data.descr)!''}
-							</td>
-							<td>
-								<#if (_data.type) == 1 >
-									图片认证
-								</#if>
-								<#if (_data.type) == 2 >
-									视频认证
-								</#if>
+								${(_data.mediaUrl)!''}
 							</td>
 							<td >
-								${(_data.applyInstructions)!''}
+								${(_data.mediaImage)!''}
+							</td>
+							<td >
+								${(_data.content)!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							</td>
+							<td >
+								${(_data.userId)!0}
+							</td>
+							<td >
+								${(_data.awardId)!0}
+							</td>
+							<td >
+								${(_data.topCount)!0}
+							</td>
+							<td >
+								${(_data.commentCount)!0}
 							</td>
 						</tr>
 					</#list>

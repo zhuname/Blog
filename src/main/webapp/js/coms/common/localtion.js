@@ -6,7 +6,7 @@ function initDcity(localtion,provinceId,cityId){
 	//$('#'+localtion+'').html("<div class=\"layui-form-item\" style=\"display:inline-block;\"><div class=\"layui-input-inline\" style=\"display:inline-block;\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div class=\"layui-input-inline\" style=\"display:inline-block;\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
 	$('#'+localtion+'').html("<div  style=\"display:inline-block;\"><div style=\"display:inline-block;\"><select id=\"province\"><option value=\"\">请选择省</option></select></div><div  style=\"display:inline-block;\"><select id=\"city\"><option value=\"\">请选择市</option></select></div></div>");
 		$.ajax({
-			url : '/mts/system/city/getAreaAdmin/json?level=1',
+			url : '/jkdw/system/city/getAreaAdmin/json?level=1',
 			secureuri : false,
 			dataType : 'json',
 			data : {},
@@ -23,7 +23,7 @@ function initDcity(localtion,provinceId,cityId){
 				if(cityIdVal!=""&&undefined!=cityIdVal){
 				
 					$.ajax({
-						url : '/mts/system/city/lookAdmin/json?id='+cityIdVal,
+						url : '/jkdw/system/city/lookAdmin/json?id='+cityIdVal,
 						secureuri : false,
 						dataType : 'json',
 						data : {},
@@ -42,7 +42,7 @@ function initDcity(localtion,provinceId,cityId){
 								
 							}
 							$.ajax({
-								url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+cityFatherId,
+								url : '/jkdw/system/city/getAreaAdmin/json?level=2&fatherId='+cityFatherId,
 								secureuri : false,
 								dataType : 'json',
 								data : {},
@@ -95,7 +95,7 @@ $(document).on("change", "#province", function() {
 	var fatherId=jQuery("#province").val();
 
     $.ajax({
-        url : '/mts/system/city/getAreaAdmin/json?level=2&fatherId='+fatherId,
+        url : '/jkdw/system/city/getAreaAdmin/json?level=2&fatherId='+fatherId,
         secureuri : false,
         dataType : 'json',
         data : {},
@@ -185,7 +185,7 @@ function initCitys(tableId,itemId){
 	for (var int = 0; int < cityIdVal.length; int++) {
 		
 				$.ajax({
-					url : '/mts/system/city/look/json?id='+cityIdVal[int],
+					url : '/jkdw/system/city/look/json?id='+cityIdVal[int],
 					secureuri : false,
 					dataType : 'json',
 					data : {},
