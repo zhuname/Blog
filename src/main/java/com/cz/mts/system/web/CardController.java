@@ -425,7 +425,15 @@ public class CardController  extends BaseController {
 				card.setIsDel(0);
 				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
-				card.setStatus(1);
+				//判断是否有免审核勋章，并且该勋章是否已过期
+				Finder finder = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=3) AND isEndStatus != 1");
+				finder.setParam("userId", card.getUserId());
+				List<UserMedal> userMedalms = userMedalService.queryForList(finder, UserMedal.class);
+				if(null != userMedalms && userMedalms.size() > 0){
+					card.setStatus(2);
+				}else{
+					card.setStatus(1);
+				}
 				card.setShareNum(0);
 				Object id=cardService.saveorupdate(card);
 				if(cityIds!=null){
@@ -482,7 +490,15 @@ public class CardController  extends BaseController {
 				}
 				
 				card.setNum(card.getConvertNum());
-				card.setStatus(1);
+				//判断是否有免审核勋章，并且该勋章是否已过期
+				Finder finder = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=3) AND isEndStatus != 1");
+				finder.setParam("userId", card.getUserId());
+				List<UserMedal> userMedalms = userMedalService.queryForList(finder, UserMedal.class);
+				if(null != userMedalms && userMedalms.size() > 0){
+					card.setStatus(2);
+				}else{
+					card.setStatus(1);
+				}
 				cardService.update(card,true);
 				returnObject.setData(cardService.findCardById(card.getId()));
 			}

@@ -27,6 +27,7 @@ import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
@@ -50,6 +51,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 	private ICardService cardService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private IUserMedalService userMedalService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -170,7 +173,16 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(posterPackage.getSumMoney())).doubleValue());
 			super.update(appUser, true);
 			//改变红包状态
-			posterPackage.setStatus(1);
+			//查询该用户是否有免审核勋章
+			Finder finderUserMedal = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=1) AND isEndStatus != 1");
+			finderUserMedal.setParam("userId", userId);
+			List<UserMedal> userMedals = userMedalService.queryForList(finderUserMedal, UserMedal.class);
+			if(null != userMedals && userMedals.size() > 0){
+				//说明有免审核勋章
+				posterPackage.setStatus(3);
+			}else{
+				posterPackage.setStatus(1);
+			}
 			posterPackage.setPayType(3);
 			posterPackage.setPayMoney(posterPackage.getSumMoney());
 			posterPackage.setPayTime(new Date());
@@ -208,7 +220,16 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(mediaPackage.getSumMoney())).doubleValue());
 			super.update(appUser, true);
 			//改变红包状态
-			mediaPackage.setStatus(1);
+			//查询该用户是否有免审核勋章
+			Finder finderMedia = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=2) AND isEndStatus != 1");
+			finderMedia.setParam("userId", userId);
+			List<UserMedal> userMedalms = userMedalService.queryForList(finderMedia, UserMedal.class);
+			if(null != userMedalms && userMedalms.size() > 0){
+				//说明有免审核勋章
+				mediaPackage.setStatus(3);
+			}else{
+				mediaPackage.setStatus(1);
+			}
 			mediaPackage.setPayType(3);
 			mediaPackage.setPayMoney(mediaPackage.getSumMoney());
 			mediaPackage.setPayTime(new Date());

@@ -221,8 +221,20 @@ public class AppUser  extends BaseEntity {
 	private Integer topedCount;
 	private Integer attenedCount;
 	
+	private Integer isAppointFee;
 	
 	
+	
+	
+	@WhereSQL(sql="isAppointFee=:AppUser_isAppointFee")
+	public Integer getIsAppointFee() {
+		return isAppointFee;
+	}
+
+	public void setIsAppointFee(Integer isAppointFee) {
+		this.isAppointFee = isAppointFee;
+	}
+
 	@Transient
 	public Double getSumMoney() {
 		return sumMoney;
@@ -819,6 +831,7 @@ public class AppUser  extends BaseEntity {
 			.append("被评论次数[").append(getCommentedCount()).append("],")
 			.append("被点赞次数[").append(getTopedCount()).append("],")
 			.append("被关注次数[").append(getAttenedCount()).append("],")
+			.append("是否有预约佣金[").append(getIsAppointFee()).append("],")
 			.toString();
 	}
 	

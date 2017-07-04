@@ -1048,31 +1048,35 @@ public class AppUserController  extends BaseController {
 			userMedal.setMedalId(null);
 			//同时清除关于该用户的勋章记录
 			//清除t_apply_medal表中关于该用户的记录
-			Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2");
-			finder2.setParam("userId", Integer.parseInt(userId));
-			applyMedalService.update(finder2);
-			
-			Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
-			finder.setParam("userId", Integer.parseInt(userId));
-			userMedalService.update(finder);
+//			Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2");
+//			finder2.setParam("userId", Integer.parseInt(userId));
+//			applyMedalService.update(finder2);
+//			
+//			Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
+//			finder.setParam("userId", Integer.parseInt(userId));
+//			userMedalService.update(finder);
 			
 		}else{
 			String[] medalIds = str_medalIds.split(",");
 			if(medalIds != null && medalIds.length > 0 ){
-				//判断是否存在该用户的勋章记录
-				Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId");
-				finder.setParam("userId", Integer.parseInt(userId));
-				userMedalService.update(finder);
-				
-				//清除t_apply_medal表中关于该用户的记录
-				Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2");
-				finder2.setParam("userId", Integer.parseInt(userId));
-				applyMedalService.update(finder2);
 				
 				for(String s:medalIds){
 					if(StringUtils.isBlank(s)){
 						continue;
 					}else{
+						//判断是否存在该用户的该勋章记录
+						Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId and medalId=:medalId");
+						finder.setParam("userId", Integer.parseInt(userId));
+						finder.setParam("medalId", Integer.parseInt(s));
+						userMedalService.update(finder);
+						
+						//清除t_apply_medal表中关于该用户的记录
+						Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2 and medalId=:medalId");
+						finder2.setParam("userId", Integer.parseInt(userId));
+						finder2.setParam("medalId", Integer.parseInt(s));
+						applyMedalService.update(finder2);
+						
+						
 						Medal medal = medalService.findMedalById(Integer.parseInt(s));
 						userMedal.setMedalId(Integer.parseInt(s));
 						if(StringUtils.isNotBlank(userId)){

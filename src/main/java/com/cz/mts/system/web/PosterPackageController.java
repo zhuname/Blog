@@ -541,9 +541,7 @@ public class PosterPackageController  extends BaseController {
 			
 			
 			if(posterPackage.getId()==null){
-				
 				//必须有的参数
-				
 				if(posterPackage.getUserId()==null||posterPackage.getCategoryId()==null||posterPackage.getLqNum()==null){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("参数缺失");
