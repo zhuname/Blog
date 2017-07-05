@@ -16,19 +16,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Activity;
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Awards;
-import com.cz.mts.system.entity.GiveAward;
-import com.cz.mts.system.entity.JoinActivity;
-import com.cz.mts.system.service.IActivityService;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.IAwardsService;
-import com.cz.mts.system.service.IGiveAwardService;
-import com.cz.mts.system.service.IJoinActivityService;
-import com.cz.mts.frame.annotation.SecurityApi;
+import com.cz.mts.system.entity.Shield;
+import com.cz.mts.system.service.IShieldService;
 import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -39,24 +29,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-07-03 16:07:00
- * @see com.cz.mts.system.web.GiveAward
+ * @version  2017-07-05 15:58:36
+ * @see com.cz.mts.system.web.Shield
  */
 @Controller
-@RequestMapping(value="/system/giveaward")
-public class GiveAwardController  extends BaseController {
+@RequestMapping(value="/shield")
+public class ShieldController  extends BaseController {
 	@Resource
-	private IGiveAwardService giveAwardService;
-	@Resource
-	private IJoinActivityService joinActivityService;
-	@Resource
-	private IActivityService activityService;
-	@Resource
-	private IAppUserService appUserService;
-	@Resource
-	private IAwardsService awardsService;
+	private IShieldService shieldService;
 	
-	private String listurl="/system/giveaward/giveawardList";
+	private String listurl="/system/shield/shieldList";
 	
 	
 	   
@@ -65,14 +47,14 @@ public class GiveAwardController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param giveAward
+	 * @param shield
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,GiveAward giveAward) 
+	public String list(HttpServletRequest request, Model model,Shield shield) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, giveAward);
+		ReturnDatas returnObject = listjson(request, model, shield);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -82,73 +64,31 @@ public class GiveAwardController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param giveAward
+	 * @param shield
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
-	@SecurityApi
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,GiveAward giveAward) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,Shield shield) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		
-		String activityId=request.getParameter("activityId");
-		
-		Finder finder = Finder.getSelectFinder(GiveAward.class).append(" where 1=1 ");
-		
-		if(StringUtils.isNotBlank(activityId)){
-			finder.append(" and awardId in (select id from t_awards where activityId=:activityId )");
-			finder.setParam("activityId", Integer.parseInt(activityId));
-		}
-		
-		List<GiveAward> datas=giveAwardService.findListDataByFinder(finder,page,GiveAward.class,giveAward);
-		
-		for (GiveAward giveAward2 : datas) {
-			
-				if(giveAward2.getUserId()!=null){
-				
-				AppUser appUser=appUserService.findAppUserById(giveAward2.getUserId());
-				
-				if(appUser!=null){
-					
-					giveAward2.setAppUser(appUser);
-					
-				}
-				
-				if(giveAward2.getAwardId()!=null){
-					
-					Awards awards=awardsService.findAwardsById(giveAward2.getAwardId());
-					
-					if(awards!=null){
-						
-						giveAward2.setAwards(awards);
-						
-					}
-					
-				}
-				
-				
-			}
-			
-		}
-		
-		
-		returnObject.setQueryBean(giveAward);
+		List<Shield> datas=shieldService.findListDataByFinder(null,page,Shield.class,shield);
+			returnObject.setQueryBean(shield);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,GiveAward giveAward) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Shield shield) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = giveAwardService.findDataExportExcel(null,listurl, page,GiveAward.class,giveAward);
-		String fileName="giveAward"+GlobalStatic.excelext;
+		File file = shieldService.findDataExportExcel(null,listurl, page,Shield.class,shield);
+		String fileName="shield"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
@@ -160,7 +100,7 @@ public class GiveAwardController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/giveaward/giveawardLook";
+		return "/system/shield/shieldLook";
 	}
 
 	
@@ -175,8 +115,8 @@ public class GiveAwardController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  GiveAward giveAward = giveAwardService.findGiveAwardById(id);
-		   returnObject.setData(giveAward);
+		  Shield shield = shieldService.findShieldById(id);
+		   returnObject.setData(shield);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -189,54 +129,15 @@ public class GiveAwardController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update/json")
-	@SecurityApi
+	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,GiveAward giveAward,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,Shield shield,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			if(giveAward.getUserId()!=null&&giveAward.getJoinUserId()!=null&&giveAward.getAwardId()!=null){
-				
-				 Finder finder = Finder.getSelectFinder(GiveAward.class).append(" where userId=:userId and awardId=:awardId and joinUserId=:joinUserId");
-				  finder.setParam("userId", giveAward.getUserId());
-				  finder.setParam("awardId", giveAward.getAwardId());
-				  finder.setParam("joinUserId", giveAward.getJoinUserId());
-				  List<GiveAward> giveAwards = giveAwardService.queryForList(finder, GiveAward.class);
-				  
-				  
-				  //判断是否已经有获奖的记录了
-				  if(giveAwards!=null&&giveAwards.size()>0){
-					  logger.error("已获奖");
-						returnObject.setStatus(ReturnDatas.ERROR);
-						returnObject.setMessage("已获奖");
-				  }
-				
-				
-				Awards awards = awardsService.findAwardsById(giveAward.getAwardId());
-				
-				if(awards!=null){
-					
-					Activity activity=activityService.findActivityById(awards.getActivityId());
-					
-					if(activity!=null){
-						
-						activity.setWinPrizePerson(activity.getWinPrizePerson()+1);
-						activityService.update(activity, true);
-					}
-					
-					awards.setRemainCount(awards.getRemainCount()-1);
-					awardsService.update(awards, true);
-					
-				}
-				
-				giveAwardService.saveorupdate(giveAward);
-			}else {
-				logger.error("参数缺失");
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("参数缺失");
-			}
+		
+			shieldService.saveorupdate(shield);
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -255,7 +156,7 @@ public class GiveAwardController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/giveaward/giveawardCru";
+		return "/system/shield/shieldCru";
 	}
 	
 	/**
@@ -270,7 +171,7 @@ public class GiveAwardController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				giveAwardService.deleteById(id,GiveAward.class);
+				shieldService.deleteById(id,Shield.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -302,7 +203,7 @@ public class GiveAwardController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			giveAwardService.deleteByIds(ids,GiveAward.class);
+			shieldService.deleteByIds(ids,Shield.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);

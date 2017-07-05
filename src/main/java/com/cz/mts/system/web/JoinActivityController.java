@@ -16,9 +16,20 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.JoinActivity;
+import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.exception.HaveUserErrorException;
+import com.cz.mts.system.exception.ParameterErrorException;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAwardsService;
 import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.IOperService;
+import com.cz.mts.system.service.impl.AppUserServiceImpl;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -33,10 +44,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.JoinActivity
  */
 @Controller
-@RequestMapping(value="/joinactivity")
+@RequestMapping(value="/system/joinactivity")
 public class JoinActivityController  extends BaseController {
 	@Resource
 	private IJoinActivityService joinActivityService;
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private IAwardsService awardsService;
+	@Resource
+	private IOperService operService;
 	
 	private String listurl="/system/joinactivity/joinactivityList";
 	
@@ -69,14 +86,67 @@ public class JoinActivityController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,JoinActivity joinActivity) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<JoinActivity> datas=joinActivityService.findListDataByFinder(null,page,JoinActivity.class,joinActivity);
-			returnObject.setQueryBean(joinActivity);
+		
+		String activityId=request.getParameter("activityId");
+		
+		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
+		
+		if(StringUtils.isNotBlank(activityId)){
+			finder.append(" and awardId in (select id from t_awards where activityId=:activityId )");
+			finder.setParam("activityId", Integer.parseInt(activityId));
+		}
+		
+		List<JoinActivity> datas=joinActivityService.findListDataByFinder(finder,page,JoinActivity.class,joinActivity);
+		
+		for (JoinActivity joinActivity2 : datas) {
+			
+			//查询用户信息
+			if(joinActivity2.getUserId()!=null){
+				
+				AppUser appUser=appUserService.findAppUserById(joinActivity2.getUserId());
+				
+				if(appUser!=null){
+					
+					joinActivity2.setAppUser(appUser);
+					
+				}
+				
+			}
+			
+			//如果颁奖的话查询颁奖信息
+			if(joinActivity2.getAwardId()!=null){
+				
+				Awards awards=awardsService.findAwardsById(joinActivity2.getAwardId());
+				
+				if(awards!=null){
+					
+					joinActivity2.setAwards(awards);
+					
+				}
+				
+				
+			}
+			
+			//获取评论列表
+			Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId");
+			
+			finderOper.setParam("itemId", joinActivity2.getId());
+			
+			List<Oper> opers = operService.queryForList(finderOper,Oper.class);
+			
+			joinActivity2.setOpers(opers);
+			
+		}
+		
+		
+		returnObject.setQueryBean(joinActivity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -129,16 +199,24 @@ public class JoinActivityController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,JoinActivity joinActivity,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
 			joinActivityService.saveorupdate(joinActivity);
 			
+		} catch (HaveUserErrorException e) {
+			logger.error("已参与");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("已参与");
+		} catch (ParameterErrorException e) {
+			logger.error("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
