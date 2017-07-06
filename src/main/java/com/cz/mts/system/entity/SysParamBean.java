@@ -29,10 +29,17 @@ public class SysParamBean implements Serializable {
 	private String aboutImage;
 	private String iosCheck;
 	private String publishRule;
+	private String appointCharge;
 	
 	
 	
 	
+	public String getAppointCharge() {
+		return appointCharge;
+	}
+	public void setAppointCharge(String appointCharge) {
+		this.appointCharge = appointCharge;
+	}
 	public String getPublishRule() {
 		return publishRule;
 	}

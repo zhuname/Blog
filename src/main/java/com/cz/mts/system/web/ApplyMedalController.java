@@ -123,8 +123,13 @@ public class ApplyMedalController  extends BaseController {
 				
 				if(null != am.getMedalId()){
 					Medal medal = medalService.findMedalById(am.getMedalId());
-					if(null != medal && StringUtils.isNotBlank(medal.getName())){
-						am.setMedalName(medal.getName());
+					if(null != medal){
+						if(StringUtils.isNotBlank(medal.getName())){
+							am.setMedalName(medal.getName());
+						}
+						if(null != medal.getStatus()){
+							am.setMedalStatus(medal.getStatus());
+						}
 					}
 				}
 			}
@@ -286,7 +291,7 @@ public class ApplyMedalController  extends BaseController {
 	
 	
 	/**
-	 * 申请勋章认证接口
+	 * 通过认证
 	 * @author wml
 	 * @param model
 	 * @param applyMedal
@@ -304,6 +309,7 @@ public class ApplyMedalController  extends BaseController {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(2);
 				applyMedal.setOperTime(new Date());
+				applyMedal.setEndMedalTime(applyMedal.getEndMedalTime());
 				applyMedalService.update(applyMedal,true);
 				
 				
@@ -314,6 +320,7 @@ public class ApplyMedalController  extends BaseController {
 					userMedal.setMedalId(applyMedal2.getMedalId());
 					userMedal.setUserId(applyMedal2.getUserId());
 					userMedal.setCreateTime(new Date());
+					userMedal.setEndMedalTime(applyMedal2.getEndMedalTime());
 					Medal medal = medalService.findMedalById(userMedal.getMedalId());
 					if(null != medal && StringUtils.isNotBlank(medal.getName())){
 						notificationService.notify(7, userMedal.getMedalId(), userMedal.getUserId(), medal.getName());
@@ -338,7 +345,7 @@ public class ApplyMedalController  extends BaseController {
 	}
 	
 	/**
-	 * 申请勋章认证接口
+	 * 拒绝认证
 	 * @author wml
 	 * @param model
 	 * @param applyMedal
