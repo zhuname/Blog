@@ -17,16 +17,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Circle;
-import com.cz.mts.system.exception.ParameterErrorException;
+import com.cz.mts.system.entity.CityCircle;
 import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.ICircleService;
-import com.cz.mts.system.service.IShieldService;
+import com.cz.mts.system.service.ICityCircleService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -37,37 +33,32 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-07-05 15:32:31
- * @see com.cz.mts.system.web.Circle
+ * @version  2017-07-06 09:32:38
+ * @see com.cz.mts.system.web.CityCircle
  */
 @Controller
-@RequestMapping(value="/system/circle")
-public class CircleController  extends BaseController {
+@RequestMapping(value="/system/citycircle")
+public class CityCircleController  extends BaseController {
 	@Resource
-	private ICircleService circleService;
+	private ICityCircleService cityCircleService;
 	@Resource
 	private IAppUserService appUserService;
-	@Resource
-	private IShieldService shieldService;
 	
-	
-	private String listurl="/system/circle/circleList";
-	
+	private String listurl="/system/citycircle/citycircleList";
 	
 	   
 	/**
 	 * 列表数据,调用listjson方法,保证和app端数据统一
-	 * 
 	 * @param request
 	 * @param model
-	 * @param circle
+	 * @param cityCircle
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Circle circle) 
+	public String list(HttpServletRequest request, Model model,CityCircle cityCircle) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, circle);
+		ReturnDatas returnObject = listjson(request, model, cityCircle);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -77,102 +68,58 @@ public class CircleController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param circle
+	 * @param cityCircle
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
 	@SecurityApi
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Circle circle) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,CityCircle cityCircle) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		page.setOrder("id");
-		page.setSort("desc");
 		// ==执行分页查询
-		String selectTitle = request.getParameter("selectTitle");
+		List<CityCircle> datas=cityCircleService.findListDataByFinder(null,page,CityCircle.class,cityCircle);
 		
-		String appuserId = request.getParameter("appuserId");
-		
-		String sort = request.getParameter("sort");
-		
-		Finder finder =Finder.getSelectFinder(Circle.class).append(" where 1=1 ");
-		
-		//搜索昵称/标题
-		if(StringUtils.isNotBlank(selectTitle)){
-			finder.append(" and (content like :selectTitle or userId in (select id from t_app_user where name like :selectTitle))");
-			finder.setParam("selectTitle", selectTitle);
-		}
-		
-		if(StringUtils.isNotBlank(sort)){
-			
-			//1最新发布 2关注的 3屏蔽的
-			switch (sort) {
-			case "1":
-				page.setOrder("id");
-				page.setSort("desc");
+		for (CityCircle cityCircle2 : datas) {
+			//刷新同城圈儿事件
+			if(cityCircle2.getUserId()!=null){
 				
-				if(StringUtils.isNotBlank(appuserId)){
-					finder.append(" and id not In (select itemId from t_shield where userId=:userId)");
-					finder.setParam("userId", Integer.parseInt(appuserId));
+				AppUser appUser = appUserService.findAppUserById(cityCircle2.getUserId());
+				if(appUser!=null){
+					
+					cityCircle2.setAppUser(appUser);
+					
 				}
-				break;
-			case "2":
-				if(StringUtils.isNotBlank(appuserId)){
-					finder.append(" and userId In (select itemId from t_attention where userId=:userId)");
-					finder.setParam("userId", Integer.parseInt(appuserId));
-				}
-				break;
-			case "3":
-				if(StringUtils.isNotBlank(appuserId)){
-					finder.append(" and id In (select itemId from t_shield where userId=:userId)");
-					finder.setParam("userId", Integer.parseInt(appuserId));
-				}
-				break;
 			}
 		}
 		
-		List<Circle> datas=circleService.findListDataByFinder(finder,page,Circle.class,circle);
-		
-		//刷新同城圈儿事件
-		if(StringUtils.isNotBlank(appuserId)){
-			
-			AppUser appUser = appUserService.findAppUserById(Integer.parseInt(appuserId));
-			if(appUser!=null){
-				
-				appUser.setCircleScanTime(new Date());
-				appUserService.update(appUser, true);
-				
-			}
-			
-		}
-		
-		returnObject.setQueryBean(circle);
+		returnObject.setQueryBean(cityCircle);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Circle circle) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,CityCircle cityCircle) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = circleService.findDataExportExcel(null,listurl, page,Circle.class,circle);
-		String fileName="circle"+GlobalStatic.excelext;
+		File file = cityCircleService.findDataExportExcel(null,listurl, page,CityCircle.class,cityCircle);
+		String fileName="cityCircle"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
 	
-	/**
+		/**
 	 * 查看操作,调用APP端lookjson方法
 	 */
 	@RequestMapping(value = "/look")
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/circle/circleLook";
+		return "/system/citycircle/citycircleLook";
 	}
 
 	
@@ -180,7 +127,6 @@ public class CircleController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -188,15 +134,8 @@ public class CircleController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Circle circle = circleService.findCircleById(id);
-		  
-		  if(circle!=null&&circle.getUserId()!=null){
-			  AppUser appUser=appUserService.findAppUserById(circle.getUserId());
-			  if(appUser!=null){
-				  circle.setAppUser(appUser);
-			  }
-		  }
-		returnObject.setData(circle);
+		  CityCircle cityCircle = cityCircleService.findCityCircleById(id);
+		   returnObject.setData(cityCircle);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -209,21 +148,16 @@ public class CircleController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update/json")
-	@SecurityApi
+	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Circle circle,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,CityCircle cityCircle,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			circleService.saveorupdate(circle);
+		
+			cityCircleService.saveorupdate(cityCircle);
 			
-		} catch (ParameterErrorException e) {
-			String errorMessage = e.getLocalizedMessage();
-			logger.error(errorMessage);
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -241,7 +175,7 @@ public class CircleController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/circle/circleCru";
+		return "/system/citycircle/citycircleCru";
 	}
 	
 	/**
@@ -256,7 +190,7 @@ public class CircleController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-				circleService.deleteById(id,Circle.class);
+				cityCircleService.deleteById(id,CityCircle.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -288,7 +222,7 @@ public class CircleController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			circleService.deleteByIds(ids,Circle.class);
+			cityCircleService.deleteByIds(ids,CityCircle.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);

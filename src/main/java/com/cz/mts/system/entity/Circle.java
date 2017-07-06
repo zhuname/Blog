@@ -1,8 +1,10 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -102,6 +104,8 @@ public class Circle  extends BaseEntity {
 	private java.lang.Integer cityId;
 	//columns END 数据库字段结束
 	
+	private AppUser appUser;
+	
 	//concstructor
 
 	public Circle(){
@@ -118,6 +122,17 @@ public class Circle  extends BaseEntity {
 		this.id = value;
 	}
 	
+	
+	
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
+	}
+
 	@Id
      @WhereSQL(sql="id=:Circle_id")
 	public java.lang.Integer getId() {

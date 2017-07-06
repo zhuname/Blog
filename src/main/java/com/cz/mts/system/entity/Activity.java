@@ -152,6 +152,8 @@ public class Activity  extends BaseEntity {
 	
 	private Integer isPart;
 	
+	private AppUser appUser;
+	
 	//concstructor
 
 	public Activity(){
@@ -161,6 +163,15 @@ public class Activity  extends BaseEntity {
 		java.lang.Integer id
 	){
 		this.id = id;
+	}
+
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 	@Transient
