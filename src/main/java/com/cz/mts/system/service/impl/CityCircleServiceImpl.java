@@ -1,9 +1,13 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.cz.mts.system.entity.CityCircle;
+import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.ICityCircleService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
@@ -31,6 +35,15 @@ public class CityCircleServiceImpl extends BaseSpringrainServiceImpl implements 
     @Override
 	public String  saveorupdate(Object entity ) throws Exception{
 	      CityCircle cityCircle=(CityCircle) entity;
+	      
+	      if(cityCircle.getItemId()==null||cityCircle.getMoney()!=null||cityCircle.getContent()!=null||cityCircle.getUserId()!=null){
+	    	  throw new ParameterErrorException();
+	      }
+	      
+	      cityCircle.setStatus(0);
+	      cityCircle.setCreateTime(new Date());
+	      cityCircle.setCode("C"+new Date().getTime());
+	      
 		 return super.saveorupdate(cityCircle).toString();
 	}
 	

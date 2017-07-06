@@ -94,14 +94,8 @@ public class JoinActivityController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		String activityId=request.getParameter("activityId");
 		
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
-		
-		if(StringUtils.isNotBlank(activityId)){
-			finder.append(" and awardId in (select id from t_awards where activityId=:activityId )");
-			finder.setParam("activityId", Integer.parseInt(activityId));
-		}
 		
 		List<JoinActivity> datas=joinActivityService.findListDataByFinder(finder,page,JoinActivity.class,joinActivity);
 		

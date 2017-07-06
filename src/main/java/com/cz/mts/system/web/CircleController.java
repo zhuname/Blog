@@ -148,6 +148,17 @@ public class CircleController  extends BaseController {
 			
 		}
 		
+		for (Circle circle2 : datas) {
+			
+			if(circle2.getUserId()!=null){
+				  AppUser appUser=appUserService.findAppUserById(circle2.getUserId());
+				  if(appUser!=null){
+					  circle2.setAppUser(appUser);
+				  }
+			  }
+			
+		}
+		
 		returnObject.setQueryBean(circle);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
