@@ -153,8 +153,10 @@ public class CategoryController  extends BaseController {
 		// ==执行分页查询
 		page.setPageSize(10000);
 		category.setIsDel(0);
+		page.setOrder("sort");
+		page.setSort("asc");
 		List<Category> datas=categoryService.findListDataByFinder(null,page,Category.class,category);
-			returnObject.setQueryBean(category);
+		returnObject.setQueryBean(category);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;

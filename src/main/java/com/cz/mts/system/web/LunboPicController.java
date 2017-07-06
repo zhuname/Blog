@@ -116,22 +116,25 @@ public class LunboPicController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		
-		if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
-			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name=:name ");
-			if(StringUtils.isBlank(lunboPic.getName())){
-				finder.setParam("name", "android启动广告图");
-			}else{
-				finder.setParam("name", lunboPic.getName());
+		if(StringUtils.isBlank(lunboPic.getCityIds()) || null == lunboPic.getPosition()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
+				Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name=:name ");
+				if(StringUtils.isBlank(lunboPic.getName())){
+					finder.setParam("name", "android启动广告图");
+				}else{
+					finder.setParam("name", lunboPic.getName());
+				}
+				returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
+			}else {
+				List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
+				returnObject.setQueryBean(lunboPic);
+				returnObject.setPage(page);
+				returnObject.setData(datas);
 			}
-			returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
-		}else {
-			List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
-			returnObject.setQueryBean(lunboPic);
-			returnObject.setPage(page);
-			returnObject.setData(datas);
 		}
-		
 		return returnObject;
 	}
 	

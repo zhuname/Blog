@@ -213,10 +213,6 @@ public class AppUserController  extends BaseController {
 			 AppUser appUser = appUserService.findAppUserById(id);
 			 if(null != appUser){
 				 
-				 //更新该用户的isUpdate字段
-//				 appUser.setIsUpdate(0);
-//				 appUserService.update(appUser,true);
-				 
 				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
 				 finder.setParam("itemId", id);
 				 Page page = new Page();
@@ -1064,44 +1060,44 @@ public class AppUserController  extends BaseController {
 					if(StringUtils.isBlank(s)){
 						continue;
 					}else{
+						
 						//判断是否存在该用户的该勋章记录
-						Finder finder = new Finder("DELETE FROM t_user_medal WHERE userId=:userId and medalId=:medalId");
+						Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId and medalId=:medalId");
 						finder.setParam("userId", Integer.parseInt(userId));
 						finder.setParam("medalId", Integer.parseInt(s));
-						userMedalService.update(finder);
-						
-						//清除t_apply_medal表中关于该用户的记录
-						Finder finder2 = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and STATUS=2 and medalId=:medalId");
-						finder2.setParam("userId", Integer.parseInt(userId));
-						finder2.setParam("medalId", Integer.parseInt(s));
-						applyMedalService.update(finder2);
-						
-						
-						Medal medal = medalService.findMedalById(Integer.parseInt(s));
-						userMedal.setMedalId(Integer.parseInt(s));
-						if(StringUtils.isNotBlank(userId)){
-							userMedal.setUserId(Integer.parseInt(userId));
-							userMedal.setCreateTime(new Date());
-							userMedal.setIsEndStatus(0);
-							userMedal.setEndMedalTime(userMedal.getEndMedalTime());
-							userMedalService.save(userMedal);
-						
-							//向t_apply_medal表中插入数据
-							ApplyMedal applyMedal = new ApplyMedal();
-							applyMedal.setUserId(Integer.parseInt(userId));
-							applyMedal.setMedalId(Integer.parseInt(s));
-							applyMedal.setStatus(2);
-							applyMedal.setOperTime(new Date());
-							applyMedal.setType(medal.getType());
-							applyMedal.setIntroduction("后台赋予");
-							applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
-							applyMedal.setIsEndStatus(0);
-							applyMedalService.save(applyMedal);
+						List<UserMedal> userMedals = userMedalService.queryForList(finder, UserMedal.class);
+						if(null != userMedals && userMedals.size() > 0){
+							returnObject.setMessage("该勋章已经是您的勋章了，请勿重复授予！");
+							returnObject.setStatus(ReturnDatas.ERROR);
+							return returnObject;
+						}else{
+							Medal medal = medalService.findMedalById(Integer.parseInt(s));
+							userMedal.setMedalId(Integer.parseInt(s));
+							if(StringUtils.isNotBlank(userId)){
+								userMedal.setUserId(Integer.parseInt(userId));
+								userMedal.setCreateTime(new Date());
+								userMedal.setIsEndStatus(0);
+								userMedal.setEndMedalTime(userMedal.getEndMedalTime());
+								userMedalService.save(userMedal);
 							
-							AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
-							if(null != appUser && 1 == appUser.getIsPush()){
-								//给该用户发推送
-								notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+								//向t_apply_medal表中插入数据
+								ApplyMedal applyMedal = new ApplyMedal();
+								applyMedal.setUserId(Integer.parseInt(userId));
+								applyMedal.setMedalId(Integer.parseInt(s));
+								applyMedal.setStatus(2);
+								applyMedal.setOperTime(new Date());
+								applyMedal.setType(medal.getType());
+								applyMedal.setIntroduction("后台赋予");
+								applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
+								applyMedal.setIsEndStatus(0);
+								applyMedalService.save(applyMedal);
+								
+								AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
+								if(null != appUser && 1 == appUser.getIsPush()){
+									//给该用户发推送
+									notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+								}
+								returnObject.setMessage("勋章授予成功！");
 							}
 						}
 					}

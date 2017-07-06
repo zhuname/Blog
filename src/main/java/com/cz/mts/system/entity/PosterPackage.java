@@ -226,8 +226,39 @@ public class PosterPackage  extends BaseEntity {
 	private Integer cardLqNum;
 	private Integer cardCategoryId;
 	
+	private String cardCategoryName;
+	private String cardCategoryImage;
+	
+	private Integer isTop;
 	
 	
+	@Transient
+	public Integer getIsTop() {
+		return isTop;
+	}
+
+	public void setIsTop(Integer isTop) {
+		this.isTop = isTop;
+	}
+
+	@Transient
+	public String getCardCategoryName() {
+		return cardCategoryName;
+	}
+
+	public void setCardCategoryName(String cardCategoryName) {
+		this.cardCategoryName = cardCategoryName;
+	}
+
+	@Transient
+	public String getCardCategoryImage() {
+		return cardCategoryImage;
+	}
+
+	public void setCardCategoryImage(String cardCategoryImage) {
+		this.cardCategoryImage = cardCategoryImage;
+	}
+
 	@WhereSQL(sql="isAppoint=:PosterPackage_shareNum")
 	public Integer getIsAppoint() {
 		return isAppoint;

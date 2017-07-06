@@ -119,6 +119,7 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 		activity.setTopCount(0);
 		activity.setCommentCount(0);
 		activity.setWinPrizePerson(0);
+		activity.setIsDel(0);
 		
 		//判断用户有没有免审核勋章
 		Finder finder=Finder.getSelectFinder(ApplyMedal.class).append(" where status=2 and userId=:userId and medalId in (select id from t_medal where status=4) and isEndStatus != 1");
