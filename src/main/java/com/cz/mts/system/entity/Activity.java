@@ -154,6 +154,9 @@ public class Activity  extends BaseEntity {
 	
 	private AppUser appUser;
 	
+	
+	private Integer isDel;
+	
 	//concstructor
 
 	public Activity(){
@@ -163,6 +166,16 @@ public class Activity  extends BaseEntity {
 		java.lang.Integer id
 	){
 		this.id = id;
+	}
+
+	
+	@WhereSQL(sql="isDel=:Activity_isDel")
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	@Transient
@@ -451,6 +464,7 @@ public class Activity  extends BaseEntity {
 			.append("审核成功时间[").append(getAduitSuccessTime()).append("],")
 			.append("拒绝原因[").append(getReason()).append("],")
 			.append("审核失败时间[").append(getAduitFailTime()).append("],")
+			.append("是否删除[").append(getIsDel()).append("],")
 			.toString();
 	}
 	

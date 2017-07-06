@@ -13,7 +13,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Appoint;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.CityCircle;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
@@ -330,94 +332,94 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			break;
 			
 		case 4:
-//			if(StringUtils.isBlank(code)){
-//				return 2;
-//			}
-//			//根据userId和code查询预约信息
-//			Finder finderAppoint=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and code= :code and userId= :userId ");
-//			finderAppoint.setParam("code", code);
-//			finderAppoint.setParam("userId", userId);
-//			Appoint appoint = null;
-//			List<Appoint> appoints=super.queryForList(finder, Appoint.class);
-//			if(null != appoints && appoints.size() > 0){
-//				appoint = appoints.get(0);
-//			}
-//			if(appoint==null||appoint.getMoney()==null||userId.intValue()!=appoint.getUserId().intValue()){
-//				return 4;
-//			}
-//			
-//			//判断用户余额足不足
-//			if(appUser.getBalance()<appoint.getMoney()){
-//				return 5;
-//			}
-//			
-//			//扣除余额并且加到余额记录
-//			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(appoint.getMoney())).doubleValue());
-//			super.update(appUser, true);
-//			//改变红包状态
-//			appoint.setStatus(1);
-//			appoint.setPayType(3);
-//			appoint.setPayMoney(appoint.getMoney());
-//			appoint.setPayTime(new Date());
-//			super.update(appoint,true);
-//			
-//			//记录用户的余额记录
-//			MoneyDetail moneyDetailA=new MoneyDetail();
-//			moneyDetailA.setBalance(appUser.getBalance());
-//			moneyDetailA.setCreateTime(new Date());
-//			moneyDetailA.setItemId(itemId);
-//			moneyDetailA.setMoney(-appoint.getMoney());
-//			moneyDetailA.setType(13);
-//			moneyDetailA.setPayType(3);
-//			moneyDetailA.setUserId(userId);
-//			moneyDetailA.setOsType(osType);
-//			super.save(moneyDetailA);
+			if(StringUtils.isBlank(code)){
+				return 2;
+			}
+			//根据userId和code查询预约信息
+			Finder finderAppoint=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and code= :code and userId= :userId ");
+			finderAppoint.setParam("code", code);
+			finderAppoint.setParam("userId", userId);
+			Appoint appoint = null;
+			List<Appoint> appoints=super.queryForList(finderAppoint, Appoint.class);
+			if(null != appoints && appoints.size() > 0){
+				appoint = appoints.get(0);
+			}
+			if(appoint==null||appoint.getMoney()==null||userId.intValue()!=appoint.getUserId().intValue()){
+				return 4;
+			}
+			
+			//判断用户余额足不足
+			if(appUser.getBalance()<appoint.getMoney()){
+				return 5;
+			}
+			
+			//扣除余额并且加到余额记录
+			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(appoint.getMoney())).doubleValue());
+			super.update(appUser, true);
+			//改变红包状态
+			appoint.setStatus(1);
+			appoint.setPayType(3);
+			appoint.setPayMoney(appoint.getMoney());
+			appoint.setPayTime(new Date());
+			super.update(appoint,true);
+			
+			//记录用户的余额记录
+			MoneyDetail moneyDetailA=new MoneyDetail();
+			moneyDetailA.setBalance(appUser.getBalance());
+			moneyDetailA.setCreateTime(new Date());
+			moneyDetailA.setItemId(itemId);
+			moneyDetailA.setMoney(-appoint.getMoney());
+			moneyDetailA.setType(13);
+			moneyDetailA.setPayType(3);
+			moneyDetailA.setUserId(userId);
+			moneyDetailA.setOsType(osType);
+			super.save(moneyDetailA);
 			
 			
 			break;
 		case 5:
-//			if(StringUtils.isBlank(code)){
-//				return 2;
-//			}
-//			//根据userId和code查询预约信息
-//			Finder finderCircle=Finder.getSelectFinder(CityCircle.class).append(" where 1=1 and code= :code and userId= :userId ");
-//			finderCircle.setParam("code", code);
-//			finderCircle.setParam("userId", userId);
-//			CityCircle cityCircle = null;
-//			List<CityCircle> cityCircles = super.queryForList(finder, CityCircle.class);
-//			if(null != cityCircles && cityCircles.size() > 0){
-//				cityCircle = cityCircles.get(0);
-//			}
-//			if(cityCircle==null||cityCircle.getMoney()==null||userId.intValue()!=cityCircle.getUserId().intValue()){
-//				return 4;
-//			}
-//			
-//			//判断用户余额足不足
-//			if(appUser.getBalance()<cityCircle.getMoney()){
-//				return 5;
-//			}
-//			
-//			//扣除余额并且加到余额记录
-//			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(cityCircle.getMoney())).doubleValue());
-//			super.update(appUser, true);
-//			//改变状态
-//			cityCircle.setStatus(1);
-//			cityCircle.setPayType(3);
-//			cityCircle.setPayMoney(cityCircle.getMoney());
-//			cityCircle.setPayTime(new Date());
-//			super.update(cityCircle,true);
-//			
-//			//记录用户的余额记录
-//			MoneyDetail moneyDetailC=new MoneyDetail();
-//			moneyDetailC.setBalance(appUser.getBalance());
-//			moneyDetailC.setCreateTime(new Date());
-//			moneyDetailC.setItemId(itemId);
-//			moneyDetailC.setMoney(-cityCircle.getMoney());
-//			moneyDetailC.setType(14);
-//			moneyDetailC.setPayType(3);
-//			moneyDetailC.setUserId(userId);
-//			moneyDetailC.setOsType(osType);
-//			super.save(moneyDetailC);
+			if(StringUtils.isBlank(code)){
+				return 2;
+			}
+			//根据userId和code查询预约信息
+			Finder finderCircle=Finder.getSelectFinder(CityCircle.class).append(" where 1=1 and code= :code and userId= :userId ");
+			finderCircle.setParam("code", code);
+			finderCircle.setParam("userId", userId);
+			CityCircle cityCircle = null;
+			List<CityCircle> cityCircles = super.queryForList(finderCircle, CityCircle.class);
+			if(null != cityCircles && cityCircles.size() > 0){
+				cityCircle = cityCircles.get(0);
+			}
+			if(cityCircle==null||cityCircle.getMoney()==null||userId.intValue()!=cityCircle.getUserId().intValue()){
+				return 4;
+			}
+			
+			//判断用户余额足不足
+			if(appUser.getBalance()<cityCircle.getMoney()){
+				return 5;
+			}
+			
+			//扣除余额并且加到余额记录
+			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(cityCircle.getMoney())).doubleValue());
+			super.update(appUser, true);
+			//改变状态
+			cityCircle.setStatus(1);
+			cityCircle.setPayType(3);
+			cityCircle.setPayMoney(cityCircle.getMoney());
+			cityCircle.setPayTime(new Date());
+			super.update(cityCircle,true);
+			
+			//记录用户的余额记录
+			MoneyDetail moneyDetailC=new MoneyDetail();
+			moneyDetailC.setBalance(appUser.getBalance());
+			moneyDetailC.setCreateTime(new Date());
+			moneyDetailC.setItemId(itemId);
+			moneyDetailC.setMoney(-cityCircle.getMoney());
+			moneyDetailC.setType(14);
+			moneyDetailC.setPayType(3);
+			moneyDetailC.setUserId(userId);
+			moneyDetailC.setOsType(osType);
+			super.save(moneyDetailC);
 			break;
 			
 		}
@@ -676,7 +678,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					//预约支付
 				case 5:
 					//查询预约支付的信息
-					//根据userId和code查询预约信息
+					
+//					//根据userId和code查询预约信息
 //					Finder finderAppoint=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and code= :code and userId= :userId ");
 //					finderAppoint.setParam("code", code);
 //					finderAppoint.setParam("userId", userId);
@@ -688,8 +691,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 //					if(appoint==null||appoint.getMoney()==null){
 //						return 4;
 //					}
-					
-					//看是不是第一次进来
+//					
+//					//看是不是第一次进来
 //					MoneyDetail moneyDetailA=new MoneyDetail();
 //					moneyDetailA.setItemId(itemId);
 //					moneyDetailA.setType(13);
@@ -702,8 +705,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 //					if(moneyDetailas.size()>0){
 //						return 4;
 //					}
-					
-					//改变状态
+//					
+//					//改变状态
 //					appoint.setStatus(1);
 //					appoint.setPayType(payType);
 //					if(payType==1){
@@ -714,10 +717,10 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 //					appoint.setPayMoney(appoint.getMoney());
 //					appoint.setPayTime(new Date());
 //					super.update(appoint,true);
-					
+//					
 //					AppUser appUserA=this.findAppUserById(appoint.getUserId());
-					
-					//记录用户的余额记录
+//					
+//					//记录用户的余额记录
 //					MoneyDetail moneyDetailAp=new MoneyDetail();
 //					moneyDetailAp.setBalance(appUserA.getBalance());
 //					moneyDetailAp.setCreateTime(new Date());
@@ -825,6 +828,26 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				appUser.setCardCount(0);
 			}
 			
+			//查询同城活动数量
+			Finder activityFinder = new Finder("SELECT id FROM t_activity WHERE userId=:userId AND isDel=0 and (status = 3 OR `status`=4) ");
+			activityFinder.setParam("userId", appUser.getId());
+			List activityList = queryForList(activityFinder);
+			if(null != activityList && activityList.size() > 0){
+				appUser.setActivityCount(activityList.size());
+			}else{
+				appUser.setActivityCount(0);
+			}
+			
+			//查询同城圈数量
+			Finder circleFinder = new Finder("SELECT id FROM t_circle where userId = :userId");
+			circleFinder.setParam("userId", appUser.getId());
+			List circleList = queryForList(circleFinder);
+			if(null != circleList && circleList.size() > 0){
+				appUser.setCityCircleCount(circleList.size());
+			}else{
+				appUser.setCityCircleCount(0);
+			}
+					
 			returnObject.setData(appUser);
 		}
 		return returnObject;

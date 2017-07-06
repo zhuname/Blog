@@ -1,7 +1,6 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,15 +16,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.ApplyMedal;
-import com.cz.mts.system.entity.Medal;
-import com.cz.mts.system.entity.UserMedal;
-import com.cz.mts.system.service.IApplyMedalService;
-import com.cz.mts.system.service.IMedalService;
-import com.cz.mts.system.service.IUserMedalService;
-import com.cz.mts.frame.annotation.SecurityApi;
+import com.cz.mts.system.entity.Appoint;
+import com.cz.mts.system.service.IAppointService;
 import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -36,20 +29,16 @@ import com.cz.mts.frame.util.ReturnDatas;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-02-24 15:17:26
- * @see com.cz.mts.system.web.Medal
+ * @version  2017-07-06 14:42:38
+ * @see com.cz.mts.system.web.Appoint
  */
 @Controller
-@RequestMapping(value="/system/medal")
-public class MedalController  extends BaseController {
+@RequestMapping(value="/appoint")
+public class AppointController  extends BaseController {
 	@Resource
-	private IMedalService medalService;
-	@Resource
-	private IApplyMedalService applyMedalService;
-	@Resource
-	private IUserMedalService userMedalService;
+	private IAppointService appointService;
 	
-	private String listurl="/medal/medalList";
+	private String listurl="/system/appoint/appointList";
 	
 	
 	   
@@ -58,14 +47,14 @@ public class MedalController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param medal
+	 * @param appoint
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String list(HttpServletRequest request, Model model,Medal medal) 
+	public String list(HttpServletRequest request, Model model,Appoint appoint) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, medal);
+		ReturnDatas returnObject = listjson(request, model, appoint);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -75,37 +64,31 @@ public class MedalController  extends BaseController {
 	 * 
 	 * @param request
 	 * @param model
-	 * @param medal
+	 * @param appoint
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
 	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Medal medal) throws Exception{
+	ReturnDatas listjson(HttpServletRequest request, Model model,Appoint appoint) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		page.setPageSize(10000);
 		// ==执行分页查询
-		Finder finder = Finder.getSelectFinder(Medal.class).append(" where 1=1 ");
-		if(StringUtils.isNotBlank(medal.getName())){
-			finder.append(" and name like '%"+medal.getName()+"%'");
-			medal.setName(null);
-		}
-		List<Medal> datas=medalService.findListDataByFinder(finder,page,Medal.class,medal);
-		returnObject.setQueryBean(medal);
+		List<Appoint> datas=appointService.findListDataByFinder(null,page,Appoint.class,appoint);
+			returnObject.setQueryBean(appoint);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
 	}
 	
 	@RequestMapping("/list/export")
-	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Medal medal) throws Exception{
+	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Appoint appoint) throws Exception{
 		// ==构造分页请求
 		Page page = newPage(request);
 	
-		File file = medalService.findDataExportExcel(null,listurl, page,Medal.class,medal);
-		String fileName="medal"+GlobalStatic.excelext;
+		File file = appointService.findDataExportExcel(null,listurl, page,Appoint.class,appoint);
+		String fileName="appoint"+GlobalStatic.excelext;
 		downFile(response, file, fileName,true);
 		return;
 	}
@@ -117,7 +100,7 @@ public class MedalController  extends BaseController {
 	public String look(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/medal/medalLook";
+		return "/system/appoint/appointLook";
 	}
 
 	
@@ -125,7 +108,6 @@ public class MedalController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
-	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -133,8 +115,8 @@ public class MedalController  extends BaseController {
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  Medal medal = medalService.findMedalById(id);
-		   returnObject.setData(medal);
+		  Appoint appoint = appointService.findAppointById(id);
+		   returnObject.setData(appoint);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -149,12 +131,13 @@ public class MedalController  extends BaseController {
 	 */
 	@RequestMapping("/update")
 	public @ResponseBody
-	ReturnDatas saveorupdate(Model model,Medal medal,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	ReturnDatas saveorupdate(Model model,Appoint appoint,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			medalService.saveorupdate(medal);
+		
+			appointService.saveorupdate(appoint);
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -173,7 +156,7 @@ public class MedalController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/medal/medalCru";
+		return "/system/appoint/appointCru";
 	}
 	
 	/**
@@ -187,19 +170,8 @@ public class MedalController  extends BaseController {
 		  String  strId=request.getParameter("id");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
-			  
-			  Finder finderAppLy=Finder.getSelectFinder(ApplyMedal.class," id ").append(" where 1=1 and medalId=:medalId");
-			  finderAppLy.setParam("medalId", strId);
-			  List<Integer> applyIds=applyMedalService.queryForList(finderAppLy, Integer.class);
-			  applyMedalService.deleteByIds(applyIds, ApplyMedal.class);
-			  
-			  Finder finderUser=Finder.getSelectFinder(UserMedal.class," id ").append(" where 1=1 and medalId=:medalId");
-			  finderUser.setParam("medalId", strId);
-			  List<Integer> userIds=userMedalService.queryForList(finderUser, Integer.class);
-			  userMedalService.deleteByIds(userIds, UserMedal.class);
-			  
 			 id= java.lang.Integer.valueOf(strId.trim());
-				medalService.deleteById(id,Medal.class);
+				appointService.deleteById(id,Appoint.class);
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
@@ -231,7 +203,7 @@ public class MedalController  extends BaseController {
 		}
 		try {
 			List<String> ids = Arrays.asList(rs);
-			medalService.deleteByIds(ids,Medal.class);
+			appointService.deleteByIds(ids,Appoint.class);
 		} catch (Exception e) {
 			return new ReturnDatas(ReturnDatas.ERROR,
 					MessageUtils.DELETE_ALL_FAIL);
@@ -240,32 +212,6 @@ public class MedalController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
-	}
-	
-	/**
-	 * 所有勋章列表
-	 * @author wj
-	 * @param request
-	 * @param model
-	 * @param medal
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/all/json")
-	@SecurityApi
-	public @ResponseBody
-	ReturnDatas alljson(HttpServletRequest request, Model model,Medal medal) throws Exception{
-		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		if(null == medal.getUserId()){
-			returnObject.setStatus(ReturnDatas.ERROR);
-			returnObject.setMessage("参数缺失");
-		}else{
-			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status` as applyStatus,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId )a ON md.id=a.id");
-			finder.setParam("userId", medal.getUserId());
-			List datas = medalService.queryForList(finder);
-			returnObject.setData(datas);
-		}
-		return returnObject;
 	}
 
 }

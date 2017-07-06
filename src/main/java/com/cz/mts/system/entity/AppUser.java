@@ -223,9 +223,29 @@ public class AppUser  extends BaseEntity {
 	
 	private Integer isAppointFee;
 	
+	private Integer activityCount;
+	private Integer cityCircleCount;
 	
 	
 	
+	@Transient
+	public Integer getActivityCount() {
+		return activityCount;
+	}
+
+	public void setActivityCount(Integer activityCount) {
+		this.activityCount = activityCount;
+	}
+
+	@Transient
+	public Integer getCityCircleCount() {
+		return cityCircleCount;
+	}
+
+	public void setCityCircleCount(Integer cityCircleCount) {
+		this.cityCircleCount = cityCircleCount;
+	}
+
 	@WhereSQL(sql="isAppointFee=:AppUser_isAppointFee")
 	public Integer getIsAppointFee() {
 		return isAppointFee;

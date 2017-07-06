@@ -63,7 +63,7 @@ function showZtreeMedal(userId){
 							success : function(_json) {
 								if(_json.status=="success"){
 									
-									var datas = _json.data.medals;
+									/* var datas = _json.data.medals;
 									var allNodes = zTree_Menu.getNodes();//获取所有节点
 							        var nodes = zTree_Menu.transformToArray(allNodes); //转变为数组
 							        
@@ -75,7 +75,7 @@ function showZtreeMedal(userId){
 							                    zTree_Menu.updateNode(node);//更新状态
 							                }
 							        	}
-							        });
+							        }); */
 							        
 							        
 							        
@@ -128,17 +128,46 @@ function selectZtreeMedal(userId){
 	
 	jQuery("#medalNames").val(medalNames);
 	jQuery("#medalIds").val(medalIds);
-	jQuery.post("${ctx}/system/appuser/award/json",{ medalIds: medalIds, userId: userId },
-			function(_json) {
-				if (_json.status == "success") {
-					myalert("勋章赋予成功");
-					myhref("${ctx}/system/appuser/list")
-					return false;
-				} else {
-					myalert("勋章赋予失败");
-					return false;
-				}
-	});
+	
+	
+	layer.open({
+		  btn: ['确定'],
+		  yes: function(index, layero){
+			    //提交时间
+			    var endMedalTime = $('#endMedalTime').val();
+
+				jQuery.post("${ctx}/system/appuser/award/json",{ medalIds: medalIds, userId: userId , endMedalTime: endMedalTime },
+						function(_json) {
+							if (_json.status == "success") {
+								myalert("勋章赋予成功");
+								myhref("${ctx}/system/appuser/list")
+								return false;
+							} else {
+								console.log(_json);
+								myalert(_json.message);
+								return false;
+							}
+				});
+			  },
+		  btnAlign: 'c',
+		  title:'请填写过期时间',
+	      type: 1,
+	      anim: 2,
+	      resize :true,
+	      area: ['400px', '170px'],
+	      shadeClose: false, //开启遮罩关闭
+	      content: $('#confirmApply'),
+			success:function (layero,index) {
+	            dialog = $(layero) ;
+	            dialog.find("#confirmApply").show() ;
+	        }
+		  ,cancel: function(){ 
+		    //return false 开启该代码可禁止点击该按钮关闭
+		  }
+		});
+  layer.close(index);
+	
+	
 	
 }
 
@@ -454,6 +483,19 @@ $(document).on("click", ".selectBtn", function() {
 
 <div id="div_medalMultiSelectTree" style="display: none;">
 	<ul id="medalMultiSelectTree" class="ztree"></ul>
+</div>
+
+<div style="display:none;" id="confirmApply" >
+<div style="
+    text-align: center;
+    margin-top: 10px;
+">
+<span class="input-group-addon" style="width:15px;display: inline-table;height:15px;margin-left: 5px;margin-top: -;">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+<input style="width:300px;display:inline-block;" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',})" name="endMedalTime" id="endMedalTime"  type="text" value=""/>
+					        
+</div>
 </div>
 
 

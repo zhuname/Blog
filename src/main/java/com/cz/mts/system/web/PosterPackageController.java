@@ -35,6 +35,7 @@ import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.Snatch;
@@ -45,6 +46,7 @@ import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
@@ -86,6 +88,8 @@ public class PosterPackageController  extends BaseController {
 	
 	@Resource
 	private IAttentionService attentionService;
+	@Resource
+	private IOperService operService;
 	//定义一个默认大小的链表队列
 	private final LinkedBlockingQueue<Snatch> queue = new LinkedBlockingQueue<>() ;
 	
@@ -244,7 +248,7 @@ public class PosterPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
 		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
+		  if(StringUtils.isNotBlank(strId) && StringUtils.isNotBlank(appUserId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
@@ -262,22 +266,7 @@ public class PosterPackageController  extends BaseController {
 				 if(appUser!=null){
 					 posterPackage.setAppUser(appUser);
 				 }
-				 
-				 //返回勋章信息
-//				Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId");
-//				 finder.setParam("userId", posterPackage.getUserId());
-//				 List<UserMedal> userMedals = userMedalService.queryForList(finder,UserMedal.class);
-//				 if(null != userMedals && userMedals.size() > 0){
-//					 for (UserMedal userMedal : userMedals) {
-//						if(null != userMedal.getMedalId()){
-//							Medal medal = medalService.findMedalById(userMedal.getMedalId());
-//							if(null != medal){
-//								userMedal.setMedal(medal);
-//							}
-//						}
-//					}
-//					 posterPackage.setUserMedals(userMedals);
-//				 }
+			
 				 if(null != appUser.getUserMedals()){
 					 posterPackage.setUserMedals(appUser.getUserMedals());
 				 }
@@ -289,31 +278,45 @@ public class PosterPackageController  extends BaseController {
 				 moneyDetail.setUserId(Integer.parseInt(appUserId));
 				 moneyDetail.setItemId(posterPackage.getId());
 				 moneyDetail.setType(1);
-				// ==构造分页请求
-					Page page = newPage(request);
-					// ==执行分页查询
-					List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
-					if(datas!=null&&datas.size()>0){
-						posterPackage.setIsLook(1);
-					}else{
-						posterPackage.setIsLook(0);
-					}
+				 // ==构造分页请求
+				 Page page = newPage(request);
+				 // ==执行分页查询
+				 List<MoneyDetail> datas=moneyDetailService.findListDataByFinder(null,page,MoneyDetail.class,moneyDetail);
+				 if(datas!=null&&datas.size()>0){
+					posterPackage.setIsLook(1);
+				 }else{
+					posterPackage.setIsLook(0);
+				 }
 			 }
 			 
-			 //是否关注
+			 //是否关注以及是否点赞过
 			 if(posterPackage!=null&&StringUtils.isNotBlank(appUserId)){
+				 //是否关注过
 				 Attention attention=new Attention();
 				 attention.setUserId(Integer.parseInt(appUserId));
 				 attention.setItemId(posterPackage.getUserId());
-				// ==构造分页请求
-					Page page = newPage(request);
-					// ==执行分页查询
-					List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
-					if(datas!=null&&datas.size()>0){
-						posterPackage.setIsAtt(1);
-					}else{
-						posterPackage.setIsAtt(0);
-					}
+				 // ==构造分页请求
+				 Page page = newPage(request);
+				 // ==执行分页查询
+				 List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+				 if(datas!=null&&datas.size()>0){
+					posterPackage.setIsAtt(1);
+				 }else{
+					posterPackage.setIsAtt(0);
+				 }
+				 
+				 //是否点赞过
+				 Oper oper = new Oper();
+				 oper.setUserId(Integer.parseInt(appUserId));
+				 oper.setItemId(posterPackage.getId());
+				 Page operPage = newPage(request);
+				 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+				 if(null != opers && opers.size() > 0){
+					 posterPackage.setIsTop(1);
+				 }else{
+					 posterPackage.setIsTop(0);
+				 }
+				 
 			 }
 			 
 			 //返回分类名称
@@ -323,8 +326,24 @@ public class PosterPackageController  extends BaseController {
 					 if(StringUtils.isNotBlank(category.getName())){
 						 posterPackage.setCategoryName(category.getName());
 					 }
+					 
 				 }
 			 }
+			 
+			 //返回卡券分类名称以及卡券分类图片
+			 if(null != posterPackage && null != posterPackage.getCardCategoryId()){
+				 Category category = categoryService.findCategoryById(posterPackage.getCardCategoryId());
+				 if(null != category){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 posterPackage.setCardCategoryName(category.getName());
+					 }
+					 if(StringUtils.isNotBlank(category.getImage())){
+						 posterPackage.setCardCategoryImage(category.getImage());
+					 }
+				 }
+			 }
+			 
+			 
 			 
 			String cityIds= ""; 
 			 //返回城市名称

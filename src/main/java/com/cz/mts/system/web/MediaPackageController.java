@@ -36,6 +36,7 @@ import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
@@ -46,6 +47,7 @@ import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
 
@@ -80,6 +82,8 @@ public class MediaPackageController  extends BaseController {
 	private ICategoryService categoryService;
 	@Resource
 	private ICityService cityService;
+	@Resource
+	private IOperService operService;
 	
 	
 	private String listurl="/mediapackage/mediapackageList";
@@ -163,7 +167,7 @@ public class MediaPackageController  extends BaseController {
 		  String  strId=request.getParameter("id");
 		  String appUserId = request.getParameter("appUserId");
 		  Integer id= 0;
-		  if(StringUtils.isNotBlank(strId)){
+		  if(StringUtils.isNotBlank(strId) && StringUtils.isNotBlank(appUserId)){
 			 id= Integer.parseInt(strId);
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
 			  
@@ -183,23 +187,6 @@ public class MediaPackageController  extends BaseController {
 					 mediaPackage.setAppUser(appUser);
 				 }
 				 
-				 //查询该用户的勋章列表
-//				 UserMedal userMedal = new UserMedal();
-//				 userMedal.setUserId(mediaPackage.getUserId());
-//				 Page page = new Page();
-//				 //查询勋章列表
-//				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-//				 if(null != userMedals && userMedals.size() > 0){
-//					for (UserMedal um : userMedals) {
-//						if(null != um.getMedalId()){
-//							Medal medal = medalService.findMedalById(um.getMedalId());
-//							if(null != medal){
-//								um.setMedal(medal);
-//							}
-//						}
-//					 }
-//					mediaPackage.setUserMedals(userMedals);
-//				 }
 				 if(null != appUser.getUserMedals()){
 					 mediaPackage.setUserMedals(appUser.getUserMedals());
 				 }
@@ -236,6 +223,19 @@ public class MediaPackageController  extends BaseController {
 					}else{
 						mediaPackage.setIsAttention(0);
 					}
+					
+					
+					 //是否点赞过
+					 Oper oper = new Oper();
+					 oper.setUserId(Integer.parseInt(appUserId));
+					 oper.setItemId(mediaPackage.getId());
+					 Page operPage = newPage(request);
+					 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+					 if(null != opers && opers.size() > 0){
+						 mediaPackage.setIsTop(1);
+					 }else{
+						 mediaPackage.setIsTop(0);
+					 }
 			 }
 			 
 			 
@@ -245,6 +245,19 @@ public class MediaPackageController  extends BaseController {
 				 if(category != null){
 					 if(StringUtils.isNotBlank(category.getName())){
 						 mediaPackage.setCategoryName(category.getName());
+					 }
+				 }
+			 }
+			 
+			//返回卡券分类名称以及卡券分类图片
+			 if(null != mediaPackage && null != mediaPackage.getCardCategoryId()){
+				 Category category = categoryService.findCategoryById(mediaPackage.getCardCategoryId());
+				 if(null != category){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 mediaPackage.setCardCategoryName(category.getName());
+					 }
+					 if(StringUtils.isNotBlank(category.getImage())){
+						 mediaPackage.setCardCategoryImage(category.getImage());
 					 }
 				 }
 			 }

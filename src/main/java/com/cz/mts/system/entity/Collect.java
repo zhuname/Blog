@@ -70,22 +70,45 @@ public class Collect  extends BaseEntity {
 	
 	private MediaPackage mediaPackage;
 	
+	private Activity activity;
+	
 	private Card card;
 	
 	private Integer posterCount;
 	private Integer mediaCount;
 	private Integer cardCount;
+	private Integer activityCount;
 	
 	
 	//columns END 数据库字段结束
 	
 	//concstructor
+	
+	@Transient
+	public Integer getActivityCount() {
+		return activityCount;
+	}
+
+	public void setActivityCount(Integer activityCount) {
+		this.activityCount = activityCount;
+	}
+
+	@Transient
+	public Activity getActivity() {
+		return activity;
+	}
 
 
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+	
 	@Transient
 	public Integer getPosterCount() {
 		return posterCount;
 	}
+
+	
 
 	public void setPosterCount(Integer posterCount) {
 		this.posterCount = posterCount;
