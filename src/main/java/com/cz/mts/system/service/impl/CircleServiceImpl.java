@@ -4,13 +4,11 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.cz.mts.system.entity.JoinActivity;
-import com.cz.mts.system.exception.HaveUserErrorException;
+import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.exception.ParameterErrorException;
-import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
@@ -21,55 +19,45 @@ import com.cz.mts.system.service.BaseSpringrainServiceImpl;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-07-03 16:06:21
- * @see com.cz.mts.system.service.impl.JoinActivity
+ * @version  2017-07-05 15:32:31
+ * @see com.cz.mts.system.service.impl.Circle
  */
-@Service("joinActivityService")
-public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implements IJoinActivityService {
+@Service("circleService")
+public class CircleServiceImpl extends BaseSpringrainServiceImpl implements ICircleService {
 
    
     @Override
 	public String  save(Object entity ) throws Exception{
-	      JoinActivity joinActivity=(JoinActivity) entity;
-	       return super.save(joinActivity).toString();
+	      Circle circle=(Circle) entity;
+	       return super.save(circle).toString();
 	}
 
     @Override
 	public String  saveorupdate(Object entity ) throws Exception{
-	      JoinActivity joinActivity=(JoinActivity) entity;
+	      Circle circle=(Circle) entity;
 	      
-	      if(joinActivity.getType()==null||joinActivity.getContent()==null||joinActivity.getUserId()==null||joinActivity.getActivityId()==null){
+	      
+	      if(circle.getType()==null||circle.getContent()==null||circle.getUserId()==null||circle.getCityId()==null){
 	    	  throw new ParameterErrorException();
 	      }
 	      
-	      joinActivity.setCreateTime(new Date());
-	      joinActivity.setTopCount(0);
-	      joinActivity.setCommentCount(0);
+	      circle.setTopCount(0);
+	      circle.setCommentCount(0);
+	      circle.setSumMoney(0.0);
+	      circle.setCount(0);
+	      circle.setCreateTime(new Date());
 	      
-	      //判断是否参与
-	      Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 and userId=:userId and awardId=:awardId");
-	      
-	      finder.setParam("userId", joinActivity.getUserId());
-	      finder.setParam("activityId", joinActivity.getActivityId());
-	      
-	      List<JoinActivity> datas=super.findListDataByFinder(finder,null,JoinActivity.class,null);
-	      
-	      if(datas!=null&&datas.size()>0){
-	    	  
-	    	  throw new HaveUserErrorException();
-	      }
-	      
-		 return super.saveorupdate(joinActivity).toString();
+		 return super.saveorupdate(circle).toString();
 	}
 	
 	@Override
     public Integer update(IBaseEntity entity ) throws Exception{
-	 JoinActivity joinActivity=(JoinActivity) entity;
-	return super.update(joinActivity);
+	 Circle circle=(Circle) entity;
+	return super.update(circle);
     }
     @Override
-	public JoinActivity findJoinActivityById(Object id) throws Exception{
-	 return super.findById(id,JoinActivity.class);
+	public Circle findCircleById(Object id) throws Exception{
+	 return super.findById(id,Circle.class);
 	}
 	
 /**

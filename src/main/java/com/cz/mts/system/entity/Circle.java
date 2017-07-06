@@ -1,7 +1,6 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
-import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -17,28 +16,31 @@ import com.cz.mts.frame.entity.BaseEntity;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-07-03 16:06:21
- * @see com.cz.mts.system.entity.JoinActivity
+ * @version  2017-07-05 15:32:31
+ * @see com.cz.mts.system.entity.Circle
  */
-@Table(name="t_join_activity")
-public class JoinActivity  extends BaseEntity {
+@Table(name="t_circle")
+public class Circle  extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "同城活动参与表";
+	public static final String TABLE_ALIAS = "同城圈表";
 	public static final String ALIAS_ID = "id";
 	public static final String ALIAS_TYPE = "1图片 2视频";
 	public static final String ALIAS_IMAGE = "图片";
 	public static final String ALIAS_MEDIAURL = "视频url";
+	public static final String ALIAS_CONTENT = "主题";
 	public static final String ALIAS_MEDIAIMAGE = "视频封面";
-	public static final String ALIAS_CONTENT = "内容";
 	public static final String ALIAS_CREATETIME = "创建时间";
-	public static final String ALIAS_USERID = "参与人的userId";
+	public static final String ALIAS_USERID = "用户id";
 	public static final String ALIAS_AWARDID = "奖项id";
 	public static final String ALIAS_TOPCOUNT = "点赞次数";
 	public static final String ALIAS_COMMENTCOUNT = "评论次数";
+	public static final String ALIAS_SUMMONEY = "打赏总金额";
+	public static final String ALIAS_COUNT = "打赏次数";
+	public static final String ALIAS_CITYID = "城市id";
     */
 	//date formats
 	//public static final String FORMAT_CREATETIME = DateUtils.DATETIME_FORMAT;
@@ -61,19 +63,19 @@ public class JoinActivity  extends BaseEntity {
 	 */
 	private java.lang.String mediaUrl;
 	/**
+	 * 主题
+	 */
+	private java.lang.String content;
+	/**
 	 * 视频封面
 	 */
 	private java.lang.String mediaImage;
-	/**
-	 * 内容
-	 */
-	private java.lang.String content;
 	/**
 	 * 创建时间
 	 */
 	private java.util.Date createTime;
 	/**
-	 * 参与人的userId
+	 * 用户id
 	 */
 	private java.lang.Integer userId;
 	/**
@@ -88,25 +90,28 @@ public class JoinActivity  extends BaseEntity {
 	 * 评论次数
 	 */
 	private java.lang.Integer commentCount;
-	
-	
-	private Integer activityId;
-	
-	
+	/**
+	 * 打赏总金额
+	 */
+	private java.lang.Double sumMoney;
+	/**
+	 * 打赏次数
+	 */
+	private java.lang.Integer count;
+	/**
+	 * 城市id
+	 */
+	private java.lang.Integer cityId;
 	//columns END 数据库字段结束
-	
-	private Awards awards;
 	
 	private AppUser appUser;
 	
-	private List<Oper> opers;
-	
 	//concstructor
 
-	public JoinActivity(){
+	public Circle(){
 	}
 
-	public JoinActivity(
+	public Circle(
 		java.lang.Integer id
 	){
 		this.id = id;
@@ -118,44 +123,9 @@ public class JoinActivity  extends BaseEntity {
 	}
 	
 	
-	@WhereSQL(sql="activityId=:JoinActivity_activityId")
-	public Integer getActivityId() {
-		return activityId;
-	}
-
-	public void setActivityId(Integer activityId) {
-		this.activityId = activityId;
-	}
-
-	@Id
-     @WhereSQL(sql="id=:JoinActivity_id")
-	public java.lang.Integer getId() {
-		return this.id;
-	}
-	public void setType(java.lang.Integer value) {
-		this.type = value;
-	}
 	
 	@Transient
-	public List<Oper> getOpers() {
-		return opers;
-	}
-
-	public void setOpers(List<Oper> opers) {
-		this.opers = opers;
-	}
-
-	@Transient
-	public Awards getAwards() {
-		return awards;
-	}
-
-	public void setAwards(Awards awards) {
-		this.awards = awards;
-	}
-
-	@Transient
-     public AppUser getAppUser() {
+	public AppUser getAppUser() {
 		return appUser;
 	}
 
@@ -163,7 +133,16 @@ public class JoinActivity  extends BaseEntity {
 		this.appUser = appUser;
 	}
 
-	@WhereSQL(sql="type=:JoinActivity_type")
+	@Id
+     @WhereSQL(sql="id=:Circle_id")
+	public java.lang.Integer getId() {
+		return this.id;
+	}
+	public void setType(java.lang.Integer value) {
+		this.type = value;
+	}
+	
+     @WhereSQL(sql="type=:Circle_type")
 	public java.lang.Integer getType() {
 		return this.type;
 	}
@@ -174,7 +153,7 @@ public class JoinActivity  extends BaseEntity {
 		this.image = value;
 	}
 	
-     @WhereSQL(sql="image=:JoinActivity_image")
+     @WhereSQL(sql="image=:Circle_image")
 	public java.lang.String getImage() {
 		return this.image;
 	}
@@ -185,20 +164,9 @@ public class JoinActivity  extends BaseEntity {
 		this.mediaUrl = value;
 	}
 	
-     @WhereSQL(sql="mediaUrl=:JoinActivity_mediaUrl")
+     @WhereSQL(sql="mediaUrl=:Circle_mediaUrl")
 	public java.lang.String getMediaUrl() {
 		return this.mediaUrl;
-	}
-	public void setMediaImage(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.mediaImage = value;
-	}
-	
-     @WhereSQL(sql="mediaImage=:JoinActivity_mediaImage")
-	public java.lang.String getMediaImage() {
-		return this.mediaImage;
 	}
 	public void setContent(java.lang.String value) {
 		    if(StringUtils.isNotBlank(value)){
@@ -207,9 +175,20 @@ public class JoinActivity  extends BaseEntity {
 		this.content = value;
 	}
 	
-     @WhereSQL(sql="content=:JoinActivity_content")
+     @WhereSQL(sql="content=:Circle_content")
 	public java.lang.String getContent() {
 		return this.content;
+	}
+	public void setMediaImage(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
+		this.mediaImage = value;
+	}
+	
+     @WhereSQL(sql="mediaImage=:Circle_mediaImage")
+	public java.lang.String getMediaImage() {
+		return this.mediaImage;
 	}
 		/*
 	public String getcreateTimeString() {
@@ -223,7 +202,7 @@ public class JoinActivity  extends BaseEntity {
 		this.createTime = value;
 	}
 	
-     @WhereSQL(sql="createTime=:JoinActivity_createTime")
+     @WhereSQL(sql="createTime=:Circle_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
 	}
@@ -231,7 +210,7 @@ public class JoinActivity  extends BaseEntity {
 		this.userId = value;
 	}
 	
-     @WhereSQL(sql="userId=:JoinActivity_userId")
+     @WhereSQL(sql="userId=:Circle_userId")
 	public java.lang.Integer getUserId() {
 		return this.userId;
 	}
@@ -239,7 +218,7 @@ public class JoinActivity  extends BaseEntity {
 		this.awardId = value;
 	}
 	
-     @WhereSQL(sql="awardId=:JoinActivity_awardId")
+     @WhereSQL(sql="awardId=:Circle_awardId")
 	public java.lang.Integer getAwardId() {
 		return this.awardId;
 	}
@@ -247,7 +226,7 @@ public class JoinActivity  extends BaseEntity {
 		this.topCount = value;
 	}
 	
-     @WhereSQL(sql="topCount=:JoinActivity_topCount")
+     @WhereSQL(sql="topCount=:Circle_topCount")
 	public java.lang.Integer getTopCount() {
 		return this.topCount;
 	}
@@ -255,9 +234,33 @@ public class JoinActivity  extends BaseEntity {
 		this.commentCount = value;
 	}
 	
-     @WhereSQL(sql="commentCount=:JoinActivity_commentCount")
+     @WhereSQL(sql="commentCount=:Circle_commentCount")
 	public java.lang.Integer getCommentCount() {
 		return this.commentCount;
+	}
+	public void setSumMoney(java.lang.Double value) {
+		this.sumMoney = value;
+	}
+	
+     @WhereSQL(sql="sumMoney=:Circle_sumMoney")
+	public java.lang.Double getSumMoney() {
+		return this.sumMoney;
+	}
+	public void setCount(java.lang.Integer value) {
+		this.count = value;
+	}
+	
+     @WhereSQL(sql="count=:Circle_count")
+	public java.lang.Integer getCount() {
+		return this.count;
+	}
+	public void setCityId(java.lang.Integer value) {
+		this.cityId = value;
+	}
+	
+     @WhereSQL(sql="cityId=:Circle_cityId")
+	public java.lang.Integer getCityId() {
+		return this.cityId;
 	}
 	
 	public String toString() {
@@ -266,13 +269,16 @@ public class JoinActivity  extends BaseEntity {
 			.append("1图片 2视频[").append(getType()).append("],")
 			.append("图片[").append(getImage()).append("],")
 			.append("视频url[").append(getMediaUrl()).append("],")
+			.append("主题[").append(getContent()).append("],")
 			.append("视频封面[").append(getMediaImage()).append("],")
-			.append("内容[").append(getContent()).append("],")
 			.append("创建时间[").append(getCreateTime()).append("],")
-			.append("参与人的userId[").append(getUserId()).append("],")
+			.append("用户id[").append(getUserId()).append("],")
 			.append("奖项id[").append(getAwardId()).append("],")
 			.append("点赞次数[").append(getTopCount()).append("],")
 			.append("评论次数[").append(getCommentCount()).append("],")
+			.append("打赏总金额[").append(getSumMoney()).append("],")
+			.append("打赏次数[").append(getCount()).append("],")
+			.append("城市id[").append(getCityId()).append("],")
 			.toString();
 	}
 	
@@ -283,9 +289,9 @@ public class JoinActivity  extends BaseEntity {
 	}
 	
 	public boolean equals(Object obj) {
-		if(obj instanceof JoinActivity == false) return false;
+		if(obj instanceof Circle == false) return false;
 		if(this == obj) return true;
-		JoinActivity other = (JoinActivity)obj;
+		Circle other = (Circle)obj;
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();

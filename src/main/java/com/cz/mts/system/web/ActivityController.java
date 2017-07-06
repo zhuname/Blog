@@ -124,6 +124,7 @@ public class ActivityController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -138,6 +139,21 @@ public class ActivityController  extends BaseController {
 			  Finder finder = Finder.getSelectFinder(Awards.class).append(" where activityId=:activityId");
 			  finder.setParam("activityId", id);
 			  activity.setAwardss(awardsService.queryForList(finder, Awards.class));
+			  
+			  
+			  if(activity.getUserId()!=null){
+				  
+				  AppUser appUser=appUserService.findAppUserById(activity.getUserId());
+				  
+				  if(appUser!=null){
+					  
+					  activity.setAppUser(appUser);
+					  
+				  }
+				  
+			  }
+			  
+			  
 		  }
 		  
 		  String appuserId = request.getParameter("appuserId");
@@ -257,7 +273,7 @@ public class ActivityController  extends BaseController {
 		page.setSort(null);
 		
 		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,activity);
-			returnObject.setQueryBean(activity);
+		returnObject.setQueryBean(activity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;

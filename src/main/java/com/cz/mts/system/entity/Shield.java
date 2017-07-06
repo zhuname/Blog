@@ -1,10 +1,8 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -16,22 +14,21 @@ import com.cz.mts.frame.entity.BaseEntity;
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-07-03 16:07:00
- * @see com.cz.mts.system.entity.GiveAward
+ * @version  2017-07-05 15:58:36
+ * @see com.cz.mts.system.entity.Shield
  */
-@Table(name="t_give_award")
-public class GiveAward  extends BaseEntity {
+@Table(name="t_shield")
+public class Shield  extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "颁奖表";
+	public static final String TABLE_ALIAS = "屏蔽表";
 	public static final String ALIAS_ID = "id";
-	public static final String ALIAS_USERID = "发布人的userId";
-	public static final String ALIAS_JOINUSERID = "参与者id";
-	public static final String ALIAS_CREATETIME = "颁奖时间";
-	public static final String ALIAS_AWARDID = "奖项id";
+	public static final String ALIAS_ITEMID = "被屏蔽的用户id";
+	public static final String ALIAS_USERID = "操作人用户id";
+	public static final String ALIAS_CREATETIME = "屏蔽时间";
     */
 	//date formats
 	//public static final String FORMAT_CREATETIME = DateUtils.DATETIME_FORMAT;
@@ -42,51 +39,25 @@ public class GiveAward  extends BaseEntity {
 	 */
 	private java.lang.Integer id;
 	/**
-	 * 发布人的userId
+	 * 被屏蔽的用户id
+	 */
+	private java.lang.Integer itemId;
+	/**
+	 * 操作人用户id
 	 */
 	private java.lang.Integer userId;
 	/**
-	 * 参与者id
-	 */
-	private java.lang.Integer joinUserId;
-	/**
-	 * 颁奖时间
+	 * 屏蔽时间
 	 */
 	private java.util.Date createTime;
-	/**
-	 * 奖项id
-	 */
-	private java.lang.Integer awardId;
 	//columns END 数据库字段结束
-	
-	private AppUser appUser;
-	
-	private Awards awards;
 	
 	//concstructor
 
-	public GiveAward(){
-	}
-	
-	@Transient
-	public Awards getAwards() {
-		return awards;
+	public Shield(){
 	}
 
-	public void setAwards(Awards awards) {
-		this.awards = awards;
-	}
-
-	@Transient
-	public AppUser getAppUser() {
-		return appUser;
-	}
-
-	public void setAppUser(AppUser appUser) {
-		this.appUser = appUser;
-	}
-
-	public GiveAward(
+	public Shield(
 		java.lang.Integer id
 	){
 		this.id = id;
@@ -98,25 +69,25 @@ public class GiveAward  extends BaseEntity {
 	}
 	
 	@Id
-     @WhereSQL(sql="id=:GiveAward_id")
+     @WhereSQL(sql="id=:Shield_id")
 	public java.lang.Integer getId() {
 		return this.id;
+	}
+	public void setItemId(java.lang.Integer value) {
+		this.itemId = value;
+	}
+	
+     @WhereSQL(sql="itemId=:Shield_itemId")
+	public java.lang.Integer getItemId() {
+		return this.itemId;
 	}
 	public void setUserId(java.lang.Integer value) {
 		this.userId = value;
 	}
 	
-     @WhereSQL(sql="userId=:GiveAward_userId")
+     @WhereSQL(sql="userId=:Shield_userId")
 	public java.lang.Integer getUserId() {
 		return this.userId;
-	}
-	public void setJoinUserId(java.lang.Integer value) {
-		this.joinUserId = value;
-	}
-	
-     @WhereSQL(sql="joinUserId=:GiveAward_joinUserId")
-	public java.lang.Integer getJoinUserId() {
-		return this.joinUserId;
 	}
 		/*
 	public String getcreateTimeString() {
@@ -130,26 +101,17 @@ public class GiveAward  extends BaseEntity {
 		this.createTime = value;
 	}
 	
-     @WhereSQL(sql="createTime=:GiveAward_createTime")
+     @WhereSQL(sql="createTime=:Shield_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
-	}
-	public void setAwardId(java.lang.Integer value) {
-		this.awardId = value;
-	}
-	
-     @WhereSQL(sql="awardId=:GiveAward_awardId")
-	public java.lang.Integer getAwardId() {
-		return this.awardId;
 	}
 	
 	public String toString() {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
-			.append("发布人的userId[").append(getUserId()).append("],")
-			.append("参与者id[").append(getJoinUserId()).append("],")
-			.append("颁奖时间[").append(getCreateTime()).append("],")
-			.append("奖项id[").append(getAwardId()).append("],")
+			.append("被屏蔽的用户id[").append(getItemId()).append("],")
+			.append("操作人用户id[").append(getUserId()).append("],")
+			.append("屏蔽时间[").append(getCreateTime()).append("],")
 			.toString();
 	}
 	
@@ -160,9 +122,9 @@ public class GiveAward  extends BaseEntity {
 	}
 	
 	public boolean equals(Object obj) {
-		if(obj instanceof GiveAward == false) return false;
+		if(obj instanceof Shield == false) return false;
 		if(this == obj) return true;
-		GiveAward other = (GiveAward)obj;
+		Shield other = (Shield)obj;
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
