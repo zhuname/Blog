@@ -208,6 +208,7 @@ public class ApplyMedalController  extends BaseController {
 				if(null == applyMedal.getId()){
 					applyMedal.setApplyTime(new Date());
 					applyMedal.setStatus(1);
+					applyMedal.setIsEndStatus(0);
 					applyMedalService.saveorupdate(applyMedal);
 				}else{
 					applyMedalService.update(applyMedal,true);

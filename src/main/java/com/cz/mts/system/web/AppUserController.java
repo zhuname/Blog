@@ -1082,6 +1082,8 @@ public class AppUserController  extends BaseController {
 						if(StringUtils.isNotBlank(userId)){
 							userMedal.setUserId(Integer.parseInt(userId));
 							userMedal.setCreateTime(new Date());
+							userMedal.setIsEndStatus(0);
+							userMedal.setEndMedalTime(userMedal.getEndMedalTime());
 							userMedalService.save(userMedal);
 						
 							//向t_apply_medal表中插入数据
@@ -1092,6 +1094,8 @@ public class AppUserController  extends BaseController {
 							applyMedal.setOperTime(new Date());
 							applyMedal.setType(medal.getType());
 							applyMedal.setIntroduction("后台赋予");
+							applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
+							applyMedal.setIsEndStatus(0);
 							applyMedalService.save(applyMedal);
 							
 							AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
