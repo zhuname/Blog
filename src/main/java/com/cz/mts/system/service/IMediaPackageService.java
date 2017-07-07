@@ -32,7 +32,7 @@ public interface IMediaPackageService extends IBaseSpringrainService {
 	 * @return
 	 * @throws Exception
 	 */
-	ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType) throws Exception;
+	ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType, String selectType) throws Exception;
 	
 	/**
 	 * 抢红包

@@ -36,6 +36,7 @@ import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserMedal;
@@ -49,6 +50,7 @@ import com.cz.mts.system.service.ILmediaPackageService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
@@ -88,6 +90,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	private ILmediaPackageService iLmediaPackageService ;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private IOperService operService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -143,7 +147,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 	@Override
-	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType) throws Exception{
+	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType, String selectType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		Finder finder1 = Finder.getSelectFinder(MediaPackage.class).append(" where isDel=0");
 		if(null != mediaPackage.getCityId()){
@@ -153,11 +157,27 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
 		}
 		
-		if(personType!=null&&mediaPackage.getStatus()==3){
-			finder1.append(" and (status = 3 or status = 4 )");
-		}else if(null != mediaPackage.getStatus()){
-			finder1.append(" and status=:status");
-			finder1.setParam("status", mediaPackage.getStatus());
+//		if(personType!=null&&mediaPackage.getStatus()==3){
+//			finder1.append(" and (status = 3 or status = 4 )");
+//		}else if(null != mediaPackage.getStatus()){
+//			finder1.append(" and status=:status");
+//			finder1.setParam("status", mediaPackage.getStatus());
+//		}
+		
+		//1首页（通过和抢完三天内的。排序：已抢完的默认排到最下边，最新发布的在最上边） 2个人主页（通过和已抢完的所有） 3我的发布（传什么状态查什么状态）
+		if(null != personType){
+			switch (personType) {
+			case 1:
+				finder1.append(" and (status = 3 or status = 4 ) and isValid != 1");
+				break;
+			case 2:
+				finder1.append(" and (status = 3 or status = 4 )");
+				break;
+			case 3:
+				finder1.append(" and status = :status");
+				finder1.setParam("status", mediaPackage.getStatus());
+				break;
+			}
 		}
 		
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
@@ -173,7 +193,23 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finder1.setParam("categoryId", mediaPackage.getCategoryId());
 		}
 		
-		finder1.append(" order by balance desc,createTime desc");
+		//筛选
+		if(StringUtils.isNotBlank(selectType)){
+			switch (selectType) {//1最新发布 2预约最多 3卡券最多，如果筛选金额最多的话，客户端不传该字段
+			case "1":
+				finder1.append(" order by createTime desc");
+				break;
+			case "2":
+				finder1.append(" order byappointCount desc");
+				break;
+			case "3":
+				finder1.append(" order by cardLqNum desc");
+				break;
+			}
+		}else{
+			finder1.append(" order by status asc, balance desc,createTime desc");
+		}
+		
 		List<MediaPackage> dataList = queryForList(finder1,MediaPackage.class,page);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
@@ -226,22 +262,6 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						}
 					}
 					
-//					Page newPage = new Page();
-//					UserMedal userMedal = new UserMedal();
-//					userMedal.setUserId(mp.getUserId());
-//					//查询勋章列表
-//					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-//					if(null != userMedals && userMedals.size() > 0){
-//						for (UserMedal um : userMedals) {
-//							if(null != um.getMedalId()){
-//								Medal medal = medalService.findMedalById(um.getMedalId());
-//								if(null != medal){
-//									um.setMedal(medal);
-//								}
-//							}
-//						}
-//						mp.setUserMedals(userMedals);
-//					}
 					
 					if(null != appUser.getUserMedals()){
 						mp.setUserMedals(appUser.getUserMedals());
@@ -272,6 +292,18 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						}else{
 							mp.setIsCollect(0);
 						}
+						
+						 //是否点赞过
+						 Oper oper = new Oper();
+						 oper.setUserId(Integer.parseInt(appUserId));
+						 oper.setItemId(mp.getId());
+						 Page operPage = new Page();
+						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+						 if(null != opers && opers.size() > 0){
+							 mp.setIsTop(1);
+						 }else{
+							 mp.setIsTop(0);
+						 }
 					}
 				}
 				

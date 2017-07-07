@@ -29,6 +29,7 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
@@ -38,6 +39,7 @@ import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
@@ -78,6 +80,8 @@ public class MoneyDetailController  extends BaseController {
 	private IWithdrawService withdrawService;
 	@Resource
 	private ICardService cardService;
+	@Resource
+	private ICategoryService categoryService;
 	
 	
 	private String listurl="/moneydetail/moneydetailList";
@@ -655,23 +659,42 @@ public class MoneyDetailController  extends BaseController {
 		if(moneyDetail.getItemId()!=null){
 			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0  order by mon.id");
 			finder.setParam("itemId", moneyDetail.getItemId());
-			
-			
-			List<AppUser> appUsers=appUserService.findListDataByFinder(finder, page, AppUser.class,null);
-			
-			for (AppUser appUser : appUsers) {
-				
-				Page pageM=new Page();
-				pageM.setPageSize(1000);
-				Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId)");
-				finderM.setParam("userId", appUser.getId());
-				List<Medal> medals=medalService.findListDataByFinder(finderM, pageM, Medal.class, null);
-				appUser.setMedals(medals);
+			List<AppUser> appUsers = appUserService.findListDataByFinder(finder, page, AppUser.class,null);
+			if(null != appUsers && appUsers.size() > 0){
+				for (AppUser appUser : appUsers) {
+					Page pageM=new Page();
+					pageM.setPageSize(1000);
+					Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId)");
+					finderM.setParam("userId", appUser.getId());
+					List<Medal> medals=medalService.findListDataByFinder(finderM, pageM, Medal.class, null);
+					appUser.setMedals(medals);
+				}
 				
 			}
-			
 			returnObject.setData(appUsers);
+			java.util.Map<String, Object> map = new HashMap<>();
+			//获取已领取张数
+			Page allPage = new Page();
+			allPage.setPageSize(100000);
+			List<AppUser> allList = appUserService.findListDataByFinder(finder, allPage, AppUser.class,null);
+			if(null != allList && allList.size() > 0){
+				map.put("lqSum", allList.size());
+			}else{
+				map.put("lqSum", 0);
+			}
 			
+			//获取卡券分类图片
+			Finder cardFinder = new Finder("SELECT * from t_category WHERE id in (SELECT catergoryId from t_card WHERE id=:itemId)");
+			cardFinder.setParam("itemId", moneyDetail.getItemId());
+			List<Category> categories = categoryService.queryForList(cardFinder, Category.class);
+			if(null != categories && categories.size() > 0){
+				Category category = categories.get(0);
+				if(null != category && StringUtils.isNotBlank(category.getImage())){
+					map.put("categoryImage", category.getImage());
+				}
+			}
+			
+			returnObject.setMap(map);
 			
 		}else {
 			returnObject.setMessage("参数缺失");

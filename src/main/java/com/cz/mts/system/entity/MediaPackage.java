@@ -245,7 +245,17 @@ public class MediaPackage  extends BaseEntity {
 	
 	private Integer isTop;
 	
+	private Integer isValid;
 	
+	@WhereSQL(sql="isValid=:MediaPackage_isValid")
+	public Integer getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(Integer isValid) {
+		this.isValid = isValid;
+	}
+
 	@Transient
 	public Integer getIsTop() {
 		return isTop;
@@ -937,6 +947,7 @@ public class MediaPackage  extends BaseEntity {
 			.append("预约说明").append(getAppointExplain()).append("],")
 			.append("卡券已领取次数").append(getCardLqNum()).append("],")
 			.append("卡券分类id").append(getCardCategoryId()).append("],")
+			.append("红包领完是否在三天内").append(getIsValid()).append("],")
 			.toString();
 	}
 	

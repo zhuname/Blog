@@ -126,7 +126,8 @@ public class MediaPackageController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		String appUserId = request.getParameter("appUserId");
-		returnObject = mediaPackageService.list(mediaPackage, page, appUserId , personType);
+		String selectType = request.getParameter("selectType");
+		returnObject = mediaPackageService.list(mediaPackage, page, appUserId , personType,selectType);
 		return returnObject;
 	}
 	

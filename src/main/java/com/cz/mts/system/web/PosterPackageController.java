@@ -127,12 +127,20 @@ public class PosterPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		String selectType = request.getParameter("selectType");//1最新发布 2预约最多 3卡券最多
+		String appUserId = request.getParameter("appUserId");
+		String type = request.getParameter("type");//
+		
+		//更新user表的海报红包的最后浏览时间
+		if(StringUtils.isNotBlank(appUserId)){
+			AppUser appUser = appUserService.findAppUserById(Integer.parseInt(appUserId));
+			if(appUser!=null){
+				appUser.setPosterScanTime(new Date());
+				appUserService.update(appUser, true);
+			}
+		}
+		
 		// ==执行分页查询
-		//List<PosterPackage> datas=posterPackageService.findListDataByFinder(null,page,PosterPackage.class,posterPackage);
-		
-		/*Finder finder=Finder.getSelectFinder(PosterPackage.class).append("select p.*,u.header FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE p.id = 1");
-		returnObject.setData(posterPackageService.queryForList(finder,PosterPackage.class));*/
-		
 			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
 			
 			if(StringUtils.isNotBlank(posterPackage.getTitle())){
@@ -149,14 +157,20 @@ public class PosterPackageController  extends BaseController {
 				
 			}
 			
-			if(personType!=null&&posterPackage.getStatus()==3){
-				finder1.append(" and (p.status = 3 or p.status = 4 )");
-			}else if(posterPackage.getStatus()!=null){
-				
-				finder1.append(" and p.status = :status");
-				
-				finder1.setParam("status", posterPackage.getStatus());
-				
+			//1首页（通过和抢完三天内的。排序：已抢完的默认排到最下边，最新发布的在最上边） 2个人主页（通过和已抢完的所有） 3我的发布（传什么状态查什么状态）
+			if(StringUtils.isNotBlank(type)){
+				switch (type) {
+				case "1":
+					finder1.append(" and (p.status = 3 or p.status = 4 ) and p.isValid != 1");
+					break;
+				case "2":
+					finder1.append(" and (p.status = 3 or p.status = 4 )");
+					break;
+				case "3":
+					finder1.append(" and p.status = :status");
+					finder1.setParam("status", posterPackage.getStatus());
+					break;
+				}
 			}
 			
 			
@@ -174,7 +188,24 @@ public class PosterPackageController  extends BaseController {
 			}else{
 				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
 			}
-			finder1.append(" order by p.balance desc,p.createTime desc");
+			
+			//筛选
+			if(StringUtils.isNotBlank(selectType)){
+				switch (selectType) {//1最新发布 2预约最多 3卡券最多，如果筛选金额最多的话，客户端不传该字段
+				case "1":
+					finder1.append(" order by p.createTime desc");
+					break;
+				case "2":
+					finder1.append(" order by p.appointCount desc");
+					break;
+				case "3":
+					finder1.append(" order by p.cardLqNum desc");
+					break;
+				}
+			}else{
+				finder1.append(" order by p.status asc,p.balance desc,p.createTime desc");
+			}
+			
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
 		
 			if(null != list && list.size() > 0){
@@ -204,6 +235,22 @@ public class PosterPackageController  extends BaseController {
 							 }
 						 }
 					 }
+					 
+					 
+					 //是否点赞过
+					 if(StringUtils.isNotBlank(appUserId)){
+						 Oper oper = new Oper();
+						 oper.setUserId(Integer.parseInt(appUserId));
+						 oper.setItemId(Integer.parseInt(map.get("id").toString()));
+						 Page operPage = newPage(request);
+						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+						 if(null != opers && opers.size() > 0){
+							 map.put("isTop", 1);
+						 }else{
+							 map.put("isTop", 0);
+						 }
+					 }
+					
 					 
 				}
 			}
