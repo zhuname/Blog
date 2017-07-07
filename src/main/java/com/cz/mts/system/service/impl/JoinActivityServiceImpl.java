@@ -47,7 +47,7 @@ public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implement
 	      joinActivity.setCommentCount(0);
 	      
 	      //判断是否参与
-	      Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 and userId=:userId and awardId=:awardId");
+	      Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 and userId=:userId and activityId=:activityId");
 	      
 	      finder.setParam("userId", joinActivity.getUserId());
 	      finder.setParam("activityId", joinActivity.getActivityId());
