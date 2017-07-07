@@ -991,7 +991,19 @@ public class AppUserController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
-			Finder finder = new Finder("SELECT f.*,COUNT(uc.id) as totalUserCard FROM(SELECT e.*,COUNT(um.id) as totalMedal FROM(SELECT d.*,COUNT(`at`.id) AS totalAttention FROM (SELECT c.*,COUNT(co.id) as totalCollect FROM(SELECT b.*,COUNT(ca.id) as totalCard FROM (SELECT a.*,COUNT(pp.id) AS totalPoster FROM(SELECT au.balance ,COUNT(mp.id) as totalMedia,au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId=au.id and mp.status != 0  AND mp.isDel != 1 WHERE au.id=:id ) a LEFT JOIN t_poster_package pp ON pp.userId = a.id and pp.status != 0  AND pp.isDel != 1 )b LEFT JOIN t_card ca ON ca.userId=b.id AND ca.isDel != 1) c LEFT JOIN t_collect co ON co.userId=c.id)d LEFT JOIN t_attention at ON `at`.userId=d.id)e LEFT JOIN t_user_medal um ON um.userId=e.id)f LEFT JOIN t_user_card uc ON uc.userId=f.id AND uc.`status` != 0;");
+			Finder finder = new Finder("SELECT k.*,COUNT(ja.id) AS totalJoin FROM(SELECT j.*,COUNT(ap.id) AS totalAppoint FROM(SELECT h.*, COUNT(ci.id) AS totalCircle"
+						+" FROM ( SELECT g.*, COUNT(ac.id) AS totalActivity FROM (SELECT f.*, COUNT(uc.id) AS totalUserCard FROM ("
+						+" SELECT e.*, COUNT(um.id) AS totalMedal FROM ( SELECT d.*, COUNT(`at`.id) AS totalAttention FROM"
+						+"  ( SELECT c.*, COUNT(co.id) AS totalCollect FROM ( SELECT b.*, COUNT(ca.id) AS totalCard FROM"
+						+" (SELECT a.*, COUNT(pp.id) AS totalPoster FROM ( SELECT au.balance,COUNT(mp.id) AS totalMedia,"
+						+" au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId = au.id AND mp. STATUS != 0"
+						+" AND mp.isDel != 1 WHERE au.id = 151 ) a LEFT JOIN t_poster_package pp ON pp.userId = a.id"
+						+" AND pp. STATUS != 0 AND pp.isDel != 1 ) b LEFT JOIN t_card ca ON ca.userId = b.id"
+						+" AND ca.isDel != 1 ) c LEFT JOIN t_collect co ON co.userId = c.id ) d"
+						+" LEFT JOIN t_attention `at` ON `at`.userId = d.id ) e LEFT JOIN t_user_medal um ON um.userId = e.id"
+						+" ) f LEFT JOIN t_user_card uc ON uc.userId = f.id AND uc.`status` != 0 ) g"
+						+" LEFT JOIN t_activity ac ON ac.userId = g.id AND ac.isDel != 1) h LEFT JOIN t_circle ci ON ci.userId = h.id"
+						+" )j LEFT JOIN t_appoint ap ON ap.userId = j.id AND ap.`status` !=0)k LEFT JOIN t_join_activity ja ON ja.userId = k.id");
 			finder.setParam("id", appUser.getId());
 			List datas = appUserService.queryForList(finder);
 			Object object = new Object();
