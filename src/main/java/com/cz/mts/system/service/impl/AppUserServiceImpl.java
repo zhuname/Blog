@@ -81,26 +81,26 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
     	appUser=super.findById(id,AppUser.class);
     	
     	Page newPage = new Page();
-    	if(appUser!=null){
-    		
+    	if(null != appUser){
     		UserMedal userMedal = new UserMedal();
-    		userMedal.setUserId(appUser.getId());
-    		userMedal.setIsEndStatus(0);
-    		//查询勋章列表
-    		List<UserMedal> userMedals = super.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-    		if(null != userMedals && userMedals.size() > 0){
-    			for (UserMedal um : userMedals) {
-    				if(null != um.getMedalId()){
-    					Medal medal = super.findById(um.getMedalId(), Medal.class);
-    					if(null != medal){
-    						um.setMedal(medal);
-    					}
-    				}
-    			}
-    			appUser.setUserMedals(userMedals);
-    		}
+     		userMedal.setUserId(appUser.getId());
+     		userMedal.setIsEndStatus(0);
+     		//查询勋章列表
+     		List<UserMedal> userMedals = super.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
+     		if(null != userMedals && userMedals.size() > 0){
+     			for (UserMedal um : userMedals) {
+     				if(null != um.getMedalId()){
+     					Medal medal = super.findById(um.getMedalId(), Medal.class);
+     					if(null != medal){
+     						um.setMedal(medal);
+     					}
+     				}
+     			}
+     			appUser.setUserMedals(userMedals);
+     		}
+        	
     	}
-    	
+
     	
 	 return appUser;
 	 

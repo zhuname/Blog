@@ -260,12 +260,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						if(StringUtils.isNotBlank(appUser.getPhone())){
 							mp.setPhone(appUser.getPhone());
 						}
+						if(null != appUser.getUserMedals()){
+							mp.setUserMedals(appUser.getUserMedals());
+						}
 					}
 					
-					
-					if(null != appUser.getUserMedals()){
-						mp.setUserMedals(appUser.getUserMedals());
-					}
 					
 					Page attPage = new Page();
 					//返回是否关注
