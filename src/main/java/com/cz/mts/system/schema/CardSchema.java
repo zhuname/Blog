@@ -1,3 +1,4 @@
+
 package com.cz.mts.system.schema;
 
 import java.util.List;
@@ -13,12 +14,16 @@ import com.cz.mts.frame.util.Finder;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
@@ -39,6 +44,10 @@ public class CardSchema extends BaseLogger{
 	private IMedalService medalService;
 	@Resource
 	private IUserMedalService userMedalService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
 	
 	/**
 	 * 卡券到期前三天发推送
@@ -199,7 +208,42 @@ public class CardSchema extends BaseLogger{
 				userMedalService.update(userMedal,true);
 			}
 		}
-		
 	}
+	
+	
+	/**
+	 * 海报红包领取完毕之后超过三天自动下线
+	 */
+	@Scheduled(cron="0 0/15 * * * ?")
+	public void endPosterPackage() throws Exception{
+		logger.info("海报红包下线定时任务");
+//		Finder finder = new Finder("SELECT * FROM t_poster_package WHERE `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1;");
+		Finder finder = Finder.getSelectFinder(PosterPackage.class).append("where 1=1 and `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1");
+		List<PosterPackage> posterPackages = posterPackageService.queryForList(finder, PosterPackage.class);
+		if(null != posterPackages && posterPackages.size() > 0){
+			for (PosterPackage posterPackage : posterPackages) {
+				posterPackage.setIsValid(1);
+				posterPackageService.update(posterPackage,true);
+			}
+		}
+	}
+	
+	/**
+	 * 视频红包领取完毕之后超过三天自动下线
+	 */
+	@Scheduled(cron="0 0/15 * * * ?")
+	public void endMediaPackage() throws Exception{
+		logger.info("视频红包下线定时任务");
+//		Finder finder = new Finder("SELECT * FROM t_media_package WHERE `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1;");
+		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1=1 and `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1");
+		List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder, MediaPackage.class);
+		if(null != mediaPackages && mediaPackages.size() > 0){
+			for (MediaPackage mediaPackage : mediaPackages) {
+				mediaPackage.setIsValid(1);
+				mediaPackageService.update(mediaPackage,true);
+			}
+		}
+	}
+	
 
 }

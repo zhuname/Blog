@@ -249,13 +249,19 @@ public class AttentionController  extends BaseController {
 				for (Attention AttentionD : datas) {
 					attentionService.deleteByEntity(AttentionD);
 				}
-				
 				returnObject.setData(0);
-				
+				//更新app_user表的数据
+				Finder finder = new Finder("UPDATE t_app_user SET attenedCount = attenedCount - 1 WHERE id=:userId");
+				finder.setParam("userId", attention.getItemId());
+				appUserService.update(finder);
 			}else {
 				attention.setIsUpdate(0);
 				attentionService.saveorupdate(attention);
 				returnObject.setData(1);
+				//更新app_user表的数据
+				Finder finder = new Finder("UPDATE t_app_user SET attenedCount = attenedCount + 1 WHERE id=:userId");
+				finder.setParam("userId", attention.getItemId());
+				appUserService.update(finder);
 			}
 			
 		} catch (Exception e) {
