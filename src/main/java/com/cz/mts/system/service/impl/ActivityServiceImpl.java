@@ -121,15 +121,16 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 		activity.setWinPrizePerson(0);
 		activity.setIsDel(0);
 		
+		
 		//判断用户有没有免审核勋章
 		Finder finder=Finder.getSelectFinder(ApplyMedal.class).append(" where status=2 and userId=:userId and medalId in (select id from t_medal where status=4) and isEndStatus != 1");
-		finder.setParam("userId", activity.getUserId());
+		finder.setParam("userId",activity.getUserId());
 		
 		List<ApplyMedal> applyMedals = super.queryForList(finder, ApplyMedal.class);
 		
 		//免审核直接状态通过
 		if(applyMedals!=null&&applyMedals.size()>0)
-			activity.setStatus(2);
+			activity.setStatus(3);
 		
 		Object id = null;
 		if(activity.getId()==null){
@@ -139,11 +140,8 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 			super.update(activity, true);
 		}
 		
-		
 		//从数据库拿出来
-		activity = super.findById(id, Activity.class);
-		
-
+		activity = super.findById(id,Activity.class);
 		
 		//删除保存的奖项列表
 		Awards awardsDel=new Awards();
