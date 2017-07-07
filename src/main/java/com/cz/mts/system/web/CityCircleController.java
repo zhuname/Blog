@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.CityCircle;
+import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICityCircleService;
 import com.cz.mts.frame.annotation.SecurityApi;
@@ -148,16 +149,20 @@ public class CityCircleController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,CityCircle cityCircle,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
 			cityCircleService.saveorupdate(cityCircle);
 			
+		} catch (ParameterErrorException e) {
+			logger.error("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

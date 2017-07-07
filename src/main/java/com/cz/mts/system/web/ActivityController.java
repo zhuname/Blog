@@ -279,6 +279,54 @@ public class ActivityController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param activity
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/myAppList/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas myAppListjson(HttpServletRequest request, Model model,Activity activity) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		
+		String appuserId = request.getParameter("appuserId");
+		
+		Finder finder =Finder.getSelectFinder(Activity.class).append(" where 1=1 ");
+		
+		if(StringUtils.isNotBlank(appuserId)){
+			
+			finder.append(" and id in (select activityId from t_join_activity where userId=:userId )");
+			finder.setParam("userId", Integer.parseInt(appuserId));
+			
+		}
+		
+		finder.append(" and (status=3 or status=5)");
+		
+		finder.append(" order by status ASC");
+		
+		finder.append(",aduitSuccessTime DESC");
+		
+		
+		//order如果不为空的时候base里面会默认一个desc id  所以这块为空
+		page.setOrder(null);
+		page.setSort(null);
+		
+		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,activity);
+		returnObject.setQueryBean(activity);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
+	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 

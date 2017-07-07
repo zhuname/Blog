@@ -137,6 +137,54 @@ public class AttentionController  extends BaseController {
 		return returnObject;
 	}
 	
+	
+	
+	/**
+	 * 获取关注人列表
+	 * json数据,为APP提供数据
+	 * @param request
+	 * @param model
+	 * @param attention
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/fensiList/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas fensiListjson(HttpServletRequest request, Model model,Attention attention) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		
+		// ==执行分页查询
+		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+		
+		for (Attention attention2 : datas){
+			
+			//查询用户信息
+			if(attention2.getUserId()!=null){
+				
+				AppUser appUser=appUserService.findAppUserById(attention2.getUserId());
+				
+				if(appUser!=null){
+					
+					attention2.setAppUser(appUser);
+					
+				}
+				
+			}
+			
+		}
+		
+		returnObject.setData(datas);
+		returnObject.setQueryBean(attention);
+		returnObject.setPage(page);
+		return returnObject;
+	}
+	
+	
+	
+	
 	@RequestMapping("/list/export")
 	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,Attention attention) throws Exception{
 		// ==构造分页请求

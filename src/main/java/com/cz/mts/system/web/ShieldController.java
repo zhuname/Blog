@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Shield;
 import com.cz.mts.system.service.IShieldService;
 import com.cz.mts.frame.controller.BaseController;
@@ -33,7 +35,7 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Shield
  */
 @Controller
-@RequestMapping(value="/shield")
+@RequestMapping(value="/system/shield")
 public class ShieldController  extends BaseController {
 	@Resource
 	private IShieldService shieldService;
@@ -129,15 +131,29 @@ public class ShieldController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Shield shield,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
-			shieldService.saveorupdate(shield);
+			if(shield.getItemId()!=null&&shield.getUserId()!=null){
+				Page page=new Page();
+				// ==执行分页查询
+				List<Shield> datas=shieldService.findListDataByFinder(null,page,Shield.class,shield);
+				if(datas.size()>0){
+					//删除所有收藏的
+					for (Shield shieldD : datas) {
+						shieldService.deleteByEntity(shieldD);
+					}
+					returnObject.setData(0);
+				}else {
+					shield.setCreateTime(new Date());
+					shieldService.saveorupdate(shield);
+					returnObject.setData(1);
+				}
+			}
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
