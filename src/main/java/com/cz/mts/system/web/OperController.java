@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IOperService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -33,10 +36,12 @@ import com.cz.mts.frame.util.ReturnDatas;
  * @see com.cz.mts.system.web.Oper
  */
 @Controller
-@RequestMapping(value="/oper")
+@RequestMapping(value="/system/oper")
 public class OperController  extends BaseController {
 	@Resource
 	private IOperService operService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/system/oper/operList";
 	
@@ -60,8 +65,8 @@ public class OperController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
-	 * 
+	 * 点赞/评论列表
+	 * @author wj
 	 * @param request
 	 * @param model
 	 * @param oper
@@ -69,14 +74,26 @@ public class OperController  extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,Oper oper) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setPageSize(100000);
 		// ==执行分页查询
 		List<Oper> datas=operService.findListDataByFinder(null,page,Oper.class,oper);
-			returnObject.setQueryBean(oper);
+		if(null != datas && datas.size() > 0){
+			for (Oper op : datas) {
+				if(null != op.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(op.getUserId());
+					if(null != appUser){
+						op.setAppUser(appUser);
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(oper);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;

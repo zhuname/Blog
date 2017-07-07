@@ -125,7 +125,20 @@ public class Appoint  extends BaseEntity {
 	
 	private MediaPackage mediaPackage;
 	
+	private AppUser appUser;
+	
+	
+	
 	//concstructor
+
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
+	}
 
 	public Appoint(){
 	}

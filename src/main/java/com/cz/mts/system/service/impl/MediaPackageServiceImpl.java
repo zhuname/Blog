@@ -200,10 +200,10 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				finder1.append(" order by createTime desc");
 				break;
 			case "2":
-				finder1.append(" order byappointCount desc");
+				finder1.append(" order by appointCount desc,balance desc");
 				break;
 			case "3":
-				finder1.append(" order by cardLqNum desc");
+				finder1.append(" order by cardLqNum desc, balance desc");
 				break;
 			}
 		}else{

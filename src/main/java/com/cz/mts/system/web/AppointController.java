@@ -1,8 +1,11 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +19,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Appoint;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAppointService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IPosterPackageService;
@@ -26,6 +31,7 @@ import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.impl.PosterPackageServiceImpl;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -50,6 +56,9 @@ public class AppointController  extends BaseController {
 	private IPosterPackageService posterPackageService;
 	@Resource
 	private IMediaPackageService mediaPackageService;
+	@Resource
+	private IAppUserService appUserService;
+	
 	
 	private String listurl="/system/appoint/appointList";
 	
@@ -73,8 +82,8 @@ public class AppointController  extends BaseController {
 	}
 	
 	/**
-	 * json数据,为APP提供数据
-	 * 
+	 * 我的预约列表
+	 * @author wml
 	 * @param request
 	 * @param model
 	 * @param appoint
@@ -90,47 +99,15 @@ public class AppointController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<Appoint> datas=appointService.findListDataByFinder(null,page,Appoint.class,appoint);
-		
-		for (Appoint appoint2 : datas) {
-			
-			//1海报  2视频
-			switch (appoint2.getType()) {
-			case 1:
-				
-				if(appoint2.getItemId()!=null){
-					
-					PosterPackage posterPackage = posterPackageService.findPosterPackageById(appoint2.getItemId());
-					
-					if(posterPackage!=null){
-						
-						appoint2.setPosterPackage(posterPackage);
-						
+		if(null != datas && datas.size()> 0){
+			for (Appoint ap : datas) {
+				if(null != ap.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
+					if(null != appUser){
+						ap.setAppUser(appUser);
 					}
-					
-					
 				}
-				
-				
-				break;
-			case 2:
-				
-				if(appoint2.getItemId()!=null){
-					
-					MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(appoint2.getItemId());
-					
-					if(mediaPackage!=null){
-						
-						appoint2.setMediaPackage(mediaPackage);
-						
-					}
-					
-					
-				}
-				
-				break;
 			}
-			
-			
 		}
 		
 		returnObject.setQueryBean(appoint);
@@ -268,7 +245,66 @@ public class AppointController  extends BaseController {
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
+	}
+	
+	
+	/**
+	 * 预约列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param appoint
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/appointList/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas appointListjson(HttpServletRequest request, Model model,Appoint appoint) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		Finder finder = Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status != 0 and type=:type and itemId=:itemId");
+		finder.setParam("type", appoint.getType());
+		finder.setParam("itemId", appoint.getItemId());
+		List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,null);
+		if(null != datas && datas.size() > 0){
+			for (Appoint ap : datas) {
+				if(null != ap.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
+					if(null != appUser){
+						ap.setAppUser(appUser);
+					}
+				}
+			}
+		}
 		
+		//查询预约次数以及预约总金额
+		Integer appointCount = 0;
+		Double appintMoney = 0.0;
+		Page newPage = new Page();
+		List<Appoint> allAppoints = appointService.findListDataByFinder(finder,newPage,Appoint.class,null);
+		if(null != allAppoints && allAppoints.size() > 0){
+			appointCount = allAppoints.size();
+			for (Appoint app : allAppoints) {
+				if(null != app.getMoney()){
+					appintMoney += app.getMoney();
+				}
+			}
+		}else{
+			appointCount = 0;
+			appintMoney = 0.0;
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("appointCount", appointCount);
+		map.put("appintMoney", new BigDecimal(appintMoney).setScale(2).doubleValue());
+		returnObject.setMap(map);
+		returnObject.setQueryBean(appoint);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 
 }

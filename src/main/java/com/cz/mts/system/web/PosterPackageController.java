@@ -173,7 +173,6 @@ public class PosterPackageController  extends BaseController {
 				}
 			}
 			
-			
 			if(posterPackage.getCategoryId()!=null){
 				
 				finder1.append(" and p.categoryId = :categoryId");
@@ -196,10 +195,10 @@ public class PosterPackageController  extends BaseController {
 					finder1.append(" order by p.createTime desc");
 					break;
 				case "2":
-					finder1.append(" order by p.appointCount desc");
+					finder1.append(" order by p.appointCount desc,balance desc");
 					break;
 				case "3":
-					finder1.append(" order by p.cardLqNum desc");
+					finder1.append(" order by p.cardLqNum desc,balance desc");
 					break;
 				}
 			}else{
