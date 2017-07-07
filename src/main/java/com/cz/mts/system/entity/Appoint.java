@@ -1,8 +1,10 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -119,9 +121,31 @@ public class Appoint  extends BaseEntity {
 	private java.lang.Integer packageUserId;
 	//columns END 数据库字段结束
 	
+	private PosterPackage posterPackage;
+	
+	private MediaPackage mediaPackage;
+	
 	//concstructor
 
 	public Appoint(){
+	}
+
+	@Transient
+	public PosterPackage getPosterPackage() {
+		return posterPackage;
+	}
+
+	public void setPosterPackage(PosterPackage posterPackage) {
+		this.posterPackage = posterPackage;
+	}
+
+	@Transient
+	public MediaPackage getMediaPackage() {
+		return mediaPackage;
+	}
+
+	public void setMediaPackage(MediaPackage mediaPackage) {
+		this.mediaPackage = mediaPackage;
 	}
 
 	public Appoint(
