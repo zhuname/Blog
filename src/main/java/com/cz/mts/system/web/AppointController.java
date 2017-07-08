@@ -3,6 +3,7 @@ package  com.cz.mts.system.web;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +22,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Appoint;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.entity.SysSysparam;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAppointService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
+import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.impl.PosterPackageServiceImpl;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -58,6 +66,12 @@ public class AppointController  extends BaseController {
 	private IMediaPackageService mediaPackageService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private ICardService cardService;
+	@Resource
+	private ISysSysparamService sysparamService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
 	
 	
 	private String listurl="/system/appoint/appointList";
@@ -305,6 +319,155 @@ public class AppointController  extends BaseController {
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
+	}
+	
+	
+	
+	/**
+	 * 预约卡券兑换接口
+	 * @author wj
+	 * 
+	 */
+	@RequestMapping("/changeCardjson/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas changeCardjson(Model model,HttpServletRequest request,HttpServletResponse response,Appoint appoint,Integer userId) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try { 
+			
+			if(appoint.getCardCode()==null){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+				return returnObject;
+			}
+			
+			Page page=newPage(request);
+			
+			page.setPageSize(1);
+			
+			Finder finder=Finder.getSelectFinder(Appoint.class).append(" where 1=1 ");
+
+			//接口传过来一个userId但是查的时候并不需要userid  只要一个code  所以把这个userid置为null
+			appoint.setUserId(null);
+			
+			//查出来的卡券
+			List<Appoint> appoints=appointService.findListDataByFinder(finder, page, Appoint.class, appoint);
+			
+			if(appoints.size()==0){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券不存在");
+				return returnObject;
+			}
+			
+			Appoint appo = appoints.get(0);
+			
+			//查询卡券信息
+			Card card=null;
+			
+			//判断是否兑换
+			if(appo.getStatus() !=null && appo.getStatus() != 1){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("此卡券已兑换");
+				return returnObject;
+			}
+			
+			if(null != appo.getItemId()){
+				if(null != appo.getType() && 1 == appo.getType()){
+					PosterPackage posterPackage = posterPackageService.findPosterPackageById(appo.getItemId());
+					if(null != posterPackage && null != posterPackage.getCardId()){
+						card=cardService.findCardById(posterPackage.getCardId());
+					}
+				}
+				if(null != appo.getType() && 2 == appo.getType()){
+					MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(appo.getItemId());
+					if(null != mediaPackage && null != mediaPackage.getCardId()){
+						card=cardService.findCardById(mediaPackage.getCardId());
+					}
+				}
+				if(null == card){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券不存在");
+					return returnObject;
+				}
+				//判断卡券的状态
+				if(null != card.getStatus() && 2 != card.getStatus() ){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("此卡券暂不能兑换");
+					return returnObject;
+				}
+				if(userId.intValue()!=appo.getPackageUserId().intValue()){
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("仅能兑换自己发布的卡券");
+					return returnObject;
+				}
+			}
+			
+			//改变状态
+			appo.setStatus(2);
+			appo.setChangeTime(new Date());
+			
+//			if(null != appo && null != appo.getUserId()){
+//				AppUser user = appUserService.findAppUserById(appo.getUserId());
+//				if(null != user && 1 == user.getIsPush() && null != appo.getCardId()){
+//					//给自己发推送
+//					notificationService.notify(14, appo.getCardId(), appo.getUserId());
+//					
+//				}
+//			}
+			appointService.update(appo,true);
+			
+			
+			//手续费比例
+			BigDecimal appointCharge = new BigDecimal(0.0);
+			
+			SysSysparam sysSysparam = sysparamService.findSysSysparamById("appointCharge");
+			if(sysSysparam!=null){
+				appointCharge=new BigDecimal(sysSysparam.getValue());
+			}
+			
+			AppUser appUser=appUserService.findAppUserById(userId);
+			if(appUser!=null){
+				BigDecimal sumMoney=new BigDecimal(0.0);
+				BigDecimal appointChargeMoney = new BigDecimal(0.0);
+				//判断是否关闭预约手续费
+				if(null != appUser.getIsAppointFee() && 0 == appUser.getIsCloseFee()){
+					//算出这次总共是多少钱的收益
+					if(appo.getMoney()!=null){
+						appointChargeMoney = new BigDecimal(appo.getMoney()).multiply(appointCharge);
+						sumMoney = new BigDecimal(appo.getMoney()).subtract(appointChargeMoney);
+					}
+				}
+				if(appUser.getBalance()==null){
+					appUser.setBalance(sumMoney.doubleValue());
+				}else{
+					appUser.setBalance(appUser.getBalance()+sumMoney.doubleValue());
+				}
+				
+				appUserService.update(appUser,true);
+				appointService.update(appo,true);
+				//先保存收益记录
+				MoneyDetail moneyDetail=new MoneyDetail();
+				moneyDetail.setUserId(userId);
+				moneyDetail.setCreateTime(new Date());
+				moneyDetail.setType(15);
+				moneyDetail.setMoney(+sumMoney.doubleValue());
+				moneyDetail.setItemId(appo.getId());
+				moneyDetail.setBalance(appUser.getBalance());
+				moneyDetail.setPlateMoney(appointChargeMoney.doubleValue());
+				moneyDetailService.save(moneyDetail);
+				
+			}
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		
+		return returnObject;
+	
 	}
 
 }

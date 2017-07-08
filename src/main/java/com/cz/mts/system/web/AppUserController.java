@@ -1292,6 +1292,62 @@ public class AppUserController  extends BaseController {
 	}
 	
 	
+	/**
+	 * 首页平台统计（总用户、红包总金额、已领红包金额）
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/plateStatics/json")
+	@SecurityApi
+	public @ResponseBody ReturnDatas plateStaticsJson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		try {
+				Integer sumPerson = 0;
+				Double posterSumMoney = 0.0;
+				Double posterSnachMoney = 0.0;
+				Double mediaSumMoney = 0.0;
+				Double mediaSnachMoney = 0.0;
+				
+				//查询用户总个数
+				Finder userFinder = new Finder("SELECT COUNT(*) as sumPerson FROM t_app_user WHERE isBlack = 0");
+				List<AppUser> appUsers = appUserService.queryForList(userFinder,AppUser.class);
+				if(null != appUsers && appUsers.size() > 0){
+					sumPerson = appUsers.get(0).getSumPerson();
+				}
+				
+				//查询海报红包总金额以及剩余金额
+				Finder posterFinder = new Finder("SELECT SUM(sumMoney) as posterSumMoney,SUM(balance) AS posterRemainMoney FROM t_poster_package WHERE isDel = 0 AND `status`=3");
+				List<AppUser> posterAppUsers = appUserService.queryForList(posterFinder,AppUser.class);
+				if(null != posterAppUsers && posterAppUsers.size() > 0){
+					posterSumMoney = posterAppUsers.get(0).getPosterSumMoney();
+					posterSnachMoney = new BigDecimal(posterSumMoney).subtract(new BigDecimal(posterAppUsers.get(0).getPosterRemainMoney())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				
+				//查询视频红包总金额以及剩余金额
+				Finder mediaFinder = new Finder("SELECT SUM(sumMoney) as mediaSumMoney,SUM(balance) AS mediaRemainMoney FROM t_media_package WHERE isDel = 0 AND `status`=3");
+				List<AppUser> mediaAppUsers = appUserService.queryForList(mediaFinder,AppUser.class);
+				if(null != mediaAppUsers && mediaAppUsers.size() > 0){
+					mediaSumMoney = mediaAppUsers.get(0).getMediaSumMoney();
+					mediaSnachMoney = new BigDecimal(mediaSumMoney).subtract(new BigDecimal(mediaAppUsers.get(0).getMediaRemainMoney())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				
+				Double sumMoney = new BigDecimal(posterSumMoney).add(new BigDecimal(mediaSumMoney)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+				Double snachMoney = new BigDecimal(posterSnachMoney).add(new BigDecimal(mediaSnachMoney)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+				
+				Map<String, Object> map = new HashMap<>();
+				map.put("sumPerson", sumPerson);
+				map.put("sumMoney", sumMoney);
+				map.put("snachMoney", snachMoney);
+				returnObject.setMap(map);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return returnObject;
+	}
+	
+	
 	
 
 }

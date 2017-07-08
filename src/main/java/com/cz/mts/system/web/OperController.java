@@ -347,8 +347,143 @@ public class OperController  extends BaseController {
 		}
 		return new ReturnDatas(ReturnDatas.SUCCESS,
 				MessageUtils.DELETE_ALL_SUCCESS);
-		
-		
+	}
+	
+	
+	
+	
+	/**
+	 * 删除评论操作
+	 * @author wj
+	 */
+	@RequestMapping(value="/delete/json")
+	@SecurityApi
+	public @ResponseBody ReturnDatas deletejson(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  String appUserId = request.getParameter("appUserId");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId) && StringUtils.isNotBlank(appUserId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+			 
+			 //查询该评论人评论的这条信息
+			 Oper oper = operService.findOperById(id);// 2海报评论  4视频评论 5同城活动参与评论  8同城圈评论
+			 if(null != oper && null != oper.getItemId() && null != oper.getType() && null != oper.getUserId() ){
+				 switch (oper.getType()) {
+				case 2:
+					//查询海报的信息
+					PosterPackage posterPackage = posterPackageService.findPosterPackageById(oper.getItemId());
+					if(null != posterPackage && null != posterPackage.getUserId()){
+						//如果appUserId是发布人，则可以删除任何一个人的评论，否则，只能删除自己的评论
+						if(Integer.parseInt(appUserId) == posterPackage.getUserId()){
+							operService.deleteById(id,Oper.class);
+							//更新该海报的评论个数
+							posterPackage.setCommentCount(posterPackage.getCommentCount() - 1);
+							posterPackageService.update(posterPackage,true);
+							return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+						}else{
+							//如果删除的就是自己评论的这条，则可以删除
+							if(oper.getUserId() == Integer.parseInt(appUserId)){
+								operService.deleteById(id,Oper.class);
+								//更新该海报的评论个数
+								posterPackage.setCommentCount(posterPackage.getCommentCount() - 1);
+								posterPackageService.update(posterPackage,true);
+								return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+							}else{
+								return new ReturnDatas(ReturnDatas.ERROR,"您暂无权限删除该评论！");
+							}
+						}
+					}
+					break;
+
+				case 4:
+					//查询视频的信息
+					MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(oper.getItemId());
+					if(null != mediaPackage && null != mediaPackage.getUserId()){
+						//如果appUserId是发布人，则可以删除任何一个人的评论，否则，只能删除自己的评论
+						if(Integer.parseInt(appUserId) == mediaPackage.getUserId()){
+							operService.deleteById(id,Oper.class);
+							//更新该视频的评论个数
+							mediaPackage.setCommentCount(mediaPackage.getCommentCount() - 1);
+							mediaPackageService.update(mediaPackage,true);
+							return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+						}else{
+							//如果删除的就是自己评论的这条，则可以删除
+							if(oper.getUserId() == Integer.parseInt(appUserId)){
+								operService.deleteById(id,Oper.class);
+								//更新该视频的评论个数
+								mediaPackage.setCommentCount(mediaPackage.getCommentCount() - 1);
+								mediaPackageService.update(mediaPackage,true);
+								return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+							}else{
+								return new ReturnDatas(ReturnDatas.ERROR,"您暂无权限删除该评论！");
+							}
+						}
+					}
+					break;
+				case 5:
+					//查询同城活动参与的信息
+					JoinActivity joinActivity = joinActivityService.findJoinActivityById(oper.getItemId());
+					if(null != joinActivity && null != joinActivity.getUserId()){
+						//如果appUserId是发布人，则可以删除任何一个人的评论，否则，只能删除自己的评论
+						if(Integer.parseInt(appUserId) == joinActivity.getUserId()){
+							operService.deleteById(id,Oper.class);
+							//更新评论个数
+							joinActivity.setCommentCount(joinActivity.getCommentCount() - 1);
+							joinActivityService.update(joinActivity,true);
+							return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+						}else{
+							//如果删除的就是自己评论的这条，则可以删除
+							if(oper.getUserId() == Integer.parseInt(appUserId)){
+								operService.deleteById(id,Oper.class);
+								//更新评论个数
+								joinActivity.setCommentCount(joinActivity.getCommentCount() - 1);
+								joinActivityService.update(joinActivity,true);
+								return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+							}else{
+								return new ReturnDatas(ReturnDatas.ERROR,"您暂无权限删除该评论！");
+							}
+						}
+					}
+					break;
+				case 8:
+					Circle circle = circleService.findCircleById(oper.getItemId());
+					if(null != circle && null != circle.getUserId()){
+						//如果appUserId是发布人，则可以删除任何一个人的评论，否则，只能删除自己的评论
+						if(Integer.parseInt(appUserId) == circle.getUserId()){
+							operService.deleteById(id,Oper.class);
+							//更新评论个数
+							circle.setCommentCount(circle.getCommentCount() - 1);
+							circleService.update(circle,true);
+							return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+						}else{
+							//如果删除的就是自己评论的这条，则可以删除
+							if(oper.getUserId() == Integer.parseInt(appUserId)){
+								operService.deleteById(id,Oper.class);
+								//更新评论个数
+								circle.setCommentCount(circle.getCommentCount() - 1);
+								circleService.update(circle,true);
+								return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+							}else{
+								return new ReturnDatas(ReturnDatas.ERROR,"您暂无权限删除该评论！");
+							}
+						}
+					}
+					break;
+				}
+			 }
+			 
+//			 operService.deleteById(id,Oper.class);
+//			 return new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.DELETE_SUCCESS);
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
 	}
 
 }

@@ -226,8 +226,50 @@ public class AppUser  extends BaseEntity {
 	private Integer activityCount;
 	private Integer cityCircleCount;
 	
+	private Double posterSumMoney;
+	private Double posterRemainMoney;
+	private Double mediaSumMoney;
+	private Double mediaRemainMoney;
 	
 	
+	
+	
+	@Transient
+	public Double getPosterSumMoney() {
+		return posterSumMoney;
+	}
+
+	public void setPosterSumMoney(Double posterSumMoney) {
+		this.posterSumMoney = posterSumMoney;
+	}
+
+	@Transient
+	public Double getPosterRemainMoney() {
+		return posterRemainMoney;
+	}
+
+	public void setPosterRemainMoney(Double posterRemainMoney) {
+		this.posterRemainMoney = posterRemainMoney;
+	}
+
+	@Transient
+	public Double getMediaSumMoney() {
+		return mediaSumMoney;
+	}
+
+	public void setMediaSumMoney(Double mediaSumMoney) {
+		this.mediaSumMoney = mediaSumMoney;
+	}
+
+	@Transient
+	public Double getMediaRemainMoney() {
+		return mediaRemainMoney;
+	}
+
+	public void setMediaRemainMoney(Double mediaRemainMoney) {
+		this.mediaRemainMoney = mediaRemainMoney;
+	}
+
 	@Transient
 	public Integer getActivityCount() {
 		return activityCount;
