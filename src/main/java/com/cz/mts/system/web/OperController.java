@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,11 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.JoinActivity;
+import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICircleService;
+import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IOperService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -42,6 +52,15 @@ public class OperController  extends BaseController {
 	private IOperService operService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ICircleService circleService;
+	@Resource
+	private IJoinActivityService joinActivityService;
+	
 	
 	private String listurl="/system/oper/operList";
 	
@@ -143,18 +162,119 @@ public class OperController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
+	 * 操作接口（点赞/评论）
+	 * @author wj
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Oper oper,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			operService.saveorupdate(oper);
+			if(null == oper.getUserId() || null == oper.getItemId() || null == oper.getType()){
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else{
+				oper.setCreateTime(new Date());
+				Integer type = oper.getType();
+				PosterPackage posterPackage = null;
+				MediaPackage mediaPackage = null;
+				Circle circle = null;
+				JoinActivity joinActivity = null;
+				if(1 == type || 2 == type){
+					posterPackage = posterPackageService.findPosterPackageById(oper.getItemId());
+				}
+				if(3 == type || 4 == type){
+					mediaPackage = mediaPackageService.findMediaPackageById(oper.getItemId());
+				}
+				if(5 == type || 6 == type){
+					joinActivity = joinActivityService.findJoinActivityById(oper.getItemId());
+				}
+				if(7 == type || 8 == type){
+					circle = circleService.findCircleById(oper.getItemId());
+				}
+				//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
+				switch (type) {
+				case 1:
+					if(null != posterPackage){
+						if(null == posterPackage.getTopCount()){
+							posterPackage.setTopCount(0);
+						}
+						posterPackage.setTopCount(posterPackage.getTopCount() + 1);
+						posterPackageService.update(posterPackage,true);
+					}
+					break;
+
+				case 2:
+					if(null != posterPackage){
+						if(null == posterPackage.getCommentCount()){
+							posterPackage.setCommentCount(0);
+						}
+						posterPackage.setCommentCount(posterPackage.getCommentCount() + 1);
+						posterPackageService.update(posterPackage,true);
+					}
+					break;
+				case 3:
+					if(null != mediaPackage){
+						if(null == mediaPackage.getTopCount()){
+							mediaPackage.setTopCount(0);
+						}
+						mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
+						mediaPackageService.update(mediaPackage,true);
+					}
+					break;
+				case 4:
+					if(null != mediaPackage){
+						if(null == mediaPackage.getCommentCount()){
+							mediaPackage.setCommentCount(0);
+						}
+						mediaPackage.setCommentCount(mediaPackage.getCommentCount() + 1);
+						mediaPackageService.update(mediaPackage,true);
+					}
+					break;
+				case 5:
+					if(null != joinActivity){
+						if(null == joinActivity.getCommentCount()){
+							joinActivity.setCommentCount(0);
+						}
+						joinActivity.setCommentCount(joinActivity.getCommentCount() + 1);
+						joinActivityService.update(joinActivity,true);
+					}
+					break;
+				case 6:
+					if(null != joinActivity){
+						if(null == joinActivity.getTopCount()){
+							joinActivity.setTopCount(0);
+						}
+						joinActivity.setTopCount(joinActivity.getTopCount() + 1);
+						joinActivityService.update(joinActivity,true);
+					}
+					break;
+				case 7:
+					if(null != circle){
+						if(null == circle.getTopCount()){
+							circle.setTopCount(0);
+						}
+						circle.setTopCount(circle.getTopCount() + 1);
+						circleService.update(circle,true);
+					}
+					break;
+				case 8:
+					if(null != circle){
+						if(null == circle.getCommentCount()){
+							circle.setCommentCount(0);
+						}
+						circle.setCommentCount(circle.getCommentCount() + 1);
+						circleService.update(circle,true);
+					}
+					break;
+				}
+				operService.saveorupdate(oper);
+			}
+			
+			
 			
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
