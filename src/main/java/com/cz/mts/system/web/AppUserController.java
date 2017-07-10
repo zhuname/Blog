@@ -34,6 +34,7 @@ import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.Menu;
+import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.Password;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
@@ -1367,10 +1368,161 @@ public class AppUserController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		try {
 			if(null != appUser.getId() && null != appUser.getCityId()){
+				Double todayMoney = 0.0; //今日收益钱数
+				Integer scanNum = 0;//浏览数量
+				Integer topNum = 0;//点赞总数
+				Integer commentNum = 0;//评论个数
+				Integer attenNum = 0;//关注个数
+				
+				//统计别人浏览我的次数
+				Finder scanFinder = new Finder("SELECT SUM(a.scanNum) AS scanNum FROM(SELECT SUM(lookNum) AS scanNum FROM t_poster_package pp WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 UNION"
+                                        +"( SELECT SUM(scanNum) AS scanNum FROM t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2) UNION "
+                                        + "(SELECT SUM(viewedCount) AS scanNum FROM t_activity WHERE userId=:userId AND isDel=0 AND `status` != 2))a");
+				scanFinder.setParam("userId", appUser.getId());
+				scanNum = moneyDetailService.queryForObject(scanFinder, Integer.class); 
+				if(null == scanNum ){
+					scanNum = 0;
+				}
+				
+				//统计别人点赞我的个数
+				Finder topFinder = new Finder("SELECT SUM(a.topCount) AS topNum FROM (SELECT SUM(topCount)as topCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 "
+						+ " UNION (SELECT SUM(topCount) as topCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2)"
+                        +"UNION (SELECT SUM(topCount)as topCount from t_join_activity WHERE userId=:userId ) "
+                        + "UNION (SELECT SUM(topCount)as topCount FROM t_circle WHERE userId=:userId))a");
+				
+				topFinder.setParam("userId", appUser.getId());
+				topNum = moneyDetailService.queryForObject(topFinder, Integer.class); 
+				if(null == topNum ){
+					topNum = 0;
+				}
+				
+				//统计别人给我评论的个数
+				Finder commentFinder = new Finder("SELECT SUM(a.commentCount) AS commentNum FROM (SELECT SUM(commentCount)as commentCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 "
+						+ " UNION (SELECT SUM(commentCount) as commentCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2)"
+                        +"UNION (SELECT SUM(commentCount)as commentCount from t_join_activity WHERE userId=:userId ) "
+                        + "UNION (SELECT SUM(commentCount)as commentCount FROM t_circle WHERE userId=:userId))a");
+				
+				commentFinder.setParam("userId", appUser.getId());
+				commentNum = moneyDetailService.queryForObject(commentFinder, Integer.class); 
+				if(null == commentNum ){
+					commentNum = 0;
+				}
+				
+				//统计别人关注我的个数
+				Finder atteFinder = new Finder("SELECT COUNT(*) as attenNum FROM t_attention WHERE itemId=:userId");
+				atteFinder.setParam("userId", appUser.getId());
+				attenNum = moneyDetailService.queryForObject(atteFinder, Integer.class);
+				if(null == attenNum ){
+					attenNum = 0;
+				}
+				
+				
+				//总收益统计
 				Finder sumMoneyFinder = new Finder("SELECT SUM(money) as sumMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=14 OR type=15) and userId=:userId");
 				sumMoneyFinder.setParam("userId", appUser.getId());
-				List sumMoneyList = moneyDetailService.queryForList(sumMoneyFinder);
-				returnObject.setData(sumMoneyList);
+				Double sumMoney = moneyDetailService.queryForObject(sumMoneyFinder, Double.class);
+				if(null == sumMoney){
+					sumMoney = 0.0;
+				}
+				
+				//今日收益统计
+				Finder todayMoneyFinder = new Finder("SELECT SUM(money) as todayMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=14 OR type=15) and userId=:userId AND DATE_FORMAT(createTime,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')");
+				todayMoneyFinder.setParam("userId", appUser.getId());
+				todayMoney = moneyDetailService.queryForObject(todayMoneyFinder, Double.class);
+				if(null == todayMoney){
+					todayMoney = 0.0;
+				}
+				
+				//查询海报红包的个数
+				Finder posterFinder = new Finder("SELECT COUNT(*) as posterCount FROM t_poster_package WHERE isDel= 0 AND ((`status`=4 AND isValid!=1) OR `status`=3) AND succTime > (SELECT posterScanTime FROM t_app_user WHERE id=:userId) and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=1)");
+				posterFinder.setParam("userId", appUser.getId());
+				posterFinder.setParam("cityId", appUser.getCityId());
+				Integer posterCount = moneyDetailService.queryForObject(posterFinder, Integer.class);
+				if(null == posterCount){
+					posterCount = 0;
+				}
+				
+				//查询海报红包待抢金额
+				Finder posterMoneyFinder = new Finder("SELECT SUM(balance) as posterBalance FROM t_poster_package WHERE isDel= 0 AND `status`=3 and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=1)");
+				posterMoneyFinder.setParam("cityId", appUser.getCityId());
+				Double posterMoney = moneyDetailService.queryForObject(posterMoneyFinder, Double.class);
+				if(null == posterMoney){
+					posterMoney = 0.0;
+				}
+				
+				//查询视频红包个数
+				Finder mediaFinder = new Finder("SELECT COUNT(*) mediaCount FROM t_media_package WHERE isDel= 0 AND ((`status`=4 AND isValid!=1) OR `status`=3) AND succTime > (SELECT mediaScanTime FROM t_app_user WHERE id=:userId) and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=2)");
+				mediaFinder.setParam("userId", appUser.getId());
+				mediaFinder.setParam("cityId", appUser.getCityId());
+				Integer mediaCount = moneyDetailService.queryForObject(mediaFinder, Integer.class);
+				if(null == mediaCount){
+					mediaCount = 0;
+				}
+				
+				//查询视频红包待抢金额
+				Finder mediaMoneyFinder = new Finder("SELECT SUM(balance) as mediaBalance FROM t_media_package WHERE isDel= 0 AND `status`=3 and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=2)");
+				mediaMoneyFinder.setParam("cityId", appUser.getCityId());
+				Double mediaMoney = moneyDetailService.queryForObject(mediaMoneyFinder, Double.class);
+				if(null == mediaMoney){
+					mediaMoney = 0.0;
+				}
+				
+				//查询同城活动个数
+				Finder activityFinder = new Finder("SELECT COUNT(*) activityCount FROM t_activity WHERE isDel= 0 AND (`status`=4 OR `status`=3) AND aduitSuccessTime > (SELECT activityScanTime FROM t_app_user WHERE id=:userId) and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=4)");
+				activityFinder.setParam("userId", appUser.getId());
+				activityFinder.setParam("cityId", appUser.getCityId());
+				Integer activityCount = moneyDetailService.queryForObject(activityFinder, Integer.class);
+				if(null == activityCount){
+					activityCount = 0;
+				}
+				
+				//查询同城活动参与人数
+				Finder joinFinder = new Finder("SELECT COUNT(id) AS joinCount FROM t_join_activity");
+				Integer joinCount = moneyDetailService.queryForObject(joinFinder,Integer.class);
+				if(null == joinCount){
+					joinCount = 0;
+				}
+				
+				//查询同城圈右上角
+				Finder circleFinder = new Finder("SELECT count(*) FROM t_circle WHERE cityId=:cityId AND createTime>(SELECT circleScanTime FROM t_app_user WHERE id=:userId)");
+				circleFinder.setParam("cityId", appUser.getCityId());
+				circleFinder.setParam("userId", appUser.getId());
+				Integer circleCount = moneyDetailService.queryForObject(circleFinder,Integer.class);
+				if(null == circleCount){
+					circleCount = 0;
+				}
+				
+				//查询同城圈条数
+				Finder cityCircleFinder = new Finder("SELECT count(*) FROM t_circle WHERE cityId=:cityId");
+				cityCircleFinder.setParam("cityId", appUser.getCityId());
+				cityCircleFinder.setParam("userId", appUser.getId());
+				Integer cityCircleCount = moneyDetailService.queryForObject(cityCircleFinder,Integer.class);
+				if(null == cityCircleCount){
+					cityCircleCount = 0;
+				}
+				
+				
+				
+				Map<String, Object> map = new HashMap<>();
+				map.put("todayMoney", todayMoney);
+				map.put("scanNum", scanNum);
+				map.put("topNum", topNum);
+				map.put("commentNum", commentNum);
+				map.put("attenNum", attenNum);
+				map.put("sumMoney", sumMoney);
+				map.put("posterCount", posterCount);
+				map.put("posterMoney", posterMoney);
+				map.put("mediaCount", mediaCount);
+				map.put("mediaMoney", mediaMoney);
+				map.put("activityCount", activityCount);
+				map.put("joinCount", joinCount);
+				map.put("circleCount", circleCount);
+				map.put("cityCircleCount", cityCircleCount);
+				
+				
+				
+				
+				returnObject.setMap(map);
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
