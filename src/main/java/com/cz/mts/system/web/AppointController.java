@@ -3,6 +3,7 @@ package  com.cz.mts.system.web;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.Appoint;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppointService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IPosterPackageService;
@@ -186,7 +188,8 @@ public class AppointController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Appoint appoint,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -196,6 +199,10 @@ public class AppointController  extends BaseController {
 		
 			appointService.saveorupdate(appoint);
 			
+		} catch (ParameterErrorException e) {
+			logger.error("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

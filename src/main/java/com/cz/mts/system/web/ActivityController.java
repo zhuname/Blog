@@ -160,10 +160,22 @@ public class ActivityController  extends BaseController {
 		  
 		  if(StringUtils.isNotBlank(appuserId)){
 				
+			  //头晕晕乎乎的，这块感觉有点问题
 			  Finder finderJoin = Finder.getSelectFinder(JoinActivity.class).append(" where userId=:userId and awardId in (select id from t_awards where activityId=:id)");
 			  finderJoin.setParam("userId", appuserId);
 			  finderJoin.setParam("id", id);
 			  List<JoinActivity> joinActivities = joinActivityService.queryForList(finderJoin, JoinActivity.class);
+			  
+			  //查询评论次数
+			  activity.setCommentCount(0);
+			  
+			  for (JoinActivity joinActivity : joinActivities) {
+				if(joinActivity.getCommentCount()!=null){
+					
+					activity.setCommentCount(joinActivity.getCommentCount()+activity.getCommentCount());
+					
+				}
+			  }
 			  
 			  if(joinActivities!=null&&joinActivities.size()>0){
 				  activity.setIsPart(1);
@@ -172,6 +184,14 @@ public class ActivityController  extends BaseController {
 			  }
 			
 			}
+		  
+		  if(activity.getViewedCount()==null){
+			  activity.setViewedCount(1);
+		  }else {
+			  activity.setViewedCount(activity.getViewedCount()+1);
+		  }
+		  
+		  activityService.update(activity);
 		  
 		   returnObject.setData(activity);
 		}else{
