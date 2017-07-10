@@ -67,7 +67,7 @@ public class AppointServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			appoint.setCode("A"+new Date().getTime());
-			
+			appoint.setCreateTime(new Date());
 			
 	      
 		 return super.saveorupdate(appoint).toString();
