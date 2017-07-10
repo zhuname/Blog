@@ -1,9 +1,18 @@
 package com.cz.mts.system.service.impl;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import javax.print.attribute.standard.Media;
+
 import org.springframework.stereotype.Service;
+
 import com.cz.mts.system.entity.Appoint;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppointService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
@@ -31,6 +40,36 @@ public class AppointServiceImpl extends BaseSpringrainServiceImpl implements IAp
     @Override
 	public String  saveorupdate(Object entity ) throws Exception{
 	      Appoint appoint=(Appoint) entity;
+	      
+	      
+	  	/***生成6位不重复的兑换码开始**/
+			String[] chars = new String[] { "a", "b", "c", "d", "e", "f",
+				"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+				"t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
+				"6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+				"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+				"W", "X", "Y", "Z" };
+
+			StringBuffer shortBuffer = new StringBuffer();
+			String uuid = UUID.randomUUID().toString().replace("-", "");
+			for (int j = 0; j < 6; j++) {
+				String str = uuid.substring(j * 4, j * 4 + 4);
+				int x = Integer.parseInt(str, 16);
+				shortBuffer.append(chars[x % 0x3E]);
+			}
+			/***生成6位不重复的兑换码结束**/
+			
+			appoint.setCardCode(shortBuffer.toString());
+	      
+			
+			if(appoint.getType()==null||appoint.getItemId()==null||appoint.getPhone()==null||appoint.getUserId()==null){
+				throw new ParameterErrorException();
+			}
+			
+			appoint.setCode("A"+new Date().getTime());
+			
+			
+	      
 		 return super.saveorupdate(appoint).toString();
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -26,6 +27,7 @@ import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.PosterPackage;
+import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.service.IAppUserService;
@@ -111,9 +113,13 @@ public class AppointController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		Finder finder=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status!=1");
+		
 		// ==执行分页查询
-		List<Appoint> datas=appointService.findListDataByFinder(null,page,Appoint.class,appoint);
+		List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,appoint);
 		if(null != datas && datas.size()> 0){
+			
 			for (Appoint ap : datas) {
 				if(null != ap.getUserId()){
 					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
@@ -121,6 +127,34 @@ public class AppointController  extends BaseController {
 						ap.setAppUser(appUser);
 					}
 				}
+				
+				
+				//1给海报红包加一个预约数量   2给视频红包加一个预约数量
+				switch (ap.getType()) {
+				case 1:
+					
+					PosterPackage posterPackageApp=posterPackageService.findById(ap.getItemId(), PosterPackage.class);
+					
+					//查询海报红包
+					if(posterPackageApp!=null){
+						ap.setTitle(posterPackageApp.getTitle());
+					}
+					
+					break;
+				case 2:
+					
+					MediaPackage mediaPackageApp=mediaPackageService.findById(ap.getItemId(), MediaPackage.class);
+					
+					if(mediaPackageApp!=null){
+						ap.setTitle(mediaPackageApp.getTitle());
+					}
+					
+					break;
+				}
+				
+				
+				
+				
 			}
 		}
 		
@@ -177,22 +211,29 @@ public class AppointController  extends BaseController {
 	 * 新增/修改 操作吗,返回json格式数据
 	 * 
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Appoint appoint,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
-			appointService.saveorupdate(appoint);
+			Object id = appointService.saveorupdate(appoint);
 			
+			appoint = appointService.findAppointById(id);
+			
+		} catch (ParameterErrorException e) {
+			logger.error("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
+		returnObject.setData(appoint);
 		return returnObject;
 	
 	}

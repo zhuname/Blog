@@ -1,6 +1,7 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -89,7 +91,7 @@ public class Shield  extends BaseEntity {
 	public java.lang.Integer getUserId() {
 		return this.userId;
 	}
-		/*
+	/*
 	public String getcreateTimeString() {
 		return DateUtils.convertDate2String(FORMAT_CREATETIME, getcreateTime());
 	}
@@ -101,6 +103,7 @@ public class Shield  extends BaseEntity {
 		this.createTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:Shield_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;

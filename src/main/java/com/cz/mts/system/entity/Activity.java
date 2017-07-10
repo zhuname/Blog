@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -157,9 +158,38 @@ public class Activity  extends BaseEntity {
 	
 	private Integer isDel;
 	
+	private Integer viewedCount;
+	
+	private Integer attenedCount;
+	
+	private Integer isAttr;
+	private Integer isColl;
+	
 	//concstructor
 
 	public Activity(){
+	}
+
+	
+	
+	
+	
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
+
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
+
+	@Transient
+	public Integer getIsColl() {
+		return isColl;
+	}
+
+	public void setIsColl(Integer isColl) {
+		this.isColl = isColl;
 	}
 
 	public Activity(
@@ -167,8 +197,25 @@ public class Activity  extends BaseEntity {
 	){
 		this.id = id;
 	}
-
 	
+	@Transient
+	public Integer getAttenedCount() {
+		return attenedCount;
+	}
+
+	public void setAttenedCount(Integer attenedCount) {
+		this.attenedCount = attenedCount;
+	}
+
+	@WhereSQL(sql="viewedCount=:Activity_viewedCount")
+	public Integer getViewedCount() {
+		return viewedCount;
+	}
+
+	public void setViewedCount(Integer viewedCount) {
+		this.viewedCount = viewedCount;
+	}
+
 	@WhereSQL(sql="isDel=:Activity_isDel")
 	public Integer getIsDel() {
 		return isDel;
@@ -290,6 +337,7 @@ public class Activity  extends BaseEntity {
 		this.endTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="endTime=:Activity_endTime")
 	public java.util.Date getEndTime() {
 		return this.endTime;
@@ -408,6 +456,7 @@ public class Activity  extends BaseEntity {
 		this.aduitSuccessTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="aduitSuccessTime=:Activity_aduitSuccessTime")
 	public java.util.Date getAduitSuccessTime() {
 		return this.aduitSuccessTime;
@@ -435,6 +484,7 @@ public class Activity  extends BaseEntity {
 		this.aduitFailTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="aduitFailTime=:Activity_aduitFailTime")
 	public java.util.Date getAduitFailTime() {
 		return this.aduitFailTime;

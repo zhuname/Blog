@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -65,15 +66,28 @@ public class Oper  extends BaseEntity {
 	
 	private AppUser appUser;
 	
-	
+	private String nickName;
 	
 	//columns END 数据库字段结束
 	
 	//concstructor
 
+	
+	
+	
+	
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;
+	}
+
+	@Transient
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public void setAppUser(AppUser appUser) {
@@ -127,6 +141,7 @@ public class Oper  extends BaseEntity {
 		this.createTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:Oper_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;

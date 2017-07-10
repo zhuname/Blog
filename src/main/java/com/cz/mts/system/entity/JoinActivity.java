@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
@@ -101,11 +102,30 @@ public class JoinActivity  extends BaseEntity {
 	
 	private List<Oper> opers;
 	
+	private Integer isAttr;
+	private Integer isColl;
+	
 	//concstructor
 
 	public JoinActivity(){
 	}
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
 
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
+
+	@Transient
+	public Integer getIsColl() {
+		return isColl;
+	}
+
+	public void setIsColl(Integer isColl) {
+		this.isColl = isColl;
+	}
 	public JoinActivity(
 		java.lang.Integer id
 	){
@@ -223,6 +243,7 @@ public class JoinActivity  extends BaseEntity {
 		this.createTime = value;
 	}
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:JoinActivity_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;

@@ -364,6 +364,47 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			appoint.setPayType(3);
 			appoint.setPayMoney(appoint.getMoney());
 			appoint.setPayTime(new Date());
+			
+			
+			
+
+			//1给海报红包加一个预约数量   2给视频红包加一个预约数量
+			switch (appoint.getType()) {
+			case 1:
+				
+				PosterPackage posterPackageApp=super.findById(appoint.getItemId(), PosterPackage.class);
+				
+				//查询海报红包
+				if(posterPackageApp!=null){
+					
+					if(posterPackageApp.getAppointCount()==null){
+						posterPackageApp.setAppointCount(1);
+					}else {
+						posterPackageApp.setAppointCount(posterPackageApp.getAppointCount()+1);
+					}
+					super.update(posterPackageApp);
+				}
+				
+				break;
+			case 2:
+				
+				MediaPackage mediaPackageApp=super.findById(appoint.getItemId(), MediaPackage.class);
+				
+				if(mediaPackageApp!=null){
+					
+					if(mediaPackageApp.getAppointCount()==null){
+						mediaPackageApp.setAppointCount(1);
+						
+					}else {
+						mediaPackageApp.setAppointCount(mediaPackageApp.getAppointCount()+1);
+					}
+					super.update(mediaPackageApp);
+				}
+				
+				break;
+			}
+			
+			
 			super.update(appoint,true);
 			
 			//记录用户的余额记录
@@ -377,6 +418,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailA.setUserId(userId);
 			moneyDetailA.setOsType(osType);
 			super.save(moneyDetailA);
+			
 			
 			
 			break;

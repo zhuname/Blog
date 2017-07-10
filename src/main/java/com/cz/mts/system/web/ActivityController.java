@@ -19,12 +19,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Awards;
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IAwardsService;
+import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -53,6 +57,10 @@ public class ActivityController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IJoinActivityService joinActivityService;
+	@Resource
+	private ICollectService collectService;
+	@Resource
+	private IAttentionService attentionService;
 	
 	private String listurl="/system/activity/activityList";
 	
@@ -90,9 +98,16 @@ public class ActivityController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		
+		
+		
 		// ==执行分页查询
 		List<Activity> datas=activityService.findListDataByFinder(null,page,Activity.class,activity);
-			returnObject.setQueryBean(activity);
+		
+		
+		
+		returnObject.setQueryBean(activity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
@@ -160,10 +175,22 @@ public class ActivityController  extends BaseController {
 		  
 		  if(StringUtils.isNotBlank(appuserId)){
 				
+			  //头晕晕乎乎的，这块感觉有点问题
 			  Finder finderJoin = Finder.getSelectFinder(JoinActivity.class).append(" where userId=:userId and awardId in (select id from t_awards where activityId=:id)");
 			  finderJoin.setParam("userId", appuserId);
 			  finderJoin.setParam("id", id);
 			  List<JoinActivity> joinActivities = joinActivityService.queryForList(finderJoin, JoinActivity.class);
+			  
+			  //查询评论次数
+			  activity.setCommentCount(0);
+			  
+			  for (JoinActivity joinActivity : joinActivities) {
+				if(joinActivity.getCommentCount()!=null){
+					
+					activity.setCommentCount(joinActivity.getCommentCount()+activity.getCommentCount());
+					
+				}
+			  }
 			  
 			  if(joinActivities!=null&&joinActivities.size()>0){
 				  activity.setIsPart(1);
@@ -172,6 +199,14 @@ public class ActivityController  extends BaseController {
 			  }
 			
 			}
+		  
+		  if(activity.getViewedCount()==null){
+			  activity.setViewedCount(1);
+		  }else {
+			  activity.setViewedCount(activity.getViewedCount()+1);
+		  }
+		  
+		  activityService.update(activity);
 		  
 		   returnObject.setData(activity);
 		}else{
