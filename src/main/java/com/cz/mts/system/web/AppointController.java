@@ -187,7 +187,6 @@ public class AppointController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-		
 			Object id = appointService.saveorupdate(appoint);
 			
 			appoint = appointService.findAppointById(id);

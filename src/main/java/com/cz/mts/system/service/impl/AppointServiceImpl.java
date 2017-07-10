@@ -66,44 +66,8 @@ public class AppointServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				throw new ParameterErrorException();
 			}
 			
-			
 			appoint.setCode("A"+new Date().getTime());
 			
-			//1给海报红包加一个预约数量   2给视频红包加一个预约数量
-			switch (appoint.getType()) {
-			case 1:
-				
-				PosterPackage posterPackage=super.findById(appoint.getItemId(), PosterPackage.class);
-				
-				//查询海报红包
-				if(posterPackage!=null){
-					
-					if(posterPackage.getAppointCount()==null){
-						posterPackage.setAppointCount(1);
-					}else {
-						posterPackage.setAppointCount(posterPackage.getAppointCount()+1);
-					}
-					
-				}
-				
-				break;
-			case 2:
-				
-				MediaPackage mediaPackage=super.findById(appoint.getItemId(), MediaPackage.class);
-				
-				if(mediaPackage!=null){
-					
-					if(mediaPackage.getAppointCount()==null){
-						mediaPackage.setAppointCount(1);
-						
-					}else {
-						mediaPackage.setAppointCount(mediaPackage.getAppointCount()+1);
-					}
-					
-				}
-				
-				break;
-			}
 			
 	      
 		 return super.saveorupdate(appoint).toString();
