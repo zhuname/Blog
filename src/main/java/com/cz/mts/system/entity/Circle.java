@@ -103,8 +103,32 @@ public class Circle  extends BaseEntity {
 	 * 城市id
 	 */
 	private java.lang.Integer cityId;
-	//columns END 数据库字段结束
 	
+	private Integer height;
+	private Integer width;
+	
+	
+	
+	
+	//columns END 数据库字段结束
+	@WhereSQL(sql="height=:Circle_height")
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+	@WhereSQL(sql="width=:Circle_width")
+	public Integer getWidth() {
+		return width;
+	}
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
 	private AppUser appUser;
 	
 	//concstructor
@@ -281,6 +305,8 @@ public class Circle  extends BaseEntity {
 			.append("打赏总金额[").append(getSumMoney()).append("],")
 			.append("打赏次数[").append(getCount()).append("],")
 			.append("城市id[").append(getCityId()).append("],")
+			.append("单张图片的宽[").append(getWidth()).append("],")
+			.append("单张图片的高[").append(getHeight()).append("],")
 			.toString();
 	}
 	
