@@ -113,9 +113,13 @@ public class AppointController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		Finder finder=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status!=1");
+		
 		// ==执行分页查询
-		List<Appoint> datas=appointService.findListDataByFinder(null,page,Appoint.class,appoint);
+		List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,appoint);
 		if(null != datas && datas.size()> 0){
+			
 			for (Appoint ap : datas) {
 				if(null != ap.getUserId()){
 					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
@@ -123,6 +127,34 @@ public class AppointController  extends BaseController {
 						ap.setAppUser(appUser);
 					}
 				}
+				
+				
+				//1给海报红包加一个预约数量   2给视频红包加一个预约数量
+				switch (ap.getType()) {
+				case 1:
+					
+					PosterPackage posterPackageApp=posterPackageService.findById(ap.getItemId(), PosterPackage.class);
+					
+					//查询海报红包
+					if(posterPackageApp!=null){
+						ap.setTitle(posterPackageApp.getTitle());
+					}
+					
+					break;
+				case 2:
+					
+					MediaPackage mediaPackageApp=mediaPackageService.findById(ap.getItemId(), MediaPackage.class);
+					
+					if(mediaPackageApp!=null){
+						ap.setTitle(mediaPackageApp.getTitle());
+					}
+					
+					break;
+				}
+				
+				
+				
+				
 			}
 		}
 		

@@ -127,13 +127,25 @@ public class Appoint  extends BaseEntity {
 	
 	private AppUser appUser;
 	
+	private String title;
 	
 	
 	//concstructor
 
+	
+	
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;
+	}
+
+	@Transient
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setAppUser(AppUser appUser) {
