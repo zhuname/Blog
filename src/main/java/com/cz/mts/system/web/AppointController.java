@@ -114,7 +114,7 @@ public class AppointController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		
-		Finder finder=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status!=1");
+		Finder finder=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status!=0");
 		
 		// ==执行分页查询
 		List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,appoint);
