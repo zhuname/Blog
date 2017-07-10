@@ -162,9 +162,34 @@ public class Activity  extends BaseEntity {
 	
 	private Integer attenedCount;
 	
+	private Integer isAttr;
+	private Integer isColl;
+	
 	//concstructor
 
 	public Activity(){
+	}
+
+	
+	
+	
+	
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
+
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
+
+	@Transient
+	public Integer getIsColl() {
+		return isColl;
+	}
+
+	public void setIsColl(Integer isColl) {
+		this.isColl = isColl;
 	}
 
 	public Activity(

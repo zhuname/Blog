@@ -102,11 +102,30 @@ public class JoinActivity  extends BaseEntity {
 	
 	private List<Oper> opers;
 	
+	private Integer isAttr;
+	private Integer isColl;
+	
 	//concstructor
 
 	public JoinActivity(){
 	}
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
 
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
+
+	@Transient
+	public Integer getIsColl() {
+		return isColl;
+	}
+
+	public void setIsColl(Integer isColl) {
+		this.isColl = isColl;
+	}
 	public JoinActivity(
 		java.lang.Integer id
 	){

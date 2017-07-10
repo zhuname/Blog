@@ -36,7 +36,7 @@ public class CityCircleServiceImpl extends BaseSpringrainServiceImpl implements 
 	public String  saveorupdate(Object entity ) throws Exception{
 	      CityCircle cityCircle=(CityCircle) entity;
 	      
-	      if(cityCircle.getItemId()==null||cityCircle.getMoney()!=null||cityCircle.getContent()!=null||cityCircle.getUserId()!=null){
+	      if(cityCircle.getItemId()==null||cityCircle.getMoney()==null||cityCircle.getContent()==null||cityCircle.getUserId()==null){
 	    	  throw new ParameterErrorException();
 	      }
 	      

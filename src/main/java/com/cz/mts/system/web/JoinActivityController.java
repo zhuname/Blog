@@ -16,14 +16,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Awards;
+import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.exception.HaveUserErrorException;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IAwardsService;
+import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.impl.AppUserServiceImpl;
@@ -54,6 +59,10 @@ public class JoinActivityController  extends BaseController {
 	private IAwardsService awardsService;
 	@Resource
 	private IOperService operService;
+	@Resource
+	private ICollectService collectService;
+	@Resource
+	private IAttentionService attentionService;
 	
 	private String listurl="/system/joinactivity/joinactivityList";
 	
@@ -93,7 +102,7 @@ public class JoinActivityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		
+		String  appuserId=request.getParameter("appuserId");
 		
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
 		
@@ -135,7 +144,49 @@ public class JoinActivityController  extends BaseController {
 			
 			List<Oper> opers = operService.queryForList(finderOper,Oper.class);
 			
+			for (Oper oper : opers) {
+				if(oper.getUserId()!=null){
+					AppUser appUser = appUserService.findAppUserById(oper.getUserId());
+					if(appUser!=null){
+						
+						oper.setNickName(appUser.getName());
+						
+					}
+				}
+				
+			}
+			
+			
 			joinActivity2.setOpers(opers);
+			
+			if(StringUtils.isNotBlank(appuserId)){
+					
+					//查询是否收藏
+					Finder collFinder=Finder.getSelectFinder(Collect.class).append(" where type = 4 and userId=:userId and itemId=:itemId ");
+					collFinder.setParam("userId", Integer.parseInt(appuserId));
+					collFinder.setParam("itemId", joinActivity2.getId());
+					List<Collect> collects = collectService.findListDataByFinder(collFinder, page, Collect.class, null);
+					if(collects!=null&&collects.size()>0){
+						joinActivity2.setIsColl(1);
+					}else {
+						joinActivity2.setIsColl(0);
+					}
+					
+					//查询是否关注
+					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+					attenFinder.setParam("userId", Integer.parseInt(appuserId));
+					attenFinder.setParam("itemId", joinActivity2.getUserId());
+					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+					if(attens!=null&&attens.size()>0){
+						joinActivity2.setIsAttr(1);
+					}else {
+						joinActivity2.setIsAttr(0);
+					}
+					
+				
+			}
+			
+			
 			
 		}
 		
