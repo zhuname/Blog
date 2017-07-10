@@ -188,7 +188,9 @@ public class AppointController  extends BaseController {
 		try {
 		
 		
-			appointService.saveorupdate(appoint);
+			Object id = appointService.saveorupdate(appoint);
+			
+			appoint = appointService.findAppointById(id);
 			
 		} catch (ParameterErrorException e) {
 			logger.error("参数缺失");
@@ -200,6 +202,7 @@ public class AppointController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
+		returnObject.setData(appoint);
 		return returnObject;
 	
 	}
