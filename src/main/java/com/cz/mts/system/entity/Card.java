@@ -162,6 +162,19 @@ public class Card  extends BaseEntity {
 	
 	private Category category;
 	
+	private Integer lqNum;
+	
+	
+	
+	@Transient
+	public Integer getLqNum() {
+		return lqNum;
+	}
+
+	public void setLqNum(Integer lqNum) {
+		this.lqNum = lqNum;
+	}
+
 	@Transient
 	public Category getCategory() {
 		return category;

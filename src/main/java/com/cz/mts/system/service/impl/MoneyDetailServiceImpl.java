@@ -276,27 +276,11 @@ public class MoneyDetailServiceImpl extends BaseSpringrainServiceImpl implements
 						returnObject.setMessage("该用户不存在");
 					}
 					
-//					UserMedal userMedal = new UserMedal();
-//					userMedal.setUserId(md.getUserId());
-//					Page newPage = new Page();
-//					//获取勋章列表
-//					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-//					if(null != userMedals && userMedals.size() > 0){
-//						for (UserMedal um : userMedals) {
-//							if(null != um.getMedalId()){
-//								Medal medal = medalService.findMedalById(um.getMedalId());
-//								if(null != medal){
-//									um.setMedal(medal);
-//								}
-//							}
-//						}
-//						md.setUserMedals(userMedals);
-//					}
-					if(null != appUser.getUserMedals()){
+					if(null != appUser && null != appUser.getUserMedals()){
 						md.setUserMedals(appUser.getUserMedals());
 					}
-					md.setRemainMoney(remainMoney);
-					md.setMoneyCount(moneyCount);
+					md.setRemainMoney(new BigDecimal(remainMoney).doubleValue());
+					md.setMoneyCount(new BigDecimal(moneyCount).doubleValue());
 				}
 			}
 			returnObject.setQueryBean(moneyDetail);

@@ -41,6 +41,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPasswordService;
 import com.cz.mts.system.service.ISmsService;
 import com.cz.mts.system.service.IUserMedalService;
@@ -71,6 +72,8 @@ public class AppUserController  extends BaseController {
 	private IApplyMedalService applyMedalService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private IMoneyDetailService moneyDetailService;
 	
 	
 	private String listurl="/appuser/appuserList";
@@ -1345,7 +1348,41 @@ public class AppUserController  extends BaseController {
 			logger.error(e.getMessage(), e);
 		}
 		return returnObject;
-	}
+	} 
+	
+	
+	/**
+	 * 首页统计
+	 * @author wj
+	 * @param model
+	 * @param appUser
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/indexStatics/json")
+	@SecurityApi
+	public @ResponseBody ReturnDatas indexStaticsJson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		try {
+			if(null != appUser.getId() && null != appUser.getCityId()){
+				Finder sumMoneyFinder = new Finder("SELECT SUM(money) as sumMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=14 OR type=15) and userId=:userId");
+				sumMoneyFinder.setParam("userId", appUser.getId());
+				List sumMoneyList = moneyDetailService.queryForList(sumMoneyFinder);
+				returnObject.setData(sumMoneyList);
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("参数缺失");
+			}
+			
+				
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return returnObject;
+	} 
+	
 	
 	
 	

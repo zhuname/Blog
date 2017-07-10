@@ -145,10 +145,20 @@ public class UserCard  extends BaseEntity {
 	private String cardName;
 	
 	private Double plateMoney;
+	
+	private Integer lqNum;
 
 	
 	
-	
+	@Transient
+	public Integer getLqNum() {
+		return lqNum;
+	}
+
+	public void setLqNum(Integer lqNum) {
+		this.lqNum = lqNum;
+	}
+
 	@WhereSQL(sql="plateMoney=:UserCard_plateMoney")
 	public Double getPlateMoney() {
 		return plateMoney;
