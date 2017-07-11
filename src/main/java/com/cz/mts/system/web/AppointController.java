@@ -319,48 +319,89 @@ public class AppointController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		// ==执行分页查询
-		Finder finder = Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status != 0 and type=:type and itemId=:itemId");
-		finder.setParam("type", appoint.getType());
-		finder.setParam("itemId", appoint.getItemId());
-		List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,null);
-		if(null != datas && datas.size() > 0){
-			for (Appoint ap : datas) {
-				if(null != ap.getUserId()){
-					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
-					if(null != appUser){
-						ap.setAppUser(appUser);
+		if(null == appoint.getType() || null == appoint.getItemId()){
+			returnObject.setMessage("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}else{
+			// ==执行分页查询
+			Finder finder = Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status != 0 and type=:type and itemId=:itemId");
+			finder.setParam("type", appoint.getType());
+			finder.setParam("itemId", appoint.getItemId());
+			List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,null);
+			if(null != datas && datas.size() > 0){
+				for (Appoint ap : datas) {
+					if(null != ap.getUserId()){
+						AppUser appUser = appUserService.findAppUserById(ap.getUserId());
+						if(null != appUser){
+							ap.setAppUser(appUser);
+						}
 					}
 				}
 			}
+			returnObject.setData(datas);
 		}
 		
-		//查询预约次数以及预约总金额
-		Integer appointCount = 0;
-		Double appintMoney = 0.0;
-		Page newPage = new Page();
-		List<Appoint> allAppoints = appointService.findListDataByFinder(finder,newPage,Appoint.class,null);
-		if(null != allAppoints && allAppoints.size() > 0){
-			appointCount = allAppoints.size();
-			for (Appoint app : allAppoints) {
-				if(null != app.getMoney()){
-					appintMoney += app.getMoney();
-				}
-			}
-		}else{
-			appointCount = 0;
-			appintMoney = 0.0;
-		}
-		
-		Appoint appo = new Appoint();
-		appo.setAppointCount(appointCount);
-		appo.setAppintMoney(appintMoney);
-		
-		datas.add(appo);
 		
 		returnObject.setQueryBean(appoint);
 		returnObject.setPage(page);
-		returnObject.setData(datas);
+		
+		return returnObject;
+	}
+	
+	
+	
+	
+	/**
+	 * 预约统计列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param appoint
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/appointStatics/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas appointStaticjson(HttpServletRequest request, Model model,Appoint appoint) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		if(null == appoint.getType() || null == appoint.getItemId()){
+			returnObject.setMessage("参数缺失");
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}else{
+			Finder finder = Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status != 0 and type=:type and itemId=:itemId");
+			finder.setParam("type", appoint.getType());
+			finder.setParam("itemId", appoint.getItemId());
+			//查询预约次数以及预约总金额
+			Integer appointCount = 0;
+			Double appintMoney = 0.0;
+			Page newPage = new Page();
+			newPage.setPageSize(100000);
+			List<Appoint> allAppoints = appointService.findListDataByFinder(finder,newPage,Appoint.class,null);
+			if(null != allAppoints && allAppoints.size() > 0){
+				appointCount = allAppoints.size();
+				for (Appoint app : allAppoints) {
+					if(null != app.getMoney()){
+						appintMoney += app.getMoney();
+					}
+				}
+			}else{
+				appointCount = 0;
+				appintMoney = 0.0;
+			}
+			Map<String, Object> map = new HashMap<>();
+			map.put("appointCount", appointCount);
+			map.put("appintMoney", new BigDecimal(appintMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+			
+			returnObject.setData(map);
+		}
+		
+		returnObject.setQueryBean(appoint);
+		returnObject.setPage(page);
+		
 		return returnObject;
 	}
 	
