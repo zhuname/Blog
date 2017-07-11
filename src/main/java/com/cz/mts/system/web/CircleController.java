@@ -178,7 +178,7 @@ public class CircleController  extends BaseController {
 			if(StringUtils.isNotBlank(appuserId)){
 				
 				//查询是否关注
-				Finder operFinder=Finder.getSelectFinder(Attention.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
+				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
 				operFinder.setParam("userId", Integer.parseInt(appuserId));
 				operFinder.setParam("itemId", circle2.getId());
 				List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
