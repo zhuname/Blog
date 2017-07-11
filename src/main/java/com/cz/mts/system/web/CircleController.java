@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,12 +38,6 @@ import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Circle;
-import com.cz.mts.system.exception.ParameterErrorException;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.ICircleService;
-import com.cz.mts.system.service.IShieldService;
 
 
 /**
@@ -268,7 +264,7 @@ public class CircleController  extends BaseController {
 					
 					//查询是否关注
 				  	Page page = newPage(request);
-					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
+					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=7 and userId=:userId and itemId=:itemId ");
 					operFinder.setParam("userId", Integer.parseInt(appuserId));
 					operFinder.setParam("itemId", circle.getId());
 					List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
