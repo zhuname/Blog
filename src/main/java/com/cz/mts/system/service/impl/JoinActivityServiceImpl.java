@@ -4,17 +4,16 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.cz.mts.system.entity.JoinActivity;
-import com.cz.mts.system.exception.HaveUserErrorException;
-import com.cz.mts.system.exception.ParameterErrorException;
-import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.system.entity.JoinActivity;
+import com.cz.mts.system.exception.HaveUserErrorException;
+import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.IJoinActivityService;
 
 
 /**

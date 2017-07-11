@@ -107,7 +107,9 @@ public class Circle  extends BaseEntity {
 	private Integer height;
 	private Integer width;
 	
-	
+	private Integer isOper;
+	private Integer isShield;
+	private Integer isAttr;
 	
 	
 	//columns END 数据库字段结束
@@ -148,7 +150,33 @@ public class Circle  extends BaseEntity {
 	}
 	
 	
-	
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
+
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
+
+	@Transient
+	public Integer getIsShield() {
+		return isShield;
+	}
+
+	public void setIsShield(Integer isShield) {
+		this.isShield = isShield;
+	}
+
+	@Transient
+	public Integer getIsOper() {
+		return isOper;
+	}
+
+	public void setIsOper(Integer isOper) {
+		this.isOper = isOper;
+	}
+
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;

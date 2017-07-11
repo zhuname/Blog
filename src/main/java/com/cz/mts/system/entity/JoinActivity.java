@@ -1,6 +1,5 @@
 package com.cz.mts.system.entity;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.persistence.Id;
