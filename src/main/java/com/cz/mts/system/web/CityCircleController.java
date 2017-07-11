@@ -157,7 +157,10 @@ public class CityCircleController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			cityCircleService.saveorupdate(cityCircle);
+			Object id = cityCircleService.saveorupdate(cityCircle);
+			CityCircle cCircle = cityCircleService.findCityCircleById(id);
+			returnObject.setData(cCircle);
+			
 			
 		} catch (ParameterErrorException e) {
 			logger.error("参数缺失");
