@@ -19,10 +19,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.Collect;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICircleService;
+import com.cz.mts.system.service.ICollectService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IShieldService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -49,6 +55,12 @@ public class CircleController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IShieldService shieldService;
+	@Resource
+	private ICollectService collectService;
+	@Resource
+	private IAttentionService attentionService;
+	@Resource
+	private IOperService operService;
 	
 	
 	private String listurl="/system/circle/circleList";
@@ -157,6 +169,23 @@ public class CircleController  extends BaseController {
 				  }
 			  }
 			
+			
+			if(StringUtils.isNotBlank(appuserId)){
+				
+				//查询是否关注
+				Finder operFinder=Finder.getSelectFinder(Attention.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
+				operFinder.setParam("userId", Integer.parseInt(appuserId));
+				operFinder.setParam("itemId", circle2.getId());
+				List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
+				if(opers!=null&&opers.size()>0){
+					circle2.setIsOper(1);
+				}else {
+					circle2.setIsOper(0);
+				}
+				
+			
+			}
+			
 		}
 		
 		returnObject.setQueryBean(circle);
@@ -196,6 +225,7 @@ public class CircleController  extends BaseController {
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
+		  String  appuserId=request.getParameter("appuserId");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
@@ -206,6 +236,24 @@ public class CircleController  extends BaseController {
 			  if(appUser!=null){
 				  circle.setAppUser(appUser);
 			  }
+			  
+			  
+			  if(StringUtils.isNotBlank(appuserId)){
+					
+					//查询是否关注
+				  	Page page = newPage(request);
+					Finder operFinder=Finder.getSelectFinder(Attention.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
+					operFinder.setParam("userId", Integer.parseInt(appuserId));
+					operFinder.setParam("itemId", circle.getId());
+					List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
+					if(opers!=null&&opers.size()>0){
+						circle.setIsOper(1);
+					}else {
+						circle.setIsOper(0);
+					}
+					
+				
+				}
 		  }
 		returnObject.setData(circle);
 		}else{

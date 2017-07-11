@@ -161,16 +161,16 @@ public class JoinActivityController  extends BaseController {
 			
 			if(StringUtils.isNotBlank(appuserId)){
 					
-					//查询是否收藏
+					/*//查询是否收藏
 					Finder collFinder=Finder.getSelectFinder(Collect.class).append(" where type = 4 and userId=:userId and itemId=:itemId ");
 					collFinder.setParam("userId", Integer.parseInt(appuserId));
-					collFinder.setParam("itemId", joinActivity2.getId());
+					collFinder.setParam("itemId", joinActivity2.getActivityId());
 					List<Collect> collects = collectService.findListDataByFinder(collFinder, page, Collect.class, null);
 					if(collects!=null&&collects.size()>0){
 						joinActivity2.setIsColl(1);
 					}else {
 						joinActivity2.setIsColl(0);
-					}
+					}*/
 					
 					//查询是否关注
 					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
