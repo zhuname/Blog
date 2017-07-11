@@ -194,6 +194,17 @@ public class CircleController  extends BaseController {
 				}else {
 					circle2.setIsShield(0);
 				}
+				
+				//查询是否关注
+				Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+				attenFinder.setParam("userId", Integer.parseInt(appuserId));
+				attenFinder.setParam("itemId", circle2.getUserId());
+				List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+				if(attens!=null&&attens.size()>0){
+					circle2.setIsAttr(1);
+				}else {
+					circle2.setIsAttr(0);
+				}
 			
 			}
 			
@@ -273,6 +284,17 @@ public class CircleController  extends BaseController {
 						circle.setIsShield(1);
 					}else {
 						circle.setIsShield(0);
+					}
+					
+					//查询是否关注
+					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+					attenFinder.setParam("userId", Integer.parseInt(appuserId));
+					attenFinder.setParam("itemId", circle.getUserId());
+					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+					if(attens!=null&&attens.size()>0){
+						circle.setIsAttr(1);
+					}else {
+						circle.setIsAttr(0);
 					}
 				
 				}
