@@ -287,7 +287,7 @@ public class ActivityController  extends BaseController {
 				finder.append(",aduitSuccessTime DESC");
 				break;
 			case "2":
-				finder.append(",commentCount DESC");
+				finder.append(",joinCount DESC");
 				break;
 			case "3":
 				finder.append(",endTime DESC");

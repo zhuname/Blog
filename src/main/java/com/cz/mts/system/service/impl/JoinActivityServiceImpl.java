@@ -53,6 +53,12 @@ public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implement
 	      
 	      List<JoinActivity> datas=super.findListDataByFinder(finder,null,JoinActivity.class,null);
 	      
+	      
+	      //更新activity表的参与数量
+	      Finder activityFinder = new Finder("UPDATE t_activity SET joinCount=joinCount+1 WHERE id=:id");
+	      activityFinder.setParam("id", joinActivity.getActivityId());
+	      super.update(activityFinder);
+	      
 	      if(datas!=null&&datas.size()>0){
 	    	  throw new HaveUserErrorException();
 	      }
