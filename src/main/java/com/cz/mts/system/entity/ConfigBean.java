@@ -43,8 +43,6 @@ public class ConfigBean implements Serializable{
 	private String appExplain;
 	private String appVersionNumber;
 	
-	
-	
 	public String getAppDownload() {
 		return appDownload;
 	}

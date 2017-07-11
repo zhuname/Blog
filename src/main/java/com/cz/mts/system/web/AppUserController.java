@@ -1342,7 +1342,7 @@ public class AppUserController  extends BaseController {
 				map.put("sumPerson", sumPerson);
 				map.put("sumMoney", sumMoney);
 				map.put("snachMoney", snachMoney);
-				returnObject.setMap(map);
+				returnObject.setData(map);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -1520,7 +1520,7 @@ public class AppUserController  extends BaseController {
 				
 				
 				
-				returnObject.setMap(map);
+				returnObject.setData(map);
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
