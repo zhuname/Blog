@@ -124,7 +124,11 @@ public class AliPayController extends BaseController {
 			case"R":
 				appUserService.alipay(code, 4, Double.parseDouble(money), tradeNo, 1);
 				break;
-			case "":
+			case"A":
+				appUserService.alipay(code, 5, Double.parseDouble(money), tradeNo, 1);
+				break;
+			case "D":
+				appUserService.alipay(code, 6, Double.parseDouble(money), tradeNo, 1);
 				break;
 			}
 			

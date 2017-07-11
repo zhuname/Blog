@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -177,101 +178,116 @@ public class OperController  extends BaseController {
 				returnObject.setMessage("参数缺失");
 				returnObject.setStatus(ReturnDatas.ERROR);
 			}else{
-				oper.setCreateTime(new Date());
-				Integer type = oper.getType();
-				PosterPackage posterPackage = null;
-				MediaPackage mediaPackage = null;
-				Circle circle = null;
-				JoinActivity joinActivity = null;
-				if(1 == type || 2 == type){
-					posterPackage = posterPackageService.findPosterPackageById(oper.getItemId());
-				}
-				if(3 == type || 4 == type){
-					mediaPackage = mediaPackageService.findMediaPackageById(oper.getItemId());
-				}
-				if(5 == type || 6 == type){
-					joinActivity = joinActivityService.findJoinActivityById(oper.getItemId());
-				}
-				if(7 == type || 8 == type){
-					circle = circleService.findCircleById(oper.getItemId());
-				}
-				//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
-				switch (type) {
-				case 1:
-					if(null != posterPackage){
-						if(null == posterPackage.getTopCount()){
-							posterPackage.setTopCount(0);
+				//先判断该用户是否已经点过赞
+				Finder finder = Finder.getSelectFinder(Oper.class).append("where 1=1 and type in (1,3,6,7) and itemId=:itemId and userId = :userId");
+				finder.setParam("itemId", oper.getItemId());
+				finder.setParam("userId", oper.getUserId());
+				List<Oper> opers = operService.queryForList(finder, Oper.class);
+				if(null != opers && opers.size() > 0){
+					for (Oper op : opers) {
+						if(oper.getType() == op.getType()){
+							returnObject.setMessage("已经点过赞了不能重复点赞");
+							returnObject.setStatus(ReturnDatas.ERROR);
 						}
-						posterPackage.setTopCount(posterPackage.getTopCount() + 1);
-						posterPackageService.update(posterPackage,true);
 					}
-					break;
+				}else{
+					oper.setCreateTime(new Date());
+					Integer type = oper.getType();
+					PosterPackage posterPackage = null;
+					MediaPackage mediaPackage = null;
+					Circle circle = null;
+					JoinActivity joinActivity = null;
+					if(1 == type || 2 == type){
+						posterPackage = posterPackageService.findPosterPackageById(oper.getItemId());
+					}
+					if(3 == type || 4 == type){
+						mediaPackage = mediaPackageService.findMediaPackageById(oper.getItemId());
+					}
+					if(5 == type || 6 == type){
+						joinActivity = joinActivityService.findJoinActivityById(oper.getItemId());
+					}
+					if(7 == type || 8 == type){
+						circle = circleService.findCircleById(oper.getItemId());
+					}
+					//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
+					switch (type) {
+					case 1:
+						if(null != posterPackage){
+							if(null == posterPackage.getTopCount()){
+								posterPackage.setTopCount(0);
+							}
+							posterPackage.setTopCount(posterPackage.getTopCount() + 1);
+							posterPackageService.update(posterPackage,true);
+						}
+						break;
 
-				case 2:
-					if(null != posterPackage){
-						if(null == posterPackage.getCommentCount()){
-							posterPackage.setCommentCount(0);
+					case 2:
+						if(null != posterPackage){
+							if(null == posterPackage.getCommentCount()){
+								posterPackage.setCommentCount(0);
+							}
+							posterPackage.setCommentCount(posterPackage.getCommentCount() + 1);
+							posterPackageService.update(posterPackage,true);
 						}
-						posterPackage.setCommentCount(posterPackage.getCommentCount() + 1);
-						posterPackageService.update(posterPackage,true);
-					}
-					break;
-				case 3:
-					if(null != mediaPackage){
-						if(null == mediaPackage.getTopCount()){
-							mediaPackage.setTopCount(0);
+						break;
+					case 3:
+						if(null != mediaPackage){
+							if(null == mediaPackage.getTopCount()){
+								mediaPackage.setTopCount(0);
+							}
+							mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
+							mediaPackageService.update(mediaPackage,true);
 						}
-						mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
-						mediaPackageService.update(mediaPackage,true);
-					}
-					break;
-				case 4:
-					if(null != mediaPackage){
-						if(null == mediaPackage.getCommentCount()){
-							mediaPackage.setCommentCount(0);
+						break;
+					case 4:
+						if(null != mediaPackage){
+							if(null == mediaPackage.getCommentCount()){
+								mediaPackage.setCommentCount(0);
+							}
+							mediaPackage.setCommentCount(mediaPackage.getCommentCount() + 1);
+							mediaPackageService.update(mediaPackage,true);
 						}
-						mediaPackage.setCommentCount(mediaPackage.getCommentCount() + 1);
-						mediaPackageService.update(mediaPackage,true);
-					}
-					break;
-				case 5:
-					if(null != joinActivity){
-						if(null == joinActivity.getCommentCount()){
-							joinActivity.setCommentCount(0);
+						break;
+					case 5:
+						if(null != joinActivity){
+							if(null == joinActivity.getCommentCount()){
+								joinActivity.setCommentCount(0);
+							}
+							joinActivity.setCommentCount(joinActivity.getCommentCount() + 1);
+							joinActivityService.update(joinActivity,true);
 						}
-						joinActivity.setCommentCount(joinActivity.getCommentCount() + 1);
-						joinActivityService.update(joinActivity,true);
-					}
-					break;
-				case 6:
-					if(null != joinActivity){
-						if(null == joinActivity.getTopCount()){
-							joinActivity.setTopCount(0);
+						break;
+					case 6:
+						if(null != joinActivity){
+							if(null == joinActivity.getTopCount()){
+								joinActivity.setTopCount(0);
+							}
+							joinActivity.setTopCount(joinActivity.getTopCount() + 1);
+							joinActivityService.update(joinActivity,true);
 						}
-						joinActivity.setTopCount(joinActivity.getTopCount() + 1);
-						joinActivityService.update(joinActivity,true);
-					}
-					break;
-				case 7:
-					if(null != circle){
-						if(null == circle.getTopCount()){
-							circle.setTopCount(0);
+						break;
+					case 7:
+						if(null != circle){
+							if(null == circle.getTopCount()){
+								circle.setTopCount(0);
+							}
+							circle.setTopCount(circle.getTopCount() + 1);
+							circleService.update(circle,true);
 						}
-						circle.setTopCount(circle.getTopCount() + 1);
-						circleService.update(circle,true);
-					}
-					break;
-				case 8:
-					if(null != circle){
-						if(null == circle.getCommentCount()){
-							circle.setCommentCount(0);
+						break;
+					case 8:
+						if(null != circle){
+							if(null == circle.getCommentCount()){
+								circle.setCommentCount(0);
+							}
+							circle.setCommentCount(circle.getCommentCount() + 1);
+							circleService.update(circle,true);
 						}
-						circle.setCommentCount(circle.getCommentCount() + 1);
-						circleService.update(circle,true);
+						break;
 					}
-					break;
+					operService.saveorupdate(oper);
 				}
-				operService.saveorupdate(oper);
+				
 			}
 			
 			
