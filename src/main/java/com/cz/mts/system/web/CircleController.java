@@ -127,7 +127,7 @@ public class CircleController  extends BaseController {
 				page.setSort("desc");
 				
 				if(StringUtils.isNotBlank(appuserId)){
-					finder.append(" and id not In (select itemId from t_shield where userId=:userId)");
+					finder.append(" and userId not In (select itemId from t_shield where userId=:userId)");
 					finder.setParam("userId", Integer.parseInt(appuserId));
 				}
 				break;
@@ -139,7 +139,7 @@ public class CircleController  extends BaseController {
 				break;
 			case "3":
 				if(StringUtils.isNotBlank(appuserId)){
-					finder.append(" and id In (select itemId from t_shield where userId=:userId)");
+					finder.append(" and userId In (select itemId from t_shield where userId=:userId)");
 					finder.setParam("userId", Integer.parseInt(appuserId));
 				}
 				break;
