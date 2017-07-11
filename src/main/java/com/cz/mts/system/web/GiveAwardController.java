@@ -244,9 +244,6 @@ public class GiveAwardController  extends BaseController {
 						
 						giveAwardService.saveorupdate(giveAward);
 						
-						
-						
-						
 				  }
 				
 			}else {

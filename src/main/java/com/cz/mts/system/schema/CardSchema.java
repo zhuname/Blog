@@ -1,19 +1,30 @@
 
 package com.cz.mts.system.schema;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+import org.apache.lucene.store.SleepingLockWrapper;
 import org.eclipse.jetty.util.log.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.cz.mts.frame.common.BaseLogger;
 import com.cz.mts.frame.util.Finder;
+import com.cz.mts.frame.util.HttpUtils;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
+import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserCard;
@@ -21,6 +32,7 @@ import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IPosterPackageService;
@@ -48,6 +60,8 @@ public class CardSchema extends BaseLogger{
 	private IPosterPackageService posterPackageService;
 	@Resource
 	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ICityService cityService;
 	
 	/**
 	 * 卡券到期前三天发推送
@@ -242,6 +256,72 @@ public class CardSchema extends BaseLogger{
 				mediaPackage.setIsValid(1);
 				mediaPackageService.update(mediaPackage,true);
 			}
+		}
+	}
+	
+	
+	/**
+	 * 视频红包领取完毕之后超过三天自动下线
+	 */
+	@Scheduled(cron="0 0 0 * * ?")
+	public void tianqi() throws Exception{
+		logger.info("获取天气");
+		
+		Finder finder=Finder.getSelectFinder(City.class).append(" where open=1 ");
+		
+		List<City> citys=cityService.queryForList(finder, City.class);
+		
+		for (City city : citys) {
+		
+		String host = "http://jisutqybmf.market.alicloudapi.com";
+	    String path = "/weather/query";
+	    String method = "GET";
+	    String appcode = "3cfec02bee26451fa2743d25adc4a5f2";
+	    Map<String, String> headers = new HashMap<String, String>();
+	    //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
+	    headers.put("Authorization", "APPCODE " + appcode);
+	    Map<String, String> querys = new HashMap<String, String>();
+	    querys.put("city", city.getName());
+	    /* querys.put("citycode", "citycode");
+	    querys.put("cityid", "cityid");
+	    querys.put("ip", "ip");
+	    querys.put("location", "location");*/
+
+	    try {
+	    	/**
+	    	* 重要提示如下:
+	    	* HttpUtils请从
+	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/src/main/java/com/aliyun/api/gateway/demo/util/HttpUtils.java
+	    	* 下载
+	    	*
+	    	* 相应的依赖请参照
+	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/pom.xml
+	    	*/
+	    	HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
+	    	//System.out.println(response.toString());
+	    	//获取response的body
+	    	//System.out.println(EntityUtils.toString(response.getEntity()));
+	    	JSONArray jsonArray = JSONArray.fromObject("["+EntityUtils.toString(response.getEntity())+"]");
+	    	for (int i = 0; i < jsonArray.size(); i++) {
+				
+				JSONArray jsonCity = JSONArray.fromObject("["+jsonArray.getJSONObject(i).getString("result")+"]");
+				System.out.println(jsonCity.toString());
+				for (int k = 0; k < jsonCity.size(); k++) {
+					
+					city.setWeather(jsonCity.getJSONObject(k).getString("weather"));
+					city.setDate(jsonCity.getJSONObject(k).getString("date"));
+					city.setTemphigh(jsonCity.getJSONObject(k).getString("temphigh"));
+					city.setTemplow(jsonCity.getJSONObject(k).getString("templow"));
+					
+					cityService.update(city, true);
+				}
+	        }
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    }
+	    
+	    TimeUnit.SECONDS.sleep(4);
+	    
 		}
 	}
 	

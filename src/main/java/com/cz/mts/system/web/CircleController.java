@@ -174,7 +174,7 @@ public class CircleController  extends BaseController {
 			if(StringUtils.isNotBlank(appuserId)){
 				
 				//查询是否关注
-				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
+				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=7 and userId=:userId and itemId=:itemId ");
 				operFinder.setParam("userId", Integer.parseInt(appuserId));
 				operFinder.setParam("itemId", circle2.getId());
 				List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
@@ -187,7 +187,7 @@ public class CircleController  extends BaseController {
 				//查询是否关注
 				Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
 				shieldFinder.setParam("userId", Integer.parseInt(appuserId));
-				shieldFinder.setParam("itemId", circle2.getId());
+				shieldFinder.setParam("itemId", circle2.getUserId());
 				List<Shield> shields = operService.findListDataByFinder(shieldFinder, page, Shield.class, null);
 				if(shields!=null&&shields.size()>0){
 					circle2.setIsShield(1);
@@ -278,7 +278,7 @@ public class CircleController  extends BaseController {
 					//查询是否关注
 					Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
 					shieldFinder.setParam("userId", Integer.parseInt(appuserId));
-					shieldFinder.setParam("itemId", circle.getId());
+					shieldFinder.setParam("itemId", circle.getUserId());
 					List<Shield> shields = operService.findListDataByFinder(shieldFinder, page, Shield.class, null);
 					if(shields!=null&&shields.size()>0){
 						circle.setIsShield(1);
