@@ -108,6 +108,7 @@ public class Circle  extends BaseEntity {
 	private Integer width;
 	
 	private Integer isOper;
+	private Integer isShield;
 	
 	
 	//columns END 数据库字段结束
@@ -147,7 +148,15 @@ public class Circle  extends BaseEntity {
 		this.id = value;
 	}
 	
-	
+	@Transient
+	public Integer getIsShield() {
+		return isShield;
+	}
+
+	public void setIsShield(Integer isShield) {
+		this.isShield = isShield;
+	}
+
 	@Transient
 	public Integer getIsOper() {
 		return isOper;

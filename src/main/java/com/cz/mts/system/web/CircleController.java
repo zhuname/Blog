@@ -23,6 +23,7 @@ import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.entity.Shield;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
@@ -183,6 +184,16 @@ public class CircleController  extends BaseController {
 					circle2.setIsOper(0);
 				}
 				
+				//查询是否关注
+				Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
+				shieldFinder.setParam("userId", Integer.parseInt(appuserId));
+				shieldFinder.setParam("itemId", circle2.getId());
+				List<Shield> shields = operService.findListDataByFinder(shieldFinder, page, Shield.class, null);
+				if(shields!=null&&shields.size()>0){
+					circle2.setIsShield(1);
+				}else {
+					circle2.setIsShield(0);
+				}
 			
 			}
 			
@@ -252,6 +263,17 @@ public class CircleController  extends BaseController {
 						circle.setIsOper(0);
 					}
 					
+					
+					//查询是否关注
+					Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
+					shieldFinder.setParam("userId", Integer.parseInt(appuserId));
+					shieldFinder.setParam("itemId", circle.getId());
+					List<Shield> shields = operService.findListDataByFinder(shieldFinder, page, Shield.class, null);
+					if(shields!=null&&shields.size()>0){
+						circle.setIsShield(1);
+					}else {
+						circle.setIsShield(0);
+					}
 				
 				}
 		  }
