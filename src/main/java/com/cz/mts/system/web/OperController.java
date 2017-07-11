@@ -179,15 +179,17 @@ public class OperController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.ERROR);
 			}else{
 				//先判断该用户是否已经点过赞
-				Finder finder = Finder.getSelectFinder(Oper.class).append("where 1=1 and type in (1,3,6,7) and itemId=:itemId and userId = :userId");
-				finder.setParam("itemId", oper.getItemId());
-				finder.setParam("userId", oper.getUserId());
-				List<Oper> opers = operService.queryForList(finder, Oper.class);
-				if(null != opers && opers.size() > 0){
-					for (Oper op : opers) {
-						if(oper.getType() == op.getType()){
-							returnObject.setMessage("已经点过赞了不能重复点赞");
-							returnObject.setStatus(ReturnDatas.ERROR);
+				if(1 == oper.getType() || 3 == oper.getType() || 6 == oper.getType() || 7 == oper.getType()){
+					Finder finder = Finder.getSelectFinder(Oper.class).append("where 1=1 and type in (1,3,6,7) and itemId=:itemId and userId = :userId");
+					finder.setParam("itemId", oper.getItemId());
+					finder.setParam("userId", oper.getUserId());
+					List<Oper> opers = operService.queryForList(finder, Oper.class);
+					if(null != opers && opers.size() > 0){
+						for (Oper op : opers) {
+							if(oper.getType() == op.getType()){
+								returnObject.setMessage("已经点过赞了不能重复点赞");
+								returnObject.setStatus(ReturnDatas.ERROR);
+							}
 						}
 					}
 				}else{
