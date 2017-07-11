@@ -250,9 +250,6 @@ public class GiveAwardController  extends BaseController {
 						giveAward.setCreateTime(new Date());
 						giveAwardService.saveorupdate(giveAward);
 						
-						
-						
-						
 				  }
 				
 			}else {

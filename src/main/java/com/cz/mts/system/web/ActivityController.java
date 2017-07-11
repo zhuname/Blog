@@ -101,7 +101,21 @@ public class ActivityController  extends BaseController {
 		// ==执行分页查询
 		List<Activity> datas=activityService.findListDataByFinder(null,page,Activity.class,activity);
 		
-		
+		for (Activity activity2 : datas) {
+			
+			if(activity2.getUserId()!=null){
+				  
+				  AppUser appUser=appUserService.findAppUserById(activity2.getUserId());
+				  
+				  if(appUser!=null){
+					  
+					  activity2.setAppUser(appUser);
+					  
+				  }
+				  
+			  }
+			
+		}
 		
 		returnObject.setQueryBean(activity);
 		returnObject.setPage(page);

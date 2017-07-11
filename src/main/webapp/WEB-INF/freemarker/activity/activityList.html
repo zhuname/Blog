@@ -66,10 +66,10 @@ function deleteActivity(){
 	</div>
 </div>
 
-   <div class="row">
+    <div class="row" style="overflow-x:scroll;">
             <div class="col-xs-12">
 	            <!--start_export-->
-                <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover">
+                <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover" style="width: 4500px">
                     <!--end_no_export-->
                     <!--first_start_export-->
                     <thead>
@@ -83,7 +83,8 @@ function deleteActivity(){
                         </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_type" >1图片 2视频</th>
+						<th id="th_userId" >发布人</th>
+						<th id="th_type" >类型</th>
 						<th id="th_image" >图片</th>
 						<th id="th_mediaUrl" >视频url</th>
 						<th id="th_content" >主题</th>
@@ -95,12 +96,11 @@ function deleteActivity(){
 						<th id="th_latitude" >纬度</th>
 						<th id="th_phone" >电话</th>
 						<th id="th_createTime" >创建时间</th>
-						<th id="th_userId" >发布人id</th>
 						<th id="th_topCount" >点赞次数</th>
 						<th id="th_commentCount" >评论次数</th>
 						<th id="th_winPrizePerson" >中奖人数</th>
 						<th id="th_sumWinPrizePerson" >总的中奖人数</th>
-						<th id="th_status" >1待审核 2失败 3通过 5过期</th>
+						<th id="th_status" >状态</th>
 						<th id="th_aduitSuccessTime" >审核成功时间</th>
 						<th id="th_reason" >拒绝原因</th>
 						<th id="th_aduitFailTime" >审核失败时间</th>
@@ -169,21 +169,33 @@ function deleteActivity(){
                                     </div>
                                 </td>
                                 <!--end_no_export-->
-
 							<td >
-								${(_data.type)!0}
+								<#if (_data.appUser) ??>
+									<#if (_data.appUser.name) ??>
+										${(_data.appUser.name)!''}
+									</#if>
+								</#if>
 							</td>
 							<td >
-								${(_data.image)!''}
+								<#if (_data.type) == 1 >
+									图片
+								</#if>
+								<#if (_data.type) == 2 >
+									视频
+								</#if>
 							</td>
 							<td >
-								${(_data.mediaUrl)!''}
+								<img  class="sim" src="${(_data.image)!''}" height="100px;" width="100px;" onclick="checkImg('${(_data.image)!''}','200px','200px');"/>
+							</td>
+							<td >
+								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
 							</td>
 							<td >
 								${(_data.content)!''}
 							</td>
 							<td >
-								${(_data.mediaImage)!''}
+								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="100px;" onclick="checkImg('${(_data.mediaImage)!''}','200px','200px');"/>
+								
 							</td>
 							<td >
 								${(_data.joinExplain)!''}
@@ -208,9 +220,7 @@ function deleteActivity(){
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd'))!''}
 							</td>
-							<td >
-								${(_data.userId)!0}
-							</td>
+							
 							<td >
 								${(_data.topCount)!0}
 							</td>
@@ -224,7 +234,18 @@ function deleteActivity(){
 								${(_data.sumWinPrizePerson)!0}
 							</td>
 							<td >
-								${(_data.status)!0}
+								<#if (_data.status) == 1 >
+									待审核
+								</#if>
+								<#if (_data.status) == 2 >
+									失败
+								</#if>
+								<#if (_data.status) == 3 >
+									通过
+								</#if>
+								<#if (_data.status) == 5 >
+									过期
+								</#if>
 							</td>
 							<td >
 								<!--日期型-->
