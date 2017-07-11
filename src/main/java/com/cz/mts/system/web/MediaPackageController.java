@@ -230,6 +230,7 @@ public class MediaPackageController  extends BaseController {
 					 Oper oper = new Oper();
 					 oper.setUserId(Integer.parseInt(appUserId));
 					 oper.setItemId(mediaPackage.getId());
+					 oper.setType(3);
 					 Page operPage = newPage(request);
 					 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
 					 if(null != opers && opers.size() > 0){
