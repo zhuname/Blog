@@ -251,7 +251,6 @@ public class JoinActivityController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
 			joinActivityService.saveorupdate(joinActivity);
 			
 		} catch (HaveUserErrorException e) {

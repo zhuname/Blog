@@ -64,7 +64,52 @@ public class City  extends BaseEntity {
 	private String fatherName;
 	
 	
+	private String date;
+	private String weather;
+	private String temphigh;
+	private String templow;
+	
+	
+	
+	
+	
 	//concstructor
+
+	 @WhereSQL(sql="date=:City_date")
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	 @WhereSQL(sql="weather=:City_weather")
+	public String getWeather() {
+		return weather;
+	}
+
+	public void setWeather(String weather) {
+		this.weather = weather;
+	}
+
+	@WhereSQL(sql="temphigh=:City_temphigh")
+	public String getTemphigh() {
+		return temphigh;
+	}
+
+	public void setTemphigh(String temphigh) {
+		this.temphigh = temphigh;
+	}
+
+	@WhereSQL(sql="templow=:City_templow")
+	public String getTemplow() {
+		return templow;
+	}
+
+	public void setTemplow(String templow) {
+		this.templow = templow;
+	}
 
 	@Transient
 	public String getFatherName() {
@@ -140,6 +185,10 @@ public class City  extends BaseEntity {
 			.append("拼音首字母[").append(getCapital()).append("],")
 			.append("是否开通  1为开通0否[").append(getOpen()).append("],")
 			.append("父类id[").append(getFatherId()).append("],")
+			.append("日期[").append(getDate()).append("],")
+			.append("天气[").append(getWeather()).append("],")
+			.append("最高温度[").append(getTemphigh()).append("],")
+			.append("最低温度[").append(getTemplow()).append("],")
 			.toString();
 	}
 	

@@ -54,7 +54,6 @@ public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implement
 	      List<JoinActivity> datas=super.findListDataByFinder(finder,null,JoinActivity.class,null);
 	      
 	      if(datas!=null&&datas.size()>0){
-	    	  
 	    	  throw new HaveUserErrorException();
 	      }
 	      

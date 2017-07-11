@@ -25,6 +25,7 @@ import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.GiveAward;
+import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAwardsService;
@@ -205,30 +206,49 @@ public class GiveAwardController  extends BaseController {
 				  
 				  //判断是否已经有获奖的记录了
 				  if(giveAwards!=null&&giveAwards.size()>0){
-					  logger.error("已获奖");
+					    logger.error("已获奖");
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("已获奖");
+				  }else{
+
+						Awards awards = awardsService.findAwardsById(giveAward.getAwardId());
+						
+						if(awards!=null){
+							
+							
+							//更新同城活动参与表中该用户的奖项id
+							Finder joinFinder = new Finder("select * from t_join_activity where userId=:userId and activityId = :activityId");
+							joinFinder.setParam("userId", giveAward.getJoinUserId());
+							joinFinder.setParam("activityId", awards.getActivityId());
+							List<JoinActivity> joinActivities = joinActivityService.queryForList(joinFinder, JoinActivity.class);
+							if(null != joinActivities && joinActivities.size() > 0){
+								for (JoinActivity joinActivity : joinActivities) {
+									joinActivity.setAwardId(giveAward.getAwardId());
+									joinActivityService.update(joinActivity,true);
+								}
+							}
+							
+							
+							Activity activity=activityService.findActivityById(awards.getActivityId());
+							
+							if(activity!=null){
+								
+								activity.setWinPrizePerson(activity.getWinPrizePerson()+1);
+								activityService.update(activity, true);
+							}
+							
+							awards.setRemainCount(awards.getRemainCount()-1);
+							awardsService.update(awards, true);
+							
+						}
+						
+						giveAwardService.saveorupdate(giveAward);
+						
+						
+						
+						
 				  }
 				
-				
-				Awards awards = awardsService.findAwardsById(giveAward.getAwardId());
-				
-				if(awards!=null){
-					
-					Activity activity=activityService.findActivityById(awards.getActivityId());
-					
-					if(activity!=null){
-						
-						activity.setWinPrizePerson(activity.getWinPrizePerson()+1);
-						activityService.update(activity, true);
-					}
-					
-					awards.setRemainCount(awards.getRemainCount()-1);
-					awardsService.update(awards, true);
-					
-				}
-				
-				giveAwardService.saveorupdate(giveAward);
 			}else {
 				logger.error("参数缺失");
 				returnObject.setStatus(ReturnDatas.ERROR);
