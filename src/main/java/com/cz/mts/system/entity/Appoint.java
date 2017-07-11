@@ -130,11 +130,34 @@ public class Appoint  extends BaseEntity {
 	
 	private String title;
 	
+	private Integer appointCount;
+	private Double appintMoney;
+	
+	
+	
+	
 	
 	//concstructor
 
 	
-	
+	@Transient
+	public Integer getAppointCount() {
+		return appointCount;
+	}
+
+	public void setAppointCount(Integer appointCount) {
+		this.appointCount = appointCount;
+	}
+
+	@Transient
+	public Double getAppintMoney() {
+		return appintMoney;
+	}
+
+	public void setAppintMoney(Double appintMoney) {
+		this.appintMoney = appintMoney;
+	}
+
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;

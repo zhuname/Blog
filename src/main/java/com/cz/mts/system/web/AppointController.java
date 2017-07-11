@@ -352,10 +352,12 @@ public class AppointController  extends BaseController {
 			appintMoney = 0.0;
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("appointCount", appointCount);
-		map.put("appintMoney", new BigDecimal(appintMoney).setScale(2).doubleValue());
-		returnObject.setMap(map);
+		Appoint appo = new Appoint();
+		appo.setAppointCount(appointCount);
+		appo.setAppintMoney(appintMoney);
+		
+		datas.add(appo);
+		
 		returnObject.setQueryBean(appoint);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
