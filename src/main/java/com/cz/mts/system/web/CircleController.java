@@ -242,7 +242,7 @@ public class CircleController  extends BaseController {
 					
 					//查询是否关注
 				  	Page page = newPage(request);
-					Finder operFinder=Finder.getSelectFinder(Attention.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
+					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=6 and userId=:userId and itemId=:itemId ");
 					operFinder.setParam("userId", Integer.parseInt(appuserId));
 					operFinder.setParam("itemId", circle.getId());
 					List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
