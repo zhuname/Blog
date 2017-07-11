@@ -58,7 +58,7 @@ public class ActivityController  extends BaseController {
 	@Resource
 	private IAttentionService attentionService;
 	
-	private String listurl="/system/activity/activityList";
+	private String listurl="/activity/activityList";
 	
 	
 	   
