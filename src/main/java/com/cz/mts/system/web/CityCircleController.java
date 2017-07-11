@@ -2,32 +2,33 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.frame.annotation.SecurityApi;
+import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.GlobalStatic;
+import com.cz.mts.frame.util.HttpUtils;
+import com.cz.mts.frame.util.MessageUtils;
+import com.cz.mts.frame.util.Page;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.CityCircle;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICityCircleService;
-import com.cz.mts.frame.annotation.SecurityApi;
-import com.cz.mts.frame.controller.BaseController;
-import com.cz.mts.frame.util.GlobalStatic;
-import com.cz.mts.frame.util.MessageUtils;
-import com.cz.mts.frame.util.Page;
-import com.cz.mts.frame.util.ReturnDatas;
 
 
 /**
@@ -157,7 +158,10 @@ public class CityCircleController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			cityCircleService.saveorupdate(cityCircle);
+			Object id = cityCircleService.saveorupdate(cityCircle);
+			CityCircle cCircle = cityCircleService.findCityCircleById(id);
+			returnObject.setData(cCircle);
+			
 			
 		} catch (ParameterErrorException e) {
 			logger.error("参数缺失");
@@ -237,5 +241,6 @@ public class CityCircleController  extends BaseController {
 		
 		
 	}
+	
 
 }
