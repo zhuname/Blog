@@ -39,6 +39,7 @@ import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.Snatch;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
@@ -49,6 +50,7 @@ import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
+import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 
 
@@ -70,6 +72,8 @@ public class PosterPackageController  extends BaseController {
 	private IUserMedalService userMedalService;
 	@Resource
 	private IMedalService medalService;
+	@Resource
+	private IUserCardService userCardService;
 	
 	private String listurl="/posterpackage/posterpackageList";
 	
@@ -294,7 +298,7 @@ public class PosterPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
 		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId) && StringUtils.isNotBlank(appUserId)){
+		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
@@ -317,6 +321,7 @@ public class PosterPackageController  extends BaseController {
 					 posterPackage.setUserMedals(appUser.getUserMedals());
 				 }
 			 }
+			 
 			 
 			 //是否领取  look 1 为领取过的
 			 if(posterPackage!=null&&StringUtils.isNotBlank(appUserId)){
@@ -389,6 +394,27 @@ public class PosterPackageController  extends BaseController {
 					 }
 				 }
 			 }
+			 
+			 
+			 //返回卡券已领取数量
+			 if(null != posterPackage && null != posterPackage.getCardId()){
+				 Integer lqNum = 0;
+				 if(StringUtils.isNotBlank(appUserId)){
+					 //返回该用户已领取的数量
+					 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId AND userId=:userId AND `status`!=0");
+					 userCardFinder.setParam("cardId", posterPackage.getCardId());
+					 userCardFinder.setParam("userId", Integer.parseInt(appUserId));
+					 List<UserCard> userCards = userCardService.queryForList(userCardFinder, UserCard.class);
+					 if(null != userCards && userCards.size() > 0){
+						 UserCard userCard = userCards.get(0);
+						 if(null != userCard && null != userCard.getLqNum() ){
+							 lqNum = userCards.get(0).getLqNum();
+						 }
+					 }
+				 }
+				 posterPackage.setCardLqNum(lqNum);
+			 }
+			 
 			 
 			 
 			 

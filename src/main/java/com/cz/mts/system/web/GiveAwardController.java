@@ -2,6 +2,7 @@ package  com.cz.mts.system.web;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -94,6 +95,10 @@ public class GiveAwardController  extends BaseController {
 		// ==执行分页查询
 		
 		String activityId=request.getParameter("activityId");
+		
+		String sort = request.getParameter("sort");
+		
+		String selectTitle = request.getParameter("selectTitle");
 		
 		Finder finder = Finder.getSelectFinder(GiveAward.class).append(" where 1=1 ");
 		
@@ -242,6 +247,7 @@ public class GiveAwardController  extends BaseController {
 							
 						}
 						
+						giveAward.setCreateTime(new Date());
 						giveAwardService.saveorupdate(giveAward);
 						
 						

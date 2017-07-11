@@ -38,6 +38,7 @@ import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.RedCity;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
@@ -49,6 +50,7 @@ import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IRedCityService;
+import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 
 
@@ -84,6 +86,8 @@ public class MediaPackageController  extends BaseController {
 	private ICityService cityService;
 	@Resource
 	private IOperService operService;
+	@Resource
+	private IUserCardService userCardService;
 	
 	
 	private String listurl="/mediapackage/mediapackageList";
@@ -168,7 +172,7 @@ public class MediaPackageController  extends BaseController {
 		  String  strId=request.getParameter("id");
 		  String appUserId = request.getParameter("appUserId");
 		  Integer id= 0;
-		  if(StringUtils.isNotBlank(strId) && StringUtils.isNotBlank(appUserId)){
+		  if(StringUtils.isNotBlank(strId)){
 			 id= Integer.parseInt(strId);
 			  MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(id);
 			  
@@ -263,6 +267,30 @@ public class MediaPackageController  extends BaseController {
 					 }
 				 }
 			 }
+			 
+			 
+			 //返回卡券已领取数量
+			 if(null != mediaPackage && null != mediaPackage.getCardId()){
+				 Integer lqNum = 0;
+				 if(StringUtils.isNotBlank(appUserId)){
+					 //返回该用户已领取的数量
+					 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId AND userId=:userId AND `status`!=0");
+					 userCardFinder.setParam("cardId", mediaPackage.getCardId());
+					 userCardFinder.setParam("userId", Integer.parseInt(appUserId));
+					 List<UserCard> userCards = userCardService.queryForList(userCardFinder, UserCard.class);
+					 if(null != userCards && userCards.size() > 0){
+						 UserCard userCard = userCards.get(0);
+						 if(null != userCard && null != userCard.getLqNum() ){
+							 lqNum = userCards.get(0).getLqNum();
+						 }
+					 }
+				 }
+				 mediaPackage.setCardLqNum(lqNum);
+			 }
+			 
+			 
+			 
+			 
 			 
 			 String cityIds= ""; 
 			//返回城市名称

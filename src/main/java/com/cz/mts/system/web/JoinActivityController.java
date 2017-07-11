@@ -102,10 +102,41 @@ public class JoinActivityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		String  appuserId=request.getParameter("appuserId");
+		String appuserId=request.getParameter("appuserId");
+		String name = request.getParameter("name");
+		String sort = request.getParameter("sort");
+		String joinOrAward = request.getParameter("joinOrAward");
+		
+		
+		
 		
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
 		
+			if(StringUtils.isNotBlank(name)){
+				finder.append(" and userId in (select id from t_app_user where name like :name)" );
+				finder.setParam("name", name);
+			}
+			if(StringUtils.isNotBlank(sort)){
+				switch (sort) {
+				case "1":
+					page.setOrder("createTime");
+					page.setSort("desc");
+					break;
+
+				case "2":
+					page.setOrder("topCount");
+					page.setSort("desc");
+					break;
+				case "3":
+					page.setOrder("commentCount");
+					page.setSort("desc"); 
+					break;
+				}
+			}
+			if(StringUtils.isNotBlank(joinOrAward) && "2".equals(joinOrAward)){
+				finder.append(" and awardId is not null");
+			}
+				
 		List<JoinActivity> datas=joinActivityService.findListDataByFinder(finder,page,JoinActivity.class,joinActivity);
 		
 		for (JoinActivity joinActivity2 : datas) {
