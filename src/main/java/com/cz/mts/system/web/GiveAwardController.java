@@ -11,21 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cz.mts.system.entity.Activity;
-import com.cz.mts.system.entity.AppUser;
-import com.cz.mts.system.entity.Awards;
-import com.cz.mts.system.entity.GiveAward;
-import com.cz.mts.system.entity.JoinActivity;
-import com.cz.mts.system.service.IActivityService;
-import com.cz.mts.system.service.IAppUserService;
-import com.cz.mts.system.service.IAwardsService;
-import com.cz.mts.system.service.IGiveAwardService;
-import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -33,6 +21,15 @@ import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
+import com.cz.mts.system.entity.Activity;
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Awards;
+import com.cz.mts.system.entity.GiveAward;
+import com.cz.mts.system.service.IActivityService;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAwardsService;
+import com.cz.mts.system.service.IGiveAwardService;
+import com.cz.mts.system.service.IJoinActivityService;
 
 
 /**

@@ -940,8 +940,6 @@ public class AppUserController  extends BaseController {
 	ReturnDatas payjson(HttpServletRequest request, Model model,Integer userId,Integer type,Integer itemId,String code,String osType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
-		
-		
 		if(userId==null||type==null){
 			returnObject.setMessage("参数缺失");
 			returnObject.setStatus(ReturnDatas.ERROR);

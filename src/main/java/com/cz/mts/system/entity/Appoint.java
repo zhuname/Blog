@@ -91,7 +91,7 @@ public class Appoint  extends BaseEntity {
 	/**
 	 * tradeNo
 	 */
-	private java.lang.Integer tradeNo;
+	private java.lang.String tradeNo;
 	/**
 	 * 0 待支付 1未兑换2已兑换
 	 */
@@ -269,12 +269,12 @@ public class Appoint  extends BaseEntity {
 	public java.lang.String getWxCode() {
 		return this.wxCode;
 	}
-	public void setTradeNo(java.lang.Integer value) {
+	public void setTradeNo(java.lang.String value) {
 		this.tradeNo = value;
 	}
 	
      @WhereSQL(sql="tradeNo=:Appoint_tradeNo")
-	public java.lang.Integer getTradeNo() {
+	public java.lang.String getTradeNo() {
 		return this.tradeNo;
 	}
 	public void setStatus(java.lang.Integer value) {
