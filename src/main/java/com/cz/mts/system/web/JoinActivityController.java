@@ -25,6 +25,7 @@ import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.exception.HaveUserErrorException;
 import com.cz.mts.system.exception.ParameterErrorException;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IAwardsService;
@@ -63,6 +64,8 @@ public class JoinActivityController  extends BaseController {
 	private ICollectService collectService;
 	@Resource
 	private IAttentionService attentionService;
+	@Resource
+	private IActivityService activityService;
 	
 	private String listurl="/system/joinactivity/joinactivityList";
 	
@@ -218,6 +221,17 @@ public class JoinActivityController  extends BaseController {
 			}
 			
 			
+			if(joinActivity2.getActivityId()!=null){
+				
+				Activity activity = activityService.findActivityById(joinActivity2.getActivityId());
+				
+				if(activity!=null){
+					
+					joinActivity2.setActivityUserId(activity.getUserId());
+					
+				}
+				
+			}
 			
 		}
 		
