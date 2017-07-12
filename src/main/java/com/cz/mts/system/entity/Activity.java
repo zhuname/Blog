@@ -164,7 +164,29 @@ public class Activity  extends BaseEntity {
 	private Integer isAttr;
 	private Integer isColl;
 	
+	private Integer joinCount;
+	
+	
+	
+	
 	//concstructor
+
+	@WhereSQL(sql="joinCount=:Activity_joinCount")
+	public Integer getJoinCount() {
+		return joinCount;
+	}
+
+
+
+
+
+	public void setJoinCount(Integer joinCount) {
+		this.joinCount = joinCount;
+	}
+
+
+
+
 
 	public Activity(){
 	}
@@ -514,6 +536,7 @@ public class Activity  extends BaseEntity {
 			.append("拒绝原因[").append(getReason()).append("],")
 			.append("审核失败时间[").append(getAduitFailTime()).append("],")
 			.append("是否删除[").append(getIsDel()).append("],")
+			.append("参与人数[").append(getJoinCount()).append("],")
 			.toString();
 	}
 	

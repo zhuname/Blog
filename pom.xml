@@ -7,7 +7,6 @@
 	<packaging>war</packaging>
 	
 
-
 	<name>mts</name>
 	<url>http://git.oschina.net/chunanyong/mts</url>
 	
@@ -49,7 +48,7 @@
 		
 		<druid.version>1.0.26</druid.version>
 		<httpcore.version>4.4.5</httpcore.version>
-		<httpclient.version>4.2.1</httpclient.version>
+		<httpclient.version>4.5.2</httpclient.version>
 		
 		
 		<lucene.version>5.5.1</lucene.version>
@@ -175,6 +174,8 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		
+	
 	
 	
 	
@@ -541,34 +542,6 @@
                 <artifactId>aliyun-java-sdk-sms</artifactId>
                 <version>3.0.0-rc1</version>
             </dependency>
-            
-            
-            
-            <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>9.3.7.v20160115</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.5</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <!-- 关于天气结束 -->
-            
-            
       
       
 	</dependencies> 

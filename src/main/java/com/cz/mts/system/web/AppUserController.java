@@ -1416,7 +1416,7 @@ public class AppUserController  extends BaseController {
 				
 				
 				//总收益统计
-				Finder sumMoneyFinder = new Finder("SELECT SUM(money) as sumMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=14 OR type=15) and userId=:userId");
+				Finder sumMoneyFinder = new Finder("SELECT SUM(money) as sumMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=16 OR type=15) and userId=:userId");
 				sumMoneyFinder.setParam("userId", appUser.getId());
 				Double sumMoney = moneyDetailService.queryForObject(sumMoneyFinder, Double.class);
 				if(null == sumMoney){
@@ -1424,7 +1424,7 @@ public class AppUserController  extends BaseController {
 				}
 				
 				//今日收益统计
-				Finder todayMoneyFinder = new Finder("SELECT SUM(money) as todayMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=14 OR type=15) and userId=:userId AND DATE_FORMAT(createTime,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')");
+				Finder todayMoneyFinder = new Finder("SELECT SUM(money) as todayMoney FROM t_money_detail WHERE (type=1 OR type=2 OR type=8 OR type=16 OR type=15) and userId=:userId AND DATE_FORMAT(createTime,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')");
 				todayMoneyFinder.setParam("userId", appUser.getId());
 				todayMoney = moneyDetailService.queryForObject(todayMoneyFinder, Double.class);
 				if(null == todayMoney){

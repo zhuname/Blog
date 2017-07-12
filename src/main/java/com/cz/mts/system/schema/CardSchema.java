@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import com.cz.mts.frame.common.BaseLogger;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.HttpUtils;
+import com.cz.mts.frame.util.JPushUtil;
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Awards;
@@ -29,6 +31,7 @@ import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IApplyMedalService;
 import com.cz.mts.system.service.ICardService;
@@ -39,6 +42,7 @@ import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
+import com.sun.xml.internal.xsom.impl.scd.Axis;
 @Component
 public class CardSchema extends BaseLogger{
 	
@@ -62,6 +66,8 @@ public class CardSchema extends BaseLogger{
 	private IMediaPackageService mediaPackageService;
 	@Resource
 	private ICityService cityService;
+	@Resource
+	private IActivityService activityService;
 	
 	/**
 	 * 卡券到期前三天发推送
@@ -231,13 +237,13 @@ public class CardSchema extends BaseLogger{
 	@Scheduled(cron="0 0/15 * * * ?")
 	public void endPosterPackage() throws Exception{
 		logger.info("海报红包下线定时任务");
-//		Finder finder = new Finder("SELECT * FROM t_poster_package WHERE `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1;");
 		Finder finder = Finder.getSelectFinder(PosterPackage.class).append("where 1=1 and `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1");
 		List<PosterPackage> posterPackages = posterPackageService.queryForList(finder, PosterPackage.class);
 		if(null != posterPackages && posterPackages.size() > 0){
 			for (PosterPackage posterPackage : posterPackages) {
 				posterPackage.setIsValid(1);
 				posterPackageService.update(posterPackage,true);
+				notificationService.notify(37, posterPackage.getId(), posterPackage.getUserId());
 			}
 		}
 	}
@@ -248,20 +254,41 @@ public class CardSchema extends BaseLogger{
 	@Scheduled(cron="0 0/15 * * * ?")
 	public void endMediaPackage() throws Exception{
 		logger.info("视频红包下线定时任务");
-//		Finder finder = new Finder("SELECT * FROM t_media_package WHERE `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1;");
 		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1=1 and `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1");
 		List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder, MediaPackage.class);
 		if(null != mediaPackages && mediaPackages.size() > 0){
 			for (MediaPackage mediaPackage : mediaPackages) {
 				mediaPackage.setIsValid(1);
 				mediaPackageService.update(mediaPackage,true);
+				notificationService.notify(36, mediaPackage.getId(), mediaPackage.getUserId());
 			}
 		}
 	}
 	
 	
+	/***
+	 * 同城活动到期
+	 */
+	@Scheduled(cron="0 0/20 * * * ?")
+	public void endActivity() throws Exception{
+		logger.info("同城活动到期定时任务");
+		Finder finder = Finder.getSelectFinder(Activity.class).append(" where `status`=3 AND isDel=0 AND NOW() >= endTime");
+		List<Activity> activities = activityService.queryForList(finder, Activity.class);
+		if(null != activities && activities.size() > 0){
+			for (Activity activity : activities) {
+				activity.setStatus(4);
+				activityService.update(activity,true);
+				//给发布人发推送
+				notificationService.notify(24, activity.getId(), activity.getUserId());
+			}
+		}
+	}
+	
+	
+	
 	/**
-	 * 视频红包领取完毕之后超过三天自动下线
+	 * 自动更新天气
+	 * 
 	 */
 	@Scheduled(cron="0 0 0 * * ?")
 	public void tianqi() throws Exception{
