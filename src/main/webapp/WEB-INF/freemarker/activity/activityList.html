@@ -15,6 +15,27 @@ function deleteActivity(){
 		mydelete(_url,listurl);
 	}
 }
+
+
+
+function checkRefuse(id){
+	//prompt层
+	layer.prompt({title: '拒绝原因:', formType: 2}, function(text, index){
+	jQuery.post("${ctx}/system/activity/fail/json",{ id: id, reason: text },
+	function(_json) {
+		if (_json.status == "success") {
+			myalert("审核成功");
+			myhref("${ctx}/system/applymedal/list")
+			return false;
+		} else {
+			myalert("审核失败");
+			return false;
+		}
+	});
+ 			layer.close(index);
+	});
+	
+}
 </script>
 
 
@@ -123,14 +144,27 @@ function deleteActivity(){
                                 </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
+                                       <!--  <button class="btn btn-xs btn-info"
                                                 onclick="myhref('${ctx}/activity/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/activity/delete?id=${(_data.id)!''}','${ctx}/activity/list');">
+                                                onclick="mydelete('${ctx}/system/activity/delete?id=${(_data.id)!''}','${ctx}/activity/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
+                                        
+                                        <#if (_data.status) == 1 >
+                                        	<button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="mydelete('${ctx}/system/activity/check/json?id=${(_data.id)!''}','${ctx}/system/activity/list',null,'确认成功？');">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
+                                        
+                                        
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">

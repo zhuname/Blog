@@ -24,8 +24,11 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.JoinActivity;
+import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
@@ -421,28 +424,34 @@ public class ActivityController  extends BaseController {
 	}
 	
 	/**
-	 * 删除操作
+	 * 假删除
+	 * @author wml
+	 * @param model
+	 * @param applyMedal
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
-	@RequestMapping(value="/delete")
-	public @ResponseBody ReturnDatas delete(HttpServletRequest request) throws Exception {
-
-			// 执行删除
+	@RequestMapping("/delete/json")
+	public @ResponseBody
+	ReturnDatas deletejson(Model model,Activity activity,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		  String  strId=request.getParameter("id");
-		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
-				activityService.deleteById(id,Activity.class);
-				return new ReturnDatas(ReturnDatas.SUCCESS,
-						MessageUtils.DELETE_SUCCESS);
-			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+			if(null != activity.getId()){
+				activity.setIsDel(1);
+				activityService.update(activity,true);
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
 		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+		return returnObject;
+	
 	}
 	
 	/**
@@ -472,6 +481,72 @@ public class ActivityController  extends BaseController {
 				MessageUtils.DELETE_ALL_SUCCESS);
 		
 		
+	}
+	
+	/**
+	 * 通过认证
+	 * @author wml
+	 * @param model
+	 * @param applyMedal
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/check/json")
+	public @ResponseBody
+	ReturnDatas checkjson(Model model,Activity activity,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			if(null != activity.getId()){
+				activity.setStatus(3);
+				activity.setAduitSuccessTime(new Date());
+				activityService.update(activity,true);
+				
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
+	/**
+	 * 拒绝认证
+	 * @author wml
+	 * @param model
+	 * @param applyMedal
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/fail/json")
+	public @ResponseBody
+	ReturnDatas failjson(Model model,Activity activity,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			if(null != activity.getId()){
+				activity.setStatus(2);
+				activity.setAduitFailTime(new Date());
+				activityService.update(activity,true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
 	}
 
 }
