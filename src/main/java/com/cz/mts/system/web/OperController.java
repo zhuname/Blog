@@ -192,7 +192,6 @@ public class OperController  extends BaseController {
 							}
 						}
 					}else{
-
 						oper.setCreateTime(new Date());
 						Integer type = oper.getType();
 						PosterPackage posterPackage = null;

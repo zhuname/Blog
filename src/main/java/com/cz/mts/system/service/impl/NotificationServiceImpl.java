@@ -188,6 +188,183 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			
+			case 21:
+				JPushUtil.sendJPushNotification("恭喜您中奖了！", type+"", id, userId, "");
+				try {
+					message=new Message(null, 21, userId, new Date(), "恭喜您中奖了！", id, null, 0, "中奖信息", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 22:
+				JPushUtil.sendJPushNotification("您发布的同城活动审核成功，已经发布上线，感谢您的配合！", type+"", id, userId, "");
+				try {
+					message=new Message(null, 22, userId, new Date(), "您发布的同城活动审核成功，已经发布上线，感谢您的配合!", id, null, 0, "同城活动审核成功信息", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 23:
+				JPushUtil.sendJPushNotification("您发布的同城活动审核失败，请及时查看原因并进行修改，然后再次提交！", type+"", id, userId, "");
+				try {
+					message=new Message(null, 23, userId, new Date(), "您发布的同城活动审核失败，请及时查看原因并进行修改，然后再次提交!", id, null, 0, "同城活动审核失败信息", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 24:
+				JPushUtil.sendJPushNotification("您发布的同城活动已经过期，请注意查看！", type+"", id, userId, "");
+				try {
+					message=new Message(null, 24, userId, new Date(), "您发布的同城活动已经过期，请注意查看!", id, null, 0, "同城活动到期", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 25:
+				JPushUtil.sendJPushNotification("您发布的海报红包已经超过100个人浏览了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 25, userId, new Date(), "您发布的海报红包已经超过100个人浏览了哟", id, null, 0, "海报红包超过100人浏览", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 26:
+				JPushUtil.sendJPushNotification("您发布的视频红包已经超过100个人浏览了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 26, userId, new Date(), "您发布的视频红包已经超过100个人浏览了哟", id, null, 0, "视频红包超过100人浏览", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 27:
+				JPushUtil.sendJPushNotification("您发布的同城活动已经超过100个人浏览了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 27, userId, new Date(), "您发布的同城活动已经超过100个人浏览了哟", id, null, 0, "同城活动超过100人浏览", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 28:
+				JPushUtil.sendJPushNotification("您发布的海报红包已经超过50个人点赞了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 28, userId, new Date(), "您发布的海报红包已经超过50个人点赞了哟", id, null, 0, "海报红包超过50人点赞", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 29:
+				JPushUtil.sendJPushNotification("您发布的视频红包已经超过50个人点赞了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 29, userId, new Date(), "您发布的视频红包已经超过50个人点赞了哟", id, null, 0, "视频红包超过50人点赞", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 30:
+				JPushUtil.sendJPushNotification("您发布的同城活动已经超过50个人点赞浏览了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 30, userId, new Date(), "您发布的同城活动已经超过50个人点赞浏览了哟", id, null, 0, "同城活动超过50人点赞", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 31:
+				JPushUtil.sendJPushNotification("您参与的同城活动内容已经超过50个人点赞浏览了哟", type+"", id, userId, "");
+				try {
+					message=new Message(null, 31, userId, new Date(), "您参与的同城活动内容已经超过50个人点赞浏览了哟", id, null, 0, "同城活动参与超过50人点赞", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 32:
+				JPushUtil.sendJPushNotification("您发布的同城活动有人参与了哟，请注意查看", type+"", id, userId, "");
+				try {
+					message=new Message(null, 32, userId, new Date(), "您发布的同城活动有人参与了哟，请注意查看", id, null, 0, "同城活动被人参与", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 33:
+				JPushUtil.sendJPushNotification("您发布的同城圈已经超过50人点赞了哟，请注意查看", type+"", id, userId, "");
+				try {
+					message=new Message(null, 33, userId, new Date(), "您发布的同城圈已经超过50人点赞了哟，请注意查看", id, null, 0, "同城圈超过50人点赞", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 34:
+				JPushUtil.sendJPushNotification("您发布的朋友圈被人打赏了哟，请注意查看", type+"", id, userId, "");
+				try {
+					message=new Message(null, 34, userId, new Date(), "您发布的朋友圈被人打赏了哟，请注意查看", id, null, 0, "同城圈被人打赏", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 35:
+				JPushUtil.sendJPushNotification("您的勋章即将到期，请注意查看", type+"", id, userId, "");
+				try {
+					message=new Message(null, 35, userId, new Date(), "您的勋章即将到期，请注意查看", id, null, 0, "勋章有效期前三天提醒", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 36:
+				JPushUtil.sendJPushNotification("您发布的视频红包已经领取完毕并且已经超过三天将自动下线，请知悉", type+"", id, userId, "");
+				try {
+					message=new Message(null, 36, userId, new Date(), "您发布的视频红包已经领取完毕并且已经超过三天将自动下线，请知悉", id, null, 0, "视频红包领取完毕三天下线", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 37:
+				JPushUtil.sendJPushNotification("您发布的海报红包已经领取完毕并且已经超过三天将自动下线，请知悉", type+"", id, userId, "");
+				try {
+					message=new Message(null, 37, userId, new Date(), "您发布的海报红包已经领取完毕并且已经超过三天将自动下线，请知悉", id, null, 0, "勋章有效期前三天提醒", 2);
+					messageService.save(message);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			
+			
+			
+			
+			
+			
+			
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

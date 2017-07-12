@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Appoint;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.CityCircle;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
@@ -29,6 +30,7 @@ import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.entity.IBaseEntity;
@@ -55,6 +57,10 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 	private NotificationService notificationService;
 	@Resource
 	private IUserMedalService userMedalService;
+	@Resource
+	private ICircleService circleService;
+	@Resource
+	private IAppUserService appUserService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -419,8 +425,6 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailA.setOsType(osType);
 			super.save(moneyDetailA);
 			
-			
-			
 			break;
 		case 5:
 			if(StringUtils.isBlank(code)){
@@ -473,6 +477,33 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			moneyDetailC.setUserId(userId);
 			moneyDetailC.setOsType(osType);
 			super.save(moneyDetailC);
+			
+			//更新被打赏用户的记录
+			Circle circle = circleService.findCircleById(itemId);
+			if(null != circle && null != circle.getUserId()){
+				AppUser circleAppUser = appUserService.findAppUserById(circle.getUserId());
+				if(null != circleAppUser){
+					if(null == circleAppUser.getBalance()){
+						circleAppUser.setBalance(0.0);
+					}
+					circleAppUser.setBalance(new BigDecimal(circleAppUser.getBalance()).add(new BigDecimal(cityCircle.getMoney())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					
+					MoneyDetail moneyDetailB=new MoneyDetail();
+					moneyDetailB.setBalance(circleAppUser.getBalance());
+					moneyDetailB.setCreateTime(new Date());
+					moneyDetailB.setItemId(userId);
+					moneyDetailB.setMoney(+cityCircle.getMoney());
+					moneyDetailB.setType(16);
+					moneyDetailB.setUserId(circleAppUser.getId());
+					moneyDetailB.setOsType(osType);
+					super.save(moneyDetailB);
+					
+					
+					appUserService.update(circleAppUser,true);
+				}
+			}
+			
+			
 			break;
 			
 		}
@@ -747,7 +778,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					}
 					//看是不是第一次进来
 					MoneyDetail moneyDetailA=new MoneyDetail();
-					moneyDetailA.setItemId(itemId);
+					moneyDetailA.setCode(code);
 					moneyDetailA.setType(13);
 					moneyDetailA.setAliTrade(wxCode);
 					moneyDetailA.setUserId(appoint.getUserId());
@@ -815,19 +846,13 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					MoneyDetail moneyDetailAp=new MoneyDetail();
 					moneyDetailAp.setBalance(appUserA.getBalance());
 					moneyDetailAp.setCreateTime(new Date());
-					moneyDetailAp.setItemId(itemId);
+					moneyDetailAp.setCode(code);
 					moneyDetailAp.setMoney(-appoint.getMoney());
 					moneyDetailAp.setType(13);
 					moneyDetailAp.setAliTrade(wxCode);
 					moneyDetailAp.setPayType(payType);
 					moneyDetailAp.setUserId(appoint.getUserId());
 					super.save(moneyDetailAp);
-					
-					
-					
-
-					
-					
 					
 					
 					break;
@@ -849,7 +874,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//看是不是第一次进来
 					MoneyDetail moneyDetailC=new MoneyDetail();
-					moneyDetailC.setItemId(itemId);
+					moneyDetailC.setCode(code);
 					moneyDetailC.setType(14);
 					moneyDetailC.setAliTrade(wxCode);
 					moneyDetailC.setUserId(cityCircle.getUserId());
@@ -886,13 +911,40 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					MoneyDetail moneyDetailD=new MoneyDetail();
 					moneyDetailD.setBalance(appUserD.getBalance());
 					moneyDetailD.setCreateTime(new Date());
-					moneyDetailD.setItemId(itemId);
+					moneyDetailD.setCode(code);
 					moneyDetailD.setMoney(-cityCircle.getMoney());
 					moneyDetailD.setType(14);
 					moneyDetailD.setAliTrade(wxCode);
 					moneyDetailD.setPayType(payType);
 					moneyDetailD.setUserId(cityCircle.getUserId());
 					super.save(moneyDetailD);
+					
+					
+					
+					//更新被打赏用户的记录
+					Circle circle = circleService.findCircleById(cityCircle.getItemId());
+					if(null != circle && null != circle.getUserId()){
+						AppUser circleAppUser = appUserService.findAppUserById(circle.getUserId());
+						if(null != circleAppUser){
+							if(null == circleAppUser.getBalance()){
+								circleAppUser.setBalance(0.0);
+							}
+							circleAppUser.setBalance(new BigDecimal(circleAppUser.getBalance()).add(new BigDecimal(cityCircle.getMoney())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							
+							MoneyDetail moneyDetailB=new MoneyDetail();
+							moneyDetailB.setBalance(circleAppUser.getBalance());
+							moneyDetailB.setCreateTime(new Date());
+							moneyDetailB.setItemId(cityCircle.getUserId());
+							moneyDetailB.setMoney(+cityCircle.getMoney());
+							moneyDetailB.setType(16);
+							moneyDetailB.setUserId(circleAppUser.getId());
+							super.save(moneyDetailB);
+							
+							appUserService.update(circleAppUser,true);
+						}
+					}
+					
+					
 					break;
 				}
 		return null;

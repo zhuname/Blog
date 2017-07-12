@@ -52,6 +52,7 @@ import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -88,6 +89,8 @@ public class MediaPackageController  extends BaseController {
 	private IOperService operService;
 	@Resource
 	private IUserCardService userCardService;
+	@Resource
+	private NotificationService notificationService;
 	
 	
 	private String listurl="/mediapackage/mediapackageList";
@@ -181,6 +184,11 @@ public class MediaPackageController  extends BaseController {
 					 mediaPackage.setScanNum(0);
 				 }
 				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
+				 
+				 //超过100人浏览
+				 if(mediaPackage.getScanNum() >= 100){
+					 notificationService.notify(26, mediaPackage.getId(), mediaPackage.getUserId());
+				 }
 				 mediaPackageService.update(mediaPackage,true);
 			 }
 			  

@@ -52,6 +52,7 @@ import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -74,6 +75,8 @@ public class PosterPackageController  extends BaseController {
 	private IMedalService medalService;
 	@Resource
 	private IUserCardService userCardService;
+	@Resource
+	private NotificationService notificationService;
 	
 	private String listurl="/posterpackage/posterpackageList";
 	
@@ -307,6 +310,13 @@ public class PosterPackageController  extends BaseController {
 					 posterPackage.setLookNum(0);
 				 }
 				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
+				 
+				 //如果浏览次数超过100，发推送
+				 if(posterPackage.getLookNum() >= 100){
+					 notificationService.notify(25, posterPackage.getId(), posterPackage.getUserId());
+				 }
+				 
+				 
 			 }
 			 posterPackageService.update(posterPackage,true);
 			 
