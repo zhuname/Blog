@@ -106,8 +106,28 @@ public class JoinActivity  extends BaseEntity {
 	private Integer activityUserId;
 	
 	
+	private Integer height;
+	private Integer width;
+	
+	
+	
+	
 	//concstructor
-
+	@WhereSQL(sql="height=:JoinActivity_height")
+	public Integer getHeight() {
+		return height;
+	}
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+	
+	@WhereSQL(sql="width=:JoinActivity_width")
+	public Integer getWidth() {
+		return width;
+	}
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
 	public JoinActivity(){
 	}
 	@Transient
@@ -303,6 +323,8 @@ public class JoinActivity  extends BaseEntity {
 			.append("奖项id[").append(getAwardId()).append("],")
 			.append("点赞次数[").append(getTopCount()).append("],")
 			.append("评论次数[").append(getCommentCount()).append("],")
+			.append("高度[").append(getHeight()).append("],")
+			.append("宽度[").append(getWidth()).append("],")
 			.toString();
 	}
 	

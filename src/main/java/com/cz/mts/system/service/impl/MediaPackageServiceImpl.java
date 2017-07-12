@@ -296,6 +296,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						 Oper oper = new Oper();
 						 oper.setUserId(Integer.parseInt(appUserId));
 						 oper.setItemId(mp.getId());
+						 oper.setType(3);
 						 Page operPage = new Page();
 						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
 						 if(null != opers && opers.size() > 0){

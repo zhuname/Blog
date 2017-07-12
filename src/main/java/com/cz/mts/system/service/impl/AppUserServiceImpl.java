@@ -498,7 +498,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					moneyDetailB.setOsType(osType);
 					super.save(moneyDetailB);
 					
-					
+					notificationService.notify(34, itemId, circle.getUserId());
 					appUserService.update(circleAppUser,true);
 				}
 			}
@@ -939,6 +939,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 							moneyDetailB.setType(16);
 							moneyDetailB.setUserId(circleAppUser.getId());
 							super.save(moneyDetailB);
+							
+							notificationService.notify(34, circle.getId(), circle.getUserId());
 							
 							appUserService.update(circleAppUser,true);
 						}

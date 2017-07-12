@@ -4,16 +4,20 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.exception.HaveUserErrorException;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -26,6 +30,8 @@ import com.cz.mts.system.service.IJoinActivityService;
 @Service("joinActivityService")
 public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implements IJoinActivityService {
 
+	@Resource
+	private NotificationService notificationService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -61,6 +67,11 @@ public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implement
 	      
 	      if(datas!=null&&datas.size()>0){
 	    	  throw new HaveUserErrorException();
+	      }
+	      
+	      Activity activity = super.findById(joinActivity.getActivityId(), Activity.class);
+	      if(null != activity){
+	    	  notificationService.notify(32, activity.getId(), activity.getUserId());
 	      }
 	      
 		 return super.saveorupdate(joinActivity).toString();

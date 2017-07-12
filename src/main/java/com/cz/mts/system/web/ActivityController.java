@@ -36,6 +36,7 @@ import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IAwardsService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -60,6 +61,9 @@ public class ActivityController  extends BaseController {
 	private ICollectService collectService;
 	@Resource
 	private IAttentionService attentionService;
+	@Resource
+	private NotificationService notificationService;
+	
 	
 	private String listurl="/activity/activityList";
 	
@@ -217,6 +221,8 @@ public class ActivityController  extends BaseController {
 			  activity.setViewedCount(1);
 		  }else {
 			  activity.setViewedCount(activity.getViewedCount()+1);
+			  //每100个人浏览的情况下，发推送
+			  notificationService.notify(27, activity.getId(), activity.getUserId());
 		  }
 		  
 		  activityService.update(activity);

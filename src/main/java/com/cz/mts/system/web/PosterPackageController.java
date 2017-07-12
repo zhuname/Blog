@@ -248,6 +248,7 @@ public class PosterPackageController  extends BaseController {
 						 Oper oper = new Oper();
 						 oper.setUserId(Integer.parseInt(appUserId));
 						 oper.setItemId(Integer.parseInt(map.get("id").toString()));
+						 oper.setType(1);
 						 Page operPage = newPage(request);
 						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
 						 if(null != opers && opers.size() > 0){
@@ -312,7 +313,7 @@ public class PosterPackageController  extends BaseController {
 				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
 				 
 				 //如果浏览次数超过100，发推送
-				 if(posterPackage.getLookNum() >= 100){
+				 if(posterPackage.getLookNum() % 100 == 0){
 					 notificationService.notify(25, posterPackage.getId(), posterPackage.getUserId());
 				 }
 				 
