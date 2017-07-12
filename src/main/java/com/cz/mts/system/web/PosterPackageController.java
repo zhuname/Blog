@@ -312,7 +312,7 @@ public class PosterPackageController  extends BaseController {
 				 posterPackage.setLookNum(posterPackage.getLookNum()+1);
 				 
 				 //如果浏览次数超过100，发推送
-				 if(posterPackage.getLookNum() >= 100){
+				 if(posterPackage.getLookNum() % 100 == 0){
 					 notificationService.notify(25, posterPackage.getId(), posterPackage.getUserId());
 				 }
 				 

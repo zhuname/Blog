@@ -232,6 +232,25 @@ public class CardSchema extends BaseLogger{
 	
 	
 	/**
+	 * 勋章有效期前三天发推送
+	 * 
+	 */
+	@Scheduled(cron="0 0/15 * * * ?")
+	public void beEndMedal() throws Exception{
+		logger.info("勋章有效期前三天发推送");
+		Finder finder = Finder.getSelectFinder(UserMedal.class).append(" WHERE endMedalTime IS NOT NULL AND DATE(DATE_SUB(endMedalTime,INTERVAL 3 DAY)) = DATE(NOW())");
+		List<UserCard> userCards = userCardService.queryForList(finder,UserCard.class);
+		if(null != userCards && userCards.size() > 0){
+			for (UserCard userCard : userCards) {
+				notificationService.notify(35, userCard.getId(), userCard.getUserId());
+			}
+		}
+	}
+	
+	
+	
+	
+	/**
 	 * 海报红包领取完毕之后超过三天自动下线
 	 */
 	@Scheduled(cron="0 0/15 * * * ?")

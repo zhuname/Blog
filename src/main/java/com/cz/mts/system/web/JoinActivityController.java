@@ -272,7 +272,8 @@ public class JoinActivityController  extends BaseController {
 	
 	
 	/**
-	 * 新增/修改 操作吗,返回json格式数据
+	 * 同城活动参与接口
+	 * @author wj
 	 * 
 	 */
 	@RequestMapping("/update/json")

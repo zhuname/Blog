@@ -32,6 +32,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAwardsService;
 import com.cz.mts.system.service.IGiveAwardService;
 import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -54,6 +55,8 @@ public class GiveAwardController  extends BaseController {
 	private IAppUserService appUserService;
 	@Resource
 	private IAwardsService awardsService;
+	@Resource
+	private NotificationService notificationService;
 	
 	private String listurl="/system/giveaward/giveawardList";
 	
@@ -249,6 +252,9 @@ public class GiveAwardController  extends BaseController {
 						
 						giveAward.setCreateTime(new Date());
 						giveAwardService.saveorupdate(giveAward);
+						
+						//给参与者发推送
+						notificationService.notify(21, giveAward.getAwardId(), giveAward.getJoinUserId());
 						
 				  }
 				

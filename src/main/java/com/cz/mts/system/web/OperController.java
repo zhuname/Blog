@@ -30,6 +30,7 @@ import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IPosterPackageService;
+import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -61,6 +62,8 @@ public class OperController  extends BaseController {
 	private ICircleService circleService;
 	@Resource
 	private IJoinActivityService joinActivityService;
+	@Resource
+	private NotificationService notificationService;
 	
 	
 	private String listurl="/system/oper/operList";
@@ -216,6 +219,9 @@ public class OperController  extends BaseController {
 											posterPackage.setTopCount(0);
 										}
 										posterPackage.setTopCount(posterPackage.getTopCount() + 1);
+										if(posterPackage.getTopCount() % 50 ==0){
+											notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId());
+										}
 										posterPackageService.update(posterPackage,true);
 									}
 									break;
@@ -235,6 +241,10 @@ public class OperController  extends BaseController {
 											mediaPackage.setTopCount(0);
 										}
 										mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
+										//点赞数每超过50
+										if(mediaPackage.getTopCount() % 50 ==0){
+											notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId());
+										}
 										mediaPackageService.update(mediaPackage,true);
 									}
 									break;
@@ -262,6 +272,11 @@ public class OperController  extends BaseController {
 											joinActivity.setTopCount(0);
 										}
 										joinActivity.setTopCount(joinActivity.getTopCount() + 1);
+										
+										if(joinActivity.getTopCount() % 50 ==0){
+											notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId());
+										}
+										
 										joinActivityService.update(joinActivity,true);
 									}
 									break;
@@ -271,6 +286,9 @@ public class OperController  extends BaseController {
 											circle.setTopCount(0);
 										}
 										circle.setTopCount(circle.getTopCount() + 1);
+										if(circle.getTopCount() % 50 ==0){
+											notificationService.notify(33, circle.getId(), circle.getUserId());
+										}
 										circleService.update(circle,true);
 									}
 									break;
@@ -314,6 +332,9 @@ public class OperController  extends BaseController {
 									posterPackage.setTopCount(0);
 								}
 								posterPackage.setTopCount(posterPackage.getTopCount() + 1);
+								if(posterPackage.getTopCount() % 50 ==0){
+									notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId());
+								}
 								posterPackageService.update(posterPackage,true);
 							}
 							break;
@@ -333,6 +354,11 @@ public class OperController  extends BaseController {
 									mediaPackage.setTopCount(0);
 								}
 								mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
+								
+								
+								if(mediaPackage.getTopCount() % 50 ==0){
+									notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId());
+								}
 								mediaPackageService.update(mediaPackage,true);
 							}
 							break;
@@ -360,6 +386,9 @@ public class OperController  extends BaseController {
 									joinActivity.setTopCount(0);
 								}
 								joinActivity.setTopCount(joinActivity.getTopCount() + 1);
+								if(joinActivity.getTopCount() % 50 ==0){
+									notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId());
+								}
 								joinActivityService.update(joinActivity,true);
 							}
 							break;
@@ -369,6 +398,9 @@ public class OperController  extends BaseController {
 									circle.setTopCount(0);
 								}
 								circle.setTopCount(circle.getTopCount() + 1);
+								if(circle.getTopCount() % 50 ==0){
+									notificationService.notify(33, circle.getId(), circle.getUserId());
+								}
 								circleService.update(circle,true);
 							}
 							break;
@@ -412,6 +444,9 @@ public class OperController  extends BaseController {
 								posterPackage.setTopCount(0);
 							}
 							posterPackage.setTopCount(posterPackage.getTopCount() + 1);
+							if(posterPackage.getTopCount() % 50 ==0){
+								notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId());
+							}
 							posterPackageService.update(posterPackage,true);
 						}
 						break;
@@ -431,6 +466,10 @@ public class OperController  extends BaseController {
 								mediaPackage.setTopCount(0);
 							}
 							mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
+							
+							if(mediaPackage.getTopCount() % 50 ==0){
+								notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId());
+							}
 							mediaPackageService.update(mediaPackage,true);
 						}
 						break;
@@ -458,6 +497,9 @@ public class OperController  extends BaseController {
 								joinActivity.setTopCount(0);
 							}
 							joinActivity.setTopCount(joinActivity.getTopCount() + 1);
+							if(joinActivity.getTopCount() % 50 ==0){
+								notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId());
+							}
 							joinActivityService.update(joinActivity,true);
 						}
 						break;
@@ -467,6 +509,9 @@ public class OperController  extends BaseController {
 								circle.setTopCount(0);
 							}
 							circle.setTopCount(circle.getTopCount() + 1);
+							if(circle.getTopCount() % 50 ==0){
+								notificationService.notify(33, circle.getId(), circle.getUserId());
+							}
 							circleService.update(circle,true);
 						}
 						break;
