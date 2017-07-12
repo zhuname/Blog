@@ -185,8 +185,8 @@ public class ActivityController  extends BaseController {
 		  
 		  if(StringUtils.isNotBlank(appuserId)){
 				
-			  //头晕晕乎乎的，这块感觉有点问题
-			  Finder finderJoin = Finder.getSelectFinder(JoinActivity.class).append(" where userId=:userId and awardId in (select id from t_awards where activityId=:id)");
+			 
+			  Finder finderJoin = Finder.getSelectFinder(JoinActivity.class).append(" where userId=:userId and activityId =:id");
 			  finderJoin.setParam("userId", appuserId);
 			  finderJoin.setParam("id", id);
 			  List<JoinActivity> joinActivities = joinActivityService.queryForList(finderJoin, JoinActivity.class);

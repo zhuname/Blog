@@ -103,6 +103,8 @@ public class JoinActivity  extends BaseEntity {
 	
 	private Integer isAttr;
 	private Integer isColl;
+	private Integer activityUserId;
+	
 	
 	//concstructor
 
@@ -117,6 +119,14 @@ public class JoinActivity  extends BaseEntity {
 		this.isAttr = isAttr;
 	}
 
+	
+	@Transient
+	public Integer getActivityUserId() {
+		return activityUserId;
+	}
+	public void setActivityUserId(Integer activityUserId) {
+		this.activityUserId = activityUserId;
+	}
 	@Transient
 	public Integer getIsColl() {
 		return isColl;
