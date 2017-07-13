@@ -40,7 +40,7 @@ public class ReportController  extends BaseController {
 	@Resource
 	private IReportService reportService;
 	
-	private String listurl="/system/report/reportList";
+	private String listurl="/report/reportList";
 	
 	
 	   
