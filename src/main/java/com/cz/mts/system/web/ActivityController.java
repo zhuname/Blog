@@ -102,11 +102,22 @@ public class ActivityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		
+		Finder finder = Finder.getSelectFinder(Activity.class).append(" where 1=1 ");
 		
+		if(activity.getAppUser()!=null){
+			
+			if(activity.getAppUser().getName()!=null){
+				
+				finder.append(" and userId in (select id from t_app_user where name=:name)");
+				finder.setParam("name", activity.getAppUser().getName());
+				
+			}
+			
+		}
 		
 		
 		// ==执行分页查询
-		List<Activity> datas=activityService.findListDataByFinder(null,page,Activity.class,activity);
+		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,activity);
 		
 		for (Activity activity2 : datas) {
 			
@@ -271,6 +282,13 @@ public class ActivityController  extends BaseController {
 			
 		}
 		
+		if(activity.getUserId()!=null){
+			
+			finder.append(" and userId=:userId");
+			finder.setParam("userId", activity.getUserId());
+			
+		}
+		
 		if(activity.getStatus()==null){
 			
 			finder.append(" and (status=3 or status=5)");
@@ -326,7 +344,7 @@ public class ActivityController  extends BaseController {
 		page.setOrder(null);
 		page.setSort(null);
 		
-		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,activity);
+		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,null);
 		returnObject.setQueryBean(activity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
