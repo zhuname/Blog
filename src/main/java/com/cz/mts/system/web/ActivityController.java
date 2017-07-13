@@ -344,7 +344,8 @@ public class ActivityController  extends BaseController {
 		page.setOrder(null);
 		page.setSort(null);
 		
-		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,null);
+		//List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,null);
+		List<Activity> datas=activityService.queryForList(finder, Activity.class, page);
 		returnObject.setQueryBean(activity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

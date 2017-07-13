@@ -97,7 +97,7 @@ public class JoinActivityController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/list/json")
+	@RequestMapping("/list/json") 
 	@SecurityApi
 	public @ResponseBody
 	ReturnDatas listjson(HttpServletRequest request, Model model,JoinActivity joinActivity) throws Exception{
@@ -132,7 +132,7 @@ public class JoinActivityController  extends BaseController {
 					break;
 				case "3":
 					page.setOrder("commentCount");
-					page.setSort("desc"); 
+					page.setSort("desc");
 					break;
 				}
 			}
@@ -140,7 +140,7 @@ public class JoinActivityController  extends BaseController {
 				finder.append(" and awardId is not null");
 			}
 				
-		List<JoinActivity> datas=joinActivityService.findListDataByFinder(finder,page,JoinActivity.class,joinActivity);
+		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
 		
 		for (JoinActivity joinActivity2 : datas) {
 			
@@ -177,21 +177,20 @@ public class JoinActivityController  extends BaseController {
 			finderOper.setParam("itemId", joinActivity2.getId());
 			
 			List<Oper> opers = operService.queryForList(finderOper,Oper.class);
-			
-			for (Oper oper : opers) {
-				if(oper.getUserId()!=null){
-					AppUser appUser = appUserService.findAppUserById(oper.getUserId());
-					if(appUser!=null){
-						
-						oper.setNickName(appUser.getName());
-						
+			if(null != opers && opers.size() > 0){
+				for (Oper oper : opers) {
+					if(oper.getUserId()!=null){
+						AppUser appUser = appUserService.findAppUserById(oper.getUserId());
+						if(appUser!=null){
+							
+							oper.setNickName(appUser.getName());
+						}
 					}
 				}
-				
+				joinActivity2.setOpers(opers);
 			}
 			
 			
-			joinActivity2.setOpers(opers);
 			
 			if(StringUtils.isNotBlank(appuserId)){
 					
@@ -207,10 +206,11 @@ public class JoinActivityController  extends BaseController {
 					}*/
 					
 					//查询是否关注
+					Page newPage = new Page();
 					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
 					attenFinder.setParam("userId", Integer.parseInt(appuserId));
 					attenFinder.setParam("itemId", joinActivity2.getUserId());
-					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, newPage, Attention.class, null);
 					if(attens!=null&&attens.size()>0){
 						joinActivity2.setIsAttr(1);
 					}else {

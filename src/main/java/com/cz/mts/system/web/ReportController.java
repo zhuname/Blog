@@ -27,6 +27,7 @@ import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.system.service.IReportService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -69,9 +70,45 @@ public class ReportController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,Report report) 
 			throws Exception {
 		ReturnDatas returnObject = listjson(request, model, report);
-		List<Report> reports = (List<Report>) returnObject.getData();
-		if(null != reports && reports.size() > 0){
-			for (Report rp : reports) {
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return listurl;
+	}
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param report
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list/json")
+	public @ResponseBody
+	ReturnDatas listjson(HttpServletRequest request, Model model,Report report) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		Finder finder = Finder.getSelectFinder(Report.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(report.getContent())){
+			finder.append(" and content like '%"+report.getContent()+"%'");
+		}
+		if(StringUtils.isNotBlank(report.getOperUserName())){
+			finder.append(" and operUserId in (select id from t_app_user where name like '%"+report.getOperUserName()+"%')");
+		}
+		if(StringUtils.isNotBlank(report.getReportedUserName())){
+			finder.append(" and reportedUserId in (select id from t_app_user where name like '%"+report.getReportedUserName()+"%')");
+		}
+		if(null != report.getType()){
+			finder.append(" and type=:type");
+			finder.setParam("type", report.getType());
+		}
+		
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		List<Report> datas=reportService.findListDataByFinder(finder,page,Report.class,null);
+		if(null != datas && datas.size() > 0){
+			for (Report rp : datas) {
 				//举报人的名称
 				if(null != rp.getOperUserId()){
 					AppUser appUser = appUserService.findAppUserById(rp.getOperUserId());
@@ -109,28 +146,6 @@ public class ReportController  extends BaseController {
 				
 			}
 		}
-		returnObject.setData(reports);
-		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return listurl;
-	}
-	
-	/**
-	 * json数据,为APP提供数据
-	 * 
-	 * @param request
-	 * @param model
-	 * @param report
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/list/json")
-	public @ResponseBody
-	ReturnDatas listjson(HttpServletRequest request, Model model,Report report) throws Exception{
-		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		// ==构造分页请求
-		Page page = newPage(request);
-		// ==执行分页查询
-		List<Report> datas=reportService.findListDataByFinder(null,page,Report.class,report);
 		returnObject.setQueryBean(report);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
