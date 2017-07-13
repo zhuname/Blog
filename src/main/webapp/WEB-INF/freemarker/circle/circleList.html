@@ -74,13 +74,6 @@ function deleteCircle(){
                     <!--first_start_export-->
                     <thead>
                     <tr>
-                        <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
                         <th>操作</th>
                         <!--first_end_no_export-->
 						<th id="th_type" >类型</th>
@@ -94,7 +87,6 @@ function deleteCircle(){
 						<th id="th_commentCount" >评论次数</th>
 						<th id="th_sumMoney" >打赏总金额</th>
 						<th id="th_count" >打赏次数</th>
-						<th id="th_cityId" >城市id</th>
 						<th id="th_height" >单张图片的高</th>
 						<th id="th_width" >单张图片的宽</th>
 						<th id="th_osType" >操作系统</th>
@@ -109,20 +101,14 @@ function deleteCircle(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
+                                        <!-- <button class="btn btn-xs btn-info"
                                                 onclick="myhref('${ctx}/circle/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/circle/delete?id=${(_data.id)!''}','${ctx}/circle/list');">
+                                                onclick="mydelete('${ctx}/circle/delete?id=${(_data.id)!''}','${ctx}/system/circle/list','','确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -210,9 +196,6 @@ function deleteCircle(){
 							</td>
 							<td >
 								${(_data.count)!0}
-							</td>
-							<td >
-								${(_data.cityId)!0}
 							</td>
 							<td >
 								${(_data.height)!0}
