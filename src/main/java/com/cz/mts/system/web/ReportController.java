@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.JoinActivity;
+import com.cz.mts.system.entity.MediaPackage;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Report;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.IJoinActivityService;
+import com.cz.mts.system.service.IMediaPackageService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IReportService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -52,6 +56,10 @@ public class ReportController  extends BaseController {
 	private IJoinActivityService joinActivityService;
 	@Resource
 	private ICircleService circleService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
 	
 	private String listurl="/report/reportList";
 	
@@ -126,7 +134,7 @@ public class ReportController  extends BaseController {
 				}
 				if(null != rp.getItemId()){
 					if(null != rp.getType()){
-						//1同城活动参与   2同城圈
+						//1同城活动参与   2同城圈 3海报红包举报  4视频红包举报
 						if(1 == rp.getType()){
 							JoinActivity joinActivity = joinActivityService.findJoinActivityById(rp.getItemId());
 							if(null != joinActivity && StringUtils.isNotBlank(joinActivity.getContent())){
@@ -138,6 +146,19 @@ public class ReportController  extends BaseController {
 							Circle circle = circleService.findCircleById(rp.getItemId());
 							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
 								rp.setItemContent(circle.getContent());
+							}
+						}
+						if(3 == rp.getType()){
+							PosterPackage posterPackage = posterPackageService.findPosterPackageById(rp.getItemId());
+							if(null != posterPackage && StringUtils.isNotBlank(posterPackage.getTitle())){
+								rp.setItemContent(posterPackage.getTitle());
+							}
+						}
+						
+						if(4 == rp.getType()){
+							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(rp.getItemId());
+							if(null != mediaPackage && StringUtils.isNotBlank(mediaPackage.getTitle())){
+								rp.setItemContent(mediaPackage.getTitle());
 							}
 						}
 					}

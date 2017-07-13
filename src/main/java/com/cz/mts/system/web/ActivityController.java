@@ -208,17 +208,17 @@ public class ActivityController  extends BaseController {
 			  finderJoin.setParam("userId", appuserId);
 			  finderJoin.setParam("id", id);
 			  List<JoinActivity> joinActivities = joinActivityService.queryForList(finderJoin, JoinActivity.class);
-			  
-			  //查询评论次数
-			  activity.setCommentCount(0);
-			  
-			  for (JoinActivity joinActivity : joinActivities) {
-				if(joinActivity.getCommentCount()!=null){
-					
-					activity.setCommentCount(joinActivity.getCommentCount()+activity.getCommentCount());
-					
-				}
-			  }
+//			  
+//			  //查询评论次数
+//			  activity.setCommentCount(0);
+//			  
+//			  for (JoinActivity joinActivity : joinActivities) {
+//				if(joinActivity.getCommentCount()!=null){
+//					
+//					activity.setCommentCount(joinActivity.getCommentCount()+activity.getCommentCount());
+//					
+//				}
+//			  }
 			  
 			  if(joinActivities!=null&&joinActivities.size()>0){
 				  activity.setIsPart(1);
