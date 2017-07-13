@@ -64,7 +64,7 @@ public class CircleController  extends BaseController {
 	private IOperService operService;
 	
 	
-	private String listurl="/system/circle/circleList";
+	private String listurl="/circle/circleList";
 	
 	
 	   
@@ -143,6 +143,14 @@ public class CircleController  extends BaseController {
 					finder.setParam("userId", Integer.parseInt(appuserId));
 				}
 				break;
+			}
+		}else {
+			page.setOrder("id");
+			page.setSort("desc");
+			
+			if(StringUtils.isNotBlank(appuserId)){
+				finder.append(" and userId not In (select itemId from t_shield where userId=:userId)");
+				finder.setParam("userId", Integer.parseInt(appuserId));
 			}
 		}
 		
