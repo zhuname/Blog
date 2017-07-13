@@ -75,20 +75,20 @@ function deleteReport(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                       <!--  <th class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
-                        </th>
+                        </th> -->
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_operUserId" >举报人id</th>
-						<th id="th_itemId" >同城活动参与id/同城圈id</th>
+						<th id="th_operUserId" >举报人名称</th>
+						<th id="th_itemId" >举报对应目标内容</th>
 						<th id="th_createTime" >举报时间</th>
 						<th id="th_content" >举报内容</th>
-						<th id="th_type" >1.同城活动参与举报  2同城圈举报</th>
-						<th id="th_reportedUserId" >被举报人的id</th>
+						<th id="th_type" >举报所属对象</th>
+						<th id="th_reportedUserId" >被举报人名称</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -100,20 +100,20 @@ function deleteReport(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
+                                <!-- <td class="center">
                                     <label class="position-relative">
                                         <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
                                         <span class="lbl"></span>
                                     </label>
-                                </td>
+                                </td> -->
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
+                                       <!--  <button class="btn btn-xs btn-info"
                                                 onclick="myhref('${ctx}/system/report/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/report/delete?id=${(_data.id)!''}','${ctx}/system/report/list');">
+                                                onclick="mydelete('${ctx}/system/report/delete?id=${(_data.id)!''}','${ctx}/system/report/list',null,'确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -131,7 +131,7 @@ function deleteReport(){
 														</span>
 													</a>
 											  </li>	
-                                                <li>
+                                               <!--  <li>
                                                     <a data-original-title="Edit"
                                                        href="javascript:myhref('${ctx}/system/report/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
@@ -139,7 +139,7 @@ function deleteReport(){
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																		</span>
                                                     </a>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <a data-original-title="Delete"
                                                        href="javascript:mydelete('${ctx}/system/report/delete?id=${(_data.id)!''}','${ctx}/system/report/list');"
@@ -156,23 +156,33 @@ function deleteReport(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.operUserId)!0}
+								${(_data.operUserName)!''}
 							</td>
 							<td >
-								${(_data.itemId)!0}
+								
+								<#if (_data.itemContent)?length gt 33>  
+								    ${(_data.itemContent)?substring(0,30)}...  
+								<#else>${(_data.itemContent)}   
+								</#if>  
+								
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
 								${(_data.content)!''}
 							</td>
 							<td >
-								${(_data.type)!0}
+								<#if (_data.type) == 1 >
+									同城活动参与的举报
+								</#if>
+								<#if (_data.type) == 2 >
+									同城圈的举报
+								</#if>
 							</td>
 							<td >
-								${(_data.reportedUserId)!0}
+								${(_data.reportedUserName)!''}
 							</td>
 						</tr>
 					</#list>

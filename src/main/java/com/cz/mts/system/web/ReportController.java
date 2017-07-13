@@ -17,7 +17,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.Report;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICircleService;
+import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.system.service.IReportService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -39,6 +45,12 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class ReportController  extends BaseController {
 	@Resource
 	private IReportService reportService;
+	@Resource
+	private IAppUserService appUserService;
+	@Resource
+	private IJoinActivityService joinActivityService;
+	@Resource
+	private ICircleService circleService;
 	
 	private String listurl="/report/reportList";
 	
@@ -57,6 +69,47 @@ public class ReportController  extends BaseController {
 	public String list(HttpServletRequest request, Model model,Report report) 
 			throws Exception {
 		ReturnDatas returnObject = listjson(request, model, report);
+		List<Report> reports = (List<Report>) returnObject.getData();
+		if(null != reports && reports.size() > 0){
+			for (Report rp : reports) {
+				//举报人的名称
+				if(null != rp.getOperUserId()){
+					AppUser appUser = appUserService.findAppUserById(rp.getOperUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						rp.setOperUserName(appUser.getName());
+					}
+				}
+				
+				//被举报人的名称
+				if(null != rp.getReportedUserId()){
+					AppUser appUser = appUserService.findAppUserById(rp.getReportedUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						rp.setReportedUserName(appUser.getName());
+					}
+				}
+				if(null != rp.getItemId()){
+					if(null != rp.getType()){
+						//1同城活动参与   2同城圈
+						if(1 == rp.getType()){
+							JoinActivity joinActivity = joinActivityService.findJoinActivityById(rp.getItemId());
+							if(null != joinActivity && StringUtils.isNotBlank(joinActivity.getContent())){
+								rp.setItemContent(joinActivity.getContent());
+							}
+						}
+						
+						if(2 == rp.getType()){
+							Circle circle = circleService.findCircleById(rp.getItemId());
+							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
+								rp.setItemContent(circle.getContent());
+							}
+						}
+					}
+				}
+				
+				
+			}
+		}
+		returnObject.setData(reports);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}

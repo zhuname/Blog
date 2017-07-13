@@ -116,7 +116,7 @@ public class LunboPicController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		if(StringUtils.isBlank(lunboPic.getCityIds()) || null == lunboPic.getPosition()){
+		if(null == lunboPic.getPosition()){
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
