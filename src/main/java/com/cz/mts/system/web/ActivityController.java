@@ -508,6 +508,7 @@ public class ActivityController  extends BaseController {
 			if(null != activity.getId()){
 				activity.setStatus(3);
 				activity.setAduitSuccessTime(new Date());
+				notificationService.notify(22, activity.getId(), activity.getUserId());
 				activityService.update(activity,true);
 				
 				
@@ -542,6 +543,7 @@ public class ActivityController  extends BaseController {
 			if(null != activity.getId()){
 				activity.setStatus(2);
 				activity.setAduitFailTime(new Date());
+				notificationService.notify(23, activity.getId(), activity.getUserId());
 				activityService.update(activity,true);
 			}
 		} catch (Exception e) {
