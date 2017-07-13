@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -73,7 +74,39 @@ public class Report  extends BaseEntity {
 	private String osType;
 	//columns END 数据库字段结束
 	
+	private String operUserName;
+	private String reportedUserName;
+	
+	private String itemContent;
+	
+	
+	@Transient
+	public String getItemContent() {
+		return itemContent;
+	}
+
+	public void setItemContent(String itemContent) {
+		this.itemContent = itemContent;
+	}
+
 	//concstructor
+    @Transient
+	public String getOperUserName() {
+		return operUserName;
+	}
+
+	public void setOperUserName(String operUserName) {
+		this.operUserName = operUserName;
+	}
+
+	 @Transient
+	public String getReportedUserName() {
+		return reportedUserName;
+	}
+
+	public void setReportedUserName(String reportedUserName) {
+		this.reportedUserName = reportedUserName;
+	}
 
 	public Report(){
 	}

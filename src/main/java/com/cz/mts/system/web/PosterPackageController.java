@@ -412,9 +412,8 @@ public class PosterPackageController  extends BaseController {
 				 Integer lqNum = 0;
 				 if(StringUtils.isNotBlank(appUserId)){
 					 //返回该用户已领取的数量
-					 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId AND userId=:userId AND `status`!=0");
+					 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId AND `status`!=0");
 					 userCardFinder.setParam("cardId", posterPackage.getCardId());
-					 userCardFinder.setParam("userId", Integer.parseInt(appUserId));
 					 List<UserCard> userCards = userCardService.queryForList(userCardFinder, UserCard.class);
 					 if(null != userCards && userCards.size() > 0){
 						 UserCard userCard = userCards.get(0);
