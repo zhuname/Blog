@@ -1,3 +1,4 @@
+
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
@@ -67,6 +68,9 @@ public class Report  extends BaseEntity {
 	 * 被举报人的id
 	 */
 	private java.lang.Integer reportedUserId;
+	
+	
+	private String osType;
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -94,7 +98,17 @@ public class Report  extends BaseEntity {
 		this.operUserId = value;
 	}
 	
-     @WhereSQL(sql="operUserId=:Report_operUserId")
+	
+	@WhereSQL(sql="osType=:Report_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="operUserId=:Report_operUserId")
 	public java.lang.Integer getOperUserId() {
 		return this.operUserId;
 	}
@@ -160,6 +174,7 @@ public class Report  extends BaseEntity {
 			.append("举报内容[").append(getContent()).append("],")
 			.append("1.同城活动参与举报  2同城圈举报[").append(getType()).append("],")
 			.append("被举报人的id[").append(getReportedUserId()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

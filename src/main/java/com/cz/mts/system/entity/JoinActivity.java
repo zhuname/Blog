@@ -109,7 +109,7 @@ public class JoinActivity  extends BaseEntity {
 	private Integer height;
 	private Integer width;
 	
-	
+	private String osType;
 	
 	
 	//concstructor
@@ -121,6 +121,14 @@ public class JoinActivity  extends BaseEntity {
 		this.height = height;
 	}
 	
+	
+	@WhereSQL(sql="osType=:JoinActivity_osType")
+	public String getOsType() {
+		return osType;
+	}
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
 	@WhereSQL(sql="width=:JoinActivity_width")
 	public Integer getWidth() {
 		return width;
@@ -325,6 +333,7 @@ public class JoinActivity  extends BaseEntity {
 			.append("评论次数[").append(getCommentCount()).append("],")
 			.append("高度[").append(getHeight()).append("],")
 			.append("宽度[").append(getWidth()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

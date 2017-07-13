@@ -167,6 +167,9 @@ public class Activity  extends BaseEntity {
 	private Integer joinCount;
 	
 	
+	private String osType;
+	
+	
 	
 	
 	//concstructor
@@ -182,6 +185,22 @@ public class Activity  extends BaseEntity {
 
 	public void setJoinCount(Integer joinCount) {
 		this.joinCount = joinCount;
+	}
+
+
+
+
+	@WhereSQL(sql="osType=:Activity_osType")
+	public String getOsType() {
+		return osType;
+	}
+
+
+
+
+
+	public void setOsType(String osType) {
+		this.osType = osType;
 	}
 
 
@@ -537,6 +556,7 @@ public class Activity  extends BaseEntity {
 			.append("审核失败时间[").append(getAduitFailTime()).append("],")
 			.append("是否删除[").append(getIsDel()).append("],")
 			.append("参与人数[").append(getJoinCount()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

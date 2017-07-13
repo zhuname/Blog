@@ -103,6 +103,8 @@ public class CityCircle  extends BaseEntity {
 	
 	private AppUser appUser;
 	
+	private String osType;
+	
 	//concstructor
 
 	public CityCircle(){
@@ -138,7 +140,17 @@ public class CityCircle  extends BaseEntity {
 		this.itemId = value;
 	}
 	
-     @WhereSQL(sql="itemId=:CityCircle_itemId")
+	
+	@WhereSQL(sql="osType=:CityCircle_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="itemId=:CityCircle_itemId")
 	public java.lang.Integer getItemId() {
 		return this.itemId;
 	}
@@ -275,6 +287,7 @@ public class CityCircle  extends BaseEntity {
 			.append("0 待支付 1已支付[").append(getStatus()).append("],")
 			.append("createTime[").append(getCreateTime()).append("],")
 			.append("订单编号[").append(getCode()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

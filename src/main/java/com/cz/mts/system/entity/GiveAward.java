@@ -61,6 +61,8 @@ public class GiveAward  extends BaseEntity {
 	
 	private Awards awards;
 	
+	private String osType;
+	
 	//concstructor
 
 	public GiveAward(){
@@ -104,7 +106,18 @@ public class GiveAward  extends BaseEntity {
 		this.userId = value;
 	}
 	
-     @WhereSQL(sql="userId=:GiveAward_userId")
+	
+	
+	@WhereSQL(sql="osType=:GiveAward_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="userId=:GiveAward_userId")
 	public java.lang.Integer getUserId() {
 		return this.userId;
 	}
@@ -149,6 +162,7 @@ public class GiveAward  extends BaseEntity {
 			.append("参与者id[").append(getJoinUserId()).append("],")
 			.append("颁奖时间[").append(getCreateTime()).append("],")
 			.append("奖项id[").append(getAwardId()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	
