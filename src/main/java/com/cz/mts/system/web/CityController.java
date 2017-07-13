@@ -463,5 +463,30 @@ public class CityController  extends BaseController {
 		 return returnObject;
 	}
 	
+	/**
+	 * 根据城市名称查询城市bean
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/detail/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas detailjson(Model model,HttpServletRequest request,HttpServletResponse response,City city) throws Exception {
+		 ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		 if(null != city.getId()){
+			City cityDetail = cityService.findCityById(city.getId());
+			if(null != cityDetail){
+				returnObject.setData(cityDetail);
+			}
+		 }else{
+			 returnObject.setMessage("参数缺失");
+			 returnObject.setStatus(ReturnDatas.ERROR);
+		 }
+		 return returnObject;
+	}
+	
 
 }

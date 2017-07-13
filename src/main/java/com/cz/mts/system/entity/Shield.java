@@ -52,6 +52,8 @@ public class Shield  extends BaseEntity {
 	 * 屏蔽时间
 	 */
 	private java.util.Date createTime;
+	
+	private String osType;
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -79,7 +81,17 @@ public class Shield  extends BaseEntity {
 		this.itemId = value;
 	}
 	
-     @WhereSQL(sql="itemId=:Shield_itemId")
+	
+	 @WhereSQL(sql="osType=:Shield_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="itemId=:Shield_itemId")
 	public java.lang.Integer getItemId() {
 		return this.itemId;
 	}

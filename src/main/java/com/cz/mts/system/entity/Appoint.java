@@ -134,7 +134,7 @@ public class Appoint  extends BaseEntity {
 	private Double appintMoney;
 	
 	
-	
+	private String osType;
 	
 	
 	//concstructor
@@ -217,7 +217,17 @@ public class Appoint  extends BaseEntity {
 		this.itemId = value;
 	}
 	
-     @WhereSQL(sql="itemId=:Appoint_itemId")
+	
+	 @WhereSQL(sql="osType=:Appoint_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="itemId=:Appoint_itemId")
 	public java.lang.Integer getItemId() {
 		return this.itemId;
 	}
@@ -400,6 +410,7 @@ public class Appoint  extends BaseEntity {
 			.append("兑换券编码[").append(getCardCode()).append("],")
 			.append("1海报 2视频[").append(getType()).append("],")
 			.append("红包发布人id[").append(getPackageUserId()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

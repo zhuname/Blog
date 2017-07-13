@@ -58,6 +58,9 @@ public class Awards  extends BaseEntity {
 	 * 剩余名额
 	 */
 	private java.lang.Integer remainCount;
+	
+	private String osType;
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -85,7 +88,17 @@ public class Awards  extends BaseEntity {
 		this.activityId = value;
 	}
 	
-     @WhereSQL(sql="activityId=:Awards_activityId")
+	
+	@WhereSQL(sql="osType=:Awards_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="activityId=:Awards_activityId")
 	public java.lang.Integer getActivityId() {
 		return this.activityId;
 	}
@@ -136,6 +149,7 @@ public class Awards  extends BaseEntity {
 			.append("内容[").append(getContent()).append("],")
 			.append("发布时候名额[").append(getSumCount()).append("],")
 			.append("剩余名额[").append(getRemainCount()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

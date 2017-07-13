@@ -112,6 +112,8 @@ public class Circle  extends BaseEntity {
 	private Integer isAttr;
 	
 	
+	private String osType;
+	
 	//columns END 数据库字段结束
 	@WhereSQL(sql="height=:Circle_height")
 	public Integer getHeight() {
@@ -120,6 +122,16 @@ public class Circle  extends BaseEntity {
 
 	public void setHeight(Integer height) {
 		this.height = height;
+	}
+
+	
+	@WhereSQL(sql="osType=:Circle_osType")
+	public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
 	}
 
 	@WhereSQL(sql="width=:Circle_width")
@@ -335,6 +347,7 @@ public class Circle  extends BaseEntity {
 			.append("城市id[").append(getCityId()).append("],")
 			.append("单张图片的宽[").append(getWidth()).append("],")
 			.append("单张图片的高[").append(getHeight()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	

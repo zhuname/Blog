@@ -68,6 +68,8 @@ public class Oper  extends BaseEntity {
 	
 	private String nickName;
 	
+	private String osType;
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
@@ -117,7 +119,18 @@ public class Oper  extends BaseEntity {
 		this.userId = value;
 	}
 	
-     @WhereSQL(sql="userId=:Oper_userId")
+	
+	
+	@WhereSQL(sql="osType=:Oper_osType")
+     public String getOsType() {
+		return osType;
+	}
+
+	public void setOsType(String osType) {
+		this.osType = osType;
+	}
+
+	@WhereSQL(sql="userId=:Oper_userId")
 	public java.lang.Integer getUserId() {
 		return this.userId;
 	}
@@ -174,6 +187,7 @@ public class Oper  extends BaseEntity {
 			.append("创建时间[").append(getCreateTime()).append("],")
 			.append(" 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论[").append(getType()).append("],")
 			.append("评论内容[").append(getContent()).append("],")
+			.append("操作系统[").append(getOsType()).append("],")
 			.toString();
 	}
 	
