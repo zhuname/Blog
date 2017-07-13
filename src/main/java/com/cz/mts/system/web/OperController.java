@@ -219,8 +219,8 @@ public class OperController  extends BaseController {
 											posterPackage.setTopCount(0);
 										}
 										posterPackage.setTopCount(posterPackage.getTopCount() + 1);
-										if(posterPackage.getTopCount() % 50 ==0){
-											notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId());
+										if(posterPackage.getTopCount() % 50 ==0 && posterPackage.getTopCount() / 50 > 0){
+											notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId(),posterPackage.getTopCount()+"");
 										}
 										posterPackageService.update(posterPackage,true);
 									}
@@ -242,8 +242,8 @@ public class OperController  extends BaseController {
 										}
 										mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
 										//点赞数每超过50
-										if(mediaPackage.getTopCount() % 50 ==0){
-											notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId());
+										if(mediaPackage.getTopCount() % 50 ==0 && mediaPackage.getTopCount() / 50 > 0){
+											notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId(),mediaPackage.getTopCount()+"");
 										}
 										mediaPackageService.update(mediaPackage,true);
 									}
@@ -273,8 +273,8 @@ public class OperController  extends BaseController {
 										}
 										joinActivity.setTopCount(joinActivity.getTopCount() + 1);
 										
-										if(joinActivity.getTopCount() % 50 ==0){
-											notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId());
+										if(joinActivity.getTopCount() % 50 ==0 && joinActivity.getTopCount() / 50 > 0){
+											notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId(),joinActivity.getTopCount()+"");
 										}
 										
 										joinActivityService.update(joinActivity,true);
@@ -286,8 +286,8 @@ public class OperController  extends BaseController {
 											circle.setTopCount(0);
 										}
 										circle.setTopCount(circle.getTopCount() + 1);
-										if(circle.getTopCount() % 50 ==0){
-											notificationService.notify(33, circle.getId(), circle.getUserId());
+										if(circle.getTopCount() % 50 ==0 && circle.getTopCount() / 50 > 0){
+											notificationService.notify(33, circle.getId(), circle.getUserId(),circle.getTopCount()+"");
 										}
 										circleService.update(circle,true);
 									}
@@ -332,8 +332,8 @@ public class OperController  extends BaseController {
 									posterPackage.setTopCount(0);
 								}
 								posterPackage.setTopCount(posterPackage.getTopCount() + 1);
-								if(posterPackage.getTopCount() % 50 ==0){
-									notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId());
+								if(posterPackage.getTopCount() % 50 ==0 && posterPackage.getTopCount() / 50 > 0){
+									notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId(),posterPackage.getTopCount()+"");
 								}
 								posterPackageService.update(posterPackage,true);
 							}
@@ -354,10 +354,9 @@ public class OperController  extends BaseController {
 									mediaPackage.setTopCount(0);
 								}
 								mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
-								
-								
-								if(mediaPackage.getTopCount() % 50 ==0){
-									notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId());
+								//点赞数每超过50
+								if(mediaPackage.getTopCount() % 50 ==0 && mediaPackage.getTopCount() / 50 > 0){
+									notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId(),mediaPackage.getTopCount()+"");
 								}
 								mediaPackageService.update(mediaPackage,true);
 							}
@@ -386,9 +385,11 @@ public class OperController  extends BaseController {
 									joinActivity.setTopCount(0);
 								}
 								joinActivity.setTopCount(joinActivity.getTopCount() + 1);
-								if(joinActivity.getTopCount() % 50 ==0){
-									notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId());
+								
+								if(joinActivity.getTopCount() % 50 ==0 && joinActivity.getTopCount() / 50 > 0){
+									notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId(),joinActivity.getTopCount()+"");
 								}
+								
 								joinActivityService.update(joinActivity,true);
 							}
 							break;
@@ -398,8 +399,8 @@ public class OperController  extends BaseController {
 									circle.setTopCount(0);
 								}
 								circle.setTopCount(circle.getTopCount() + 1);
-								if(circle.getTopCount() % 50 ==0){
-									notificationService.notify(33, circle.getId(), circle.getUserId());
+								if(circle.getTopCount() % 50 ==0 && circle.getTopCount() / 50 > 0){
+									notificationService.notify(33, circle.getId(), circle.getUserId(),circle.getTopCount()+"");
 								}
 								circleService.update(circle,true);
 							}
@@ -444,8 +445,8 @@ public class OperController  extends BaseController {
 								posterPackage.setTopCount(0);
 							}
 							posterPackage.setTopCount(posterPackage.getTopCount() + 1);
-							if(posterPackage.getTopCount() % 50 ==0){
-								notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId());
+							if(posterPackage.getTopCount() % 50 ==0 && posterPackage.getTopCount() / 50 > 0){
+								notificationService.notify(28, posterPackage.getId(), posterPackage.getUserId(),posterPackage.getTopCount()+"");
 							}
 							posterPackageService.update(posterPackage,true);
 						}
@@ -466,9 +467,9 @@ public class OperController  extends BaseController {
 								mediaPackage.setTopCount(0);
 							}
 							mediaPackage.setTopCount(mediaPackage.getTopCount() + 1);
-							
-							if(mediaPackage.getTopCount() % 50 ==0){
-								notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId());
+							//点赞数每超过50
+							if(mediaPackage.getTopCount() % 50 ==0 && mediaPackage.getTopCount() / 50 > 0){
+								notificationService.notify(29, mediaPackage.getId(), mediaPackage.getUserId(),mediaPackage.getTopCount()+"");
 							}
 							mediaPackageService.update(mediaPackage,true);
 						}
@@ -497,9 +498,11 @@ public class OperController  extends BaseController {
 								joinActivity.setTopCount(0);
 							}
 							joinActivity.setTopCount(joinActivity.getTopCount() + 1);
-							if(joinActivity.getTopCount() % 50 ==0){
-								notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId());
+							
+							if(joinActivity.getTopCount() % 50 ==0 && joinActivity.getTopCount() / 50 > 0){
+								notificationService.notify(31, joinActivity.getId(), joinActivity.getUserId(),joinActivity.getTopCount()+"");
 							}
+							
 							joinActivityService.update(joinActivity,true);
 						}
 						break;
@@ -509,8 +512,8 @@ public class OperController  extends BaseController {
 								circle.setTopCount(0);
 							}
 							circle.setTopCount(circle.getTopCount() + 1);
-							if(circle.getTopCount() % 50 ==0){
-								notificationService.notify(33, circle.getId(), circle.getUserId());
+							if(circle.getTopCount() % 50 ==0 && circle.getTopCount() / 50 > 0){
+								notificationService.notify(33, circle.getId(), circle.getUserId(),circle.getTopCount()+"");
 							}
 							circleService.update(circle,true);
 						}

@@ -186,8 +186,8 @@ public class MediaPackageController  extends BaseController {
 				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
 				 
 				 //超过100人浏览
-				 if(mediaPackage.getScanNum() % 100 == 0){
-					 notificationService.notify(26, mediaPackage.getId(), mediaPackage.getUserId());
+				 if(mediaPackage.getScanNum() % 100 == 0 && mediaPackage.getScanNum() / 100 > 0){
+					 notificationService.notify(26, mediaPackage.getId(), mediaPackage.getUserId(),mediaPackage.getScanNum()+"");
 				 }
 				 mediaPackageService.update(mediaPackage,true);
 			 }

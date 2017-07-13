@@ -229,9 +229,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 25:
-				JPushUtil.sendJPushNotification("您发布的海报红包已经超过100个人浏览了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的海报红包已经超过"+extend[0]+"个人浏览了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 25, userId, new Date(), "您发布的海报红包已经超过100个人浏览了哟", id, null, 0, "海报红包超过100人浏览", 2);
+					message=new Message(null, 25, userId, new Date(), "您发布的海报红包已经超过"+extend[0]+"个人浏览了哟", id, null, 0, "海报红包浏览人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -239,9 +239,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 26:
-				JPushUtil.sendJPushNotification("您发布的视频红包已经超过100个人浏览了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的视频红包已经超过"+extend[0]+"个人浏览了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 26, userId, new Date(), "您发布的视频红包已经超过100个人浏览了哟", id, null, 0, "视频红包超过100人浏览", 2);
+					message=new Message(null, 26, userId, new Date(), "您发布的视频红包已经超过"+extend[0]+"个人浏览了哟", id, null, 0, "视频红包浏览人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -249,9 +249,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 27:
-				JPushUtil.sendJPushNotification("您发布的同城活动已经超过100个人浏览了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的同城活动已经超过"+extend[0]+"个人浏览了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 27, userId, new Date(), "您发布的同城活动已经超过100个人浏览了哟", id, null, 0, "同城活动超过100人浏览", 2);
+					message=new Message(null, 27, userId, new Date(), "您发布的同城活动已经超过"+extend[0]+"个人浏览了哟", id, null, 0, "同城活动浏览人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -259,9 +259,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 28:
-				JPushUtil.sendJPushNotification("您发布的海报红包已经超过50个人点赞了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的海报红包已经超过"+extend[0]+"个人点赞了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 28, userId, new Date(), "您发布的海报红包已经超过50个人点赞了哟", id, null, 0, "海报红包超过50人点赞", 2);
+					message=new Message(null, 28, userId, new Date(), "您发布的海报红包已经超过"+extend[0]+"个人点赞了哟", id, null, 0, "海报红包点赞人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -269,9 +269,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 29:
-				JPushUtil.sendJPushNotification("您发布的视频红包已经超过50个人点赞了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的视频红包已经超过"+extend[0]+"个人点赞了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 29, userId, new Date(), "您发布的视频红包已经超过50个人点赞了哟", id, null, 0, "视频红包超过50人点赞", 2);
+					message=new Message(null, 29, userId, new Date(), "您发布的视频红包已经超过"+extend[0]+"个人点赞了哟", id, null, 0, "视频红包点赞人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -279,9 +279,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 30:
-				JPushUtil.sendJPushNotification("您发布的同城活动已经超过50个人点赞浏览了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的同城活动已经超过"+extend[0]+"个人点赞浏览了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 30, userId, new Date(), "您发布的同城活动已经超过50个人点赞浏览了哟", id, null, 0, "同城活动超过50人点赞", 2);
+					message=new Message(null, 30, userId, new Date(), "您发布的同城活动已经超过"+extend[0]+"个人点赞浏览了哟", id, null, 0, "同城活动点赞人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -289,9 +289,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 31:
-				JPushUtil.sendJPushNotification("您参与的同城活动内容已经超过50个人点赞浏览了哟", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您参与的同城活动内容已经超过"+extend[0]+"个人点赞浏览了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 31, userId, new Date(), "您参与的同城活动内容已经超过50个人点赞浏览了哟", id, null, 0, "同城活动参与超过50人点赞", 2);
+					message=new Message(null, 31, userId, new Date(), "您参与的同城活动内容已经超过"+extend[0]+"个人点赞浏览了哟", id, null, 0, "同城活动参与点赞人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -309,9 +309,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 33:
-				JPushUtil.sendJPushNotification("您发布的同城圈已经超过50人点赞了哟，请注意查看", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的同城圈已经超过"+extend[0]+"人点赞了哟，请注意查看", type+"", id, userId, "");
 				try {
-					message=new Message(null, 33, userId, new Date(), "您发布的同城圈已经超过50人点赞了哟，请注意查看", id, null, 0, "同城圈超过50人点赞", 2);
+					message=new Message(null, 33, userId, new Date(), "您发布的同城圈已经超过"+extend[0]+"人点赞了哟，请注意查看", id, null, 0, "同城圈点赞人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception

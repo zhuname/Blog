@@ -366,7 +366,7 @@ public class CardSchema extends BaseLogger{
 	    	e.printStackTrace();
 	    }
 	    
-	    TimeUnit.SECONDS.sleep(4);
+	    TimeUnit.SECONDS.sleep(10);
 	    
 		}
 	}
