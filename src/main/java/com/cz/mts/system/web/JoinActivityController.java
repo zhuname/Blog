@@ -112,13 +112,31 @@ public class JoinActivityController  extends BaseController {
 		
 		
 		
-		
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
 		
 			if(StringUtils.isNotBlank(name)){
 				finder.append(" and userId in (select id from t_app_user where name like :name)" );
 				finder.setParam("name", name);
 			}
+			if(StringUtils.isNotBlank(joinOrAward) && "2".equals(joinOrAward)){
+				finder.append(" and awardId is not null");
+			}
+			
+			if(joinActivity.getUserId()!=null){
+				
+				finder.append(" and userId = :userId");
+				finder.setParam("userId", joinActivity.getUserId());
+				
+			}
+			
+			if(joinActivity.getActivityId()!=null){
+				
+				finder.append(" and activityId=:activityId");
+				finder.setParam("activityId", joinActivity.getActivityId());
+				
+			}
+			
+			
 			if(StringUtils.isNotBlank(sort)){
 				switch (sort) {
 				case "1":
@@ -136,10 +154,8 @@ public class JoinActivityController  extends BaseController {
 					break;
 				}
 			}
-			if(StringUtils.isNotBlank(joinOrAward) && "2".equals(joinOrAward)){
-				finder.append(" and awardId is not null");
-			}
 				
+			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
 		
 		for (JoinActivity joinActivity2 : datas) {
