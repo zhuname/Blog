@@ -108,7 +108,7 @@ public class JoinActivity  extends BaseEntity {
 	
 	private Integer height;
 	private Integer width;
-	
+	private Integer isOper;
 	private String osType;
 	
 	private String awardName;
@@ -131,6 +131,13 @@ public class JoinActivity  extends BaseEntity {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	@Transient
+	public Integer getIsOper() {
+		return isOper;
+	}
+	public void setIsOper(Integer isOper) {
+		this.isOper = isOper;
 	}
 	//concstructor
 	@WhereSQL(sql="height=:JoinActivity_height")

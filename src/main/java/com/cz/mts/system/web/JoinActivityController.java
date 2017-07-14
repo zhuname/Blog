@@ -113,7 +113,7 @@ public class JoinActivityController  extends BaseController {
 		
 		
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
-		
+			
 			if(StringUtils.isNotBlank(name)){
 				finder.append(" and userId in (select id from t_app_user where name like :name)" );
 				finder.setParam("name", name);
@@ -154,7 +154,7 @@ public class JoinActivityController  extends BaseController {
 					break;
 				}
 			}
-				
+			
 			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
 		
@@ -233,7 +233,18 @@ public class JoinActivityController  extends BaseController {
 						joinActivity2.setIsAttr(0);
 					}
 					
-				
+					
+					//查询是否点赞
+					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
+					operFinder.setParam("userId", Integer.parseInt(appuserId));
+					operFinder.setParam("itemId", joinActivity2.getId());
+					List<Oper> isOpers = operService.findListDataByFinder(operFinder, newPage, Oper.class, null);
+					if(isOpers!=null&&isOpers.size()>0){
+						joinActivity2.setIsOper(1);
+					}else {
+						joinActivity2.setIsOper(0);
+					}
+					
 			}
 			
 			

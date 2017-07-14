@@ -112,6 +112,18 @@ public class CircleController  extends BaseController {
 		
 		Finder finder =Finder.getSelectFinder(Circle.class).append(" where 1=1 ");
 		
+		if(circle.getAppUser()!=null){
+			
+			if(circle.getAppUser().getName()!=null){
+				
+				finder.append(" and userId in (select id from t_app_user where name=:name)");
+				finder.setParam("name", circle.getAppUser().getName());
+				
+			}
+			
+		}
+		
+		
 		//搜索昵称/标题
 		if(StringUtils.isNotBlank(selectTitle)){
 			finder.append(" and (content like :selectTitle or userId in (select id from t_app_user where name like :selectTitle))");

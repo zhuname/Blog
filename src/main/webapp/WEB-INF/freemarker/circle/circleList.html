@@ -27,15 +27,20 @@ function deleteCircle(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/circle/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/circle/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			<label for="search_content"><b>主题:</b></label> 
+			 <input type="text" id="search_content"  name="content" placeholder="请填写主题"  value="${(returnDatas.queryBean.content)!''}">
+			 <label for="search_type"><b>活动类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="1">图片</option>
+				<option value="2">视频</option>
 			</select>
+			<label for="search_appUserName"><b>发布人:</b></label> 
+			 <input type="text" id="search_appUserName"  name="appUser.name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.appUser.name)!''}">
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -176,7 +181,7 @@ function deleteCircle(){
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
 								<#if (_data.appUser) ??>
