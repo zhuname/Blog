@@ -999,7 +999,7 @@ public class AppUserController  extends BaseController {
 						+"  ( SELECT c.*, COUNT(co.id) AS totalCollect FROM ( SELECT b.*, COUNT(ca.id) AS totalCard FROM"
 						+" (SELECT a.*, COUNT(pp.id) AS totalPoster FROM ( SELECT au.balance,COUNT(mp.id) AS totalMedia,"
 						+" au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId = au.id AND mp. STATUS != 0"
-						+" AND mp.isDel != 1 WHERE au.id = 151 ) a LEFT JOIN t_poster_package pp ON pp.userId = a.id"
+						+" AND mp.isDel != 1 WHERE au.id = :id ) a LEFT JOIN t_poster_package pp ON pp.userId = a.id"
 						+" AND pp. STATUS != 0 AND pp.isDel != 1 ) b LEFT JOIN t_card ca ON ca.userId = b.id"
 						+" AND ca.isDel != 1 ) c LEFT JOIN t_collect co ON co.userId = c.id ) d"
 						+" LEFT JOIN t_attention `at` ON `at`.userId = d.id ) e LEFT JOIN t_user_medal um ON um.userId = e.id"
