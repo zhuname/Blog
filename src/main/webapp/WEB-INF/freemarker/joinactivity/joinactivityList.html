@@ -10,11 +10,17 @@ function deleteJoinActivity(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/joinactivity/delete?id="+id;
-		var listurl="${ctx}/joinactivity/list";
+		var _url="${ctx}/system/joinactivity/delete?id="+id;
+		var listurl="${ctx}/system/joinactivity/list";
 		mydelete(_url,listurl);
 	}
 }
+
+
+jQuery(document).ready(function(){
+	//回选 下拉框
+	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
+});
 </script>
 
 
@@ -27,15 +33,26 @@ function deleteJoinActivity(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/joinactivity/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/joinactivity/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			<label for="search_type"><b>类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">图片</option>
+				<option value="2">视频</option>
 			</select>
+			
+			<label for="search_content">内容:</label>
+			<input type="text" id="search_content"  name="content" placeholder="请填写参与内容"  value="${(returnDatas.queryBean.content)!''}">
+			
+			<label for="search_userName">参与人昵称:</label>
+			<input type="text" id="search_userName"  name="userName" placeholder="请填写参与人昵称"  value="${(returnDatas.queryBean.userName)!''}">
+			
+			<label for="search_awardName">奖项名称:</label>
+			<input type="text" id="search_awardName"  name="awardName" placeholder="请填写奖项名称"  value="${(returnDatas.queryBean.awardName)!''}">
+			
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -44,14 +61,14 @@ function deleteJoinActivity(){
 </form>
 		</div>
 		<div class="pull-right">
-			    <@shiro.hasPermission name="/joinactivity/list/export" >
-				  <button onclick="myexport('searchForm','${ctx}/joinactivity/list/export');" class="btn  btn-sm  btn-primary">
+			    <@shiro.hasPermission name="/system/joinactivity/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/system/joinactivity/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
-			    <@shiro.hasPermission name="/joinactivity/update" >
-				  <button onclick="myhref('${ctx}/joinactivity/update/pre');" class="btn  btn-sm  btn-primary">
+			    <@shiro.hasPermission name="/system/joinactivity/update" >
+				  <button onclick="myhref('${ctx}/system/joinactivity/update/pre');" class="btn  btn-sm  btn-primary">
                         添加
                     </button>
 			    </@shiro.hasPermission>
@@ -75,24 +92,16 @@ function deleteJoinActivity(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
-                        <th>操作</th>
+                        <th width="10%">操作</th>
                         <!--first_end_no_export-->
-						<th id="th_type" >1图片 2视频</th>
-						<th id="th_image" >图片</th>
-						<th id="th_mediaUrl" >视频url</th>
-						<th id="th_mediaImage" >视频封面</th>
-						<th id="th_content" >内容</th>
-						<th id="th_createTime" >创建时间</th>
-						<th id="th_userId" >参与人的userId</th>
-						<th id="th_awardId" >奖项id</th>
-						<th id="th_topCount" >点赞次数</th>
-						<th id="th_commentCount" >评论次数</th>
+						<th id="th_type" width="10%" >类型</th>
+						<th id="th_image" width="10%" >图片</th>
+						<th id="th_mediaUrl" width="10%">视频</th>
+						<th id="th_mediaImage" width="10%">视频封面</th>
+						<th id="th_content" width="20%">内容</th>
+						<th id="th_createTime" width="10%">创建时间</th>
+						<th id="th_userId" width="10%">参与人名称</th>
+						<th id="th_awardId" width="10%">奖项名称</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -104,20 +113,14 @@ function deleteJoinActivity(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/joinactivity/update/pre?id=${(_data.id)!''}');">
+                                       <!--  <button class="btn btn-xs btn-info"
+                                                onclick="myhref('${ctx}/system/joinactivity/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/joinactivity/delete?id=${(_data.id)!''}','${ctx}/joinactivity/list');">
+                                                onclick="mydelete('${ctx}/system/joinactivity/delete?id=${(_data.id)!''}','${ctx}/system/joinactivity/list','','确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -129,24 +132,24 @@ function deleteJoinActivity(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/joinactivity/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/joinactivity/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
 													</a>
 											  </li>	
-                                                <li>
+                                                <!-- <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/joinactivity/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/joinactivity/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																		</span>
                                                     </a>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/joinactivity/delete?id=${(_data.id)!''}','${ctx}/joinactivity/list');"
+                                                       href="javascript:mydelete('${ctx}/system/joinactivity/delete?id=${(_data.id)!''}','${ctx}/system/joinactivity/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -160,35 +163,34 @@ function deleteJoinActivity(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.type)!0}
+								<#if (_data.type) == 1>
+									图片
+								</#if>
+								<#if (_data.type) == 2>
+									视频
+								</#if>
 							</td>
 							<td >
-								${(_data.image)!''}
+								<img class="sim"  height="120px" width="120px" alt="" src="${(_data.image)!''}" onclick="checkImg('${(_data.image)!''}','360px','360px');" >
 							</td>
 							<td >
-								${(_data.mediaUrl)!''}
+								<video class="vid" poster="" width='240px' height="120px" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
 							</td>
 							<td >
-								${(_data.mediaImage)!''}
+								<img class="sim"  height="120px" width="120px" alt="" src="${(_data.mediaImage)!''}" onclick="checkImg('${(_data.mediaImage)!''}','360px','360px');" >
 							</td>
 							<td >
 								${(_data.content)!''}
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
-								${(_data.userId)!0}
+								${(_data.userName)!''}
 							</td>
 							<td >
-								${(_data.awardId)!0}
-							</td>
-							<td >
-								${(_data.topCount)!0}
-							</td>
-							<td >
-								${(_data.commentCount)!0}
+								${(_data.awardName)!''}
 							</td>
 						</tr>
 					</#list>

@@ -514,6 +514,7 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setNum(mediaPackage.getLqNum());
 				mediaPackage.setIsDel(0);
 				mediaPackage.setShareNum(0);
+				mediaPackage.setIsValid(0);
 				
 				Object id=mediaPackageService.saveorupdate(mediaPackage);
 				returnObject.setData(mediaPackageService.findMediaPackageById(id));

@@ -111,7 +111,27 @@ public class JoinActivity  extends BaseEntity {
 	
 	private String osType;
 	
+	private String awardName;
+	private String userName;
 	
+	
+	
+	
+	@Transient
+	public String getAwardName() {
+		return awardName;
+	}
+	public void setAwardName(String awardName) {
+		this.awardName = awardName;
+	}
+	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	//concstructor
 	@WhereSQL(sql="height=:JoinActivity_height")
 	public Integer getHeight() {
@@ -264,7 +284,7 @@ public class JoinActivity  extends BaseEntity {
 		this.content = value;
 	}
 	
-     @WhereSQL(sql="content=:JoinActivity_content")
+     @WhereSQL(sql="content like :JoinActivity_content")
 	public java.lang.String getContent() {
 		return this.content;
 	}

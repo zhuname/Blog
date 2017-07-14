@@ -67,7 +67,7 @@ public class JoinActivityController  extends BaseController {
 	@Resource
 	private IActivityService activityService;
 	
-	private String listurl="/system/joinactivity/joinactivityList";
+	private String listurl="/joinactivity/joinactivityList";
 	
 	
 	   
@@ -275,8 +275,53 @@ public class JoinActivityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
+		if(null != joinActivity.getType()){
+			finder.append(" and type = :type");
+			finder.setParam("type", joinActivity.getType());
+		}
+		if(StringUtils.isNotBlank(joinActivity.getContent())){
+			finder.append(" and content like :content");
+			finder.setParam("content", "%"+joinActivity.getContent()+"%");
+		}
+		if(StringUtils.isNotBlank(joinActivity.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where INSTR(`name`,:userName)>0  )");
+			finder.setParam("userName", joinActivity.getUserName());
+		}
+		if(StringUtils.isNotBlank(joinActivity.getAwardName())){
+			finder.append(" and awardId in (SELECT id FROM t_awards WHERE INSTR(`title`,:title)>0)");
+			finder.setParam("title", joinActivity.getAwardName());
+		}
+		
+		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);	
+		if(null != datas && datas.size() > 0){
+			for (JoinActivity ja : datas) {
+				//参与人的信息
+				if(null != ja.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(ja.getUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						ja.setUserName(appUser.getName());
+					}
+							
+				}
+				//奖项信息
+				if(null != ja.getAwardId()){
+					Awards awards = awardsService.findAwardsById(ja.getAwardId());
+					if(null != awards && StringUtils.isNotBlank(awards.getTitle())){
+						ja.setAwardName(awards.getTitle());
+					}
+				}
 				
-		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);		
+				if(StringUtils.isNotBlank(ja.getImage())){
+					if(ja.getImage().contains(";")){
+						String[] strs = ja.getImage().split(";");
+						String image = strs[0];
+						ja.setImage(image);		
+					}
+				}
+				
+				
+			}
+		}
 		
 		returnObject.setQueryBean(joinActivity);
 		returnObject.setPage(page);
@@ -386,8 +431,8 @@ public class JoinActivityController  extends BaseController {
 				return new ReturnDatas(ReturnDatas.SUCCESS,
 						MessageUtils.DELETE_SUCCESS);
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.ERROR,
+						"参数缺失");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
