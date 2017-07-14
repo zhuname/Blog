@@ -230,6 +230,18 @@ public class MoneyDetailController  extends BaseController {
 			finder.setParam("status", moneyDetail.getStatus());
 		}
 		
+		//视频红包名称查询
+		if(2 == moneyDetail.getType() && StringUtils.isNotBlank(moneyDetail.getItemName())){
+			finder.append(" and itemId in (select id from t_media_package where INSTR(`title`,:title)>0 )");
+			finder.setParam("title", moneyDetail.getItemName());
+		}
+		
+		//海报名称查询
+		if(1 == moneyDetail.getType() && StringUtils.isNotBlank(moneyDetail.getItemName())){
+			finder.append(" and itemId in (select id from t_poster_package where INSTR(`title`,:title)>0 )");
+			finder.setParam("title", moneyDetail.getItemName());
+		}
+		
 		if(StringUtils.isNotBlank(moneyDetail.getPublishUserName())){
 			finder.append(" and publishUserId in(select id from t_app_user where INSTR(`name`,:publishUserName)>0 )");
 			finder.setParam("publishUserName", moneyDetail.getPublishUserName());
@@ -358,6 +370,11 @@ public class MoneyDetailController  extends BaseController {
 		if(StringUtils.isNotBlank(userCard.getPublishUserName())){
 			finder.append(" and publishUserId in(select id from t_app_user where INSTR(`name`,:publishUserName)>0 )");
 			finder.setParam("publishUserName", userCard.getPublishUserName());
+		}
+		
+		if(StringUtils.isNotBlank(userCard.getCardName())){
+			finder.append(" and cardId in (select id from t_card where INSTR(`title`,:title)>0 )");
+			finder.setParam("title", userCard.getCardName());
 		}
 		
 		

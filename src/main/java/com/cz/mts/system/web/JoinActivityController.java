@@ -83,7 +83,7 @@ public class JoinActivityController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,JoinActivity joinActivity) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, joinActivity);
+		ReturnDatas returnObject = adminListjson(request, model, joinActivity);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -241,6 +241,33 @@ public class JoinActivityController  extends BaseController {
 		returnObject.setData(datas);
 		return returnObject;
 	}
+	
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param joinActivity
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/adminList/json") 
+	public @ResponseBody
+	ReturnDatas adminListjson(HttpServletRequest request, Model model,JoinActivity joinActivity) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
+				
+		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);		
+		
+		returnObject.setQueryBean(joinActivity);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
+	
 	
 	@RequestMapping("/list/export")
 	public void listexport(HttpServletRequest request,HttpServletResponse response, Model model,JoinActivity joinActivity) throws Exception{
