@@ -108,10 +108,16 @@ public class JoinActivity  extends BaseEntity {
 	
 	private Integer height;
 	private Integer width;
-	
+	private Integer isOper;
 	private String osType;
 	
-	
+	@Transient
+	public Integer getIsOper() {
+		return isOper;
+	}
+	public void setIsOper(Integer isOper) {
+		this.isOper = isOper;
+	}
 	//concstructor
 	@WhereSQL(sql="height=:JoinActivity_height")
 	public Integer getHeight() {
