@@ -439,6 +439,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			if(null != cityCircles && cityCircles.size() > 0){
 				cityCircle = cityCircles.get(0);
 			}
+			
 			if(cityCircle==null||cityCircle.getMoney()==null||userId.intValue()!=cityCircle.getUserId().intValue()){
 				return 4;
 			}
