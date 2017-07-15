@@ -260,7 +260,7 @@ public class MedalController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
-			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status` as applyStatus,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId )a ON md.id=a.id");
+			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status` as applyStatus,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId and isEndStatus != 1)a ON md.id=a.id");
 			finder.setParam("userId", medal.getUserId());
 			List datas = medalService.queryForList(finder);
 			returnObject.setData(datas);

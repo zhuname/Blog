@@ -675,6 +675,8 @@ public class PosterPackageController  extends BaseController {
 				
 				posterPackage.setBalance(posterPackage.getSumMoney());
 				
+				posterPackage.setIsValid(0);
+				
 				//生成验证码
 				Long code=new Date().getTime();
 				posterPackage.setCode("P"+code);
