@@ -1,0 +1,151 @@
+<#escape x as x?html>
+<SCRIPT type="text/javascript">
+<!--
+
+jQuery(document).ready(function(){
+	
+	
+	$(document).on("change", "#contentT", function() {
+		
+		$("#content").val($("#contentT").val());
+		
+		console.log($("#content").val());
+		
+	});
+	
+	//加载链接目标
+            jQuery.ajax({
+                url : ctx+"/system/lunbopic/position/list?position=2",
+                type : "post",
+                dataType : "json",
+                success : function(_json) {
+                    if(_json.status=="error"){
+                        return;
+                    }
+                    //先清除原来的数据
+                    $("#itemId").empty();
+                    jQuery(_json.data).each(function(i,_obj){
+                        if(_obj.name){
+                            jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
+						}
+                    });
+
+                    jQuery("#itemId").select2();
+                }
+            });
+	
+	
+	$("#urlShow").hide();
+	
+	
+	$(document).on("change", "#pushType", function() {
+		var pushType=$("#pushType").val();
+		//2海报 3视频 5同城活动 1url 4文字
+		switch (pushType) {
+		case "1":
+			$("#urlShow").show();
+			$("#itemShow").hide();
+			break;
+		case "2":
+			$("#urlShow").hide();
+			$("#itemShow").show();
+			break;
+		case "3":
+			$("#urlShow").hide();
+			$("#itemShow").show();
+			break;
+		case "4":
+			$("#itemShow").hide();
+			$("#urlShow").hide();
+			break;
+		case "5":
+			$("#urlShow").hide();
+			$("#itemShow").show();
+			break;
+		}
+		
+	});
+	
+	
+	 $("#pushType").on('change',function(){
+
+            //加载链接目标
+            jQuery.ajax({
+                url : ctx+"/system/lunbopic/position/list?position="+$("#pushType").val(),
+                type : "post",
+                dataType : "json",
+                success : function(_json) {
+                    if(_json.status=="error"){
+                        return;
+                    }
+                    //先清除原来的数据
+                    $("#itemId").empty();
+                    jQuery(_json.data).each(function(i,_obj){
+                        if(_obj.name){
+                            jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
+						}
+                    });
+
+                    jQuery("#itemId").select2();
+                }
+            });
+
+        });
+	
+});
+	
+</SCRIPT>
+
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/push/url" > 
+<!--input  hidden  End-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content" >推送内容</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<textarea id="contentT" style="height: 200px;width: 20%;"></textarea>
+						<input id="content" name="content" style="display: none;">
+					</div><div class="help-block" for="content"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group" id="pushTypeShow">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="pushType" >推送类型</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<select name="pushType" id="pushType"><option value="2">海报红包</option><option value="3">视频红包</option><option value="5">同城活动</option><option value="1">url</option><option value="4">文字</option></select>
+					</div><div class="help-block" for="pushType"></div>
+				</div>
+			</div>
+			 <div class="space-2"></div>
+			<div class="form-group"  id="urlShow">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="url" >url</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="url" class="col-xs-12 col-sm-6" id="url" type="text" />
+					</div><div class="help-block" for="url"></div>
+				</div>
+			</div>
+			 <div class="space-2"></div>
+			<div class="form-group" id="itemShow">
+					<label class="col-sm-3 control-label no-padding-right" for="itemId">目标</label>
+					<div class="col-sm-6">
+						<select  id="itemId" name="itemId" code="${(returnDatas.data.itemId)!''}"   class="form-control">
+						</select>
+					</div>
+			</div>
+				
+		</form>
+		<div class="wizard-actions">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/push/pushList');" style="float:left;margin-left:25.4%;">
+				保存
+			</button>
+		</div>
+	</div>
+</div>
+
+
+</#escape>

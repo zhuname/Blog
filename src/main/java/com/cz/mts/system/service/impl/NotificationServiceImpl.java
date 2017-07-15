@@ -359,9 +359,61 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			
+			case 38:
+				JPushUtil.sendAllPushNotification(extend[0], type+"", null,"");
+				try {
+					//查询所有的用户
+					Finder finder = new Finder("SELECT * FROM t_app_user WHERE isPush=1");
+					List<AppUser> appUsers = appUserService.queryForList(finder,AppUser.class);
+					if(null != appUsers && appUsers.size() > 0){
+						for (AppUser appUser : appUsers) {
+							message=new Message(null, 38, appUser.getId(), new Date(), extend[0], Integer.parseInt(extend[1].toString()),null,  0, "系统推送", 1);
+							messageService.save(message);
+						}
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
 			
-			
-			
+			case 39:
+				JPushUtil.sendAllPushNotification(extend[0], type+"", null,"");
+				try {
+					//查询所有的用户
+					Finder finder = new Finder("SELECT * FROM t_app_user WHERE isPush=1");
+					List<AppUser> appUsers = appUserService.queryForList(finder,AppUser.class);
+					if(null != appUsers && appUsers.size() > 0){
+						for (AppUser appUser : appUsers) {
+							message=new Message(null, 39, appUser.getId(), new Date(), extend[0], Integer.parseInt(extend[1].toString()),null,  0, "系统推送", 1);
+							messageService.save(message);
+						}
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
+			case 40:
+				JPushUtil.sendAllPushNotification(extend[0], type+"", null,"");
+				try {
+					//查询所有的用户
+					Finder finder = new Finder("SELECT * FROM t_app_user WHERE isPush=1");
+					List<AppUser> appUsers = appUserService.queryForList(finder,AppUser.class);
+					if(null != appUsers && appUsers.size() > 0){
+						for (AppUser appUser : appUsers) {
+							message=new Message(null, 40, appUser.getId(), new Date(), extend[0], Integer.parseInt(extend[1].toString()),null,  0, "系统推送", 1);
+							messageService.save(message);
+						}
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			break;
 			
 			
 			

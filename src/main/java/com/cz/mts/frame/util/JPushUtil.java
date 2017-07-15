@@ -109,9 +109,12 @@ public class JPushUtil {
 //		notificationMap.put("title", "美天赏");
 		Map<String,Object> androidiosextra = new HashMap<String,Object>();
 		androidiosextra.put("type", type);
-		for (Object key:other.keySet()) {			
-			androidiosextra.put(key.toString(), other.get(key));
+		if(null != other){
+			for (Object key:other.keySet()) {			
+				androidiosextra.put(key.toString(), other.get(key));
+			}
 		}
+		
 //		notificationMap.put("category", "identifier");
 //		notificationMap.put("category", "category str");
 		Map<String,Object> android = new HashMap<String,Object>();
