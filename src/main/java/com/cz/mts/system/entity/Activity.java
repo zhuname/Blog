@@ -168,7 +168,7 @@ public class Activity  extends BaseEntity {
 	
 	
 	private String osType;
-	
+	private Integer isOper;
 	
 	
 	
@@ -213,7 +213,23 @@ public class Activity  extends BaseEntity {
 	
 	
 	
-	
+	@Transient
+	public Integer getIsOper() {
+		return isOper;
+	}
+
+
+
+
+
+	public void setIsOper(Integer isOper) {
+		this.isOper = isOper;
+	}
+
+
+
+
+
 	@Transient
 	public Integer getIsAttr() {
 		return isAttr;
