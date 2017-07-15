@@ -964,6 +964,9 @@ public class AppUserController  extends BaseController {
 			}else if (result==5) {
 				returnObject.setMessage("用户余额不足");
 				returnObject.setStatus(ReturnDatas.ERROR);
+			}else if (result==6) {
+				returnObject.setMessage("支付金额需大于0");
+				returnObject.setStatus(ReturnDatas.ERROR);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

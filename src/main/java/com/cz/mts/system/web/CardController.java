@@ -425,7 +425,7 @@ public class CardController  extends BaseController {
 				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
 				//判断是否有免审核勋章，并且该勋章是否已过期
-				Finder finder = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=3) AND isEndStatus != 1");
+				Finder finder = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=3) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 				finder.setParam("userId", card.getUserId());
 				List<UserMedal> userMedalms = userMedalService.queryForList(finder, UserMedal.class);
 				if(null != userMedalms && userMedalms.size() > 0){
