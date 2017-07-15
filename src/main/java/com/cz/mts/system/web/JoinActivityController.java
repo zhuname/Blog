@@ -313,8 +313,9 @@ public class JoinActivityController  extends BaseController {
 					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
 						ja.setUserName(appUser.getName());
 					}
-							
+				
 				}
+				
 				//奖项信息
 				if(null != ja.getAwardId()){
 					Awards awards = awardsService.findAwardsById(ja.getAwardId());
@@ -327,7 +328,7 @@ public class JoinActivityController  extends BaseController {
 					if(ja.getImage().contains(";")){
 						String[] strs = ja.getImage().split(";");
 						String image = strs[0];
-						ja.setImage(image);		
+						ja.setImage(image);
 					}
 				}
 				
