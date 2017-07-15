@@ -36,6 +36,7 @@ import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.Menu;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.Password;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
@@ -1323,16 +1324,26 @@ public class AppUserController  extends BaseController {
 				Finder posterFinder = new Finder("SELECT SUM(sumMoney) as posterSumMoney,SUM(balance) AS posterRemainMoney FROM t_poster_package WHERE isDel = 0 AND `status`=3");
 				List<AppUser> posterAppUsers = appUserService.queryForList(posterFinder,AppUser.class);
 				if(null != posterAppUsers && posterAppUsers.size() > 0){
-					posterSumMoney = posterAppUsers.get(0).getPosterSumMoney();
-					posterSnachMoney = new BigDecimal(posterSumMoney).subtract(new BigDecimal(posterAppUsers.get(0).getPosterRemainMoney())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					AppUser posterAppUser = posterAppUsers.get(0);
+					if(null != posterAppUser && null != posterAppUser.getPosterSumMoney()){
+						posterSumMoney = posterAppUser.getPosterSumMoney();
+					}
+					if(null != posterAppUser && null != posterAppUser.getPosterRemainMoney()){
+						posterSnachMoney = new BigDecimal(posterSumMoney).subtract(new BigDecimal(posterAppUser.getPosterRemainMoney())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					}
 				}
 				
 				//查询视频红包总金额以及剩余金额
 				Finder mediaFinder = new Finder("SELECT SUM(sumMoney) as mediaSumMoney,SUM(balance) AS mediaRemainMoney FROM t_media_package WHERE isDel = 0 AND `status`=3");
 				List<AppUser> mediaAppUsers = appUserService.queryForList(mediaFinder,AppUser.class);
 				if(null != mediaAppUsers && mediaAppUsers.size() > 0){
-					mediaSumMoney = mediaAppUsers.get(0).getMediaSumMoney();
-					mediaSnachMoney = new BigDecimal(mediaSumMoney).subtract(new BigDecimal(mediaAppUsers.get(0).getMediaRemainMoney())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					AppUser mediaAppUser = mediaAppUsers.get(0);
+					if(null != mediaAppUser && null != mediaAppUser.getMediaSumMoney()){
+						mediaSumMoney = mediaAppUser.getMediaSumMoney();
+					}
+					if(null != mediaAppUser && null != mediaAppUser.getMediaRemainMoney()){
+						mediaSnachMoney = new BigDecimal(mediaSumMoney).subtract(new BigDecimal(mediaAppUser.getMediaRemainMoney())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					}
 				}
 				
 				Double sumMoney = new BigDecimal(posterSumMoney).add(new BigDecimal(mediaSumMoney)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
