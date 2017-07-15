@@ -29,6 +29,7 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LmediaPackage;
@@ -42,6 +43,7 @@ import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
@@ -91,6 +93,9 @@ public class MediaPackageController  extends BaseController {
 	private IUserCardService userCardService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private ICardService cardService;
+	
 	
 	
 	private String listurl="/mediapackage/mediapackageList";
@@ -252,6 +257,12 @@ public class MediaPackageController  extends BaseController {
 					 }
 			 }
 			 
+			 if(null != mediaPackage && null != mediaPackage.getCardId()){
+				 Card card = cardService.findCardById(mediaPackage.getCardId());
+				 if(null != card && StringUtils.isNotBlank(card.getTitle())){
+					 mediaPackage.setCardTitle(card.getTitle());
+				 }
+			 }
 			 
 			 //返回分类名称
 			 if(mediaPackage != null && mediaPackage.getCategoryId() != null){

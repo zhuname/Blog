@@ -233,7 +233,19 @@ public class PosterPackage  extends BaseEntity {
 	
 	private Integer isValid;
 	
+	private String cardTitle;
 	
+	
+	
+	
+	@Transient
+	public String getCardTitle() {
+		return cardTitle;
+	}
+
+	public void setCardTitle(String cardTitle) {
+		this.cardTitle = cardTitle;
+	}
 	
 	@WhereSQL(sql="isValid=:PosterPackage_isValid")
 	public Integer getIsValid() {

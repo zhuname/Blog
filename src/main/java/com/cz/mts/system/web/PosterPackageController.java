@@ -29,6 +29,7 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LposterPackage;
@@ -43,6 +44,7 @@ import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.IMedalService;
@@ -97,6 +99,8 @@ public class PosterPackageController  extends BaseController {
 	private IAttentionService attentionService;
 	@Resource
 	private IOperService operService;
+	@Resource
+	private ICardService cardService;
 	//定义一个默认大小的链表队列
 	private final LinkedBlockingQueue<Snatch> queue = new LinkedBlockingQueue<>() ;
 	
@@ -381,6 +385,15 @@ public class PosterPackageController  extends BaseController {
 				 }
 				 
 			 }
+			 
+			 
+			 if(null != posterPackage && null != posterPackage.getCardId()){
+				 Card card = cardService.findCardById(posterPackage.getCardId());
+				 if(null != card && StringUtils.isNotBlank(card.getTitle())){
+					 posterPackage.setCardTitle(card.getTitle());
+				 }
+			 }
+			 
 			 
 			 //返回分类名称
 			 if(posterPackage != null && posterPackage.getCategoryId() != null){

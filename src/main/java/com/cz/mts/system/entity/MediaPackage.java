@@ -203,6 +203,7 @@ public class MediaPackage  extends BaseEntity {
 	
 	private List<MoneyDetail> moneyDetails;
 	
+	
 	private String name;
 	private String phone;
 	private String sex;
@@ -247,6 +248,20 @@ public class MediaPackage  extends BaseEntity {
 	
 	private Integer isValid;
 	
+	private String cardTitle;
+	
+	
+	
+	
+	@Transient
+	public String getCardTitle() {
+		return cardTitle;
+	}
+
+	public void setCardTitle(String cardTitle) {
+		this.cardTitle = cardTitle;
+	}
+
 	@WhereSQL(sql="isValid=:MediaPackage_isValid")
 	public Integer getIsValid() {
 		return isValid;
