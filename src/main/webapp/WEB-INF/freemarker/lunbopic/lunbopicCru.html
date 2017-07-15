@@ -140,7 +140,7 @@ function lunboImages(){
 				//先清除原来的数据
 				$("#itemId").empty();
 				jQuery(_json.data).each(function(i,_obj){
-					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"------标题："+_obj.title+"</option>");
+					jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
 				});
 				
 				jQuery("#itemId").select2();
@@ -164,7 +164,7 @@ function lunboImages(){
 				
 				console.log(_obj.id);
 				
-				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"------标题："+_obj.title+"</option>");
+				jQuery("#itemId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
 			});
 			
 			jQuery("#itemId").select2();
@@ -243,6 +243,9 @@ function lunboImages(){
 							<option value="2" >视频</option>
 							<option value="3" >卡券</option>
 							<option value="4" >广告位</option>
+							<option value="5" >同城活动</option>
+							<option value="6" >同城圈</option>
+							<option value="7" >发布页面</option>
 						</select>
 					</div><div class="help-block" for="position"></div>
 				</div>
@@ -258,6 +261,8 @@ function lunboImages(){
 							<option value="2" >海报</option>
 							<option value="3" >视频</option>
 							<option value="4" >卡券</option>
+							<option value="5" >同城活动</option>
+							<option value="6" >同城圈</option>
 							<option value="1" >url</option>
 						</select>
 					</div><div class="help-block" for="type"></div>

@@ -516,28 +516,38 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setShareNum(0);
 				mediaPackage.setIsValid(0);
 				
-				Object id=mediaPackageService.saveorupdate(mediaPackage);
-				returnObject.setData(mediaPackageService.findMediaPackageById(id));
-				
-				if(cityIds!=null){
-				
-					String[] cityId=cityIds.split(",");
-				
-						for (String string : cityId) {
-							RedCity redCity=new RedCity();
-							redCity.setCityId(Integer.parseInt(string));
-							redCity.setPackageId(Integer.parseInt(id.toString()));
-							redCity.setType(2);
-							redCityService.save(redCity);
-						}
-				
+				//保证没人最少领取0.01
+				if(new BigDecimal(mediaPackage.getSumMoney()).divide(new BigDecimal(mediaPackage.getLqNum())).doubleValue() >= 0.01){
+					Object id=mediaPackageService.saveorupdate(mediaPackage);
+					returnObject.setData(mediaPackageService.findMediaPackageById(id));
+					
+					if(cityIds!=null){
+					
+						String[] cityId=cityIds.split(",");
+					
+							for (String string : cityId) {
+								RedCity redCity=new RedCity();
+								redCity.setCityId(Integer.parseInt(string));
+								redCity.setPackageId(Integer.parseInt(id.toString()));
+								redCity.setType(2);
+								redCityService.save(redCity);
+							}
+					
+					}else{
+						RedCity redCity=new RedCity();
+						redCity.setCityId(0);
+						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setType(2);
+						redCityService.save(redCity);
+					}
 				}else{
-					RedCity redCity=new RedCity();
-					redCity.setCityId(0);
-					redCity.setPackageId(Integer.parseInt(id.toString()));
-					redCity.setType(2);
-					redCityService.save(redCity);
+					returnObject.setMessage("每个人的领取金额最少是0.01元");
+					returnObject.setStatus(ReturnDatas.ERROR);
+					return returnObject;
 				}
+				
+				
+				
 				
 			}else{
 				
@@ -573,46 +583,55 @@ public class MediaPackageController  extends BaseController {
 				
 				mediaPackage.setTradeNo(null);
 				
-				RedCity redCitySelect = new RedCity();
-				
-				redCitySelect.setPackageId(mediaPackage.getId());
-				redCitySelect.setType(2);
-				
-				// ==构造分页请求
-				Page page = newPage(request);
-				// ==执行分页查询
-				List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
-				
-				for (RedCity redCity : datas) {
+				//每个人应该最少领取金额是0.01
+				if(new BigDecimal(mediaPackage.getSumMoney()).divide(new BigDecimal(mediaPackage.getLqNum())).doubleValue() >= 0.01){
+					RedCity redCitySelect = new RedCity();
 					
-					redCityService.deleteByEntity(redCity);
+					redCitySelect.setPackageId(mediaPackage.getId());
+					redCitySelect.setType(2);
 					
-				}
-				
-				if(cityIds!=null){
+					// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
 					
-					String[] cityId=cityIds.split(",");
-				
-						for (String string : cityId) {
-							RedCity redCity=new RedCity();
-							redCity.setCityId(Integer.parseInt(string));
-							redCity.setPackageId(mediaPackage.getId());
-							redCity.setType(2);
-							redCityService.save(redCity);
-						}
-				
+					for (RedCity redCity : datas) {
+						
+						redCityService.deleteByEntity(redCity);
+						
+					}
+					
+					if(cityIds!=null){
+						
+						String[] cityId=cityIds.split(",");
+					
+							for (String string : cityId) {
+								RedCity redCity=new RedCity();
+								redCity.setCityId(Integer.parseInt(string));
+								redCity.setPackageId(mediaPackage.getId());
+								redCity.setType(2);
+								redCityService.save(redCity);
+							}
+					
+					}else{
+						RedCity redCity=new RedCity();
+						redCity.setCityId(0);
+						redCity.setPackageId(mediaPackage.getId());
+						redCity.setType(2);
+						redCityService.save(redCity);
+					}
+					
+					
+					Object id=mediaPackageService.update(mediaPackage,true);
+					
+					returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				}else{
-					RedCity redCity=new RedCity();
-					redCity.setCityId(0);
-					redCity.setPackageId(mediaPackage.getId());
-					redCity.setType(2);
-					redCityService.save(redCity);
+					returnObject.setMessage("每个人的领取金额最少是0.01元");
+					returnObject.setStatus(ReturnDatas.ERROR);
+					return returnObject;
 				}
 				
 				
-				Object id=mediaPackageService.update(mediaPackage,true);
-				
-				returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				
 			}
 			

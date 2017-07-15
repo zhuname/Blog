@@ -681,30 +681,39 @@ public class PosterPackageController  extends BaseController {
 				Long code=new Date().getTime();
 				posterPackage.setCode("P"+code);
 				
-				id=posterPackageService.save(posterPackage);
 				
-				if(cityIds!=null){
+				//保证没人最少领取0.01
+				if(new BigDecimal(posterPackage.getSumMoney()).divide(new BigDecimal(posterPackage.getLqNum())).doubleValue() >= 0.01){
+
+					id=posterPackageService.save(posterPackage);
 					
-					String[] cityId=cityIds.split(",");
-					
-					for (String string : cityId) {
+					if(cityIds!=null){
+						
+						String[] cityId=cityIds.split(",");
+						
+						for (String string : cityId) {
+							RedCity redCity=new RedCity();
+							redCity.setCityId(Integer.parseInt(string));
+							redCity.setPackageId(Integer.parseInt(id.toString()));
+							redCity.setType(1);
+							redCityService.save(redCity);
+						}
+						
+					}else {
 						RedCity redCity=new RedCity();
-						redCity.setCityId(Integer.parseInt(string));
+						redCity.setCityId(0);
 						redCity.setPackageId(Integer.parseInt(id.toString()));
 						redCity.setType(1);
 						redCityService.save(redCity);
 					}
 					
-				}else {
-					RedCity redCity=new RedCity();
-					redCity.setCityId(0);
-					redCity.setPackageId(Integer.parseInt(id.toString()));
-					redCity.setType(1);
-					redCityService.save(redCity);
+					
+					returnObject.setData(posterPackageService.findPosterPackageById(id));
+				}else{
+					returnObject.setMessage("每个人的领取金额最少是0.01元");
+					returnObject.setStatus(ReturnDatas.ERROR);
+					return returnObject;
 				}
-				
-				
-				returnObject.setData(posterPackageService.findPosterPackageById(id));
 				
 			}else {
 				
@@ -737,48 +746,55 @@ public class PosterPackageController  extends BaseController {
 				
 				posterPackage.setTradeNo(null);
 				
-				id=posterPackageService.update(posterPackage, true);
 				
-				RedCity redCitySelect = new RedCity();
-				
-				redCitySelect.setPackageId(posterPackage.getId());
-				redCitySelect.setType(1);
-				
-				// ==构造分页请求
-				Page page = newPage(request);
-				// ==执行分页查询
-				List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
-				
-				for (RedCity redCity : datas) {
+				//保证没人最少领取0.01
+				if(new BigDecimal(posterPackage.getSumMoney()).divide(new BigDecimal(posterPackage.getLqNum())).doubleValue() >= 0.01){
+					id=posterPackageService.update(posterPackage, true);
 					
-					redCityService.deleteByEntity(redCity);
+					RedCity redCitySelect = new RedCity();
 					
-				}
-				
-				
-				if(cityIds!=null){
+					redCitySelect.setPackageId(posterPackage.getId());
+					redCitySelect.setType(1);
 					
-					String[] cityId=cityIds.split(",");
+					// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
 					
-					for (String string : cityId) {
+					for (RedCity redCity : datas) {
+						
+						redCityService.deleteByEntity(redCity);
+						
+					}
+					
+					
+					if(cityIds!=null){
+						
+						String[] cityId=cityIds.split(",");
+						
+						for (String string : cityId) {
+							RedCity redCity=new RedCity();
+							redCity.setCityId(Integer.parseInt(string));
+							redCity.setPackageId(posterPackage.getId());
+							redCity.setType(1);
+							redCityService.save(redCity);
+						}
+						
+					}else {
 						RedCity redCity=new RedCity();
-						redCity.setCityId(Integer.parseInt(string));
+						redCity.setCityId(0);
 						redCity.setPackageId(posterPackage.getId());
 						redCity.setType(1);
 						redCityService.save(redCity);
 					}
 					
-				}else {
-					RedCity redCity=new RedCity();
-					redCity.setCityId(0);
-					redCity.setPackageId(posterPackage.getId());
-					redCity.setType(1);
-					redCityService.save(redCity);
+					
+					returnObject.setData(posterPackageService.findPosterPackageById(posterPackage.getId()));
+				}else{
+					returnObject.setMessage("每个人的领取金额最少是0.01元");
+					returnObject.setStatus(ReturnDatas.ERROR);
+					return returnObject;
 				}
-				
-				
-				returnObject.setData(posterPackageService.findPosterPackageById(posterPackage.getId()));
-				
 			}
 			
 		} catch (Exception e) {

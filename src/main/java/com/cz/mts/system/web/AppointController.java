@@ -76,7 +76,7 @@ public class AppointController  extends BaseController {
 	private IMoneyDetailService moneyDetailService;
 	
 	
-	private String listurl="/system/appoint/appointList";
+	private String listurl="/appoint/appointList";
 	
 	
 	   

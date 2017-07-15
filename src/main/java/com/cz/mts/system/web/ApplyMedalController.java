@@ -322,6 +322,7 @@ public class ApplyMedalController  extends BaseController {
 					userMedal.setUserId(applyMedal2.getUserId());
 					userMedal.setCreateTime(new Date());
 					userMedal.setEndMedalTime(applyMedal2.getEndMedalTime());
+					userMedal.setIsEndStatus(applyMedal2.getIsEndStatus());
 					Medal medal = medalService.findMedalById(userMedal.getMedalId());
 					if(null != medal && StringUtils.isNotBlank(medal.getName())){
 						notificationService.notify(7, userMedal.getMedalId(), userMedal.getUserId(), medal.getName());

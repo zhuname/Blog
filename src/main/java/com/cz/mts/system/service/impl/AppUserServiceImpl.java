@@ -180,12 +180,16 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				return 5;
 			}
 			
+			if(posterPackage.getSumMoney() <=0){
+				return 6;
+			}
+			
 			//扣除余额并且加到余额记录
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(posterPackage.getSumMoney())).doubleValue());
 			super.update(appUser, true);
 			//改变红包状态
 			//查询该用户是否有免审核勋章
-			Finder finderUserMedal = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=1) AND isEndStatus != 1");
+			Finder finderUserMedal = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=1) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 			finderUserMedal.setParam("userId", userId);
 			List<UserMedal> userMedals = userMedalService.queryForList(finderUserMedal, UserMedal.class);
 			if(null != userMedals && userMedals.size() > 0){
@@ -227,12 +231,16 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				return 5;
 			}
 			
+			if(mediaPackage.getSumMoney() <=0){
+				return 6;
+			}
+			
 			//扣除余额并且加到余额记录
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(mediaPackage.getSumMoney())).doubleValue());
 			super.update(appUser, true);
 			//改变红包状态
 			//查询该用户是否有免审核勋章
-			Finder finderMedia = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=2) AND isEndStatus != 1");
+			Finder finderMedia = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=2) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 			finderMedia.setParam("userId", userId);
 			List<UserMedal> userMedalms = userMedalService.queryForList(finderMedia, UserMedal.class);
 			if(null != userMedalms && userMedalms.size() > 0){
@@ -285,6 +293,11 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			if(appUser.getBalance()<cardSum.doubleValue()){
 				return 5;
 			}
+			
+			if(cardSum.doubleValue() <=0){
+				return 6;
+			}
+			
 			
 			//扣除余额并且加到余额记录
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(cardSum).doubleValue());
@@ -360,6 +373,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			//判断用户余额足不足
 			if(appUser.getBalance()<appoint.getMoney()){
 				return 5;
+			}
+			if(appoint.getMoney() <=0){
+				return 6;
 			}
 			
 			//扣除余额并且加到余额记录
@@ -449,6 +465,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				return 5;
 			}
 			
+			if(cityCircle.getMoney() <=0){
+				return 6;
+			}
 			//扣除余额并且加到余额记录
 			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(cityCircle.getMoney())).doubleValue());
 			super.update(appUser, true);
