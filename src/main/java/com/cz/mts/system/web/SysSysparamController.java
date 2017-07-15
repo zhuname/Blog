@@ -526,4 +526,46 @@ public class SysSysparamController  extends BaseController {
 		return "/syssysparam/updateMediaHint";
 	}
 	
+	/**
+	 * 修改发布规则
+	 * @author wml
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/publishRule")
+	public String updatePublishRule(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","publishRule");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/publishRule";
+	}
+	
+	/**
+	 * 预约兑换手续费
+	 * @author wml
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/appointCharge")
+	public String updateAppointCharge(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception {
+		
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		Finder finder = new Finder("SELECT code,value FROM t_sys_sysparam WHERE `code`=:code");
+		finder.setParam("code","appointCharge");
+		List sysparams = sysSysparamService.queryForList(finder);
+		returnObject.setData(sysparams.get(0));
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "/syssysparam/appointCharge";
+	}
+	
 }

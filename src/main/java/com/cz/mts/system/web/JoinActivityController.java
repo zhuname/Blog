@@ -283,10 +283,11 @@ public class JoinActivityController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas adminListjson(HttpServletRequest request, Model model,JoinActivity joinActivity) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
 		// ==构造分页请求
 		Page page = newPage(request);
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
-				
+		
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);		
 		
 		returnObject.setQueryBean(joinActivity);
