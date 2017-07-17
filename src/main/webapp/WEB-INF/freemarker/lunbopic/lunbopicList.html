@@ -235,10 +235,7 @@ $(document).on("change", "#city", function() {
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
-								<#if (_data.itemName)?length gt 33>  
-								    ${(_data.itemName)?substring(0,30)}...  
-								<#else>${(_data.itemName)}   
-								</#if>  
+								${(_data.itemName)!''} 
 							</td>
 							<td >
 								<#if (_data.position) == 1 >

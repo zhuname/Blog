@@ -356,6 +356,8 @@ public class LunboPicController  extends BaseController {
 						}
 						
 					}
+				}else{
+					lp.setItemName("暂无链接目标");
 				}
 			}
 		}

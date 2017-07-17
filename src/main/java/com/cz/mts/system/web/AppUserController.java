@@ -1379,7 +1379,7 @@ public class AppUserController  extends BaseController {
 	public @ResponseBody ReturnDatas indexStaticsJson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		try {
-			if(null != appUser.getId() && null != appUser.getCityId()){
+			if( null != appUser.getCityId()){
 				Double todayMoney = 0.0; //今日收益钱数
 				Integer scanNum = 0;//浏览数量
 				Integer topNum = 0;//点赞总数

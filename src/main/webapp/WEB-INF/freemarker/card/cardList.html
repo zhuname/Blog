@@ -203,6 +203,7 @@ $(document).on("change", "#city", function() {
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_num" >剩余兑换次数</th>
 						<th id="th_num" >分享次数</th>
+						<th id="th_limitNumber">限领次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -324,6 +325,9 @@ $(document).on("change", "#city", function() {
 							</td>
 							<td >
 								${(_data.shareNum)!0}
+							</td>
+							<td >
+								${(_data.limitNumber)!0}
 							</td>
 						</tr>
 					</#list>

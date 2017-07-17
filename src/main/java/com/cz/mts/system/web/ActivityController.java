@@ -366,27 +366,29 @@ public class ActivityController  extends BaseController {
 		//List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,null);
 		List<Activity> datas=activityService.queryForList(finder, Activity.class, page);
 		
-		
-		for (Activity activity2 : datas) {
-			
-			if(StringUtils.isNotBlank(appuserId)){
+		if(null != datas && datas.size() > 0){
+			for (Activity activity2 : datas) {
 				
-				//查询是否点赞
-				Page newPage=new Page();
-				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
-				operFinder.setParam("userId", Integer.parseInt(appuserId));
-				operFinder.setParam("itemId", activity2.getId());
-				List<Oper> isOpers = operService.findListDataByFinder(operFinder, newPage, Oper.class, null);
-				if(isOpers!=null&&isOpers.size()>0){
-					activity2.setIsOper(1);
-				}else {
-					activity2.setIsOper(0);
+				if(StringUtils.isNotBlank(appuserId)){
+					
+					//查询是否点赞
+					Page newPage=new Page();
+					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
+					operFinder.setParam("userId", Integer.parseInt(appuserId));
+					operFinder.setParam("itemId", activity2.getId());
+					List<Oper> isOpers = operService.findListDataByFinder(operFinder, newPage, Oper.class, null);
+					if(isOpers!=null&&isOpers.size()>0){
+						activity2.setIsOper(1);
+					}else {
+						activity2.setIsOper(0);
+					}
+				
+					
 				}
-			
 				
 			}
-			
 		}
+		
 		
 		
 		returnObject.setQueryBean(activity);

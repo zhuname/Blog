@@ -226,6 +226,10 @@ $(document).on("change", "#city", function() {
 						<th id="th_title" >主题</th>
 						<th id="th_encrypt" >是否加密</th>
 						<th id="th_command" >加密口令</th>
+						<th id="th_isAppoint" >是否预约</th>
+						<th id="th_appointExplain" >预约说明</th>
+						<th id="th_isRelevance" >是否关联卡券</th>
+						<th id="th_cardId" >卡券主题</th>
 						<th id="th_sumMoney" >红包金额</th>
 						<th id="th_status" >状态</th>
 						<th id="th_payType" >支付类型</th>
@@ -334,6 +338,33 @@ $(document).on("change", "#city", function() {
 							<td >
 								${(_data.command)!''}
 							</td>
+							<td >
+								<#if (_data.isAppoint) == 0 >
+									不预约
+								</#if>
+								<#if (_data.isAppoint) == 1 >
+									预约
+								</#if>
+								
+							</td>
+							<td >
+								${(_data.appointExplain)!''}
+							</td>
+							
+							<td >
+								<#if (_data.isRelevance) == 0 >
+									不关联
+								</#if>
+								<#if (_data.isRelevance) == 1 >
+									关联
+								</#if>
+								
+							</td>
+							<td >
+								${(_data.cardTitle)!''}
+							</td>
+							
+							
 							<td >
 								${(_data.sumMoney)!0}
 							</td>

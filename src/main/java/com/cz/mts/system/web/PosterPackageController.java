@@ -516,6 +516,9 @@ public class PosterPackageController  extends BaseController {
 					redCity.setType(1);
 					redCityService.save(redCity);
 				}
+				if(0 == posterPackage.getIsRelevance()){
+					posterPackage.setCardId(0);
+				}
 				posterPackageService.update(posterPackage,true);
 			}
 		} catch (Exception e) {
@@ -903,6 +906,12 @@ public class PosterPackageController  extends BaseController {
 					}
 					if(3 == pc.getPayType()){
 						pc.setPayName("余额支付");
+					}
+				}
+				if(null != posterPackage.getCardId() && 0 != posterPackage.getCardId()){
+					Card card = cardService.findCardById(posterPackage.getCardId());
+					if(null != card && StringUtils.isNotBlank(card.getTitle())){
+						pc.setCardTitle(card.getTitle());
 					}
 				}
 				

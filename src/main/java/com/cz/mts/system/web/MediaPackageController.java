@@ -38,6 +38,7 @@ import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
@@ -385,6 +386,10 @@ public class MediaPackageController  extends BaseController {
 					redCityService.save(redCity);
 				}
 				
+				if(0 == mediaPackage.getIsRelevance()){
+					mediaPackage.setCardId(0);
+				}
+				
 				mediaPackageService.update(mediaPackage,true);
 			}
 			
@@ -693,6 +698,15 @@ public class MediaPackageController  extends BaseController {
 		Double sumBalance = 0.0;
 		if(null != datas && datas.size() > 0){
 			for (MediaPackage mp : datas) {
+				
+				if(null != mp.getCardId() && 0 != mp.getCardId()){
+					Card card = cardService.findCardById(mp.getCardId());
+					if(null != card && StringUtils.isNotBlank(card.getTitle())){
+						mp.setCardTitle(card.getTitle());
+					}
+				}
+				
+				
 				//获取用户名称
 				if(null != mp.getUserId()){
 					AppUser appUser = appUserService.findAppUserById(mp.getUserId());
