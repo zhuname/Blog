@@ -4,6 +4,7 @@ encoding//src/main/resources=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/activity/activityList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/applymedal/applymedalList.html=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/appoint/appointList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/appuser/appuserCru.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/appuser/appuserList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/bank/bankList.html=UTF-8
