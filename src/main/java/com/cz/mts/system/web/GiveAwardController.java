@@ -96,49 +96,48 @@ public class GiveAwardController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		String activityId=request.getParameter("activityId");
-		
-		String sort = request.getParameter("sort");
-		
-		String selectTitle = request.getParameter("selectTitle");
-		
 		Finder finder = Finder.getSelectFinder(GiveAward.class).append(" where 1=1 ");
-		
-		if(StringUtils.isNotBlank(activityId)){
-			finder.append(" and awardId in (select id from t_awards where activityId=:activityId )");
-			finder.setParam("activityId", Integer.parseInt(activityId));
+		if(StringUtils.isNotBlank(giveAward.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+giveAward.getUserName()+"%')");
+		}
+		if(StringUtils.isNotBlank(giveAward.getJoinUserName())){
+			finder.append(" and joinUserId in (select id from t_app_user where name like '%"+giveAward.getJoinUserName()+"%')");
+		}
+		if(StringUtils.isNotBlank(giveAward.getAwardName())){
+			finder.append(" and awardId in (select id from t_awards where title like '%"+giveAward.getAwardName()+"%')");
 		}
 		
 		List<GiveAward> datas=giveAwardService.findListDataByFinder(finder,page,GiveAward.class,giveAward);
 		
-		for (GiveAward giveAward2 : datas) {
-			
-				if(giveAward2.getUserId()!=null){
+		if(null != datas && datas.size() > 0){
+			for (GiveAward ga : datas) {
 				
-				AppUser appUser=appUserService.findAppUserById(giveAward2.getUserId());
+				if(ga.getUserId()!=null){
 				
-				if(appUser!=null){
-					
-					giveAward2.setAppUser(appUser);
-					
+				AppUser appUser=appUserService.findAppUserById(ga.getUserId());
+				
+				if(appUser!=null && StringUtils.isNotBlank(appUser.getName())){
+					ga.setUserName(appUser.getName());
 				}
 				
-				if(giveAward2.getAwardId()!=null){
-					
-					Awards awards=awardsService.findAwardsById(giveAward2.getAwardId());
-					
-					if(awards!=null){
-						
-						giveAward2.setAwards(awards);
-						
+				}
+				if(null != ga.getJoinUserId()){
+					AppUser joinAppUser = appUserService.findAppUserById(ga.getJoinUserId());
+					if(null != joinAppUser && StringUtils.isNotBlank(joinAppUser.getName())){
+						ga.setJoinUserName(joinAppUser.getName());
 					}
-					
 				}
-				
-				
-			}
+						
+				if(ga.getAwardId()!=null){
+					Awards awards=awardsService.findAwardsById(ga.getAwardId());
+					if(awards!=null && StringUtils.isNotBlank(awards.getTitle())){
+						ga.setAwardName(awards.getTitle());
+					}
+				}
 			
+			}
 		}
+		
 		
 		
 		returnObject.setQueryBean(giveAward);
@@ -180,8 +179,9 @@ public class GiveAwardController  extends BaseController {
 		
 		List<GiveAward> datas=giveAwardService.findListDataByFinder(finder,page,GiveAward.class,giveAward);
 		
-		for (GiveAward giveAward2 : datas) {
-			
+		if(null != datas && datas.size() > 0){
+			for (GiveAward giveAward2 : datas) {
+				
 				if(giveAward2.getUserId()!=null){
 				
 				AppUser appUser=appUserService.findAppUserById(giveAward2.getUserId());
@@ -207,7 +207,9 @@ public class GiveAwardController  extends BaseController {
 				
 			}
 			
+			}
 		}
+		
 		
 		
 		returnObject.setQueryBean(giveAward);

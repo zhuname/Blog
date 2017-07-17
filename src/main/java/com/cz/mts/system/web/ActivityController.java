@@ -320,7 +320,7 @@ public class ActivityController  extends BaseController {
 		//搜索昵称/标题
 		if(StringUtils.isNotBlank(selectTitle)){
 			finder.append(" and (content like :selectTitle or userId in (select id from t_app_user where name like :selectTitle))");
-			finder.setParam("selectTitle", selectTitle);
+			finder.setParam("selectTitle", "%"+selectTitle+"%");
 		}
 		
 		finder.append(" order by status ASC");

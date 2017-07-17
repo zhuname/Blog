@@ -10,8 +10,8 @@ function deleteGiveAward(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/giveaward/delete?id="+id;
-		var listurl="${ctx}/giveaward/list";
+		var _url="${ctx}/system/giveaward/delete?id="+id;
+		var listurl="${ctx}/system/giveaward/list";
 		mydelete(_url,listurl);
 	}
 }
@@ -27,15 +27,19 @@ function deleteGiveAward(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/giveaward/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/giveaward/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
-			</select>
+			 <label for="search_userName"><b>发布人名称:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			 <label for="search_joinUserName"><b>参与人名称:</b></label> 
+			 <input type="text" id="search_joinUserName"  name="joinUserName" placeholder="请填写参与人名称"  value="${(returnDatas.queryBean.joinUserName)!''}">
+			 
+			 <label for="search_awardName"><b>奖项名称:</b></label> 
+			 <input type="text" id="search_awardName"  name="awardName" placeholder="请填写奖项名称"  value="${(returnDatas.queryBean.awardName)!''}">
+			 
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -75,18 +79,12 @@ function deleteGiveAward(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
-                            <label class="position-relative">
-                                <input class="ace" type="checkbox">
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
-                        <th>操作</th>
+                        <!-- <th>操作</th> -->
                         <!--first_end_no_export-->
-						<th id="th_userId" >发布人的userId</th>
-						<th id="th_joinUserId" >参与者id</th>
+						<th id="th_userId" >发布人名称</th>
+						<th id="th_joinUserId" >参与人名称</th>
 						<th id="th_createTime" >颁奖时间</th>
-						<th id="th_awardId" >奖项id</th>
+						<th id="th_awardId" >奖项名称</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -98,20 +96,14 @@ function deleteGiveAward(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
-                                    <label class="position-relative">
-                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                                <td>
+                           <!--      <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
                                                 onclick="myhref('${ctx}/giveaward/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/giveaward/delete?id=${(_data.id)!''}','${ctx}/giveaward/list');">
+                                                onclick="mydelete('${ctx}/system/giveaward/delete?id=${(_data.id)!''}','${ctx}/system/giveaward/list');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -123,7 +115,7 @@ function deleteGiveAward(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/giveaward/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/giveaward/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -140,7 +132,7 @@ function deleteGiveAward(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/giveaward/delete?id=${(_data.id)!''}','${ctx}/giveaward/list');"
+                                                       href="javascript:mydelete('${ctx}/system/giveaward/delete?id=${(_data.id)!''}','${ctx}/system/giveaward/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -150,21 +142,21 @@ function deleteGiveAward(){
                                             </ul>
                                         </div>
                                     </div>
-                                </td>
+                                </td> -->
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.userId)!0}
+								${(_data.userName)!''}
 							</td>
 							<td >
-								${(_data.joinUserId)!0}
+								${(_data.joinUserName)!''}
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
-								${(_data.awardId)!0}
+								${(_data.awardName)!''}
 							</td>
 						</tr>
 					</#list>
