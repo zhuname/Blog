@@ -58,7 +58,7 @@ public class GiveAwardController  extends BaseController {
 	@Resource
 	private NotificationService notificationService;
 	
-	private String listurl="/system/giveaward/giveawardList";
+	private String listurl="/giveaward/giveawardList";
 	
 	
 	   
@@ -74,9 +74,77 @@ public class GiveAwardController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,GiveAward giveAward) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, giveAward);
+		ReturnDatas returnObject = adminListJson(request, model, giveAward);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param giveAward
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/adminList/json")
+	public @ResponseBody
+	ReturnDatas adminListJson(HttpServletRequest request, Model model,GiveAward giveAward) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		
+		String activityId=request.getParameter("activityId");
+		
+		String sort = request.getParameter("sort");
+		
+		String selectTitle = request.getParameter("selectTitle");
+		
+		Finder finder = Finder.getSelectFinder(GiveAward.class).append(" where 1=1 ");
+		
+		if(StringUtils.isNotBlank(activityId)){
+			finder.append(" and awardId in (select id from t_awards where activityId=:activityId )");
+			finder.setParam("activityId", Integer.parseInt(activityId));
+		}
+		
+		List<GiveAward> datas=giveAwardService.findListDataByFinder(finder,page,GiveAward.class,giveAward);
+		
+		for (GiveAward giveAward2 : datas) {
+			
+				if(giveAward2.getUserId()!=null){
+				
+				AppUser appUser=appUserService.findAppUserById(giveAward2.getUserId());
+				
+				if(appUser!=null){
+					
+					giveAward2.setAppUser(appUser);
+					
+				}
+				
+				if(giveAward2.getAwardId()!=null){
+					
+					Awards awards=awardsService.findAwardsById(giveAward2.getAwardId());
+					
+					if(awards!=null){
+						
+						giveAward2.setAwards(awards);
+						
+					}
+					
+				}
+				
+				
+			}
+			
+		}
+		
+		
+		returnObject.setQueryBean(giveAward);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 	/**
