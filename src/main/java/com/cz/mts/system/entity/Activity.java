@@ -170,9 +170,33 @@ public class Activity  extends BaseEntity {
 	private String osType;
 	private Integer isOper;
 	
+	private List<RedCity> redCities;
+	
+	private String cityIds;
+	
+	
+	
 	
 	
 	//concstructor
+	@Transient
+	public List<RedCity> getRedCities() {
+		return redCities;
+	}
+
+
+	public void setRedCities(List<RedCity> redCities) {
+		this.redCities = redCities;
+	}
+
+	@Transient
+	public String getCityIds() {
+		return cityIds;
+	}
+
+	public void setCityIds(String cityIds) {
+		this.cityIds = cityIds;
+	}
 
 	@WhereSQL(sql="joinCount=:Activity_joinCount")
 	public Integer getJoinCount() {

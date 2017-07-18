@@ -4,14 +4,20 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.SMSUtil;
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Sms;
+import com.cz.mts.system.exception.PhoneExistException;
+import com.cz.mts.system.exception.PhoneNotExistException;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ISmsService;
 
 
@@ -25,6 +31,8 @@ import com.cz.mts.system.service.ISmsService;
 @Service("smsService")
 public class SmsServiceImpl extends BaseSpringrainServiceImpl implements ISmsService {
 
+	@Resource
+	private IAppUserService appUserService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -81,6 +89,25 @@ public class SmsServiceImpl extends BaseSpringrainServiceImpl implements ISmsSer
 		
 		@Override
 		public Sms saveContent(Sms sms) throws Exception{
+			
+			//类型：1注册 2修改绑定原手机号 3绑定新手机号 4找回密码  5.绑定手机号
+			//判断手机号是否存在
+			AppUser appUser = new AppUser();
+			appUser.setPhone(sms.getPhone());
+			Page page = new Page();
+			List<AppUser> appUsers = appUserService.findListDataByFinder(null, page, AppUser.class, appUser);
+			if(1 == sms.getType() || 5 == sms.getType() || 3 == sms.getType()){
+				if(null != appUser && appUsers.size() > 0){
+					throw new PhoneExistException();
+				}
+			}
+			
+			if(4 == sms.getType() || 2 == sms.getType()){
+				if(null == appUsers || appUsers.size() == 0){
+					throw new PhoneNotExistException();
+				}
+			}
+			
 			//生成随机码
 			Random r = new Random();
 			String x = r.nextInt(99999) + "";

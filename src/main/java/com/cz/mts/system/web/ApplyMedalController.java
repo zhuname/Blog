@@ -205,14 +205,37 @@ public class ApplyMedalController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
 			}else{
-				if(null == applyMedal.getId()){
-					applyMedal.setApplyTime(new Date());
-					applyMedal.setStatus(1);
-					applyMedal.setIsEndStatus(0);
-					applyMedalService.saveorupdate(applyMedal);
+				//首先判断该用户是否已经认证通过并且没有过期
+				Finder successFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=2 and isEndStatus=0 and medalId=:medalId");
+				successFinder.setParam("medalId", applyMedal.getMedalId());
+				List successList = applyMedalService.queryForList(successFinder);
+				if(null != successList && successList.size() > 0){
+					returnObject.setMessage("您已经拥有该勋章，暂不能申请");
+					returnObject.setStatus(ReturnDatas.ERROR);
 				}else{
-					applyMedalService.update(applyMedal,true);
+					//判断该用户是否有申请中的勋章
+					Finder applyFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=1 and isEndStatus=0 and medalId=:medalId"); 
+					applyFinder.setParam("medalId", applyMedal.getMedalId());
+					List applyList = applyMedalService.queryForList(applyFinder);
+					if(null != applyList && applyList.size() > 0){
+						returnObject.setMessage("您申请的勋章正在认证中，暂不能申请");
+						returnObject.setStatus(ReturnDatas.ERROR);
+					}else{
+						if(null == applyMedal.getId()){
+							applyMedal.setApplyTime(new Date());
+							applyMedal.setStatus(1);
+							applyMedal.setIsEndStatus(0);
+							applyMedalService.saveorupdate(applyMedal);
+						}else{
+							applyMedalService.update(applyMedal,true);
+						}
+					}
+					
 				}
+				
+				
+				
+				
 			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -365,7 +388,12 @@ public class ApplyMedalController  extends BaseController {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(3);
 				applyMedal.setOperTime(new Date());
-				applyMedalService.update(applyMedal,true);
+				Object id = applyMedalService.update(applyMedal,true);
+				ApplyMedal appMedal = applyMedalService.findApplyMedalById(id);
+				if(null != appMedal){
+					notificationService.notify(41, applyMedal.getId(), appMedal.getUserId());
+				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

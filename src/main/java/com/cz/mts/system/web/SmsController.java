@@ -22,6 +22,8 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.Sms;
+import com.cz.mts.system.exception.PhoneExistException;
+import com.cz.mts.system.exception.PhoneNotExistException;
 import com.cz.mts.system.service.ISmsService;
 
 
@@ -223,8 +225,21 @@ public class SmsController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas contentjson(Model model,HttpServletRequest request,HttpServletResponse response,Sms sms) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		Sms smsRecord = smsService.saveContent(sms);
-		returnObject.setData(smsRecord);
+		try{
+			if(null == sms.getType() || StringUtils.isBlank(sms.getPhone())){
+				returnObject.setMessage("参数缺失");
+				returnObject.setStatus(ReturnDatas.ERROR);
+			}else{
+				Sms smsRecord = smsService.saveContent(sms);
+				returnObject.setData(smsRecord);
+			}
+		}catch(PhoneExistException e){
+			returnObject.setMessage("该手机号已经注册");
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}catch(PhoneNotExistException e){
+			returnObject.setMessage("该手机号不存在");
+			returnObject.setStatus(ReturnDatas.ERROR);
+		}
 		return returnObject;
 		
 	}

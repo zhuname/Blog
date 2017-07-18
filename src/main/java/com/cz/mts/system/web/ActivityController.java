@@ -26,18 +26,22 @@ import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Awards;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.IAwardsService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.system.service.IOperService;
+import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.NotificationService;
 
 
@@ -67,6 +71,10 @@ public class ActivityController  extends BaseController {
 	private IAttentionService attentionService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private ICityService cityService;
+	@Resource
+	private IRedCityService redCityService;
 	
 	
 	private String listurl="/activity/activityList";
@@ -257,7 +265,34 @@ public class ActivityController  extends BaseController {
 		  
 		  activityService.update(activity);
 		  
-		  returnObject.setData(activity);
+		  
+			String cityIds= ""; 
+			 //返回城市名称
+			 Finder finder = new Finder("SELECT * FROM t_red_city WHERE packageId=:id AND type=4");
+			 finder.setParam("id", Integer.parseInt(strId));
+			 List<RedCity> redCities = redCityService.queryForList(finder,RedCity.class);
+			 if(null != redCities && redCities.size() > 0){
+				 for (RedCity redCity : redCities) {
+					 if(null != redCity.getCityId() && 0 != redCity.getCityId()){
+						 cityIds += redCity.getCityId()+",";
+					 }
+					if(null != redCity.getCityId()){
+						City city = cityService.findCityById(redCity.getCityId());
+						if(null != city && StringUtils.isNotBlank(city.getName())){
+							redCity.setCityName(city.getName());
+						}
+					}
+				}
+				 activity.setCityIds(cityIds);
+				 activity.setRedCities(redCities);
+			 }
+		  
+		  
+		  
+		  
+		  
+		  
+		   returnObject.setData(activity);
 		}else{
 		returnObject.setStatus(ReturnDatas.ERROR);
 		}
@@ -310,7 +345,7 @@ public class ActivityController  extends BaseController {
 		
 		if(activity.getStatus()==null){
 			
-			finder.append(" and (status=3 or status=5)");
+			finder.append(" and (status=3 or status=4)");
 			
 		}else {
 			finder.append(" and status = :status");
@@ -320,7 +355,7 @@ public class ActivityController  extends BaseController {
 		//搜索昵称/标题
 		if(StringUtils.isNotBlank(selectTitle)){
 			finder.append(" and (content like :selectTitle or userId in (select id from t_app_user where name like :selectTitle))");
-			finder.setParam("selectTitle", selectTitle);
+			finder.setParam("selectTitle", "%"+selectTitle+"%");
 		}
 		
 		finder.append(" order by status ASC");
