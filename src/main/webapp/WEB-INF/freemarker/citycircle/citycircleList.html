@@ -15,6 +15,10 @@ function deleteCityCircle(){
 		mydelete(_url,listurl);
 	}
 }
+
+jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
+
+jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
 </script>
 
 
@@ -27,14 +31,28 @@ function deleteCityCircle(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/citycircle/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/citycircle/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
+			 <label for="search_title"><b>主题:</b></label> 
+			 <input type="text" id="search_title"  name="title" placeholder="请填写主题"  value="${(returnDatas.queryBean.title)!''}">
+			  <label for="search_appUserName"><b>发布人:</b></label> 
+			 <input type="text" id="search_appUserName"  name="appUser.name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.appUser.name)!''}">
+			  <label for="search_code"><b>订单编号:</b></label> 
+			 <input type="text" id="search_code"  name="code" placeholder="请填写订单编号"  value="${(returnDatas.queryBean.code)!''}">
+			 <label for="search_payType"><b>支付类型:</b></label>
+			 <select id="search_payType" name="payType" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="1">支付宝</option>
+				<option value="2">微信</option>
+				<option value="3">余额</option>
+			</select>
+			<label for="search_status"><b>状态:</b></label> 
+			 <select id="search_status" name="status" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="0">待支付</option>
+				<option value="1">已支付</option>
 			</select>
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
@@ -75,25 +93,23 @@ function deleteCityCircle(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                       <!--  <th class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>操作</th>
+                        <th>操作</th> -->
                         <!--first_end_no_export-->
-						<th id="th_itemId" >同城圈id</th>
+						<th id="th_itemId" >同城圈</th>
 						<th id="th_money" >打赏金额</th>
 						<th id="th_content" >打赏留言</th>
-						<th id="th_payType" >支付方式：1支付宝 2微信 3余额支付</th>
-						<th id="th_userId" >打赏用户id</th>
+						<th id="th_payType" >支付方式</th>
+						<th id="th_userId" >打赏用户</th>
 						<th id="th_payTime" >支付时间</th>
 						<th id="th_payMoney" >支付金额</th>
-						<th id="th_wxCode" >wxCode</th>
-						<th id="th_tradeNo" >tradeNo</th>
-						<th id="th_status" >0 待支付 1已支付</th>
-						<th id="th_createTime" >createTime</th>
+						<th id="th_status" >状态</th>
+						<th id="th_createTime" >创建时间</th>
 						<th id="th_code" >订单编号</th>
 						<th id="th_osType" >操作系统</th>
                     </tr>
@@ -107,7 +123,7 @@ function deleteCityCircle(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
+                               <!--  <td class="center">
                                     <label class="position-relative">
                                         <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
                                         <span class="lbl"></span>
@@ -159,11 +175,11 @@ function deleteCityCircle(){
                                             </ul>
                                         </div>
                                     </div>
-                                </td>
+                                </td> -->
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.itemId)!0}
+								${(_data.title)!''}
 							</td>
 							<td >
 								${(_data.money)!0}
@@ -172,30 +188,43 @@ function deleteCityCircle(){
 								${(_data.content)!''}
 							</td>
 							<td >
-								${(_data.payType)!0}
+							<#if (_data.payType) ??>
+								<#if (_data.payType) == 1 >
+									支付宝
+								</#if>
+								<#if (_data.payType) == 2 >
+									微信
+								</#if>
+								<#if (_data.payType) == 3 >
+									余额
+								</#if>
+								</#if>
 							</td>
 							<td >
-								${(_data.userId)!0}
+								<#if (_data.appUser) ??>
+									<#if (_data.appUser.name) ??>
+										${(_data.appUser.name)!''}
+									</#if>
+								</#if>
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.payTime)?string('yyyy-MM-dd'))!''}
+							${((_data.payTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
 							</td>
 							<td >
 								${(_data.payMoney)!0}
 							</td>
 							<td >
-								${(_data.wxCode)!''}
-							</td>
-							<td >
-								${(_data.tradeNo)!''}
-							</td>
-							<td >
-								${(_data.status)!0}
+								<#if (_data.status) == 0 >
+									待支付
+								</#if>
+								<#if (_data.status) == 1 >
+									已支付
+								</#if>
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
 							</td>
 							<td >
 								${(_data.code)!''}

@@ -53,6 +53,7 @@ public class Attention  extends BaseEntity {
 	
 	private AppUser appUser;
 	
+	private AppUser itemUser;
 	
 	//concstructor
 
@@ -63,6 +64,15 @@ public class Attention  extends BaseEntity {
 		java.lang.Integer id
 	){
 		this.id = id;
+	}
+
+	@Transient
+	public AppUser getItemUser() {
+		return itemUser;
+	}
+
+	public void setItemUser(AppUser itemUser) {
+		this.itemUser = itemUser;
 	}
 
 	@Transient

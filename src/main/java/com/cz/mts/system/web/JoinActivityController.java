@@ -158,6 +158,9 @@ public class JoinActivityController  extends BaseController {
 			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
 		
+		if(datas!=null){
+			
+		
 		for (JoinActivity joinActivity2 : datas) {
 			
 			//查询用户信息
@@ -262,7 +265,7 @@ public class JoinActivityController  extends BaseController {
 			
 		}
 		
-		
+		}
 		returnObject.setQueryBean(joinActivity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

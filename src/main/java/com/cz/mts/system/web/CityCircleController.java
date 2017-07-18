@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.HttpUtils;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.CityCircle;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.ICityCircleService;
 
 
@@ -45,8 +48,10 @@ public class CityCircleController  extends BaseController {
 	private ICityCircleService cityCircleService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private ICircleService circleService;
 	
-	private String listurl="/system/citycircle/citycircleList";
+	private String listurl="/citycircle/citycircleList";
 	
 	   
 	/**
@@ -82,7 +87,30 @@ public class CityCircleController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<CityCircle> datas=cityCircleService.findListDataByFinder(null,page,CityCircle.class,cityCircle);
+		
+		
+		Finder finder =Finder.getSelectFinder(CityCircle.class).append(" where 1=1 ");
+		
+		if(cityCircle.getAppUser()!=null){
+			
+			if(StringUtils.isNotBlank(cityCircle.getAppUser().getName())){
+				
+				finder.append(" and userId in (select id from t_app_user where name=:name)");
+				finder.setParam("name", cityCircle.getAppUser().getName());
+				
+			}
+			
+		}
+		
+		if(StringUtils.isNotBlank(cityCircle.getTitle())){
+			
+				finder.append(" and itemId in (select id from t_circle where content=:title)");
+				finder.setParam("title", cityCircle.getTitle());
+			
+		}
+		
+		
+		List<CityCircle> datas=cityCircleService.findListDataByFinder(finder,page,CityCircle.class,cityCircle);
 		
 		for (CityCircle cityCircle2 : datas) {
 			//刷新同城圈儿事件
@@ -95,6 +123,19 @@ public class CityCircleController  extends BaseController {
 					
 				}
 			}
+			
+			if(cityCircle2.getItemId()!=null){
+				
+				Circle circle=circleService.findCircleById(cityCircle2.getItemId());
+				
+				if(circle!=null){
+					
+					cityCircle2.setTitle(circle.getContent());
+					
+				}
+				
+			}
+			
 		}
 		
 		returnObject.setQueryBean(cityCircle);
