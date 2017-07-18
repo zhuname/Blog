@@ -388,7 +388,12 @@ public class ApplyMedalController  extends BaseController {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(3);
 				applyMedal.setOperTime(new Date());
-				applyMedalService.update(applyMedal,true);
+				Object id = applyMedalService.update(applyMedal,true);
+				ApplyMedal appMedal = applyMedalService.findApplyMedalById(id);
+				if(null != appMedal){
+					notificationService.notify(41, applyMedal.getId(), appMedal.getUserId());
+				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

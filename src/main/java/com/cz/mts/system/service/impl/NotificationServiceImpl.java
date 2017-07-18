@@ -414,7 +414,11 @@ public class NotificationServiceImpl implements NotificationService {
 					e.printStackTrace();
 				}
 			break;
-			
+			case 41:
+				JPushUtil.sendJPushNotification("您申请的勋章审核失败，请重新申请", type+"", id, userId, "");
+				message=new Message(null, 41, userId, new Date(), "您申请的勋章审核失败，请重新申请", id, null, 0, "勋章授予", 2);
+				messageService.save(message);
+			break;
 			
 			
 			}

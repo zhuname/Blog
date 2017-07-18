@@ -157,110 +157,113 @@ public class JoinActivityController  extends BaseController {
 			
 			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
-		
-		for (JoinActivity joinActivity2 : datas) {
-			
-			//查询用户信息
-			if(joinActivity2.getUserId()!=null){
+		if(null != datas && datas.size() > 0){
+			for (JoinActivity joinActivity2 : datas) {
 				
-				AppUser appUser=appUserService.findAppUserById(joinActivity2.getUserId());
-				
-				if(appUser!=null){
+				//查询用户信息
+				if(joinActivity2.getUserId()!=null){
 					
-					joinActivity2.setAppUser(appUser);
+					AppUser appUser=appUserService.findAppUserById(joinActivity2.getUserId());
 					
-				}
-				
-			}
-			
-			//如果颁奖的话查询颁奖信息
-			if(joinActivity2.getAwardId()!=null){
-				
-				Awards awards=awardsService.findAwardsById(joinActivity2.getAwardId());
-				
-				if(awards!=null){
-					
-					joinActivity2.setAwards(awards);
+					if(appUser!=null){
+						
+						joinActivity2.setAppUser(appUser);
+						
+					}
 					
 				}
 				
+				//如果颁奖的话查询颁奖信息
+				if(joinActivity2.getAwardId()!=null){
+					
+					Awards awards=awardsService.findAwardsById(joinActivity2.getAwardId());
+					
+					if(awards!=null){
+						
+						joinActivity2.setAwards(awards);
+						
+					}
+					
+					
+				}
 				
-			}
-			
-			//获取评论列表
-			Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId");
-			
-			finderOper.setParam("itemId", joinActivity2.getId());
-			
-			List<Oper> opers = operService.queryForList(finderOper,Oper.class);
-			if(null != opers && opers.size() > 0){
-				for (Oper oper : opers) {
-					if(oper.getUserId()!=null){
-						AppUser appUser = appUserService.findAppUserById(oper.getUserId());
-						if(appUser!=null){
-							
-							oper.setNickName(appUser.getName());
+				//获取评论列表
+				Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId");
+				
+				finderOper.setParam("itemId", joinActivity2.getId());
+				
+				List<Oper> opers = operService.queryForList(finderOper,Oper.class);
+				if(null != opers && opers.size() > 0){
+					for (Oper oper : opers) {
+						if(oper.getUserId()!=null){
+							AppUser appUser = appUserService.findAppUserById(oper.getUserId());
+							if(appUser!=null){
+								
+								oper.setNickName(appUser.getName());
+							}
 						}
 					}
-				}
-				joinActivity2.setOpers(opers);
-			}
-			
-			
-			
-			if(StringUtils.isNotBlank(appuserId)){
-					
-					/*//查询是否收藏
-					Finder collFinder=Finder.getSelectFinder(Collect.class).append(" where type = 4 and userId=:userId and itemId=:itemId ");
-					collFinder.setParam("userId", Integer.parseInt(appuserId));
-					collFinder.setParam("itemId", joinActivity2.getActivityId());
-					List<Collect> collects = collectService.findListDataByFinder(collFinder, page, Collect.class, null);
-					if(collects!=null&&collects.size()>0){
-						joinActivity2.setIsColl(1);
-					}else {
-						joinActivity2.setIsColl(0);
-					}*/
-					
-					//查询是否关注
-					Page newPage = new Page();
-					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
-					attenFinder.setParam("userId", Integer.parseInt(appuserId));
-					attenFinder.setParam("itemId", joinActivity2.getUserId());
-					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, newPage, Attention.class, null);
-					if(attens!=null&&attens.size()>0){
-						joinActivity2.setIsAttr(1);
-					}else {
-						joinActivity2.setIsAttr(0);
-					}
-					
-					
-					//查询是否点赞
-					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
-					operFinder.setParam("userId", Integer.parseInt(appuserId));
-					operFinder.setParam("itemId", joinActivity2.getId());
-					List<Oper> isOpers = operService.findListDataByFinder(operFinder, newPage, Oper.class, null);
-					if(isOpers!=null&&isOpers.size()>0){
-						joinActivity2.setIsOper(1);
-					}else {
-						joinActivity2.setIsOper(0);
-					}
-					
-			}
-			
-			
-			if(joinActivity2.getActivityId()!=null){
-				
-				Activity activity = activityService.findActivityById(joinActivity2.getActivityId());
-				
-				if(activity!=null){
-					
-					joinActivity2.setActivityUserId(activity.getUserId());
-					
+					joinActivity2.setOpers(opers);
 				}
 				
+				
+				
+				if(StringUtils.isNotBlank(appuserId)){
+						
+						/*//查询是否收藏
+						Finder collFinder=Finder.getSelectFinder(Collect.class).append(" where type = 4 and userId=:userId and itemId=:itemId ");
+						collFinder.setParam("userId", Integer.parseInt(appuserId));
+						collFinder.setParam("itemId", joinActivity2.getActivityId());
+						List<Collect> collects = collectService.findListDataByFinder(collFinder, page, Collect.class, null);
+						if(collects!=null&&collects.size()>0){
+							joinActivity2.setIsColl(1);
+						}else {
+							joinActivity2.setIsColl(0);
+						}*/
+						
+						//查询是否关注
+						Page newPage = new Page();
+						Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+						attenFinder.setParam("userId", Integer.parseInt(appuserId));
+						attenFinder.setParam("itemId", joinActivity2.getUserId());
+						List<Attention> attens = attentionService.findListDataByFinder(attenFinder, newPage, Attention.class, null);
+						if(attens!=null&&attens.size()>0){
+							joinActivity2.setIsAttr(1);
+						}else {
+							joinActivity2.setIsAttr(0);
+						}
+						
+						
+						//查询是否点赞
+						Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
+						operFinder.setParam("userId", Integer.parseInt(appuserId));
+						operFinder.setParam("itemId", joinActivity2.getId());
+						List<Oper> isOpers = operService.findListDataByFinder(operFinder, newPage, Oper.class, null);
+						if(isOpers!=null&&isOpers.size()>0){
+							joinActivity2.setIsOper(1);
+						}else {
+							joinActivity2.setIsOper(0);
+						}
+						
+				}
+				
+				
+				if(joinActivity2.getActivityId()!=null){
+					
+					Activity activity = activityService.findActivityById(joinActivity2.getActivityId());
+					
+					if(activity!=null){
+						
+						joinActivity2.setActivityUserId(activity.getUserId());
+						
+					}
+					
+				}
+				
 			}
-			
 		}
+		
+		
 		
 		
 		returnObject.setQueryBean(joinActivity);
