@@ -1455,7 +1455,7 @@ public class AppUserController  extends BaseController {
 				}
 				
 				//查询海报红包待抢金额
-				Finder posterMoneyFinder = new Finder("SELECT SUM(balance) as posterBalance FROM t_poster_package WHERE isDel= 0 AND `status`=3 and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=1)");
+				Finder posterMoneyFinder = new Finder("SELECT SUM(balance) as posterBalance FROM t_poster_package WHERE isDel= 0 AND `status`=3 and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=1)");
 				posterMoneyFinder.setParam("cityId", appUser.getCityId());
 				Double posterMoney = moneyDetailService.queryForObject(posterMoneyFinder, Double.class);
 				if(null == posterMoney){
