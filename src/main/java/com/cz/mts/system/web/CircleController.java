@@ -393,6 +393,32 @@ public class CircleController  extends BaseController {
 	}
 	
 	/**
+	 * 删除操作
+	 */
+	@RequestMapping(value="/delete/json")
+	@SecurityApi
+	public @ResponseBody ReturnDatas deleteJson(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+				circleService.deleteById(id,Circle.class);
+				return new ReturnDatas(ReturnDatas.SUCCESS,
+						MessageUtils.DELETE_SUCCESS);
+			} else {
+				return new ReturnDatas(ReturnDatas.WARNING,
+						MessageUtils.DELETE_WARNING);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+	}
+	
+	/**
 	 * 删除多条记录
 	 * 
 	 */
