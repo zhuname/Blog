@@ -15,6 +15,7 @@ import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserMedal;
@@ -26,6 +27,7 @@ import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.entity.IBaseEntity;
@@ -62,6 +64,9 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 	private IMoneyDetailService moneyDetailService;
 	@Resource
 	private IActivityService activityService;
+	@Resource
+	private IOperService operService;
+	
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -180,6 +185,20 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							}else{
 								mediaPackage.setIsAttention(0);
 							}
+							
+							 //是否点赞过
+							 Oper oper = new Oper();
+							 oper.setUserId(ct.getUserId());
+							 oper.setItemId(mediaPackage.getId());
+							 oper.setType(3);
+							 Page operPage = new Page();
+							 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+							 if(null != opers && opers.size() > 0){
+								 mediaPackage.setIsTop(1);
+							 }else{
+								 mediaPackage.setIsTop(0);
+							 }
+							
 							
 							//已抢红包列表
 							MoneyDetail moneyDetail = new MoneyDetail();

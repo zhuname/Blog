@@ -278,16 +278,16 @@ public class NotificationServiceImpl implements NotificationService {
 					e.printStackTrace();
 				}
 			break;
-			case 30:
-				JPushUtil.sendJPushNotification("您发布的同城活动已经超过"+extend[0]+"个人点赞浏览了哟", type+"", id, userId, "");
+			/*case 30:
+				JPushUtil.sendJPushNotification("您发布的同城活动已经超过"+extend[0]+"个人浏览了哟", type+"", id, userId, "");
 				try {
-					message=new Message(null, 30, userId, new Date(), "您发布的同城活动已经超过"+extend[0]+"个人点赞浏览了哟", id, null, 0, "同城活动点赞人数", 2);
+					message=new Message(null, 30, userId, new Date(), "您发布的同城活动已经超过"+extend[0]+"个人浏览了哟", id, null, 0, "同城活动浏览人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
-			break;
+			break;*/
 			case 31:
 				JPushUtil.sendJPushNotification("您参与的同城活动内容已经超过"+extend[0]+"个人点赞浏览了哟", type+"", id, userId, "");
 				try {

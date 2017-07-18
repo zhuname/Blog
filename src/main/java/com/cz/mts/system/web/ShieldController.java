@@ -40,7 +40,7 @@ public class ShieldController  extends BaseController {
 	@Resource
 	private IShieldService shieldService;
 	
-	private String listurl="/system/shield/shieldList";
+	private String listurl="/shield/shieldList";
 	
 	
 	   
@@ -78,7 +78,7 @@ public class ShieldController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		List<Shield> datas=shieldService.findListDataByFinder(null,page,Shield.class,shield);
-			returnObject.setQueryBean(shield);
+		returnObject.setQueryBean(shield);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
 		return returnObject;
