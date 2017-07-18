@@ -155,7 +155,6 @@ public class AttentionController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		
 		// ==执行分页查询
 		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
 		
