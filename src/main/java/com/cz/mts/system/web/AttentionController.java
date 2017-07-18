@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Collect;
@@ -72,7 +73,7 @@ public class AttentionController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Attention attention) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, attention);
+		ReturnDatas returnObject = fensiListjson(request, model, attention);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
@@ -124,7 +125,18 @@ public class AttentionController  extends BaseController {
 						}
 						map.put("userMedals", userMedals);
 					}
+					//查询是否关注
+					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+					attenFinder.setParam("userId", attention.getUserId());
+					attenFinder.setParam("itemId", Integer.parseInt(map.get("id").toString()));
+					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+					if(attens!=null&&attens.size()>0){
+						map.put("isAttr", 1);
+					}else {
+						map.put("isAttr", 0);
+					}
 				} 
+				
 			}
 			
 			returnObject.setData(list);
@@ -155,8 +167,33 @@ public class AttentionController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		Finder finder = Finder.getSelectFinder(Attention.class).append(" where 1=1 ");
+		
+		if(attention.getAppUser()!=null){
+			
+			if(StringUtils.isNotBlank(attention.getAppUser().getName())){
+				
+				finder.append(" and userId in (select id from t_app_user where name=:name)");
+				finder.setParam("name", attention.getAppUser().getName());
+				
+			}
+			
+		}
+		
+		if(attention.getItemUser()!=null){
+			
+			if(StringUtils.isNotBlank(attention.getItemUser().getName())){
+				
+				finder.append(" and itemId in (select id from t_app_user where name=:itemName)");
+				finder.setParam("itemName", attention.getItemUser().getName());
+				
+			}
+			
+		}
+		
 		// ==执行分页查询
-		List<Attention> datas=attentionService.findListDataByFinder(null,page,Attention.class,attention);
+		List<Attention> datas=attentionService.findListDataByFinder(finder,page,Attention.class,attention);
 		
 		for (Attention attention2 : datas){
 			
@@ -168,6 +205,19 @@ public class AttentionController  extends BaseController {
 				if(appUser!=null){
 					
 					attention2.setAppUser(appUser);
+					
+				}
+				
+			}
+			
+			//查询用户信息
+			if(attention2.getItemId()!=null){
+				
+				AppUser appUser=appUserService.findAppUserById(attention2.getItemId());
+				
+				if(appUser!=null){
+					
+					attention2.setItemUser(appUser);
 					
 				}
 				

@@ -157,8 +157,12 @@ public class JoinActivityController  extends BaseController {
 			
 			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
-		if(null != datas && datas.size() > 0){
-			for (JoinActivity joinActivity2 : datas) {
+		
+		if(datas!=null){
+			
+		
+		for (JoinActivity joinActivity2 : datas) {
+			
 				
 				//查询用户信息
 				if(joinActivity2.getUserId()!=null){
@@ -264,8 +268,6 @@ public class JoinActivityController  extends BaseController {
 		}
 		
 		
-		
-		
 		returnObject.setQueryBean(joinActivity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
@@ -282,7 +284,7 @@ public class JoinActivityController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/adminList/json") 
+	@RequestMapping("/adminList/json")
 	public @ResponseBody
 	ReturnDatas adminListjson(HttpServletRequest request, Model model,JoinActivity joinActivity) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

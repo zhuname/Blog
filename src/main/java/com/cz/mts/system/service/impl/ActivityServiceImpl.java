@@ -152,6 +152,8 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 		//保存新的数据
 		List<Awards> awardss = new ArrayList<>();
 		
+		int winSum=0;
+		
 		//json转成list
 		JSONArray jsonArray = JSONArray.fromObject(awardsJson);
 		for (int i = 0; i < jsonArray.size(); i++) {
@@ -162,15 +164,17 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 			awards.setSumCount(jsonArray.getJSONObject(i).getInt("sumCount"));
 			awards.setRemainCount(awards.getSumCount());
 			awardss.add(awards);
+			winSum += awards.getSumCount();
         }
 		
+		activity.setWinPrizePerson(winSum);
 		
+		super.update(activity, true);
 		
 		//删除保存的奖项列表
 		RedCity redCityDel=new RedCity();
 		redCityDel.setPackageId(Integer.parseInt(id.toString()));
 		super.deleteByEntity(redCityDel);
-				
 		
 		//保存新的数据
 		List<RedCity> redCitys = new ArrayList<>();
@@ -184,7 +188,6 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 			redCity.setType(jsonArrayRedCity.getJSONObject(i).getInt("type"));
 			redCitys.add(redCity);
 	    }
-		
 		
 		//保存城市
 		super.save(redCitys);

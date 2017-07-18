@@ -27,15 +27,14 @@ function deleteAttention(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/attention/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/attention/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
-			</select>
+		<label for="search_appUserName"><b>用户人:</b></label> 
+			 <input type="text" id="search_appUserName"  name="appUser.name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.appUser.name)!''}">
+			 <label for="search_itemUserName"><b>被关注人:</b></label> 
+			 <input type="text" id="search_itemUserName"  name="itemUser.name" placeholder="被关注人"  value="${(returnDatas.queryBean.itemUser.name)!''}">
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -74,18 +73,16 @@ function deleteAttention(){
                     <!--first_start_export-->
                     <thead>
                     <tr>
-                        <!--first_start_no_export-->
-                        <th class="center">
+                        <!-- <th class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>操作</th>
+                        <th>操作</th> -->
                         <!--first_end_no_export-->
-						<th id="th_userId" >关注人的id</th>
-						<th id="th_itemId" >被关注人的id</th>
-						<th id="th_isUpdate" >是否有信息更新: 0否 1是</th>
+						<th id="th_userId" >关注人</th>
+						<th id="th_itemId" >被关注人</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -97,7 +94,7 @@ function deleteAttention(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
+                                <!-- <td class="center">
                                     <label class="position-relative">
                                         <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
                                         <span class="lbl"></span>
@@ -149,17 +146,22 @@ function deleteAttention(){
                                             </ul>
                                         </div>
                                     </div>
-                                </td>
+                                </td> -->
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.userId)!0}
+								<#if (_data.appUser) ??>
+									<#if (_data.appUser.name) ??>
+										${(_data.appUser.name)!''}
+									</#if>
+								</#if>
 							</td>
 							<td >
-								${(_data.itemId)!0}
-							</td>
-							<td >
-								${(_data.isUpdate)!0}
+								<#if (_data.itemUser) ??>
+									<#if (_data.itemUser.name) ??>
+										${(_data.itemUser.name)!''}
+									</#if>
+								</#if>
 							</td>
 						</tr>
 					</#list>

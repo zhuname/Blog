@@ -105,6 +105,8 @@ public class CityCircle  extends BaseEntity {
 	
 	private String osType;
 	
+	private String title;
+	
 	//concstructor
 
 	public CityCircle(){
@@ -121,7 +123,15 @@ public class CityCircle  extends BaseEntity {
 		this.id = value;
 	}
 	
-	
+	@Transient
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	@Transient
 	public AppUser getAppUser() {
 		return appUser;

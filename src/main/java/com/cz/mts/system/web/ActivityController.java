@@ -241,8 +241,8 @@ public class ActivityController  extends BaseController {
 				  activity.setIsPart(0);
 			  }
 			  
-			//查询是否点赞
-			  Page newPage=new Page();
+			  	//查询是否点赞
+			  	Page newPage=new Page();
 				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
 				operFinder.setParam("userId", Integer.parseInt(appuserId));
 				operFinder.setParam("itemId", activity.getId());
