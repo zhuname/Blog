@@ -284,7 +284,7 @@ public class JoinActivityController  extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/adminList/json") 
+	@RequestMapping("/adminList/json")
 	public @ResponseBody
 	ReturnDatas adminListjson(HttpServletRequest request, Model model,JoinActivity joinActivity) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();

@@ -128,7 +128,7 @@ public class AttentionController  extends BaseController {
 					//查询是否关注
 					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
 					attenFinder.setParam("userId", attention.getUserId());
-					attenFinder.setParam("itemId", Integer.parseInt(map.get("itemId").toString()));
+					attenFinder.setParam("itemId", Integer.parseInt(map.get("id").toString()));
 					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
 					if(attens!=null&&attens.size()>0){
 						map.put("isAttr", 1);
