@@ -496,7 +496,6 @@ public class ActivityController  extends BaseController {
 			String cityIds=request.getParameter("cityIds");
 			if(StringUtils.isNotBlank(awards)||StringUtils.isNotBlank(cityIds)){
 				activityService.addOrUpdate(activity, awards,cityIds);
-				
 			}else {
 				logger.error("参数缺失");
 				returnObject.setStatus(ReturnDatas.ERROR);

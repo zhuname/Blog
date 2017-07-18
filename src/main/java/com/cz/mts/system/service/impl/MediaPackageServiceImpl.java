@@ -379,98 +379,111 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		if(object == null){  //代表已抢
 			return "红包已抢" ;
 		}
-		synchronized (this) {
-			//实现持久化
-			//已抢红包的list,NO-SQL中的
-			List<String> list = jedis.lrange(GlobalStatic.mediaPackageConsumedList + packageId , 0 , -1) ;
-			
-			if(list != null && list.size() !=0){
+		try{
+			synchronized (this) {
+				//实现持久化
+				//已抢红包的list,NO-SQL中的
+				List<String> list = jedis.lrange(GlobalStatic.mediaPackageConsumedList + packageId , 0 , -1) ;
 				
-				if(null != appUser && 1 == appUser.getIsPush()){
-					//给发布人发推送
-					notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
-				}
-				
-				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
-				finder.setParam("packageId", Integer.valueOf(packageId)) ;
-				List<LmediaPackage> listMysql = super.queryForList(finder,LmediaPackage.class) ;
-				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
-				//这样有可能是第三个或者第四个抢红包的人获得这个锁，造成脏数据的问题
-				if(list.size() >= listMysql.size()){   //可以进行批量更新已抢红包了
-					//最后需要持久化的小红包
-					List<LmediaPackage> listPersistence = new ArrayList<LmediaPackage>() ;
-					Iterator<String> iter = list.iterator() ;
-					while(iter.hasNext()){
-						
-						String lppStr = iter.next() ;
-						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
-						listPersistence.add(lpp) ;
-						
-					}
-					//批量更新小红包表
-					iLmediaPackageService.update(listPersistence) ;
-					//开始解决用户表的余额
-					//移除已经持久化的
-					//listNosql是需要更新的list
-					List<String> listNosql = list ;
-					List<LmediaPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LmediaPackage.class) ;
-					_listNosql.removeAll(listMysql) ;
-					Iterator<LmediaPackage> iterNosql = _listNosql.iterator() ;
-					//需要更新的已抢金额
-					BigDecimal money = new BigDecimal(0) ;
-					while(iterNosql.hasNext()){
-						LmediaPackage lpp = iterNosql.next() ;
-						//转换成bean
-//						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
-						//金额累计
-						money = money.add(new BigDecimal(lpp.getMoney())) ;
-						Integer _userId = lpp.getUserId() ;
-						AppUser user = super.findById(_userId, AppUser.class) ;
-						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
-						user.setBalance(nowBalance.doubleValue());
-						if(_package.getEncrypt().intValue()==0){
-							user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
-						}
-						//更新用户余额
-						appUserService.saveorupdate(user) ;
-						//更新明细表
-						MoneyDetail md = new MoneyDetail();
-						md.setCreateTime(new Date());
-						md.setUserId(_userId);
-						md.setType(2);  //海报红包
-						md.setMoney(+lpp.getMoney());
-						md.setBalance(nowBalance.doubleValue());
-						md.setItemId(lpp.getPackageId());
-						md.setOsType(osType);
-						moneyDetailService.saveorupdate(md) ;
+				if(list != null && list.size() !=0){
+					
+					if(null != appUser && 1 == appUser.getIsPush()){
+						//给发布人发推送
+						notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
 					}
 					
-					//解决红包表的数据
-					//本次更新的已抢次数
-					Integer num = _listNosql.size() ;
-					//这里需要再取一次，防止并发造成pp数据不一致
-					MediaPackage pp = findById(packageId, MediaPackage.class) ;
-					pp.setNum(pp.getNum() - num);
-					pp.setBalance((new BigDecimal(pp.getBalance()).subtract(money)).doubleValue());
-					//看红包是否抢完
-					if(pp.getNum() == 0){
-						pp.setStatus(4);
-						pp.setEndTime(new Date());
-						if(null != appUser && 1 == appUser.getIsPush()){
-							//给发布人发推送
-							notificationService.notify(3, pp.getId(), pp.getUserId());
+					//已抢红包的list，mysql中的
+					Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
+					finder.setParam("packageId", Integer.valueOf(packageId)) ;
+					List<LmediaPackage> listMysql = super.queryForList(finder,LmediaPackage.class) ;
+					//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
+					//这样有可能是第三个或者第四个抢红包的人获得这个锁，造成脏数据的问题
+					if(list.size() >= listMysql.size()){   //可以进行批量更新已抢红包了
+						//最后需要持久化的小红包
+						List<LmediaPackage> listPersistence = new ArrayList<LmediaPackage>() ;
+						Iterator<String> iter = list.iterator() ;
+						while(iter.hasNext()){
+							
+							String lppStr = iter.next() ;
+							LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
+							listPersistence.add(lpp) ;
+							
+						}
+						//批量更新小红包表
+						iLmediaPackageService.update(listPersistence) ;
+						//开始解决用户表的余额
+						//移除已经持久化的
+						//listNosql是需要更新的list
+						List<String> listNosql = list ;
+						List<LmediaPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LmediaPackage.class) ;
+						_listNosql.removeAll(listMysql) ;
+						Iterator<LmediaPackage> iterNosql = _listNosql.iterator() ;
+						//需要更新的已抢金额
+						BigDecimal money = new BigDecimal(0) ;
+						while(iterNosql.hasNext()){
+							LmediaPackage lpp = iterNosql.next() ;
+							//转换成bean
+//							LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
+							//金额累计
+							if(null != lpp.getMoney()){
+								money = money.add(new BigDecimal(lpp.getMoney())) ;
+							}
+							Integer _userId = lpp.getUserId() ;
+							AppUser user = super.findById(_userId, AppUser.class) ;
+							if(null != user){
+								if(null == user.getBalance()){
+									user.setBalance(0.0);
+								}
+								
+							}
+							if(null == lpp.getMoney()){
+								lpp.setMoney(0.0);
+							}
+							BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
+							user.setBalance(nowBalance.doubleValue());
+							if(_package.getEncrypt().intValue()==0){
+								user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
+							}
+							//更新用户余额
+							appUserService.saveorupdate(user) ;
+							//更新明细表
+							MoneyDetail md = new MoneyDetail();
+							md.setCreateTime(new Date());
+							md.setUserId(_userId);
+							md.setType(2);  //海报红包
+							md.setMoney(+lpp.getMoney());
+							md.setBalance(nowBalance.doubleValue());
+							md.setItemId(lpp.getPackageId());
+							md.setOsType(osType);
+							moneyDetailService.saveorupdate(md) ;
 						}
 						
-						
-						
-						
+						//解决红包表的数据
+						//本次更新的已抢次数
+						Integer num = _listNosql.size() ;
+						//这里需要再取一次，防止并发造成pp数据不一致
+						MediaPackage pp = findById(packageId, MediaPackage.class) ;
+						pp.setNum(pp.getNum() - num);
+						pp.setBalance((new BigDecimal(pp.getBalance()).subtract(money)).doubleValue());
+						//看红包是否抢完
+						if(pp.getNum() == 0){
+							pp.setStatus(4);
+							pp.setEndTime(new Date());
+							if(null != appUser && 1 == appUser.getIsPush()){
+								//给发布人发推送
+								notificationService.notify(3, pp.getId(), pp.getUserId());
+							}
+							
+						}
+						super.saveorupdate(pp) ;
 					}
-					super.saveorupdate(pp) ;
 				}
+				
 			}
+		}catch(Exception e){
 			
 		}
+	
 		return object;
 	
 	}
