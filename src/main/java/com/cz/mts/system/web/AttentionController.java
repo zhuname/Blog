@@ -126,15 +126,15 @@ public class AttentionController  extends BaseController {
 						map.put("userMedals", userMedals);
 					}
 					//查询是否关注
-					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
-					attenFinder.setParam("userId", attention.getUserId());
-					attenFinder.setParam("itemId", Integer.parseInt(map.get("id").toString()));
-					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
-					if(attens!=null&&attens.size()>0){
-						map.put("isAttr", 1);
-					}else {
-						map.put("isAttr", 0);
-					}
+//					Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+//					attenFinder.setParam("userId", attention.getUserId());
+//					attenFinder.setParam("itemId", Integer.parseInt(map.get("id").toString()));
+//					List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+//					if(attens!=null&&attens.size()>0){
+//						map.put("isAttr", 1);
+//					}else {
+//						map.put("isAttr", 0);
+//					}
 				} 
 				
 			}
@@ -211,7 +211,15 @@ public class AttentionController  extends BaseController {
 					
 					
 					//是否关注
-					Finder fd = Finder.getSelectFinder(Attention.class).append(" where ");
+					Finder fd = Finder.getSelectFinder(Attention.class).append(" where userId=:itemId and itemId =:userId");
+					fd.setParam("itemId", attention.getItemId());
+					fd.setParam("userId", attention2.getUserId());
+					List list = attentionService.queryForList(fd);
+					if(null != list && list.size() > 0){
+						attention2.setIsAttr(1);
+					}else{
+						attention2.setIsAttr(0);
+					}
 					
 					
 				}
