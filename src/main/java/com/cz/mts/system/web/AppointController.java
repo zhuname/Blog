@@ -38,6 +38,7 @@ import com.cz.mts.system.service.IMoneyDetailService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.ISysSysparamService;
+import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.system.service.impl.PosterPackageServiceImpl;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -74,6 +75,8 @@ public class AppointController  extends BaseController {
 	private ISysSysparamService sysparamService;
 	@Resource
 	private IMoneyDetailService moneyDetailService;
+	@Resource
+	private NotificationService notificationService;
 	
 	
 	private String listurl="/appoint/appointList";
@@ -491,14 +494,14 @@ public class AppointController  extends BaseController {
 			appo.setStatus(2);
 			appo.setChangeTime(new Date());
 			
-//			if(null != appo && null != appo.getUserId()){
-//				AppUser user = appUserService.findAppUserById(appo.getUserId());
-//				if(null != user && 1 == user.getIsPush() && null != appo.getCardId()){
-//					//给自己发推送
-//					notificationService.notify(14, appo.getCardId(), appo.getUserId());
-//					
-//				}
-//			}
+			if(null != card && null != card.getUserId()){
+				AppUser user = appUserService.findAppUserById(card.getUserId());
+				if(null != user && 1 == user.getIsPush() && null != card.getId()){
+					//给自己发推送
+					notificationService.notify(42, card.getId(), user.getId());
+					
+				}
+			}
 			appointService.update(appo,true);
 			
 			

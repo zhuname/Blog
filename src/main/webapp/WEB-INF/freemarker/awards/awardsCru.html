@@ -23,8 +23,42 @@ jQuery(document).ready(function(){
 	
 	
 	
+	
 	});
 	
+/* var id = $("#id").val();
+if(id != null){
+	$("#divSumCount").hide();
+	$("#divRemainCount").hide();
+}else{
+	$("#divSumCount").show();
+	$("#divRemainCount").show();
+}
+	 */
+	 
+	 console.log($("#activityId").attr("code"));
+	//加载链接目标
+		jQuery.ajax({
+			url : ctx+"/system/lunbopic/position/list?position=5",
+			type : "post",
+			dataType : "json",
+			success : function(_json) {
+				if(_json.status=="error"){
+					return;
+				}
+				//先清除原来的数据
+				$("#activityId").empty();
+				jQuery(_json.data).each(function(i,_obj){
+					jQuery("#activityId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
+				});
+				
+				jQuery("#activityId").select2();
+				$("#activityId").select2().val($("#activityId").attr("code"));
+				$("#activityId").select2().val($("#activityId").attr("code"));
+			}
+		});
+	 
+	 
 	
 //-->
 </SCRIPT>
@@ -64,13 +98,12 @@ jQuery(document).ready(function(){
 				</div> -->
 				<label class="col-sm-3 control-label no-padding-right" for="activityId">所属同城活动</label>
 					<div class="col-sm-6">
-						<select  id="activityId" name="activityId" code="${(returnDatas.data.activityId)!''}"   class="form-control">
+						<select id="activityId" name="activityId" code="${(returnDatas.data.activityId)!''}"   class="form-control">
 						</select>
 					</div>
 			</div>
 	        <div class="space-2"></div>
-	        <#if (returnDatas.data.id)!''>
-			<div class="form-group">
+			<div class="form-group" id="divSumCount">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumCount" >发布时候名额</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
@@ -79,7 +112,7 @@ jQuery(document).ready(function(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
-			<div class="form-group">
+			<!-- <div class="form-group" id="divRemainCount">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="remainCount" >剩余名额</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
@@ -87,8 +120,7 @@ jQuery(document).ready(function(){
 					</div><div class="help-block" for="remainCount"></div>
 				</div>
 			</div>
-	        <div class="space-2"></div>
-	        <#if>
+	        <div class="space-2"></div> -->
 		</form>
 		<div class="wizard-actions">
 			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/awards/list');" style="float: left;margin-left: 25.4%;">

@@ -533,7 +533,7 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setIsValid(0);
 				
 				//保证没人最少领取0.01
-				if(new BigDecimal(mediaPackage.getSumMoney()).divide(new BigDecimal(mediaPackage.getLqNum())).doubleValue() >= 0.01){
+				if(mediaPackage.getSumMoney()/mediaPackage.getLqNum() >= 0.01){
 					Object id=mediaPackageService.saveorupdate(mediaPackage);
 					returnObject.setData(mediaPackageService.findMediaPackageById(id));
 					
@@ -600,7 +600,7 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setTradeNo(null);
 				
 				//每个人应该最少领取金额是0.01
-				if(new BigDecimal(mediaPackage.getSumMoney()).divide(new BigDecimal(mediaPackage.getLqNum())).doubleValue() >= 0.01){
+				if(mediaPackage.getSumMoney()/mediaPackage.getLqNum() >= 0.01){
 					RedCity redCitySelect = new RedCity();
 					
 					redCitySelect.setPackageId(mediaPackage.getId());

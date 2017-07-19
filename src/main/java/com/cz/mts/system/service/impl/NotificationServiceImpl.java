@@ -420,6 +420,13 @@ public class NotificationServiceImpl implements NotificationService {
 				messageService.save(message);
 			break;
 			
+			case 42:
+				JPushUtil.sendJPushNotification("您发布的卡券已被人兑换，请及时关注卡券动态。", type+"", id, userId, "");
+				message=new Message(null, 42, userId, new Date(), "您发布的卡券已被人兑换，请及时关注卡券动态。", id, "", 0, "预约卡券兑换", 2);
+				messageService.save(message);
+			break;
+			
+			
 			
 			}
 		} catch (Exception e) {

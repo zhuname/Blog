@@ -228,6 +228,9 @@ public class CardSchema extends BaseLogger{
 				userMedalService.update(userMedal,true);
 			}
 		}
+		
+		
+		
 	}
 	
 	

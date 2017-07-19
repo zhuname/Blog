@@ -221,6 +221,17 @@ public class ApplyMedalController  extends BaseController {
 						returnObject.setMessage("您申请的勋章正在认证中，暂不能申请");
 						returnObject.setStatus(ReturnDatas.ERROR);
 					}else{
+						//查询是否存在已过期的勋章或者是拒绝通过的勋章申请,如果有，则先删除，再添加
+						Finder finder = Finder.getSelectFinder(ApplyMedal.class).append(" where (isEndStatus=1 or status=3) and userId=:userId and medalId=:medalId");
+						finder.setParam("userId", applyMedal.getUserId());
+						finder.setParam("medalId", applyMedal.getMedalId());
+						List<ApplyMedal> applyMedals = applyMedalService.queryForList(finder,ApplyMedal.class);
+						if(null != applyMedals && applyMedals.size() > 0){
+							for (ApplyMedal am : applyMedals) {
+								applyMedalService.deleteByEntity(am);
+							}
+						}
+						
 						if(null == applyMedal.getId()){
 							applyMedal.setApplyTime(new Date());
 							applyMedal.setStatus(1);

@@ -393,7 +393,10 @@ public class CircleController  extends BaseController {
 	}
 	
 	/**
-	 * 删除操作
+	 * 删除同城圈操作
+	 * @param request
+	 * @return
+	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete/json")
 	@SecurityApi
@@ -402,20 +405,33 @@ public class CircleController  extends BaseController {
 			// 执行删除
 		try {
 		  String  strId=request.getParameter("id");
+		  String suserId = request.getParameter("userId");
 		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
+		  if(StringUtils.isNotBlank(strId)&& StringUtils.isNotBlank(suserId)){
+			 Integer userId = Integer.parseInt(suserId);
 			 id= java.lang.Integer.valueOf(strId.trim());
-				circleService.deleteById(id,Circle.class);
-				return new ReturnDatas(ReturnDatas.SUCCESS,
-						MessageUtils.DELETE_SUCCESS);
+			 Circle circle = circleService.findCircleById(id);
+			 if(null != circle && null != circle.getUserId()){
+				 if(userId == circle.getUserId()){
+					 circleService.deleteById(id,Circle.class);
+						return new ReturnDatas(ReturnDatas.SUCCESS,
+								MessageUtils.DELETE_SUCCESS);
+				 }else{
+					 return new ReturnDatas(ReturnDatas.ERROR, "该操作只能本人操作，您暂无权限操作");
+				 }
+			 }else{
+				 return new ReturnDatas(ReturnDatas.ERROR,
+							"删除失败");
+			 }
+				
 			} else {
-				return new ReturnDatas(ReturnDatas.WARNING,
-						MessageUtils.DELETE_WARNING);
+				return new ReturnDatas(ReturnDatas.ERROR,
+						"删除失败");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return new ReturnDatas(ReturnDatas.WARNING, MessageUtils.DELETE_WARNING);
+		return new ReturnDatas(ReturnDatas.ERROR, "删除失败");
 	}
 	
 	/**

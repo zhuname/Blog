@@ -698,8 +698,8 @@ public class PosterPackageController  extends BaseController {
 				posterPackage.setCode("P"+code);
 				
 				
-				//保证没人最少领取0.01
-				if(new BigDecimal(posterPackage.getSumMoney()).divide(new BigDecimal(posterPackage.getLqNum())).doubleValue() >= 0.01){
+				//保证每人最少领取0.01
+				if(posterPackage.getSumMoney()/posterPackage.getLqNum() >= 0.01){
 
 					id=posterPackageService.save(posterPackage);
 					
@@ -764,7 +764,7 @@ public class PosterPackageController  extends BaseController {
 				
 				
 				//保证没人最少领取0.01
-				if(new BigDecimal(posterPackage.getSumMoney()).divide(new BigDecimal(posterPackage.getLqNum())).doubleValue() >= 0.01){
+				if(posterPackage.getSumMoney()/posterPackage.getLqNum() >= 0.01){
 					id=posterPackageService.update(posterPackage, true);
 					
 					RedCity redCitySelect = new RedCity();

@@ -101,6 +101,12 @@ public class wxController extends BaseController {
 					case"R":
 						appUserService.alipay(code, 4, Double.parseDouble(total_fee)/100, transaction_id, 2);
 						break;
+					case"A":
+						appUserService.alipay(code, 5, Double.parseDouble(total_fee)/100, transaction_id, 2);
+						break;
+					case "D":
+						appUserService.alipay(code, 6, Double.parseDouble(total_fee)/100, transaction_id, 2);
+						break;
 					}
 				} 
 				if (weixinCode.indexOf("_") != -1) {
