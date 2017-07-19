@@ -10,8 +10,8 @@ function deleteAwards(){
 		myalert("请选择你要删除的记录");
 		return;
 	}else{
-		var _url="${ctx}/awards/delete?id="+id;
-		var listurl="${ctx}/awards/list";
+		var _url="${ctx}/system/awards/delete?id="+id;
+		var listurl="${ctx}/system/awards/list";
 		mydelete(_url,listurl);
 	}
 }
@@ -27,15 +27,16 @@ function deleteAwards(){
 <div class="operate panel panel-default" style="height:65px;">
 	<div class="panel-body">
 		<div class="pull-left">
- <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/awards/list" role="form">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/awards/list" role="form">
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_state"><b>是否可用:</b></label> 
-			 <select id="search_state" name="state" class="col-10" >
-				<option value="是">是</option>
-				<option value="否">否</option>
-			</select>
+			<label for="search_activityName"><b>活动主题:</b></label> 
+			 <input type="text" id="search_activityName"  name="activityName" placeholder="请输入活动主题"  value="${(returnDatas.queryBean.activityName)!''}">
+			 <label for="search_title"><b>奖项标题:</b></label> 
+			 <input type="text" id="search_title"  name="title" placeholder="请输入奖项标题"  value="${(returnDatas.queryBean.title)!''}">
+			 <label for="search_content"><b>奖项内容:</b></label> 
+			 <input type="text" id="search_content"  name="content" placeholder="请输入奖项内容"  value="${(returnDatas.queryBean.content)!''}">
 			<a  href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -43,15 +44,22 @@ function deleteAwards(){
 
 </form>
 		</div>
-		<div class="pull-right">
+		
+	</div>
+</div>
+
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+			    
 			    <@shiro.hasPermission name="/awards/list/export" >
 				  <button onclick="myexport('searchForm','${ctx}/awards/list/export');" class="btn  btn-sm  btn-primary">
                       
                         导出
                     </button>
 		    	</@shiro.hasPermission>
-			    <@shiro.hasPermission name="/awards/update" >
-				  <button onclick="myhref('${ctx}/awards/update/pre');" class="btn  btn-sm  btn-primary">
+			    <@shiro.hasPermission name="/system/awards/update/pre" >
+				  <button onclick="myhref('${ctx}/system/awards/update/pre');" class="btn  btn-sm  btn-primary" style="width: 100px">
                         添加
                     </button>
 			    </@shiro.hasPermission>
@@ -62,9 +70,12 @@ function deleteAwards(){
                     </button>
 			    </@shiro.hasPermission>
 			
+			
 		</div>
 	</div>
-</div>
+	</div>
+
+
 
    <div class="row">
             <div class="col-xs-12">
@@ -75,17 +86,17 @@ function deleteAwards(){
                     <thead>
                     <tr>
                         <!--first_start_no_export-->
-                        <th class="center">
+                       <!--  <th class="center">
                             <label class="position-relative">
                                 <input class="ace" type="checkbox">
                                 <span class="lbl"></span>
                             </label>
-                        </th>
+                        </th> -->
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_activityId" >活动id</th>
-						<th id="th_title" >标题</th>
-						<th id="th_content" >内容</th>
+						<th id="th_activityId" >活动内容</th>
+						<th id="th_title" >奖项标题</th>
+						<th id="th_content" >奖项内容</th>
 						<th id="th_sumCount" >发布时候名额</th>
 						<th id="th_remainCount" >剩余名额</th>
                     </tr>
@@ -99,20 +110,20 @@ function deleteAwards(){
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
-                                <td class="center">
+                                <!-- <td class="center">
                                     <label class="position-relative">
                                         <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
                                         <span class="lbl"></span>
                                     </label>
-                                </td>
+                                </td> -->
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info"
-                                                onclick="myhref('${ctx}/awards/update/pre?id=${(_data.id)!''}');">
+                                                onclick="myhref('${ctx}/system/awards/update/pre?id=${(_data.id)!''}');">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/awards/delete?id=${(_data.id)!''}','${ctx}/awards/list');">
+                                                onclick="mydelete('${ctx}/system/awards/delete?id=${(_data.id)!''}','${ctx}/system/awards/list','','确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -124,7 +135,7 @@ function deleteAwards(){
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 	                                          <li>
-													<a  href="javascript:myhref('${ctx}/awards/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+													<a  href="javascript:myhref('${ctx}/system/awards/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="ace-icon fa fa-search-plus bigger-120"></i>
 														</span>
@@ -132,7 +143,7 @@ function deleteAwards(){
 											  </li>	
                                                 <li>
                                                     <a data-original-title="Edit"
-                                                       href="javascript:myhref('${ctx}/awards/update/pre?id=${(_data.id)!''}');"
+                                                       href="javascript:myhref('${ctx}/system/awards/update/pre?id=${(_data.id)!''}');"
                                                        class="tooltip-success" data-rel="tooltip" title="">
 																		<span class="green">
 																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
@@ -141,7 +152,7 @@ function deleteAwards(){
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/awards/delete?id=${(_data.id)!''}','${ctx}/awards/list');"
+                                                       href="javascript:mydelete('${ctx}/system/awards/delete?id=${(_data.id)!''}','${ctx}/system/awards/list');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -155,7 +166,7 @@ function deleteAwards(){
                                 <!--end_no_export-->
 
 							<td >
-								${(_data.activityId)!0}
+								${(_data.activityName)!''}
 							</td>
 							<td >
 								${(_data.title)!''}

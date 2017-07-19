@@ -167,7 +167,7 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 			winSum += awards.getSumCount();
         }
 		
-		activity.setWinPrizePerson(winSum);
+		activity.setSumWinPrizePerson(winSum);
 		
 		super.update(activity, true);
 		

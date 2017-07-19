@@ -55,7 +55,21 @@ public class Attention  extends BaseEntity {
 	
 	private AppUser itemUser;
 	
+	private Integer isAttr;
+	
+	
+	
+	
 	//concstructor
+	
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
+
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
 
 	public Attention(){
 	}

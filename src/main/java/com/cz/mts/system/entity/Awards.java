@@ -2,6 +2,7 @@ package com.cz.mts.system.entity;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -61,9 +62,23 @@ public class Awards  extends BaseEntity {
 	
 	private String osType;
 	
+	private String activityName;
+	
+	
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+	@Transient
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
 
 	public Awards(){
 	}

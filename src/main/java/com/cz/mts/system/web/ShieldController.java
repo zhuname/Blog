@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Shield;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IShieldService;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -39,6 +42,8 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class ShieldController  extends BaseController {
 	@Resource
 	private IShieldService shieldService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/shield/shieldList";
 	
@@ -77,7 +82,30 @@ public class ShieldController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		List<Shield> datas=shieldService.findListDataByFinder(null,page,Shield.class,shield);
+		Finder finder = Finder.getSelectFinder(Shield.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(shield.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+shield.getUserName()+"%')");
+		}
+		if(StringUtils.isNotBlank(shield.getItemName())){
+			finder.append(" and itemId in (select id from t_app_user where name like '%"+shield.getItemName()+"%')");
+		}
+		List<Shield> datas=shieldService.findListDataByFinder(finder,page,Shield.class,null);
+		if(null != datas && datas.size() > 0){
+			for (Shield sl : datas) {
+				if(null != sl.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(sl.getUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						sl.setUserName(appUser.getName());
+					}
+				}
+				if(null != sl.getItemId()){
+					AppUser itemAppUser = appUserService.findAppUserById(sl.getItemId());
+					if(null != itemAppUser && StringUtils.isNotBlank(itemAppUser.getName())){
+						sl.setItemName(itemAppUser.getName());
+					}
+				}
+			}
+		}
 		returnObject.setQueryBean(shield);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

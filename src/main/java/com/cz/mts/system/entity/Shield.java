@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -54,9 +55,36 @@ public class Shield  extends BaseEntity {
 	private java.util.Date createTime;
 	
 	private String osType;
+	
+	private String userName;
+	private String itemName;
+	
+	
+	
+	
+	
+	
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Transient
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
 
 	public Shield(){
 	}

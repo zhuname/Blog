@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.Awards;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAwardsService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
@@ -38,8 +41,10 @@ import com.cz.mts.frame.util.ReturnDatas;
 public class AwardsController  extends BaseController {
 	@Resource
 	private IAwardsService awardsService;
+	@Resource
+	private IActivityService activityService;
 	
-	private String listurl="/system/awards/awardsList";
+	private String listurl="/awards/awardsList";
 	
 	
 	   
@@ -55,9 +60,51 @@ public class AwardsController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Awards awards) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, awards);
+		ReturnDatas returnObject = adminListjson(request, model, awards);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	/**
+	 * 后台奖项列表
+	 * @param request
+	 * @param model
+	 * @param awards
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/adminList/json")
+	public @ResponseBody
+	ReturnDatas adminListjson(HttpServletRequest request, Model model,Awards awards) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		Finder finder = Finder.getSelectFinder(Awards.class).append(" where 1=1");
+		if(StringUtils.isNotBlank(awards.getActivityName())){
+			finder.append(" and activityId in (select id from t_activity where content like '%"+awards.getActivityName()+"%')");
+		}
+		if(StringUtils.isNotBlank(awards.getTitle())){
+			finder.append(" and title like '%"+awards.getTitle()+"%'");
+		}
+		if(StringUtils.isNotBlank(awards.getContent())){
+			finder.append(" and content like '%"+awards.getContent()+"%'");
+		}
+		// ==执行分页查询
+		List<Awards> datas=awardsService.findListDataByFinder(finder,page,Awards.class,null);
+		if(null != datas && datas.size() > 0){
+			for (Awards ad : datas) {
+				if(null != ad.getActivityId()){
+					Activity activity = activityService.findActivityById(ad.getActivityId());
+					if(null != activity && StringUtils.isNotBlank(activity.getContent())){
+						ad.setActivityName(activity.getContent());
+					}
+				}
+			}
+		}
+		returnObject.setQueryBean(awards);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 	/**
@@ -137,10 +184,21 @@ public class AwardsController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
-		
-			awardsService.saveorupdate(awards);
-			
+			if(null == awards.getId()){
+				awards.setRemainCount(awards.getSumCount());
+				//查询同城活动
+				Activity activity = activityService.findActivityById(awards.getActivityId());
+				if(null != activity){
+					if(null == activity.getSumWinPrizePerson()){
+						activity.setSumWinPrizePerson(0);
+					}
+					activity.setSumWinPrizePerson(activity.getSumWinPrizePerson()+awards.getSumCount());
+					activityService.update(activity,true);
+				}
+				awardsService.saveorupdate(awards);
+			}else{
+				awardsService.update(awards,true);
+			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
@@ -158,7 +216,7 @@ public class AwardsController  extends BaseController {
 	public String updatepre(Model model,HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		ReturnDatas returnObject = lookjson(model, request, response);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
-		return "/system/awards/awardsCru";
+		return "/awards/awardsCru";
 	}
 	
 	/**

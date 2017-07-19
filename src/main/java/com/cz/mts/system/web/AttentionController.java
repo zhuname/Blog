@@ -195,35 +195,44 @@ public class AttentionController  extends BaseController {
 		// ==执行分页查询
 		List<Attention> datas=attentionService.findListDataByFinder(finder,page,Attention.class,attention);
 		
-		for (Attention attention2 : datas){
-			
-			//查询用户信息
-			if(attention2.getUserId()!=null){
+		if(null != datas && datas.size() > 0){
+			for (Attention attention2 : datas){
 				
-				AppUser appUser=appUserService.findAppUserById(attention2.getUserId());
-				
-				if(appUser!=null){
+				//查询用户信息
+				if(attention2.getUserId()!=null){
 					
-					attention2.setAppUser(appUser);
+					AppUser appUser=appUserService.findAppUserById(attention2.getUserId());
+					
+					if(appUser!=null){
+						
+						attention2.setAppUser(appUser);
+						
+					}
+					
+					
+					//是否关注
+					Finder fd = Finder.getSelectFinder(Attention.class).append(" where ");
+					
+					
+				}
+				
+				
+				//查询用户信息
+				if(attention2.getItemId()!=null){
+					
+					AppUser appUser=appUserService.findAppUserById(attention2.getItemId());
+					
+					if(appUser!=null){
+						
+						attention2.setItemUser(appUser);
+						
+					}
 					
 				}
 				
 			}
-			
-			//查询用户信息
-			if(attention2.getItemId()!=null){
-				
-				AppUser appUser=appUserService.findAppUserById(attention2.getItemId());
-				
-				if(appUser!=null){
-					
-					attention2.setItemUser(appUser);
-					
-				}
-				
-			}
-			
 		}
+		
 		
 		returnObject.setData(datas);
 		returnObject.setQueryBean(attention);
