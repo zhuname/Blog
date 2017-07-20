@@ -166,7 +166,7 @@ public class CircleController  extends BaseController {
 			}
 		}
 		
-		List<Circle> datas=circleService.findListDataByFinder(finder,page,Circle.class,circle);
+		List<Circle> datas=circleService.findListDataByFinder(finder, page, Circle.class, circle);
 		
 		//刷新城事圈儿事件
 		if(StringUtils.isNotBlank(appuserId)){
@@ -197,18 +197,20 @@ public class CircleController  extends BaseController {
 				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=7 and userId=:userId and itemId=:itemId ");
 				operFinder.setParam("userId", Integer.parseInt(appuserId));
 				operFinder.setParam("itemId", circle2.getId());
-				List<Oper> opers = operService.findListDataByFinder(operFinder, page, Oper.class, null);
+				Page operPage = new Page();
+				List<Oper> opers = operService.findListDataByFinder(operFinder, operPage, Oper.class, null);
 				if(opers!=null&&opers.size()>0){
 					circle2.setIsOper(1);
 				}else {
 					circle2.setIsOper(0);
 				}
 				
-				//查询是否关注
+				//查询是否屏蔽
 				Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
 				shieldFinder.setParam("userId", Integer.parseInt(appuserId));
 				shieldFinder.setParam("itemId", circle2.getUserId());
-				List<Shield> shields = operService.findListDataByFinder(shieldFinder, page, Shield.class, null);
+				Page shieldPage = new Page();
+				List<Shield> shields = operService.findListDataByFinder(shieldFinder, shieldPage, Shield.class, null);
 				if(shields!=null&&shields.size()>0){
 					circle2.setIsShield(1);
 				}else {
@@ -219,7 +221,8 @@ public class CircleController  extends BaseController {
 				Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
 				attenFinder.setParam("userId", Integer.parseInt(appuserId));
 				attenFinder.setParam("itemId", circle2.getUserId());
-				List<Attention> attens = attentionService.findListDataByFinder(attenFinder, page, Attention.class, null);
+				Page attePage = new Page();
+				List<Attention> attens = attentionService.findListDataByFinder(attenFinder, attePage, Attention.class, null);
 				if(attens!=null&&attens.size()>0){
 					circle2.setIsAttr(1);
 				}else {
