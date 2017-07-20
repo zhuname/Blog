@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -443,49 +444,46 @@ public class AppointController  extends BaseController {
 			
 			if(appoints.size()==0){
 				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("此卡券不存在");
+				returnObject.setMessage("此预约不存在");
 				return returnObject;
 			}
 			
 			Appoint appo = appoints.get(0);
 			
 			//查询卡券信息
-			Card card=null;
+//			Card card=null;
+			PosterPackage posterPackage = new PosterPackage();
+			MediaPackage mediaPackage = new MediaPackage();
 			
 			//判断是否兑换
 			if(appo.getStatus() !=null && appo.getStatus() != 1){
 				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("此卡券已兑换");
+				returnObject.setMessage("此预约已兑换");
 				return returnObject;
 			}
 			
 			if(null != appo.getItemId()){
 				if(null != appo.getType() && 1 == appo.getType()){
-					PosterPackage posterPackage = posterPackageService.findPosterPackageById(appo.getItemId());
-					if(null != posterPackage && null != posterPackage.getCardId()){
-						card=cardService.findCardById(posterPackage.getCardId());
-					}
+					posterPackage = posterPackageService.findPosterPackageById(appo.getItemId());
+//					if(null != posterPackage && null != posterPackage.getCardId()){
+//						card=cardService.findCardById(posterPackage.getCardId());
+//					}
 				}
 				if(null != appo.getType() && 2 == appo.getType()){
-					MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(appo.getItemId());
-					if(null != mediaPackage && null != mediaPackage.getCardId()){
-						card=cardService.findCardById(mediaPackage.getCardId());
-					}
+					mediaPackage = mediaPackageService.findMediaPackageById(appo.getItemId());
+//					if(null != mediaPackage && null != mediaPackage.getCardId()){
+//						card=cardService.findCardById(mediaPackage.getCardId());
+//					}
 				}
-				if(null == card){
+				//判断预约的状态
+				if(null != appo.getStatus() && 2 == appo.getStatus() ){
 					returnObject.setStatus(ReturnDatas.ERROR);
-					returnObject.setMessage("此卡券不存在");
-					return returnObject;
-				}
-				//判断卡券的状态
-				if(null != card.getStatus() && 2 != card.getStatus() ){
-					returnObject.setStatus(ReturnDatas.ERROR);
-					returnObject.setMessage("此卡券暂不能兑换");
+					returnObject.setMessage("该预约已兑换，暂不能兑换");
 					return returnObject;
 				}
 				if(userId.intValue()!=appo.getPackageUserId().intValue()){
 					returnObject.setStatus(ReturnDatas.ERROR);
-					returnObject.setMessage("仅能兑换自己发布的卡券");
+					returnObject.setMessage("仅能兑换自己发布的红包");
 					return returnObject;
 				}
 			}
@@ -494,14 +492,28 @@ public class AppointController  extends BaseController {
 			appo.setStatus(2);
 			appo.setChangeTime(new Date());
 			
-			if(null != card && null != card.getUserId()){
-				AppUser user = appUserService.findAppUserById(card.getUserId());
-				if(null != user && 1 == user.getIsPush() && null != card.getId()){
-					//给自己发推送
-					notificationService.notify(42, card.getId(), user.getId());
-					
+			if(null != appo.getType() && 1 == appo.getType()){
+				if(null != posterPackage && null != posterPackage.getUserId()){
+					AppUser user = appUserService.findAppUserById(posterPackage.getUserId());
+					if(null != user && 1 == user.getIsPush() && null != posterPackage.getId()){
+						//给自己发推送
+						notificationService.notify(42, posterPackage.getId(), user.getId());
+						
+					}
 				}
 			}
+			
+			if(null != appo.getType() && 2 == appo.getType()){
+				if(null != mediaPackage && null != mediaPackage.getUserId()){
+					AppUser user = appUserService.findAppUserById(mediaPackage.getUserId());
+					if(null != user && 1 == user.getIsPush() && null != mediaPackage.getId()){
+						//给自己发推送
+						notificationService.notify(43, mediaPackage.getId(), user.getId());
+						
+					}
+				}
+			}
+			
 			appointService.update(appo,true);
 			
 			

@@ -421,11 +421,15 @@ public class NotificationServiceImpl implements NotificationService {
 			break;
 			
 			case 42:
-				JPushUtil.sendJPushNotification("您发布的卡券已被人兑换，请及时关注卡券动态。", type+"", id, userId, "");
-				message=new Message(null, 42, userId, new Date(), "您发布的卡券已被人兑换，请及时关注卡券动态。", id, "", 0, "预约卡券兑换", 2);
+				JPushUtil.sendJPushNotification("您发布的预约已被人兑换，请及时关注预约动态。", type+"", id, userId, "");
+				message=new Message(null, 42, userId, new Date(), "您发布的预约已被人兑换，请及时关注预约动态。", id, "", 0, "海报预约卡券兑换", 2);
 				messageService.save(message);
 			break;
-			
+			case 43:
+				JPushUtil.sendJPushNotification("您发布的预约已被人兑换，请及时关注预约动态。", type+"", id, userId, "");
+				message=new Message(null, 42, userId, new Date(), "您发布的预约已被人兑换，请及时关注预约动态。", id, "", 0, "视频预约卡券兑换", 2);
+				messageService.save(message);
+			break;
 			
 			
 			}

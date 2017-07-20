@@ -149,12 +149,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	@Override
 	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType, String selectType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		Finder finder1 = Finder.getSelectFinder(MediaPackage.class).append(" where isDel=0");
+		Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.mediaImage,p.scanNum,p.status,p.failReason FROM t_media_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c ON a.cardId=c.id where 1=1");
 		if(null != mediaPackage.getCityId()){
-			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=2)");
+			finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=2)");
 			finder1.setParam("cityId", mediaPackage.getCityId());
 		}else{
-			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
+			finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
 		}
 		
 //		if(personType!=null&&mediaPackage.getStatus()==3){
@@ -168,28 +168,28 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		if(null != personType){
 			switch (personType) {
 			case 1:
-				finder1.append(" and (status = 3 or status = 4 ) and isValid != 1");
+				finder1.append(" and (a.status = 3 or a.status = 4 ) and a.isValid != 1");
 				break;
 			case 2:
-				finder1.append(" and (status = 3 or status = 4 )");
+				finder1.append(" and (a.status = 3 or a.status = 4 )");
 				break;
 			case 3:
-				finder1.append(" and status = :status");
+				finder1.append(" and a.status = :status");
 				finder1.setParam("status", mediaPackage.getStatus());
 				break;
 			}
 		}
 		
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
-			finder1.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
+			finder1.append(" and (INSTR(`title`,:title)>0 or a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
 			finder1.setParam("title", mediaPackage.getTitle());
 		}
 		if(null != mediaPackage.getUserId()){
-			finder1.append(" and userId=:userId");
+			finder1.append(" and a.userId=:userId");
 			finder1.setParam("userId", mediaPackage.getUserId());
 		}
 		if(null != mediaPackage.getCategoryId()){
-			finder1.append(" and categoryId=:categoryId");
+			finder1.append(" and a.categoryId=:categoryId");
 			finder1.setParam("categoryId", mediaPackage.getCategoryId());
 		}
 		
@@ -197,17 +197,17 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		if(StringUtils.isNotBlank(selectType)){
 			switch (selectType) {//1最新发布 2预约最多 3卡券最多，如果筛选金额最多的话，客户端不传该字段
 			case "1":
-				finder1.append(" order by createTime desc");
+				finder1.append(" order by a.createTime desc");
 				break;
 			case "2":
-				finder1.append(" order by appointCount desc,balance desc");
+				finder1.append(" order by a.appointCount desc,a.balance desc");
 				break;
 			case "3":
-				finder1.append(" order by cardLqNum desc, balance desc");
+				finder1.append(" order by c.num asc,a.balance desc");
 				break;
 			}
 		}else{
-			finder1.append(" order by status asc, balance desc,createTime desc");
+			finder1.append(" order by a.status asc, a.balance desc,a.createTime desc");
 		}
 		
 		List<MediaPackage> dataList = queryForList(finder1,MediaPackage.class,page);

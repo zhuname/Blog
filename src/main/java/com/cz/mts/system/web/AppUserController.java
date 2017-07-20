@@ -316,7 +316,7 @@ public class AppUserController  extends BaseController {
 							List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
 							if(smss.size()==0){
 								returnObject.setStatus(ReturnDatas.ERROR);
-								returnObject.setMessage("请发送验证码");
+								returnObject.setMessage("验证码输入错误，请重新发送验证码");
 							}else{
 								//删除该条记录
 								smsService.deleteByEntity(smss.get(0));
@@ -554,20 +554,36 @@ public class AppUserController  extends BaseController {
 			appUserRecord.setPhone(appUser.getPhone());
 			AppUser user = appUserService.queryForObject(appUserRecord);
 			if(null != user){
-				user.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-				//判断该密码在密码表中是否存在
-				Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
-				finder.setParam("mdBeforePass", appUser.getPassword());
-				List<Map<String, Object>> list = passwordService.queryForList(finder);
-				if(list.isEmpty()){
-					//向password表中插入数据
-					Password password = new Password();
-					password.setMdBeforePass(appUser.getPassword());
-					password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-					passwordService.save(password);
-				}
 				
-				appUserService.update(user,true);
+				Sms sms=new Sms();
+				Page page = new Page();
+				sms.setPhone(appUser.getPhone());
+				sms.setContent(content);
+				sms.setType(4);
+				List<Sms> smss=smsService.findListDataByFinder(null, page, Sms.class, sms);
+				if(null != smss && smss.size() > 0 ){
+					//删除该条记录
+					smsService.deleteByEntity(smss.get(0));
+					
+					user.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+					//判断该密码在密码表中是否存在
+					Finder finder = new Finder("SELECT * FROM t_password WHERE mdBeforePass=:mdBeforePass");
+					finder.setParam("mdBeforePass", appUser.getPassword());
+					List<Map<String, Object>> list = passwordService.queryForList(finder);
+					if(list.isEmpty()){
+						//向password表中插入数据
+						Password password = new Password();
+						password.setMdBeforePass(appUser.getPassword());
+						password.setMdAfterPass(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+						passwordService.save(password);
+					}
+					
+					appUserService.update(user,true);
+					
+				}else{
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("该验证码不存在");
+				}
 				
 			}else{
 				returnObject.setStatus(ReturnDatas.ERROR);
@@ -596,22 +612,32 @@ public class AppUserController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		if(appUser.getPhone()!=null&&appUser.getPassword()!=null){
-			appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
-			appUser.setSign(null);
-			List<AppUser> datas=appUserService.queryForListByEntity(appUser, page) ;  //findListDataByFinder(null,page,AppUser.class,appUser);
-			if(datas!=null&&datas.size()>0){
-				AppUser user = datas.get(0) ;
-				if(user.getIsBlack() == 1){
-					returnObject.setStatus(ReturnDatas.WARNING);
-					returnObject.setMessage("黑名单成员！");
-				}else {
-					returnObject.setData(datas.get(0));
-				}
-			}else {
+		if(StringUtils.isNotBlank(appUser.getPhone()) && StringUtils.isNotBlank(appUser.getPassword())){
+			//判断手机号是否注册
+			Finder finder = Finder.getSelectFinder(AppUser.class).append("where phone=:phone");
+			finder.setParam("phone", appUser.getPhone());
+			List appUsers = appUserService.queryForList(finder);
+			if(null != appUsers && appUsers.size() > 0){
 				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("帐号密码错误");
+				returnObject.setMessage("该手机号已经注册");
+			}else{
+				appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
+				appUser.setSign(null);
+				List<AppUser> datas=appUserService.queryForListByEntity(appUser, page) ;  //findListDataByFinder(null,page,AppUser.class,appUser);
+				if(datas!=null&&datas.size()>0){
+					AppUser user = datas.get(0) ;
+					if(user.getIsBlack() == 1){
+						returnObject.setStatus(ReturnDatas.WARNING);
+						returnObject.setMessage("黑名单成员！");
+					}else {
+						returnObject.setData(datas.get(0));
+					}
+				}else {
+					returnObject.setStatus(ReturnDatas.ERROR);
+					returnObject.setMessage("密码输入错误");
+				}
 			}
+			
 		}else {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
@@ -1548,6 +1574,48 @@ public class AppUserController  extends BaseController {
 	} 
 	
 	
+	/**
+	 * 增加余额操作
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/addMoney")
+	public @ResponseBody ReturnDatas addMoney(HttpServletRequest request) throws Exception {
+		// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  String strMoney = request.getParameter("money");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+			 Double money = Double.parseDouble(strMoney);
+				AppUser appUser=appUserService.findAppUserById(id);
+				if(null != appUser){
+					if(null == appUser.getBalance()){
+						appUser.setBalance(0.0);
+					}
+					appUser.setBalance(new BigDecimal(appUser.getBalance()).add(new BigDecimal(money)).doubleValue());
+				}
+				
+				MoneyDetail moneyDetail = new MoneyDetail();
+				moneyDetail.setCreateTime(new Date());
+				moneyDetail.setType(17);
+				moneyDetail.setMoney(+money);
+				moneyDetail.setBalance(appUser.getBalance());
+				moneyDetail.setItemId(id);
+				moneyDetailService.save(moneyDetail);
+				
+				appUserService.update(appUser,true);
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
+	}
 	
 	
 

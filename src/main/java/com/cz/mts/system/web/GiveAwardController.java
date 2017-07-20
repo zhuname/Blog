@@ -293,38 +293,44 @@ public class GiveAwardController  extends BaseController {
 						
 						if(awards!=null){
 							
-							
-							//更新同城活动参与表中该用户的奖项id
-							Finder joinFinder = new Finder("select * from t_join_activity where userId=:userId and activityId = :activityId");
-							joinFinder.setParam("userId", giveAward.getJoinUserId());
-							joinFinder.setParam("activityId", awards.getActivityId());
-							List<JoinActivity> joinActivities = joinActivityService.queryForList(joinFinder, JoinActivity.class);
-							if(null != joinActivities && joinActivities.size() > 0){
-								for (JoinActivity joinActivity : joinActivities) {
-									joinActivity.setAwardId(giveAward.getAwardId());
-									joinActivityService.update(joinActivity,true);
+							//先判断该奖项的剩余数量是否大于0，如果大于0，可以颁奖，否则，不能颁奖
+							if(null != awards.getRemainCount() && awards.getRemainCount() > 0){
+								//更新同城活动参与表中该用户的奖项id
+								Finder joinFinder = new Finder("select * from t_join_activity where userId=:userId and activityId = :activityId");
+								joinFinder.setParam("userId", giveAward.getJoinUserId());
+								joinFinder.setParam("activityId", awards.getActivityId());
+								List<JoinActivity> joinActivities = joinActivityService.queryForList(joinFinder, JoinActivity.class);
+								if(null != joinActivities && joinActivities.size() > 0){
+									for (JoinActivity joinActivity : joinActivities) {
+										joinActivity.setAwardId(giveAward.getAwardId());
+										joinActivityService.update(joinActivity,true);
+									}
 								}
-							}
-							
-							
-							Activity activity=activityService.findActivityById(awards.getActivityId());
-							
-							if(activity!=null){
 								
-								activity.setWinPrizePerson(activity.getWinPrizePerson()+1);
-								activityService.update(activity, true);
+								
+								Activity activity=activityService.findActivityById(awards.getActivityId());
+								
+								if(activity!=null){
+									
+									activity.setWinPrizePerson(activity.getWinPrizePerson()+1);
+									activityService.update(activity, true);
+								}
+								
+								awards.setRemainCount(awards.getRemainCount()-1);
+								awardsService.update(awards, true);
+								
 							}
 							
-							awards.setRemainCount(awards.getRemainCount()-1);
-							awardsService.update(awards, true);
+							giveAward.setCreateTime(new Date());
+							giveAwardService.saveorupdate(giveAward);
 							
-						}
-						
-						giveAward.setCreateTime(new Date());
-						giveAwardService.saveorupdate(giveAward);
-						
-						//给参与者发推送
-						notificationService.notify(21, giveAward.getAwardId(), giveAward.getJoinUserId());
+							//给参与者发推送
+							notificationService.notify(21, giveAward.getAwardId(), giveAward.getJoinUserId());
+							}else{
+								returnObject.setStatus(ReturnDatas.ERROR);
+								returnObject.setMessage("该奖项的人数已满，暂不能颁奖");
+							}
+							
 						
 				  }
 				

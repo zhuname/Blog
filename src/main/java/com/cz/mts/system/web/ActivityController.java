@@ -331,7 +331,7 @@ public class ActivityController  extends BaseController {
 		
 		if(StringUtils.isNotBlank(cityId)){
 			
-			finder.append(" and id in (select packageId from t_red_city where (cityId=:cityId or cityId=0))");
+			finder.append(" and id in (select packageId from t_red_city where (cityId=:cityId or cityId=0) and type=4)");
 			finder.setParam("cityId", Integer.parseInt(cityId));
 			
 		}

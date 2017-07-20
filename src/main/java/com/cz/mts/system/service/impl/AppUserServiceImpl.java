@@ -700,7 +700,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				String[] codes=aliCode.split("_");
 				
 				Integer itemId = null;
-				if(type!=3){
+				if(type!=3 && type != 5 && type != 6){
 					
 					itemId=Integer.parseInt(codes[0].toString());
 					

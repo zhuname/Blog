@@ -204,6 +204,34 @@ $(document).on("click", ".selectBtn", function() {
 	jQuery('#selectA')[0].click();
 });
 
+
+
+
+function addMoney(id){
+	//prompt层
+	layer.prompt({title: '请输入金额:', formType: 3,width: '10px',height:'100px'}, function(text, index){
+		
+	  if(!/^\d+(\.\d+)?$/.test(text)){
+		  myalert("请输入数字!");
+		  return ;
+	    }else{
+	    	jQuery.post("${ctx}/system/appuser/addMoney",{ id: id, money: text },
+	    	function(_json) {
+	    		if (_json.status == "success") {
+	    			myalert("余额增加成功");
+	    			myhref("${ctx}/system/appuser/list")
+	    			return false;
+	    		} else {
+	    			myalert("余额增加失败");
+	    			return false;
+	    		}
+	    	});
+	    }	
+ 			layer.close(index);
+	});
+	
+}
+
 </script>
 
 
@@ -375,6 +403,13 @@ $(document).on("click", ".selectBtn", function() {
 	                                            </i>
 	                                        </button>
                                         </#if>
+                                        
+                                         <button class="btn btn-xs btn-danger" title="增加余额"
+	                                                onclick="addMoney(${(_data.id)!''});">
+	                                            <i class="ace-icon fa bigger-120">
+	                                            <i class=" fa   fa-jpy"></i>
+	                                            </i>
+	                                     </button>
                                         
                                         
                                     </div>

@@ -152,17 +152,18 @@ public class PosterPackageController  extends BaseController {
 		}
 		
 		// ==执行分页查询
-			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+//			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
+			Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c ON a.cardId=c.id where 1=1");
 			
 			if(StringUtils.isNotBlank(posterPackage.getTitle())){
-				finder1.append(" and (p.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 )"); 
+				finder1.append(" and (a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 )"); 
 				finder1.setParam("title", posterPackage.getTitle());
 			}
 			
 			
 			if(posterPackage.getUserId()!=null){
 				
-				finder1.append(" and p.userId = :userId");
+				finder1.append(" and a.userId = :userId");
 				
 				finder1.setParam("userId", posterPackage.getUserId());
 				
@@ -172,13 +173,13 @@ public class PosterPackageController  extends BaseController {
 			if(StringUtils.isNotBlank(type)){
 				switch (type) {
 				case "1":
-					finder1.append(" and (p.status = 3 or p.status = 4 ) and p.isValid != 1");
+					finder1.append(" and (a.status = 3 or a.status = 4 ) and a.isValid != 1");
 					break;
 				case "2":
-					finder1.append(" and (p.status = 3 or p.status = 4 )");
+					finder1.append(" and (a.status = 3 or a.status = 4 )");
 					break;
 				case "3":
-					finder1.append(" and p.status = :status");
+					finder1.append(" and a.status = :status");
 					finder1.setParam("status", posterPackage.getStatus());
 					break;
 				}
@@ -186,34 +187,34 @@ public class PosterPackageController  extends BaseController {
 			
 			if(posterPackage.getCategoryId()!=null){
 				
-				finder1.append(" and p.categoryId = :categoryId");
+				finder1.append(" and a.categoryId = :categoryId");
 				
 				finder1.setParam("categoryId", posterPackage.getCategoryId());
 				
 			}
 			//如果cityId不等于空
 			if(null != posterPackage.getCityId()){
-				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=1)");
+				finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=1)");
 				finder1.setParam("cityId", posterPackage.getCityId());
 			}else{
-				finder1.append(" and p.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
+				finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
 			}
 			
 			//筛选
 			if(StringUtils.isNotBlank(selectType)){
 				switch (selectType) {//1最新发布 2预约最多 3卡券最多，如果筛选金额最多的话，客户端不传该字段
 				case "1":
-					finder1.append(" order by p.createTime desc");
+					finder1.append(" order by a.createTime desc");
 					break;
 				case "2":
-					finder1.append(" order by p.appointCount desc,balance desc");
+					finder1.append(" order by a.appointCount desc,a.balance desc");
 					break;
 				case "3":
-					finder1.append(" order by p.cardLqNum desc,balance desc");
+					finder1.append(" order by c.num asc,a.balance desc");
 					break;
 				}
 			}else{
-				finder1.append(" order by p.status asc,p.balance desc,p.createTime desc");
+				finder1.append(" order by a.status asc,a.balance desc,a.createTime desc");
 			}
 			
 			List<Map<String, Object>> list = posterPackageService.queryForList(finder1,page);
