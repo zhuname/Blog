@@ -80,9 +80,54 @@ public class CircleController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Circle circle) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, circle);
+		ReturnDatas returnObject = adminListjson(request, model, circle);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	
+	@RequestMapping("/adminList/json")
+	public @ResponseBody
+	ReturnDatas adminListjson(HttpServletRequest request, Model model,Circle circle) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		page.setOrder("id");
+		page.setSort("desc");
+		
+		Finder finder =Finder.getSelectFinder(Circle.class).append(" where 1=1 ");
+		
+		if(StringUtils.isNotBlank(circle.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+circle.getUserName()+"%')");
+		}
+		if(StringUtils.isNotBlank(circle.getContent())){
+			finder.append(" and content like :content");
+			finder.setParam("content", "%"+circle.getContent()+"%");
+		}
+		if(null != circle.getType()){
+			finder.append(" and type = :type");
+			finder.setParam("type", circle.getType());
+		}
+		
+		
+		List<Circle> datas=circleService.queryForList(finder, Circle.class, page);
+		
+		if(null != datas && datas.size() > 0){
+			for (Circle circle2 : datas) {
+				if(circle2.getUserId()!=null){
+					  AppUser appUser=appUserService.findAppUserById(circle2.getUserId());
+					  if(appUser!=null && StringUtils.isNotBlank(appUser.getName())){
+						  circle2.setUserName(appUser.getName());
+					  }
+				  }
+			}
+		}
+		
+		
+		returnObject.setQueryBean(circle);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 	/**

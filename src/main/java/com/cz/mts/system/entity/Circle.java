@@ -114,6 +114,17 @@ public class Circle  extends BaseEntity {
 	
 	private String osType;
 	
+	private String userName;
+	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	//columns END 数据库字段结束
 	@WhereSQL(sql="height=:Circle_height")
 	public Integer getHeight() {
@@ -240,7 +251,7 @@ public class Circle  extends BaseEntity {
 		this.content = value;
 	}
 	
-     @WhereSQL(sql="content=:Circle_content")
+     @WhereSQL(sql="content like :Circle_content")
 	public java.lang.String getContent() {
 		return this.content;
 	}

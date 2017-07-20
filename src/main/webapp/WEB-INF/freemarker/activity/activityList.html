@@ -25,7 +25,7 @@ function checkRefuse(id){
 	function(_json) {
 		if (_json.status == "success") {
 			myalert("审核成功");
-			myhref("${ctx}/system/applymedal/list")
+			myhref("${ctx}/system/activity/list")
 			return false;
 		} else {
 			myalert("审核失败");
