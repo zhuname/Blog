@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Report;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.IJoinActivityService;
 import com.cz.mts.system.service.IMediaPackageService;
@@ -60,6 +62,8 @@ public class ReportController  extends BaseController {
 	private IPosterPackageService posterPackageService;
 	@Resource
 	private IMediaPackageService mediaPackageService;
+	@Resource
+	private ICardService cardService;
 	
 	private String listurl="/report/reportList";
 	
@@ -134,7 +138,7 @@ public class ReportController  extends BaseController {
 				}
 				if(null != rp.getItemId()){
 					if(null != rp.getType()){
-						//1同城活动参与   2同城圈 3海报红包举报  4视频红包举报
+						//1同城活动参与   2城事圈 3海报红包举报  4视频红包举报
 						if(1 == rp.getType()){
 							JoinActivity joinActivity = joinActivityService.findJoinActivityById(rp.getItemId());
 							if(null != joinActivity && StringUtils.isNotBlank(joinActivity.getContent())){
@@ -159,6 +163,13 @@ public class ReportController  extends BaseController {
 							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(rp.getItemId());
 							if(null != mediaPackage && StringUtils.isNotBlank(mediaPackage.getTitle())){
 								rp.setItemContent(mediaPackage.getTitle());
+							}
+						}
+						
+						if(5 == rp.getType()){
+							Card card = cardService.findCardById(rp.getItemId());
+							if(null != card && StringUtils.isNotBlank(card.getTitle())){
+								rp.setItemContent(card.getTitle());
 							}
 						}
 					}

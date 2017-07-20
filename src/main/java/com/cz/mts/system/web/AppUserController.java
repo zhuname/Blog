@@ -1495,7 +1495,7 @@ public class AppUserController  extends BaseController {
 					joinCount = 0;
 				}
 				
-				//查询同城圈右上角
+				//查询城事圈右上角
 				Finder circleFinder = new Finder("SELECT count(*) FROM t_circle WHERE cityId=:cityId AND createTime>(SELECT circleScanTime FROM t_app_user WHERE id=:userId)");
 				circleFinder.setParam("cityId", appUser.getCityId());
 				circleFinder.setParam("userId", appUser.getId());
@@ -1504,7 +1504,7 @@ public class AppUserController  extends BaseController {
 					circleCount = 0;
 				}
 				
-				//查询同城圈条数
+				//查询城事圈条数
 				Finder cityCircleFinder = new Finder("SELECT count(*) FROM t_circle WHERE cityId=:cityId");
 				cityCircleFinder.setParam("cityId", appUser.getCityId());
 				cityCircleFinder.setParam("userId", appUser.getId());

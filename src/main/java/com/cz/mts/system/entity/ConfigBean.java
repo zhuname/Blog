@@ -42,7 +42,25 @@ public class ConfigBean implements Serializable{
 	private String appDownload;
 	private String appExplain;
 	private String appVersionNumber;
+	private String andForceUpdate;
+	private String iosForceUpdate;
 	
+	
+	
+	
+	
+	public String getAndForceUpdate() {
+		return andForceUpdate;
+	}
+	public void setAndForceUpdate(String andForceUpdate) {
+		this.andForceUpdate = andForceUpdate;
+	}
+	public String getIosForceUpdate() {
+		return iosForceUpdate;
+	}
+	public void setIosForceUpdate(String iosForceUpdate) {
+		this.iosForceUpdate = iosForceUpdate;
+	}
 	public String getAppDownload() {
 		return appDownload;
 	}

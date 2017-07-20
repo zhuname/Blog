@@ -31,10 +31,10 @@ public class Report  extends BaseEntity {
 	public static final String TABLE_ALIAS = "举报表";
 	public static final String ALIAS_ID = "id";
 	public static final String ALIAS_OPERUSERID = "举报人id";
-	public static final String ALIAS_ITEMID = "同城活动参与id/同城圈id";
+	public static final String ALIAS_ITEMID = "同城活动参与id/城事圈id";
 	public static final String ALIAS_CREATETIME = "举报时间";
 	public static final String ALIAS_CONTENT = "举报内容";
-	public static final String ALIAS_TYPE = "1.同城活动参与举报  2同城圈举报";
+	public static final String ALIAS_TYPE = "1.同城活动参与举报  2城事圈举报";
 	public static final String ALIAS_REPORTEDUSERID = "被举报人的id";
     */
 	//date formats
@@ -50,7 +50,7 @@ public class Report  extends BaseEntity {
 	 */
 	private java.lang.Integer operUserId;
 	/**
-	 * 同城活动参与id/同城圈id
+	 * 同城活动参与id/城事圈id
 	 */
 	private java.lang.Integer itemId;
 	/**
@@ -62,7 +62,7 @@ public class Report  extends BaseEntity {
 	 */
 	private java.lang.String content;
 	/**
-	 * 1.同城活动参与举报  2同城圈举报
+	 * 1.同城活动参与举报  2城事圈举报
 	 */
 	private java.lang.Integer type;
 	/**
@@ -202,10 +202,10 @@ public class Report  extends BaseEntity {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
 			.append("举报人id[").append(getOperUserId()).append("],")
-			.append("同城活动参与id/同城圈id[").append(getItemId()).append("],")
+			.append("同城活动参与id/城事圈id[").append(getItemId()).append("],")
 			.append("举报时间[").append(getCreateTime()).append("],")
 			.append("举报内容[").append(getContent()).append("],")
-			.append("1.同城活动参与举报  2同城圈举报[").append(getType()).append("],")
+			.append("1.同城活动参与举报  2城事圈举报[").append(getType()).append("],")
 			.append("被举报人的id[").append(getReportedUserId()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
 			.toString();

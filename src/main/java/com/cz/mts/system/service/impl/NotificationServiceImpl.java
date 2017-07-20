@@ -309,9 +309,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 33:
-				JPushUtil.sendJPushNotification("您发布的同城圈已经超过"+extend[0]+"人点赞了哟，请注意查看", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的城事圈已经超过"+extend[0]+"人点赞了哟，请注意查看", type+"", id, userId, "");
 				try {
-					message=new Message(null, 33, userId, new Date(), "您发布的同城圈已经超过"+extend[0]+"人点赞了哟，请注意查看", id, null, 0, "同城圈点赞人数", 2);
+					message=new Message(null, 33, userId, new Date(), "您发布的城事圈已经超过"+extend[0]+"人点赞了哟，请注意查看", id, null, 0, "城事圈点赞人数", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -321,7 +321,7 @@ public class NotificationServiceImpl implements NotificationService {
 			case 34:
 				JPushUtil.sendJPushNotification("您发布的朋友圈被人打赏了哟，请注意查看", type+"", id, userId, "");
 				try {
-					message=new Message(null, 34, userId, new Date(), "您发布的朋友圈被人打赏了哟，请注意查看", id, null, 0, "同城圈被人打赏", 2);
+					message=new Message(null, 34, userId, new Date(), "您发布的朋友圈被人打赏了哟，请注意查看", id, null, 0, "城事圈被人打赏", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception

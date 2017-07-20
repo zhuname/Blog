@@ -1,11 +1,11 @@
 
-INSERT INTO t_menu values('t_circle_list','同城圈表管理', 'system_manager', null,'/circle/list','1','是',null,null);
-INSERT INTO t_menu values('t_circle_update','修改同城圈表', 't_circle_list', null,'/circle/update','0','是',null,null);
-INSERT INTO t_menu values('t_circle_look','查看同城圈表', 't_circle_list', null,'/circle/look','0','是',null,null);
-INSERT INTO t_menu values('t_circle_export','导出同城圈表', 't_circle_list', null,'/circle/list/export','0','是',null,null);
-INSERT INTO t_menu values('t_circle_deletemore','批量删除同城圈表', 't_circle_list', null,'/circle/delete/more','0','是',null,null);
-INSERT INTO t_menu values('t_circle_delete','删除同城圈表', 't_circle_list', null,'/circle/delete','0','是',null,null);
-INSERT INTO t_menu values('t_circle_upload','导入同城圈表', 't_circle_list', null,'/circle/upload','0','是',null,null);
+INSERT INTO t_menu values('t_circle_list','城事圈表管理', 'system_manager', null,'/circle/list','1','是',null,null);
+INSERT INTO t_menu values('t_circle_update','修改城事圈表', 't_circle_list', null,'/circle/update','0','是',null,null);
+INSERT INTO t_menu values('t_circle_look','查看城事圈表', 't_circle_list', null,'/circle/look','0','是',null,null);
+INSERT INTO t_menu values('t_circle_export','导出城事圈表', 't_circle_list', null,'/circle/list/export','0','是',null,null);
+INSERT INTO t_menu values('t_circle_deletemore','批量删除城事圈表', 't_circle_list', null,'/circle/delete/more','0','是',null,null);
+INSERT INTO t_menu values('t_circle_delete','删除城事圈表', 't_circle_list', null,'/circle/delete','0','是',null,null);
+INSERT INTO t_menu values('t_circle_upload','导入城事圈表', 't_circle_list', null,'/circle/upload','0','是',null,null);
 INSERT INTO `t_role_menu` VALUES ('t_circle_list_admin', 'admin', 't_circle_list');
 INSERT INTO `t_role_menu` VALUES ('t_circle_update_admin', 'admin', 't_circle_update');
 INSERT INTO `t_role_menu` VALUES ('t_circle_look_admin', 'admin', 't_circle_look');

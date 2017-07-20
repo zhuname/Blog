@@ -887,7 +887,7 @@ public class AppUser  extends BaseEntity {
 			.append("海报最后浏览时间[").append(getPosterScanTime()).append("],")
 			.append("视频最后浏览时间[").append(getMediaScanTime()).append("],")
 			.append("同城活动最后浏览时间[").append(getActivityScanTime()).append("],")
-			.append("同城圈最后浏览时间[").append(getCircleScanTime()).append("],")
+			.append("城事圈最后浏览时间[").append(getCircleScanTime()).append("],")
 			.append("总收入[").append(getSumAllMoney()).append("],")
 			.append("被浏览次数[").append(getViewedCount()).append("],")
 			.append("被评论次数[").append(getCommentedCount()).append("],")

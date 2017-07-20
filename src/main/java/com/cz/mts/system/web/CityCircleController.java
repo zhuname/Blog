@@ -113,7 +113,7 @@ public class CityCircleController  extends BaseController {
 		List<CityCircle> datas=cityCircleService.findListDataByFinder(finder,page,CityCircle.class,cityCircle);
 		
 		for (CityCircle cityCircle2 : datas) {
-			//刷新同城圈儿事件
+			//刷新城事圈儿事件
 			if(cityCircle2.getUserId()!=null){
 				
 				AppUser appUser = appUserService.findAppUserById(cityCircle2.getUserId());

@@ -27,9 +27,9 @@ public class CityCircle  extends BaseEntity {
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "同城圈打赏表";
+	public static final String TABLE_ALIAS = "城事圈打赏表";
 	public static final String ALIAS_ID = "id";
-	public static final String ALIAS_ITEMID = "同城圈id";
+	public static final String ALIAS_ITEMID = "城事圈id";
 	public static final String ALIAS_MONEY = "打赏金额";
 	public static final String ALIAS_CONTENT = "打赏留言";
 	public static final String ALIAS_PAYTYPE = "支付方式：1支付宝 2微信 3余额支付";
@@ -52,7 +52,7 @@ public class CityCircle  extends BaseEntity {
 	 */
 	private java.lang.Integer id;
 	/**
-	 * 同城圈id
+	 * 城事圈id
 	 */
 	private java.lang.Integer itemId;
 	/**
@@ -285,7 +285,7 @@ public class CityCircle  extends BaseEntity {
 	public String toString() {
 		return new StringBuffer()
 			.append("id[").append(getId()).append("],")
-			.append("同城圈id[").append(getItemId()).append("],")
+			.append("城事圈id[").append(getItemId()).append("],")
 			.append("打赏金额[").append(getMoney()).append("],")
 			.append("打赏留言[").append(getContent()).append("],")
 			.append("支付方式：1支付宝 2微信 3余额支付[").append(getPayType()).append("],")

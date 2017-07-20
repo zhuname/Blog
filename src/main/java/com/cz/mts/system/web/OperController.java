@@ -213,7 +213,7 @@ public class OperController  extends BaseController {
 								if(7 == type || 8 == type){
 									circle = circleService.findCircleById(oper.getItemId());
 								}
-								//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
+								//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论
 								switch (type) {
 								case 1:
 									if(null != posterPackage){
@@ -326,7 +326,7 @@ public class OperController  extends BaseController {
 						if(7 == type || 8 == type){
 							circle = circleService.findCircleById(oper.getItemId());
 						}
-						//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
+						//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论
 						switch (type) {
 						case 1:
 							if(null != posterPackage){
@@ -439,7 +439,7 @@ public class OperController  extends BaseController {
 					if(7 == type || 8 == type){
 						circle = circleService.findCircleById(oper.getItemId());
 					}
-					//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
+					//更新相应的表的点赞次数和评论次数 //1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论
 					switch (type) {
 					case 1:
 						if(null != posterPackage){
@@ -630,7 +630,7 @@ public class OperController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 
 			 //查询该评论人评论的这条信息
-			 Oper oper = operService.findOperById(id);// 2海报评论  4视频评论 5同城活动参与评论  8同城圈评论
+			 Oper oper = operService.findOperById(id);// 2海报评论  4视频评论 5同城活动参与评论  8城事圈评论
 			 if(null != oper && null != oper.getItemId() && null != oper.getType() && null != oper.getUserId() ){
 				 switch (oper.getType()) {
 				case 2:

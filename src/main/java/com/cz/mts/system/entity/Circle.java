@@ -27,7 +27,7 @@ public class Circle  extends BaseEntity {
 
 	//alias
 	/*
-	public static final String TABLE_ALIAS = "同城圈表";
+	public static final String TABLE_ALIAS = "城事圈表";
 	public static final String ALIAS_ID = "id";
 	public static final String ALIAS_TYPE = "1图片 2视频";
 	public static final String ALIAS_IMAGE = "图片";

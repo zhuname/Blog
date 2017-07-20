@@ -168,7 +168,7 @@ public class CircleController  extends BaseController {
 		
 		List<Circle> datas=circleService.findListDataByFinder(finder,page,Circle.class,circle);
 		
-		//刷新同城圈儿事件
+		//刷新城事圈儿事件
 		if(StringUtils.isNotBlank(appuserId)){
 			
 			AppUser appUser = appUserService.findAppUserById(Integer.parseInt(appuserId));
@@ -393,7 +393,7 @@ public class CircleController  extends BaseController {
 	}
 	
 	/**
-	 * 删除同城圈操作
+	 * 删除城事圈操作
 	 * @param request
 	 * @return
 	 * @throws Exception

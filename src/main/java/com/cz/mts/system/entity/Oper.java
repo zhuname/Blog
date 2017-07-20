@@ -32,7 +32,7 @@ public class Oper  extends BaseEntity {
 	public static final String ALIAS_USERID = "点赞人id";
 	public static final String ALIAS_ITEMID = "红包id";
 	public static final String ALIAS_CREATETIME = "创建时间";
-	public static final String ALIAS_TYPE = " 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论";
+	public static final String ALIAS_TYPE = " 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论";
 	public static final String ALIAS_CONTENT = "评论内容";
     */
 	//date formats
@@ -56,7 +56,7 @@ public class Oper  extends BaseEntity {
 	 */
 	private java.util.Date createTime;
 	/**
-	 *  1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
+	 *  1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论
 	 */
 	private java.lang.Integer type;
 	/**
@@ -185,7 +185,7 @@ public class Oper  extends BaseEntity {
 			.append("点赞人id[").append(getUserId()).append("],")
 			.append("红包id[").append(getItemId()).append("],")
 			.append("创建时间[").append(getCreateTime()).append("],")
-			.append(" 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论[").append(getType()).append("],")
+			.append(" 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论[").append(getType()).append("],")
 			.append("评论内容[").append(getContent()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
 			.toString();

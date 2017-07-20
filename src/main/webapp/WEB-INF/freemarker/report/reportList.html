@@ -46,9 +46,10 @@ jQuery(document).ready(function(){
 			 <select id="search_type" name="type" class="col-10" >
 			 	<option value="">请选择</option> 
 				<option value="1">同城活动参与的举报</option>
-				<option value="2">同城圈的举报</option>
+				<option value="2">城事圈的举报</option>
 				<option value="3">海报红包举报</option>
 				<option value="4">视频红包举报</option>
+				<option value="5">卡券举报</option>
 			</select>
 			<label for="search_operUserName"><b>举报人名称:</b></label> 
 			 <input type="text" id="search_operUserName"  name="operUserName" placeholder="请填写举报人名称"  value="${(returnDatas.queryBean.operUserName)!''}">
@@ -200,13 +201,16 @@ jQuery(document).ready(function(){
 									同城活动参与的举报
 								</#if>
 								<#if (_data.type) == 2 >
-									同城圈的举报
+									城事圈的举报
 								</#if>
 								<#if (_data.type) == 3 >
 									海报红包举报
 								</#if>
 								<#if (_data.type) == 4 >
 									视频红包举报
+								</#if>
+								<#if (_data.type) == 5 >
+									卡券举报
 								</#if>
 							</td>
 							<td >

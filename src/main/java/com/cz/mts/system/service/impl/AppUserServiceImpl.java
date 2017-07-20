@@ -1337,7 +1337,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				appUser.setActivityCount(0);
 			}
 			
-			//查询同城圈数量
+			//查询城事圈数量
 			Finder circleFinder = new Finder("SELECT id FROM t_circle where userId = :userId");
 			circleFinder.setParam("userId", appUser.getId());
 			List circleList = queryForList(circleFinder);

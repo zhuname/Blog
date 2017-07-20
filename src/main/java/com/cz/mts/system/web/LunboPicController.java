@@ -382,7 +382,7 @@ public class LunboPicController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		String position = request.getParameter("position");
 		if(StringUtils.isNotBlank(position)){
-			//2.海报    3.视频   4.卡券 5.同城活动   6同城圈
+			//2.海报    3.视频   4.卡券 5.同城活动   6城事圈
 			if("2".equals(position)){
 				//查询海报
 				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(PosterPackage.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
