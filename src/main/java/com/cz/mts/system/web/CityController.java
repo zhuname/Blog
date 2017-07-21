@@ -85,6 +85,15 @@ public class CityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		page.setPageSize(100000);
+		Finder finder = Finder.getSelectFinder(City.class).append(" where 1=1");
+		if(null != city.getOpen()){
+			finder.append(" and open=:open");
+			finder.setParam("open", city.getOpen());
+		}
+		if(StringUtils.isNotBlank(city.getName())){
+			finder.append(" and (INSTR(`name`,:name)>0 OR INSTR(`capital`,:name)>0 )");
+			finder.setParam("name", city.getName());
+		}
 		// ==执行分页查询
 		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
 		returnObject.setQueryBean(city);
