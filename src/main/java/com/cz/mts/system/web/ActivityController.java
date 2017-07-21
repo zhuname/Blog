@@ -115,41 +115,44 @@ public class ActivityController  extends BaseController {
 		Page page = newPage(request);
 		
 		Finder finder = Finder.getSelectFinder(Activity.class).append(" where 1=1 ");
-		
-		if(activity.getAppUser()!=null){
-			
-			if(activity.getAppUser().getName()!=null){
-				
-				finder.append(" and userId in (select id from t_app_user where name=:name)");
-				finder.setParam("name", activity.getAppUser().getName());
-				
-			}
-			
+	
+		if(StringUtils.isNotBlank(activity.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+activity.getUserName()+"%')");
 		}
 		
+		if(StringUtils.isNotBlank(activity.getCityIds())){
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=4)");
+			finder.setParam("cityId", Integer.parseInt(activity.getCityIds()));
+		}
+		
+		if(null != activity.getType()){
+			finder.append(" and type=:type");
+			finder.setParam("type", activity.getType());
+		}
+		if(StringUtils.isNotBlank(activity.getContent())){
+			finder.append(" and content like '%"+activity.getContent()+"%'");
+		}
+		if(StringUtils.isNotBlank(activity.getPhone())){
+			finder.append(" and phone like '%"+activity.getPhone()+"%'");
+		}
 		
 		// ==执行分页查询
-		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,activity);
-		
-		for (Activity activity2 : datas) {
-			
-			if(activity2.getUserId()!=null){
-				  
-				  AppUser appUser=appUserService.findAppUserById(activity2.getUserId());
-				  
-				  if(appUser!=null){
+		List<Activity> datas=activityService.findListDataByFinder(finder,page,Activity.class,null);
+		if(null != datas && datas.size() > 0){
+			for (Activity activity2 : datas) {
+				if(activity2.getUserId()!=null){
 					  
-					  activity2.setAppUser(appUser);
+					  AppUser appUser=appUserService.findAppUserById(activity2.getUserId());
+					  
+					  if(appUser!=null && StringUtils.isNotBlank(appUser.getName())){
+						  
+						  activity2.setUserName(appUser.getName());
+						  
+					  }
 					  
 				  }
-				  
-			  }
-			
-
-			
-			
+			}
 		}
-		
 		returnObject.setQueryBean(activity);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
@@ -371,7 +374,7 @@ public class ActivityController  extends BaseController {
 				finder.append(",joinCount DESC");
 				break;
 			case "3":
-				finder.append(",endTime DESC");
+				finder.append(",endTime ASC");
 				break;
 			default:
 				finder.append(",aduitSuccessTime DESC");
@@ -606,9 +609,14 @@ public class ActivityController  extends BaseController {
 			if(null != activity.getId()){
 				activity.setStatus(3);
 				activity.setAduitSuccessTime(new Date());
-				notificationService.notify(22, activity.getId(), activity.getUserId());
 				activityService.update(activity,true);
-				
+				Activity at = activityService.findActivityById(activity.getId());
+				if(null != at && null != at.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(at.getUserId());
+					if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+						notificationService.notify(22, at.getId(), at.getUserId());
+					}
+				}
 				
 			}
 		} catch (Exception e) {
@@ -641,8 +649,16 @@ public class ActivityController  extends BaseController {
 			if(null != activity.getId()){
 				activity.setStatus(2);
 				activity.setAduitFailTime(new Date());
-				notificationService.notify(23, activity.getId(), activity.getUserId());
+//				notificationService.notify(23, activity.getId(), activity.getUserId());
 				activityService.update(activity,true);
+				
+				Activity at = activityService.findActivityById(activity.getId());
+				if(null != at && null != at.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(at.getUserId());
+					if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+						notificationService.notify(23, at.getId(), at.getUserId());
+					}
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

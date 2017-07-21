@@ -820,7 +820,7 @@ public class CardController  extends BaseController {
 		}
 		
 		if(StringUtils.isNotBlank(card.getCityIds())){
-			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId)");
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=3)");
 			finder.setParam("cityId", Integer.parseInt(card.getCityIds()));
 		}
 		

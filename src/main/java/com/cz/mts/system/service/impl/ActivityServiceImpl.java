@@ -131,6 +131,7 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 		//免审核直接状态通过
 		if(applyMedals!=null&&applyMedals.size()>0)
 			activity.setStatus(3);
+			activity.setAduitSuccessTime(new Date());
 		
 		Object id = null;
 		if(activity.getId()==null){

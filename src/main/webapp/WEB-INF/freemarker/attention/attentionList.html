@@ -15,6 +15,12 @@ function deleteAttention(){
 		mydelete(_url,listurl);
 	}
 }
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
 </script>
 
 
@@ -31,13 +37,16 @@ function deleteAttention(){
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-		<label for="search_appUserName"><b>用户人:</b></label> 
+		<label for="search_appUserName"><b>关注人:</b></label> 
 			 <input type="text" id="search_appUserName"  name="appUser.name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.appUser.name)!''}">
 			 <label for="search_itemUserName"><b>被关注人:</b></label> 
 			 <input type="text" id="search_itemUserName"  name="itemUser.name" placeholder="被关注人"  value="${(returnDatas.queryBean.itemUser.name)!''}">
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 
 </form>

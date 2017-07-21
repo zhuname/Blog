@@ -65,9 +65,66 @@ public class CityCircleController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,CityCircle cityCircle) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, cityCircle);
+		ReturnDatas returnObject = adminListjson(request, model, cityCircle);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	/**
+	 * json数据,为APP提供数据
+	 * 
+	 * @param request
+	 * @param model
+	 * @param cityCircle
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/adminList/json")
+	public @ResponseBody
+	ReturnDatas adminListjson(HttpServletRequest request, Model model,CityCircle cityCircle) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		
+		
+		Finder finder =Finder.getSelectFinder(CityCircle.class).append(" where 1=1 and status=1 ");
+		
+			
+			if(StringUtils.isNotBlank(cityCircle.getUserName())){
+				finder.append(" and userId in (select id from t_app_user where name like '%"+cityCircle.getUserName()+"%')");
+			}
+			
+		
+		if(StringUtils.isNotBlank(cityCircle.getTitle())){
+			finder.append(" and itemId in (select id from t_circle where content like '%"+cityCircle.getTitle()+"%')");
+		}
+		
+		
+		List<CityCircle> datas=cityCircleService.findListDataByFinder(finder,page,CityCircle.class,cityCircle);
+		
+		for (CityCircle cityCircle2 : datas) {
+			//刷新城事圈儿事件
+			if(cityCircle2.getUserId()!=null){
+				
+				AppUser appUser = appUserService.findAppUserById(cityCircle2.getUserId());
+				if(appUser!=null && StringUtils.isNotBlank(appUser.getName())){
+					cityCircle2.setUserName(appUser.getName());
+				}
+			}
+			
+			if(cityCircle2.getItemId()!=null){
+				Circle circle=circleService.findCircleById(cityCircle2.getItemId());
+				if(circle!=null){
+					cityCircle2.setTitle(circle.getContent());
+				}
+			}
+		}
+		
+		returnObject.setQueryBean(cityCircle);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 	/**

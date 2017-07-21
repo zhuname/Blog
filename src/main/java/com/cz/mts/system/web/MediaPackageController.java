@@ -689,7 +689,7 @@ public class MediaPackageController  extends BaseController {
 			finder.setParam("endTime", mediaPackage.getEnddTime());
 		}
 		if(StringUtils.isNotBlank(mediaPackage.getCityIds())){
-			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId)");
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=2)");
 			finder.setParam("cityId", Integer.parseInt(mediaPackage.getCityIds()));
 		}
 		finder.append(" and status!=0");

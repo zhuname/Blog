@@ -15,6 +15,12 @@ function deleteShield(){
 		mydelete(_url,listurl);
 	}
 }
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
 </script>
 
 
@@ -35,9 +41,12 @@ function deleteShield(){
 			 <input type="text" id="search_userName"  name="userName" placeholder="请输入屏蔽用户名称"  value="${(returnDatas.queryBean.userName)!''}">
 			  <label for="search_itemName"><b>被屏蔽用户名称:</b></label> 
 			 <input type="text" id="search_itemName"  name="itemName" placeholder="请输入被屏蔽用户名称"  value="${(returnDatas.queryBean.itemName)!''}">
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 
 </form>

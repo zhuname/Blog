@@ -95,7 +95,7 @@ public class CityController  extends BaseController {
 			finder.setParam("name", city.getName());
 		}
 		// ==执行分页查询
-		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
+		List<City> datas=cityService.findListDataByFinder(finder,page,City.class,null);
 		returnObject.setQueryBean(city);
 		returnObject.setPage(page);
 		returnObject.setData(datas);

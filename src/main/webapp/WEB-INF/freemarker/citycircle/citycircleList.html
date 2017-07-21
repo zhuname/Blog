@@ -19,6 +19,13 @@ function deleteCityCircle(){
 jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
 
 jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
 </script>
 
 
@@ -35,10 +42,10 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			 <label for="search_title"><b>主题:</b></label> 
+			 <label for="search_title"><b>城事圈主题:</b></label> 
 			 <input type="text" id="search_title"  name="title" placeholder="请填写主题"  value="${(returnDatas.queryBean.title)!''}">
-			  <label for="search_appUserName"><b>发布人:</b></label> 
-			 <input type="text" id="search_appUserName"  name="appUser.name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.appUser.name)!''}">
+			  <label for="search_userName"><b>打赏用户:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
 			  <label for="search_code"><b>订单编号:</b></label> 
 			 <input type="text" id="search_code"  name="code" placeholder="请填写订单编号"  value="${(returnDatas.queryBean.code)!''}">
 			 <label for="search_payType"><b>支付类型:</b></label>
@@ -54,9 +61,12 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 				<option value="0">待支付</option>
 				<option value="1">已支付</option>
 			</select>
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 
 </form>
@@ -101,7 +111,7 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
                         </th>
                         <th>操作</th> -->
                         <!--first_end_no_export-->
-						<th id="th_itemId" >城事圈</th>
+						<th id="th_itemId" width="20%">城事圈主题</th>
 						<th id="th_money" >打赏金额</th>
 						<th id="th_content" >打赏留言</th>
 						<th id="th_payType" >支付方式</th>
@@ -111,7 +121,6 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 						<th id="th_status" >状态</th>
 						<th id="th_createTime" >创建时间</th>
 						<th id="th_code" >订单编号</th>
-						<th id="th_osType" >操作系统</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -201,11 +210,12 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 								</#if>
 							</td>
 							<td >
-								<#if (_data.appUser) ??>
+								<!-- <#if (_data.appUser) ??>
 									<#if (_data.appUser.name) ??>
 										${(_data.appUser.name)!''}
 									</#if>
-								</#if>
+								</#if> -->
+								${(_data.userName)!''}
 							</td>
 							<td >
 								<!--日期型-->
@@ -228,9 +238,6 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 							</td>
 							<td >
 								${(_data.code)!''}
-							</td>
-							<td >
-								${(_data.osType)!''}
 							</td>
 						</tr>
 					</#list>

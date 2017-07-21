@@ -174,10 +174,23 @@ public class Activity  extends BaseEntity {
 	
 	private String cityIds;
 	
+	private String userName;
 	
 	
 	
 	
+	
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
 	//concstructor
 	@Transient
 	public List<RedCity> getRedCities() {

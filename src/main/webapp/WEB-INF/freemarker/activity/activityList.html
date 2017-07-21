@@ -48,6 +48,19 @@ $(document).on("change", "#city", function() {
 });
 
 
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
+jQuery(document).ready(function(){
+	
+	//回选 下拉框
+	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
+	
+});
+
 </script>
 
 
@@ -64,8 +77,8 @@ $(document).on("change", "#city", function() {
             <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
             <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
-			<label for="search_appUserName"><b>发布人:</b></label> 
-			 <input type="text" id="search_appUserName"  name="appUser.name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.appUser.name)!''}">
+			<label for="search_userName"><b>发布人:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
 			 <label for="search_content"><b>主题:</b></label> 
 			 <input type="text" id="search_content"  name="content" placeholder="请填写主题"  value="${(returnDatas.queryBean.content)!''}">
 			 <label for="search_phone"><b>电话:</b></label> 
@@ -80,9 +93,12 @@ $(document).on("change", "#city", function() {
 			  <div id="localtion" style="display: inline-block;">
 			  </div>
 			 <input name="cityIds" id="cityIds" value="${(returnDatas.queryBean.cityIds)!''}" style="display:none"  type="text"/>
-			<a  href="javascript:mySubmitForm('searchForm');"
-				class="btn btn-purple btn-sm">
-					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
 				</a>
 
 </form>
@@ -215,11 +231,12 @@ $(document).on("change", "#city", function() {
                                 </td>
                                 <!--end_no_export-->
 							<td >
-								<#if (_data.appUser) ??>
+								<!-- <#if (_data.appUser) ??>
 									<#if (_data.appUser.name) ??>
 										${(_data.appUser.name)!''}
 									</#if>
-								</#if>
+								</#if> -->
+								${(_data.userName)!''}
 							</td>
 							<td >
 								<#if (_data.type) == 1 >
