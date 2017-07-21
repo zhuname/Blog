@@ -221,6 +221,7 @@ public class AppUserController  extends BaseController {
 				 Finder finder = Finder.getSelectFinder(Attention.class).append("where itemId = :itemId");
 				 finder.setParam("itemId", id);
 				 Page page = new Page();
+				 page.setPageSize(10000);
 				 //获取别人关注我的列表
 				 List<Attention> attentions = attentionService.findListDataByFinder(finder, page, Attention.class, null);
 				 if(null != attentions && attentions.size() > 0){

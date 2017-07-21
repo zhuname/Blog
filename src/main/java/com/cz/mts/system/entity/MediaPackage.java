@@ -250,30 +250,6 @@ public class MediaPackage  extends BaseEntity {
 	
 	private String cardTitle;
 	
-	private Integer topNum;
-	private Integer commentNum;
-	
-	
-	
-	
-	
-	@Transient
-	public Integer getTopNum() {
-		return topNum;
-	}
-
-	public void setTopNum(Integer topNum) {
-		this.topNum = topNum;
-	}
-
-	@Transient
-	public Integer getCommentNum() {
-		return commentNum;
-	}
-
-	public void setCommentNum(Integer commentNum) {
-		this.commentNum = commentNum;
-	}
 
 	@Transient
 	public String getCardTitle() {
