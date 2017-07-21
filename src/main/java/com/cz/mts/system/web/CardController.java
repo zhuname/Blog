@@ -801,12 +801,10 @@ public class CardController  extends BaseController {
 		card.setIsDel(0);
 		Finder finder = Finder.getSelectFinder(Card.class).append("where 1=1");
 		if(StringUtils.isNotBlank(card.getCategoryName())){
-			finder.append(" and catergoryId in(select id from t_category where type=3 and INSTR(`name`,:categoryName)>0 )");
-			finder.setParam("categoryName", card.getCategoryName());
+			finder.append(" and catergoryId in(select id from t_category where type=3 and name like '%"+card.getCategoryName()+"%')");
 		}
 		if(StringUtils.isNotBlank(card.getUserName())){
-			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
-			finder.setParam("userName", card.getUserName());
+			finder.append(" and userId in(select id from t_app_user where name like '%"+card.getUserName()+"%' )");
 		}
 		
 		if(StringUtils.isNotBlank(card.getStartTime())){
@@ -820,7 +818,7 @@ public class CardController  extends BaseController {
 		}
 		
 		if(StringUtils.isNotBlank(card.getCityIds())){
-			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=3)");
+			finder.append(" and id in( SELECT packageId FROM t_red_city WHERE cityId=:cityId and type=3 group by packageId)");
 			finder.setParam("cityId", Integer.parseInt(card.getCityIds()));
 		}
 		
@@ -828,12 +826,21 @@ public class CardController  extends BaseController {
 			if(5 == card.getStatus()){
 				card.setStatus(null);
 				finder.append(" and status=2 and num=0");
+			}else{
+				finder.append(" and status = :status");
+				finder.setParam("status", card.getStatus());
 			}
+		}
+		if(StringUtils.isNotBlank(card.getTitle())){
+			finder.append(" and title like '%"+card.getTitle()+"%'");
+		}
+		if(StringUtils.isNotBlank(card.getPhone())){
+			finder.append(" and phone like '%"+card.getPhone()+"%'");
 		}
 		
 		
 		
-		List<Card> datas = cardService.findListDataByFinder(finder,page,Card.class,card);
+		List<Card> datas = cardService.queryForList(finder, Card.class, page);
 		if(null != datas && datas.size() > 0){
 			for (Card cd : datas) {
 				if(null != cd.getStatus()){

@@ -1,3 +1,4 @@
+
 <#escape x as x?html>
 
 <script type="text/javascript" src="${ctx}/js/system/applymedal/applymedal.js"></script>
@@ -163,7 +164,7 @@ jQuery(document).ready(function(){
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 			
-			<a  href="javascript:mySubmitForm('searchForm');"
+			<a  onclick="$('#pageIndex').val(1);" href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
