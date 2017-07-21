@@ -618,9 +618,8 @@ public class AppUserController  extends BaseController {
 			finder.setParam("phone", appUser.getPhone());
 			List appUsers = appUserService.queryForList(finder);
 			if(null != appUsers && appUsers.size() > 0){
-				returnObject.setStatus(ReturnDatas.ERROR);
-				returnObject.setMessage("该手机号已经注册");
-			}else{
+				
+				
 				appUser.setPassword(SecUtils.encoderByMd5With32Bit(appUser.getPassword()));
 				appUser.setSign(null);
 				List<AppUser> datas=appUserService.queryForListByEntity(appUser, page) ;  //findListDataByFinder(null,page,AppUser.class,appUser);
@@ -636,6 +635,11 @@ public class AppUserController  extends BaseController {
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("密码输入错误");
 				}
+				
+				
+			}else{
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("该手机号未注册");
 			}
 			
 		}else {

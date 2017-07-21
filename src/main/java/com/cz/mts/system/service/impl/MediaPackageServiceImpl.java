@@ -149,12 +149,12 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	@Override
 	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType, String selectType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.mediaImage,p.scanNum,p.status,p.failReason FROM t_media_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c ON a.cardId=c.id where 1=1");
+		Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.createTime,p.isValid,p.encrypt,p.balance,u.name as userName,p.mediaImage,p.scanNum,p.status,p.failReason FROM t_media_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c ON a.cardId=c.id where 1=1");
 		if(null != mediaPackage.getCityId()){
-			finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=2)");
+			finder1.append(" and a.id in( SELECT packageId FROM t_red_city WHERE (cityId=:cityId or cityId=0) and type=2 group by packageId)");
 			finder1.setParam("cityId", mediaPackage.getCityId());
 		}else{
-			finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
+			finder1.append(" and a.id in( SELECT packageId FROM t_red_city WHERE  type=2 group by packageId)");
 		}
 		
 //		if(personType!=null&&mediaPackage.getStatus()==3){

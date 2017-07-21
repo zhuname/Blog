@@ -153,7 +153,9 @@ public class PosterPackageController  extends BaseController {
 		
 		// ==执行分页查询
 //			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
-			Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c ON a.cardId=c.id where 1=1");
+			Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,"
+					+ "p.lookNum,p.status,p.failReason,p.isValid,p.createTime FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c "
+					+ "ON a.cardId=c.id where 1=1");
 			
 			if(StringUtils.isNotBlank(posterPackage.getTitle())){
 				finder1.append(" and (a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 )"); 
@@ -194,10 +196,10 @@ public class PosterPackageController  extends BaseController {
 			}
 			//如果cityId不等于空
 			if(null != posterPackage.getCityId()){
-				finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=1)");
+				finder1.append(" and a.id in( SELECT packageId FROM t_red_city WHERE (cityId=:cityId or cityId=0) and type=1 group by packageId)");
 				finder1.setParam("cityId", posterPackage.getCityId());
 			}else{
-				finder1.append(" and a.id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=1)");
+				finder1.append(" and a.id in( SELECT packageId FROM t_red_city WHERE type=1 group by packageId)");
 			}
 			
 			//筛选
