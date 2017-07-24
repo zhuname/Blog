@@ -195,6 +195,28 @@ public class MediaPackageController  extends BaseController {
 				 if(mediaPackage.getScanNum() % 100 == 0 && mediaPackage.getScanNum() / 100 > 0){
 					 notificationService.notify(26, mediaPackage.getId(), mediaPackage.getUserId(),mediaPackage.getScanNum()+"");
 				 }
+				 
+				 
+				 Page newPage = new Page();
+				 //查询评论个数
+				 Oper commentOper = new Oper();
+				 commentOper.setType(4);
+				 commentOper.setItemId(id);
+				 List<Oper> commentNums = operService.findListDataByFinder(null, newPage, Oper.class, commentOper);
+				 if(null != commentNums && commentNums.size() > 0){
+					 mediaPackage.setCommentCount(commentNums.size());
+				 }
+				 
+				 //查询点赞个数
+				 Oper topOper = new Oper();
+				 topOper.setType(3);
+				 topOper.setItemId(id);
+				 List<Oper> topNums = operService.findListDataByFinder(null, newPage, Oper.class, topOper);
+				 if(null != topNums && topNums.size() > 0){
+					 mediaPackage.setTopCount(topNums.size());
+				 }
+				 
+				 
 				 mediaPackageService.update(mediaPackage,true);
 			 }
 			  

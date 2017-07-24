@@ -266,7 +266,8 @@ public class ActivityController  extends BaseController {
 			  notificationService.notify(27, activity.getId(), activity.getUserId());
 		  }
 		  
-		  activityService.update(activity);
+		  
+		  activityService.update(activity,true);
 		  
 		  
 			String cityIds= ""; 

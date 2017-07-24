@@ -136,7 +136,20 @@ public class MoneyDetail  extends BaseEntity {
 	private Integer commentNum = 0;//评论个数
 	private Integer attenNum = 0;
 	
+	private String descr;
 	
+	
+	
+	
+	@WhereSQL(sql="descr=:MoneyDetail_descr")
+	public String getDescr() {
+		return descr;
+	}
+
+	public void setDescr(String descr) {
+		this.descr = descr;
+	}
+
 	@Transient
 	public Integer getScanNum() {
 		return scanNum;
@@ -499,6 +512,7 @@ public class MoneyDetail  extends BaseEntity {
 			.append("操作系统[").append(getOsType()).append("],")
 			.append("平台金额[").append(getPlateMoney()).append("],")
 			.append("发布人id[").append(getPublishUserId()).append("],")
+			.append("余额变动描述[").append(getDescr()).append("],")
 			.toString();
 	}
 	

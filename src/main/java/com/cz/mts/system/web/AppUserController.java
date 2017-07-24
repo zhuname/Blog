@@ -1580,7 +1580,7 @@ public class AppUserController  extends BaseController {
 	
 	
 	/**
-	 * 增加余额操作
+	 * 余额变动操作
 	 * @author wj
 	 * @param request
 	 * @return
@@ -1592,34 +1592,73 @@ public class AppUserController  extends BaseController {
 		try {
 		  String  strId=request.getParameter("id");
 		  String strMoney = request.getParameter("money");
+		  String descr = request.getParameter("descr");
+		  String type = request.getParameter("type"); 
+		  
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
-			 Double money = Double.parseDouble(strMoney);
-				AppUser appUser=appUserService.findAppUserById(id);
-				if(null != appUser){
-					if(null == appUser.getBalance()){
-						appUser.setBalance(0.0);
+			  id= java.lang.Integer.valueOf(strId.trim());
+			  Double money = Double.parseDouble(strMoney);
+			  AppUser appUser=appUserService.findAppUserById(id);
+					
+			  if(StringUtils.isNotBlank(type)){
+				  switch (type) {
+				case "1": //加钱
+					if(null != appUser){
+						if(null == appUser.getBalance()){
+							appUser.setBalance(0.0);
+						}
+						appUser.setBalance(new BigDecimal(appUser.getBalance()).add(new BigDecimal(money)).doubleValue());
 					}
-					appUser.setBalance(new BigDecimal(appUser.getBalance()).add(new BigDecimal(money)).doubleValue());
+					
+					MoneyDetail moneyDetail = new MoneyDetail();
+					moneyDetail.setCreateTime(new Date());
+					moneyDetail.setType(17);
+					moneyDetail.setMoney(+money);
+					moneyDetail.setBalance(appUser.getBalance());
+					moneyDetail.setItemId(id);
+					moneyDetail.setDescr(descr);
+					moneyDetailService.save(moneyDetail);
+					
+					appUserService.update(appUser,true);
+					break;
+
+				case "2": //减钱
+					if(null != appUser){
+						if(null == appUser.getBalance()){
+							return new ReturnDatas(ReturnDatas.ERROR,"余额不足，暂不能减少余额");
+						}else{
+							if(appUser.getBalance() >= money){
+								appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(money)).doubleValue());
+								
+								MoneyDetail moneyDetailSub = new MoneyDetail();
+								moneyDetailSub.setCreateTime(new Date());
+								moneyDetailSub.setType(17);
+								moneyDetailSub.setMoney(-money);
+								moneyDetailSub.setBalance(appUser.getBalance());
+								moneyDetailSub.setItemId(id);
+								moneyDetailSub.setDescr(descr);
+								moneyDetailService.save(moneyDetailSub);
+								appUserService.update(appUser,true);
+								
+							}else{
+								return new ReturnDatas(ReturnDatas.ERROR,"余额不足，暂不能减少余额");
+							}
+						}
+					}
+					break;
 				}
+			  }
+			  
+			
 				
-				MoneyDetail moneyDetail = new MoneyDetail();
-				moneyDetail.setCreateTime(new Date());
-				moneyDetail.setType(17);
-				moneyDetail.setMoney(+money);
-				moneyDetail.setBalance(appUser.getBalance());
-				moneyDetail.setItemId(id);
-				moneyDetailService.save(moneyDetail);
-				
-				appUserService.update(appUser,true);
 			} else {
 				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
+		return new ReturnDatas(ReturnDatas.SUCCESS, "余额修改成功");
 	}
 	
 	

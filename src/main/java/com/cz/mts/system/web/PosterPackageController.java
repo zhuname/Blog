@@ -326,6 +326,25 @@ public class PosterPackageController  extends BaseController {
 				 
 				 
 			 }
+			 
+			 Page newPage = new Page();
+			 //查询评论个数
+			 Oper commentOper = new Oper();
+			 commentOper.setType(2);
+			 commentOper.setItemId(id);
+			 List<Oper> commentNums = operService.findListDataByFinder(null, newPage, Oper.class, commentOper);
+			 if(null != commentNums && commentNums.size() > 0){
+				 posterPackage.setCommentCount(commentNums.size());
+			 }
+			 
+			 //查询点赞个数
+			 Oper topOper = new Oper();
+			 topOper.setType(1);
+			 topOper.setItemId(id);
+			 List<Oper> topNums = operService.findListDataByFinder(null, newPage, Oper.class, topOper);
+			 if(null != topNums && topNums.size() > 0){
+				 posterPackage.setTopCount(topNums.size());
+			 }
 			 posterPackageService.update(posterPackage,true);
 			 
 			 //查询发红包的用户

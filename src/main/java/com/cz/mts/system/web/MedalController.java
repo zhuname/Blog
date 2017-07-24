@@ -142,6 +142,26 @@ public class MedalController  extends BaseController {
 		
 	}
 	
+	/**
+	 * 查看的Json格式数据,为APP端提供数据
+	 */
+	@RequestMapping(value = "/lookadmin/json")
+	public @ResponseBody
+	ReturnDatas lookadminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+		  Medal medal = medalService.findMedalById(id);
+		   returnObject.setData(medal);
+		}else{
+		returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		return returnObject;
+		
+	}
+	
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据

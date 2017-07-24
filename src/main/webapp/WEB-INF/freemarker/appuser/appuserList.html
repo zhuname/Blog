@@ -128,49 +128,81 @@ function selectZtreeMedal(userId){
 	
 	jQuery("#medalNames").val(medalNames);
 	jQuery("#medalIds").val(medalIds);
-	
-	
-	layer.open({
-		  btn: ['确定'],
-		  yes: function(index, layero){
-			    //提交时间
-			    var endMedalTime = $('#endMedalTime').val();
+	var medalId = medalIds.split(",")[0];
+ 	var _url=ctx + "/system/medal/lookadmin/json?id="+ medalId;
+	jQuery.ajax({
+		url : _url,
+		type : "post",
+		dataType : "json",
+		success : function(_json) {
+			if(_json.status=="success"){
+				console.log(_json.data.status);
+				if(_json.data.status == 0){
+					//0默认不免审核，不需要过期时间
+					jQuery.post("${ctx}/system/appuser/award/json",{ medalIds: medalIds, userId: userId},
+							function(_json) {
+								if (_json.status == "success") {
+									myalert("勋章赋予成功");
+									myhref("${ctx}/system/appuser/list")
+									return false;
+								} else {
+									console.log(_json);
+									myalert(_json.message);
+									return false;
+								}
+					});
+					
+					
+				}else{
+					layer.open({
+						  btn: ['确定'],
+						  yes: function(index, layero){
+							    //提交时间
+							    var endMedalTime = $('#endMedalTime').val();
 
-				jQuery.post("${ctx}/system/appuser/award/json",{ medalIds: medalIds, userId: userId , endMedalTime: endMedalTime },
-						function(_json) {
-							if (_json.status == "success") {
-								myalert("勋章赋予成功");
-								myhref("${ctx}/system/appuser/list")
-								return false;
-							} else {
-								console.log(_json);
-								myalert(_json.message);
-								return false;
-							}
-				});
-			  },
-		  btnAlign: 'c',
-		  title:'请填写过期时间',
-	      type: 1,
-	      anim: 2,
-	      resize :true,
-	      area: ['400px', '170px'],
-	      shadeClose: false, //开启遮罩关闭
-	      content: $('#confirmApply'),
-			success:function (layero,index) {
-	            dialog = $(layero) ;
-	            dialog.find("#confirmApply").show() ;
-	        }
-		  ,cancel: function(){ 
-		    //return false 开启该代码可禁止点击该按钮关闭
-		  }
-		});
-  layer.close(index);
+								jQuery.post("${ctx}/system/appuser/award/json",{ medalIds: medalIds, userId: userId , endMedalTime: endMedalTime },
+										function(_json) {
+											if (_json.status == "success") {
+												myalert("勋章赋予成功");
+												myhref("${ctx}/system/appuser/list")
+												return false;
+											} else {
+												console.log(_json);
+												myalert(_json.message);
+												return false;
+											}
+								});
+							  },
+						  btnAlign: 'c',
+						  title:'请填写过期时间',
+					      type: 1,
+					      anim: 2,
+					      resize :true,
+					      area: ['400px', '170px'],
+					      shadeClose: false, //开启遮罩关闭
+					      content: $('#confirmApply'),
+							success:function (layero,index) {
+					            dialog = $(layero) ;
+					            dialog.find("#confirmApply").show() ;
+					        }
+						  ,cancel: function(){ 
+						    //return false 开启该代码可禁止点击该按钮关闭
+						  }
+						});
+				  layer.close(index);
+				}
+		        
+		        
+		        
+			}
+		}
+	}); 
+	
+
 	
 	
 	
 }
-
 
 
 
@@ -218,11 +250,11 @@ function addMoney(id){
 	    	jQuery.post("${ctx}/system/appuser/addMoney",{ id: id, money: text },
 	    	function(_json) {
 	    		if (_json.status == "success") {
-	    			myalert("余额增加成功");
+	    			myalert(_json.message);
 	    			myhref("${ctx}/system/appuser/list")
 	    			return false;
 	    		} else {
-	    			myalert("余额增加失败");
+	    			myalert("余额修改失败");
 	    			return false;
 	    		}
 	    	});
@@ -232,7 +264,82 @@ function addMoney(id){
 	
 }
 
+
+var changeMoneyDialogHtml = $('#changeMoneyDialog').prop("outerHTML") ;
+function changeMoneyDialog(id) {
+    var index = layer.load(0, {    //0为加载样式  有 0  ，  1   2
+        shade: [0.1,'#fff'] //0.1透明度的白色背景
+    });
+    layer.open({
+        title:'余额变动',
+        type: 1,
+        anim: 2,
+        resize :true,
+        btnAlign:'c',
+        btn: ['确定', '取消'],
+        area: ['500px', '500px'],
+        shadeClose: false, //开启遮罩关闭
+        content: changeMoneyDialogHtml,
+        success:function (layero,index) {
+            dialog = $(layero) ;
+            dialog.find("#changeMoneyDialog").show() ;
+        },
+		yes:function(index, layero){
+            var loadIndex = layer.load() ;
+            var type = dialog.find('#changeType').val() ;
+            var money = dialog.find('#changeMoney').val();
+            var descr = dialog.find('#descr').val();
+            
+            if(money == null || "" == money){
+            	myalert("请输入金额!");
+        		return false;
+            }
+            if(descr == null || "" == descr){
+            	myalert("请输入描述!");
+        		return false;
+            }
+            if(money<0){
+            	myalert("输入金额需大于0!");
+        		return false;
+            }
+            
+            $.ajax({
+                url:'${ctx}/system/appuser/addMoney',
+                data:{'id':id,
+					'money':money,
+					'type':type,
+					'descr':descr
+				},
+                success:function (result) {
+					layer.close(loadIndex) ;
+                    if (result.status == "success") {
+                        myalert(result.message);
+                        myhref("${ctx}/system/appuser/list")
+                        return false;
+                    } else {
+                        myalert(result.message);
+                        return false;
+                    }
+				}
+			});
+		}
+    });
+    layer.close(index);
+}
+
 </script>
+
+
+<style>
+.information3{width:99.9%;overflow:hidden;background:#fff;margin-top:10px;padding:0px 0;margin-bottom:10px;}
+.information_content{width:95%;overflow:hidden;border-bottom:1px dashed #ccc;margin:0 auto}
+.information_content:hover{background:#f3f3f3}
+.information_content dt,.information_content dd,.information_content span{float:left;line-height:35px}
+.information_content dt{color:#363636;width:120px;text-align:right;text-indent:12px}
+.information_content dd{color:#4d4c4c;text-indent:12px}
+.information_content span{padding-left:10px}
+.information_content span a{color:#0084c9;padding:0 5px;}
+</style>
 
 
 	
@@ -404,10 +511,10 @@ function addMoney(id){
 	                                        </button>
                                         </#if>
                                         
-                                         <button class="btn btn-xs btn-danger" title="增加余额"
-	                                                onclick="addMoney(${(_data.id)!''});">
+                                         <button class="btn btn-xs btn-danger" title="余额变动"
+	                                                onclick="javascript:changeMoneyDialog(${(_data.id)!''}) ;">
 	                                            <i class="ace-icon fa bigger-120">
-	                                            <i class=" fa   fa-jpy"></i>
+	                                            <i class=" fa fa-jpy"></i>
 	                                            </i>
 	                                     </button>
                                         
@@ -531,6 +638,29 @@ function addMoney(id){
 <input style="width:300px;display:inline-block;" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',})" name="endMedalTime" id="endMedalTime"  type="text" value=""/>
 					        
 </div>
+</div>
+
+
+<div id="changeMoneyDialog" style="display: none;margin: 20px;text-align:center">
+    <div class="information3">
+		<dl class="information_content">
+			<dt>类型</dt>
+			<dd>
+				<select id="changeType">
+					<option value="1">增加余额</option>
+					<option value="2">减少余额</option>
+				</select>
+			</dd>
+		</dl>
+		<dl class="information_content">
+			<dt>金额</dt>
+			<dd><input type="number" id="changeMoney" name="changeMoney" value="" style="width: 125%;height: 28px;"/></dd>
+		</dl>
+		<dl class="information_content">
+			<dt>描述</dt>
+			<dd><textarea id="descr" name="descr" style="width: 140%;height: 100px;"></textarea></dd>
+		</dl>
+	</div>
 </div>
 
 

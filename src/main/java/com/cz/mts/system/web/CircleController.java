@@ -343,7 +343,7 @@ public class CircleController  extends BaseController {
 					}
 					
 					
-					//查询是否关注
+					//查询是否屏蔽
 					Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
 					shieldFinder.setParam("userId", Integer.parseInt(appuserId));
 					shieldFinder.setParam("itemId", circle.getUserId());
