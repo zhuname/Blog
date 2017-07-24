@@ -492,7 +492,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			
 			//更新card中的convertNum字段
 			if(null != card){
-				card.setConvertNum(card.getConvertNum()-cards.size());
+				card.setNum(card.getNum()-cards.size());
 				cardService.update(card, true);
 				
 				if(card.getNum().intValue()<=0){
@@ -1036,7 +1036,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//更新card中的convertNum字段
 					if(null != card){
-						card.setConvertNum(card.getConvertNum()-cards.size());
+						card.setNum(card.getNum()-cards.size());
 						cardService.update(card, true);
 						
 						if(0 == card.getNum()){

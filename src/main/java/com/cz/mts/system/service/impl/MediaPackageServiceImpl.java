@@ -181,7 +181,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
-			finder1.append(" and (INSTR(`title`,:title)>0 or a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
+			finder1.append(" and (INSTR(a.title,:title)>0 or a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
 			finder1.setParam("title", mediaPackage.getTitle());
 		}
 		if(null != mediaPackage.getUserId()){
@@ -203,7 +203,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 				finder1.append(" order by a.appointCount desc,a.balance desc");
 				break;
 			case "3":
-				finder1.append(" order by c.num asc,a.balance desc");
+				finder1.append(" order by c.num IS NULL,c.num DESC,a.balance desc");
 				break;
 			}
 		}else{

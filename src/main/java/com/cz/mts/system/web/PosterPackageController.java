@@ -158,7 +158,7 @@ public class PosterPackageController  extends BaseController {
 					+ "ON a.cardId=c.id where 1=1");
 			
 			if(StringUtils.isNotBlank(posterPackage.getTitle())){
-				finder1.append(" and (a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(`title`,:title)>0 )"); 
+				finder1.append(" and (a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 ) OR INSTR(a.title,:title)>0 )"); 
 				finder1.setParam("title", posterPackage.getTitle());
 			}
 			
@@ -212,7 +212,7 @@ public class PosterPackageController  extends BaseController {
 					finder1.append(" order by a.appointCount desc,a.balance desc");
 					break;
 				case "3":
-					finder1.append(" order by c.num asc,a.balance desc");
+					finder1.append(" order by c.num IS NULL,c.num DESC,a.balance desc");
 					break;
 				}
 			}else{

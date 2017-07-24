@@ -617,7 +617,7 @@ public class CardController  extends BaseController {
 			}
 			userCardService.save(userCards);
 			
-			card.setNum(card.getNum()-num);
+//			card.setNum(card.getNum()-num);
 			
 			cardService.update(card, true);
 			
