@@ -123,6 +123,8 @@ public class AwardsController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		page.setOrder("id");
+		page.setSort("asc");
 		// ==执行分页查询
 		List<Awards> datas=awardsService.findListDataByFinder(null,page,Awards.class,awards);
 		returnObject.setQueryBean(awards);

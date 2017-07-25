@@ -630,7 +630,6 @@ public class ActivityController  extends BaseController {
 		return returnObject;
 	
 	}
-	
 	/**
 	 * 拒绝认证
 	 * @author wml

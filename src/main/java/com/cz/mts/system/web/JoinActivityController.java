@@ -116,7 +116,7 @@ public class JoinActivityController  extends BaseController {
 			
 			if(StringUtils.isNotBlank(name)){
 				finder.append(" and userId in (select id from t_app_user where name like :name)" );
-				finder.setParam("name", name);
+				finder.setParam("name", "%"+name+"%");
 			}
 			if(StringUtils.isNotBlank(joinOrAward) && "2".equals(joinOrAward)){
 				finder.append(" and awardId is not null");

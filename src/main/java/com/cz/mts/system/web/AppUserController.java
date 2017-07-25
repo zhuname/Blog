@@ -351,6 +351,7 @@ public class AppUserController  extends BaseController {
 								appUser.setIsCloseFee(0);
 								appUser.setBalance(0.0);
 								appUser.setIsPush(1);
+								appUser.setIsAppointFee(0);
 								Object id = appUserService.saveorupdate(appUser);
 								
 								returnObject.setData(appUserService.findById(id, AppUser.class));
@@ -696,6 +697,7 @@ public class AppUserController  extends BaseController {
 					appUser.setIsCloseFee(0);
 					appUser.setBalance(0.0);
 					appUser.setIsPush(1);
+					appUser.setIsAppointFee(0);
 					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
@@ -1028,7 +1030,7 @@ public class AppUserController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
-			Finder finder = new Finder("SELECT k.*,COUNT(ja.id) AS totalJoin FROM(SELECT j.*,COUNT(ap.id) AS totalAppoint FROM(SELECT h.*, COUNT(ci.id) AS totalCircle"
+			Finder finder = new Finder("SELECT j.*,COUNT(ap.id) AS totalAppoint FROM(SELECT h.*, COUNT(ci.id) AS totalCircle"
 						+" FROM ( SELECT g.*, COUNT(ac.id) AS totalActivity FROM (SELECT f.*, COUNT(uc.id) AS totalUserCard FROM ("
 						+" SELECT e.*, COUNT(um.id) AS totalMedal FROM ( SELECT d.*, COUNT(`at`.id) AS totalAttention FROM"
 						+"  ( SELECT c.*, COUNT(co.id) AS totalCollect FROM ( SELECT b.*, COUNT(ca.id) AS totalCard FROM"
@@ -1040,13 +1042,19 @@ public class AppUserController  extends BaseController {
 						+" LEFT JOIN t_attention `at` ON `at`.userId = d.id ) e LEFT JOIN t_user_medal um ON um.userId = e.id"
 						+" ) f LEFT JOIN t_user_card uc ON uc.userId = f.id AND uc.`status` != 0 ) g"
 						+" LEFT JOIN t_activity ac ON ac.userId = g.id AND ac.isDel != 1) h LEFT JOIN t_circle ci ON ci.userId = h.id"
-						+" )j LEFT JOIN t_appoint ap ON ap.userId = j.id AND ap.`status` !=0)k LEFT JOIN t_join_activity ja ON ja.userId = k.id");
+						+" )j LEFT JOIN t_appoint ap ON ap.userId = j.id AND ap.`status` !=0");
 			finder.setParam("id", appUser.getId());
-			List datas = appUserService.queryForList(finder);
-			Object object = new Object();
+			List<Map<String, Object>> datas = appUserService.queryForList(finder);
+			Finder joinFinder = new Finder("SELECT count(*) as totalJoin FROM t_activity  where 1=1  and id in (select activityId from t_join_activity where userId=:userId ) and (status=3 or status=5) "
+					+ "order by status ASC,aduitSuccessTime DESC");
+			joinFinder.setParam("userId", appUser.getId());
+			Map<String, Object> joinMap = appUserService.queryForObject(joinFinder);
+			Map<String, Object> object = new HashMap<String, Object>();
 			if(null != datas && datas.size() > 0){
 				object = datas.get(0);
+				object.putAll(joinMap);
 			}
+			
 			returnObject.setData(object);
 		}
 		return returnObject;

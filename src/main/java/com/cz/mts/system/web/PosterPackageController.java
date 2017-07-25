@@ -153,7 +153,7 @@ public class PosterPackageController  extends BaseController {
 		
 		// ==执行分页查询
 //			Finder finder1=Finder.getSelectFinder(PosterPackage.class, "p.command,p.userId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,p.lookNum,p.status,p.failReason  ").append(" p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0");
-			Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.categoryId,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,"
+			Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.cardId,p.userId,p.categoryId,p.appointCount,p.id,p.title,u.header as userHeader ,p.encrypt,p.balance,u.name as userName,p.image,"
 					+ "p.lookNum,p.status,p.failReason,p.isValid,p.createTime FROM t_poster_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c "
 					+ "ON a.cardId=c.id where 1=1");
 			

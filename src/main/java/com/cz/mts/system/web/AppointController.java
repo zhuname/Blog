@@ -125,8 +125,8 @@ public class AppointController  extends BaseController {
 		if(null != datas && datas.size()> 0){
 			
 			for (Appoint ap : datas) {
-				if(null != ap.getUserId()){
-					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
+				if(null != ap.getPackageUserId()){
+					AppUser appUser = appUserService.findAppUserById(ap.getPackageUserId());
 					if(null != appUser){
 						ap.setAppUser(appUser);
 					}
@@ -530,7 +530,10 @@ public class AppointController  extends BaseController {
 				BigDecimal sumMoney=new BigDecimal(0.0);
 				BigDecimal appointChargeMoney = new BigDecimal(0.0);
 				//判断是否关闭预约手续费
-				if(null != appUser.getIsAppointFee() && 0 == appUser.getIsCloseFee()){
+				if(null == appUser.getIsAppointFee()){
+					appUser.setIsAppointFee(0);
+				}
+				if(0 == appUser.getIsAppointFee()){
 					//算出这次总共是多少钱的收益
 					if(appo.getMoney()!=null){
 						appointChargeMoney = new BigDecimal(appo.getMoney()).multiply(appointCharge);
