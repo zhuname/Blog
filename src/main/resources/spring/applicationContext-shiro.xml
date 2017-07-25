@@ -67,6 +67,7 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/shareApp/** = anon
+				/appWeb/** = anon
 			    /ace/** = anon
 				/js/** = anon
 				/css/** = anon

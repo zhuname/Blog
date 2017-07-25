@@ -1,6 +1,7 @@
 package  com.cz.mts.system.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.Common;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
 import com.cz.mts.frame.util.MessageUtils;
@@ -1275,6 +1285,74 @@ public class AppUserController  extends BaseController {
 	}
 	
 	
+	@RequestMapping(value = "/openId/json")
+	public  @ResponseBody
+	ReturnDatas openIdJson(HttpServletRequest request,AppUser appUser) throws  Exception{
+		logger.info("appUser--->openId");
+		String code = request.getParameter("code");
+		if(StringUtils.isNotBlank(code)){
+			CloseableHttpClient httpclient = HttpClients.createDefault();  
+			ReturnDatas returnDatas = new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.SELECT_SUCCESS) ;
+			try {
+				// 创建httpget.    
+				String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx775b024082c5293a&secret=c316f64ecd5c08921827b88c5bca9c6f&code="+code+"&grant_type=authorization_code" ;
+				HttpGet httpget = new HttpGet(url);
+				System.out.println("executing request " + httpget.getURI());  
+				// 执行get请求.    
+				CloseableHttpResponse httpResponse = httpclient.execute(httpget);  
+				HttpEntity entity = httpResponse.getEntity();  
+				try {  
+					// 获取响应实体    
+					System.out.println("--------------------------------------");  
+					// 打印响应状态    
+					System.out.println(httpResponse.getStatusLine());  
+					if (entity != null) { 
+						String string=EntityUtils.toString(entity);
+						System.out.println("微信返回----------->"+string);
+						returnDatas.setData(Common.toJson(string));
+						// 打印响应内容长度    
+						//System.out.println("Response content length: " + entity.getContentLength());  
+						// 打印响应内容
+						//System.out.println("Response content: " + EntityUtils.toString(entity));
+						httpResponse.close();  
+					}  
+					System.out.println("------------------------------------");  
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			} catch (ClientProtocolException e) {  
+				e.printStackTrace();  
+			} catch (ParseException e) {  
+				e.printStackTrace();  
+			} catch (IOException e) {  
+				e.printStackTrace();  
+			} finally {  
+				// 关闭连接,释放资源    
+				try {  
+					httpclient.close();  
+				} catch (IOException e) {  
+					e.printStackTrace();  
+				}
+			}  
+		}
+  		return null;
+	}
 	
-
+	
+	/**
+	 * 列表数据,调用listjson方法,保证和app端数据统一
+	 * 
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/openWx/json")
+	public @ResponseBody ReturnDatas openWx(HttpServletRequest request) 
+			throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setData("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuser.jsp&response_type=code&scope=snsapi_userinfo#wechat_redirect");
+		return returnObject;
+	}
 }
