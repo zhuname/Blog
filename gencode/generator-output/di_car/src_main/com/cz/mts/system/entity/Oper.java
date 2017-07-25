@@ -1,10 +1,8 @@
 package com.cz.mts.system.entity;
 
 import java.text.ParseException;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,12 +10,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.cz.mts.frame.annotation.WhereSQL;
 import com.cz.mts.frame.entity.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO 在此加入类描述
  * @copyright {@link 9iu.org}
  * @author springrain<Auto generate>
- * @version  2017-07-05 15:15:34
+ * @version  2017-07-25 09:03:05
  * @see com.cz.mts.system.entity.Oper
  */
 @Table(name="t_oper")
@@ -32,8 +29,9 @@ public class Oper  extends BaseEntity {
 	public static final String ALIAS_USERID = "点赞人id";
 	public static final String ALIAS_ITEMID = "红包id";
 	public static final String ALIAS_CREATETIME = "创建时间";
-	public static final String ALIAS_TYPE = " 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论";
+	public static final String ALIAS_TYPE = " 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论";
 	public static final String ALIAS_CONTENT = "评论内容";
+	public static final String ALIAS_OSTYPE = "操作系统";
     */
 	//date formats
 	//public static final String FORMAT_CREATETIME = DateUtils.DATETIME_FORMAT;
@@ -56,57 +54,20 @@ public class Oper  extends BaseEntity {
 	 */
 	private java.util.Date createTime;
 	/**
-	 *  1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论
+	 *  1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论
 	 */
 	private java.lang.Integer type;
 	/**
 	 * 评论内容
 	 */
 	private java.lang.String content;
-	
-	private AppUser appUser;
-	
-	private String nickName;
-	
-	private String osType;
-	
+	/**
+	 * 操作系统
+	 */
+	private java.lang.String osType;
 	//columns END 数据库字段结束
 	
 	//concstructor
-	
-	private String itemName;
-	
-	
-
-	
-	
-	
-	@Transient
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
-	@Transient
-	public AppUser getAppUser() {
-		return appUser;
-	}
-
-	@Transient
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public void setAppUser(AppUser appUser) {
-		this.appUser = appUser;
-	}
 
 	public Oper(){
 	}
@@ -131,18 +92,7 @@ public class Oper  extends BaseEntity {
 		this.userId = value;
 	}
 	
-	
-	
-	@WhereSQL(sql="osType=:Oper_osType")
-     public String getOsType() {
-		return osType;
-	}
-
-	public void setOsType(String osType) {
-		this.osType = osType;
-	}
-
-	@WhereSQL(sql="userId=:Oper_userId")
+     @WhereSQL(sql="userId=:Oper_userId")
 	public java.lang.Integer getUserId() {
 		return this.userId;
 	}
@@ -166,7 +116,6 @@ public class Oper  extends BaseEntity {
 		this.createTime = value;
 	}
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
      @WhereSQL(sql="createTime=:Oper_createTime")
 	public java.util.Date getCreateTime() {
 		return this.createTime;
@@ -190,6 +139,17 @@ public class Oper  extends BaseEntity {
 	public java.lang.String getContent() {
 		return this.content;
 	}
+	public void setOsType(java.lang.String value) {
+		    if(StringUtils.isNotBlank(value)){
+			 value=value.trim();
+			}
+		this.osType = value;
+	}
+	
+     @WhereSQL(sql="osType=:Oper_osType")
+	public java.lang.String getOsType() {
+		return this.osType;
+	}
 	
 	public String toString() {
 		return new StringBuffer()
@@ -197,7 +157,7 @@ public class Oper  extends BaseEntity {
 			.append("点赞人id[").append(getUserId()).append("],")
 			.append("红包id[").append(getItemId()).append("],")
 			.append("创建时间[").append(getCreateTime()).append("],")
-			.append(" 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论[").append(getType()).append("],")
+			.append(" 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7同城圈点赞 8同城圈评论[").append(getType()).append("],")
 			.append("评论内容[").append(getContent()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
 			.toString();

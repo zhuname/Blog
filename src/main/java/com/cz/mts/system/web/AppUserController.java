@@ -1520,7 +1520,8 @@ public class AppUserController  extends BaseController {
 				}
 				
 				//查询同城活动参与人数
-				Finder joinFinder = new Finder("SELECT COUNT(id) AS joinCount FROM t_join_activity");
+				Finder joinFinder = new Finder("SELECT COUNT(id) AS joinCount FROM t_join_activity WHERE activityId in(SELECT packageId FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=4 GROUP BY packageId)");
+				joinFinder.setParam("cityId", appUser.getCityId());
 				Integer joinCount = moneyDetailService.queryForObject(joinFinder,Integer.class);
 				if(null == joinCount){
 					joinCount = 0;
@@ -1612,6 +1613,7 @@ public class AppUserController  extends BaseController {
 					}
 					
 					MoneyDetail moneyDetail = new MoneyDetail();
+					moneyDetail.setUserId(id);
 					moneyDetail.setCreateTime(new Date());
 					moneyDetail.setType(17);
 					moneyDetail.setMoney(+money);
@@ -1632,6 +1634,7 @@ public class AppUserController  extends BaseController {
 								appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(money)).doubleValue());
 								
 								MoneyDetail moneyDetailSub = new MoneyDetail();
+								moneyDetailSub.setUserId(id);
 								moneyDetailSub.setCreateTime(new Date());
 								moneyDetailSub.setType(17);
 								moneyDetailSub.setMoney(-money);

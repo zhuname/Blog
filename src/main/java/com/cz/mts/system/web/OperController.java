@@ -66,7 +66,7 @@ public class OperController  extends BaseController {
 	private NotificationService notificationService;
 	
 	
-	private String listurl="/system/oper/operList";
+	private String listurl="/oper/operList";
 	
 	
 	   
@@ -82,9 +82,93 @@ public class OperController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Oper oper) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, oper);
+		ReturnDatas returnObject = listAdminjson(request, model, oper);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
+	}
+	
+	/**
+	 * 点赞/评论列表
+	 * @author wj
+	 * @param request
+	 * @param model
+	 * @param oper
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/listadmin")
+	public @ResponseBody
+	ReturnDatas listAdminjson(HttpServletRequest request, Model model,Oper oper) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		// ==执行分页查询
+		Finder finder = Finder.getSelectFinder(Oper.class).append("where 1=1 ");
+		if(null != oper.getType()){
+			finder.append(" and type=:type");
+			finder.setParam("type", oper.getType());
+		}else{
+			finder.append(" and type in(2,4,5,8)");
+		}
+		if(StringUtils.isNotBlank(oper.getNickName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+oper.getNickName()+"%')");
+		}
+		if(StringUtils.isNotBlank(oper.getContent())){
+			finder.append(" and content like '%"+oper.getContent()+"%'");
+		}
+		if(StringUtils.isNotBlank(oper.getItemName())){
+			finder.append(" and ((itemId in (select id from t_poster_package where title like '%"+oper.getItemName()+"%') and type=2) "
+					+ "or (itemId in (select id from t_media_package where title like '%"+oper.getItemName()+"%') and type=4) "
+					+ "or (itemId in (select id from t_join_activity where content like '%"+oper.getItemName()+"%') and type=5)"
+							+ " or (itemId in (select id from t_circle where content like '%"+oper.getItemName()+"%') and type=8))");
+		}
+		List<Oper> datas=operService.findListDataByFinder(finder,page,Oper.class,null);
+		if(null != datas && datas.size() > 0){
+			for (Oper op : datas) {
+				if(null != op.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(op.getUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						op.setNickName(appUser.getName());
+					}
+				}
+				if(null != op.getItemId() && null != op.getType()){
+					switch (op.getType()) {
+					case 2:
+						PosterPackage posterPackage = posterPackageService.findPosterPackageById(op.getItemId());
+						if(null != posterPackage && StringUtils.isNotBlank(posterPackage.getTitle())){
+							op.setItemName(posterPackage.getTitle());
+						}
+						break;
+
+					case 4:
+						MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(op.getItemId());
+						if(null != mediaPackage && StringUtils.isNotBlank(mediaPackage.getTitle())){
+							op.setItemName(mediaPackage.getTitle());
+						}
+						break;
+					case 5:
+						JoinActivity joinActivity = joinActivityService.findJoinActivityById(op.getItemId());
+						if(null != joinActivity && StringUtils.isNotBlank(joinActivity.getContent())){
+							op.setItemName(joinActivity.getContent());
+						}
+						break;
+
+					case 8:
+						Circle circle = circleService.findCircleById(op.getItemId());
+						if(null != circle && StringUtils.isNotBlank(circle.getContent())){
+							op.setItemName(circle.getContent());
+						}
+						break;
+					}
+				}
+				
+				
+			}
+		}
+		returnObject.setQueryBean(oper);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
 	}
 	
 	/**

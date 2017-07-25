@@ -239,7 +239,7 @@ $(document).on("click", ".selectBtn", function() {
 
 
 
-function addMoney(id){
+/* function addMoney(id){
 	//prompt层
 	layer.prompt({title: '请输入金额:', formType: 3,width: '10px',height:'100px'}, function(text, index){
 		
@@ -262,7 +262,7 @@ function addMoney(id){
  			layer.close(index);
 	});
 	
-}
+} */
 
 
 var changeMoneyDialogHtml = $('#changeMoneyDialog').prop("outerHTML") ;
@@ -271,6 +271,7 @@ function changeMoneyDialog(id) {
         shade: [0.1,'#fff'] //0.1透明度的白色背景
     });
     layer.open({
+    	
         title:'余额变动',
         type: 1,
         anim: 2,
@@ -292,36 +293,39 @@ function changeMoneyDialog(id) {
             
             if(money == null || "" == money){
             	myalert("请输入金额!");
+            	layer.close(loadIndex);
         		return false;
-            }
-            if(descr == null || "" == descr){
+            }else if(descr == null || "" == descr){
             	myalert("请输入描述!");
+            	layer.close(loadIndex);
         		return false;
-            }
-            if(money<0){
+            }else if(money<0){
             	myalert("输入金额需大于0!");
+            	layer.close(loadIndex);
         		return false;
+            }else{
+            	 $.ajax({
+                     url:'${ctx}/system/appuser/addMoney',
+                     data:{'id':id,
+     					'money':money,
+     					'type':type,
+     					'descr':descr
+     				},
+                     success:function (result) {
+     					layer.close(loadIndex) ;
+                         if (result.status == "success") {
+                             myalert(result.message);
+                             myhref("${ctx}/system/appuser/list")
+                             return false;
+                         } else {
+                             myalert(result.message);
+                             return false;
+                         }
+     				}
+     			});
             }
             
-            $.ajax({
-                url:'${ctx}/system/appuser/addMoney',
-                data:{'id':id,
-					'money':money,
-					'type':type,
-					'descr':descr
-				},
-                success:function (result) {
-					layer.close(loadIndex) ;
-                    if (result.status == "success") {
-                        myalert(result.message);
-                        myhref("${ctx}/system/appuser/list")
-                        return false;
-                    } else {
-                        myalert(result.message);
-                        return false;
-                    }
-				}
-			});
+           
 		}
     });
     layer.close(index);

@@ -321,11 +321,16 @@ public class GiveAwardController  extends BaseController {
 								
 							}
 							
-							giveAward.setCreateTime(new Date());
-							giveAwardService.saveorupdate(giveAward);
-							
-							//给参与者发推送
-							notificationService.notify(21, giveAward.getAwardId(), giveAward.getJoinUserId());
+								giveAward.setCreateTime(new Date());
+								giveAwardService.saveorupdate(giveAward);
+								
+								AppUser appUser = appUserService.findAppUserById(giveAward.getJoinUserId());
+								if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+									//给参与者发推送
+									if(null != awards.getActivityId()){
+										notificationService.notify(21, awards.getActivityId(), giveAward.getJoinUserId());
+									}
+								}
 							}else{
 								returnObject.setStatus(ReturnDatas.ERROR);
 								returnObject.setMessage("该奖项的人数已满，暂不能颁奖");

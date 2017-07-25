@@ -445,7 +445,7 @@ public class PosterPackageController  extends BaseController {
 			 //返回卡券已领取数量
 			 if(null != posterPackage && null != posterPackage.getCardId()){
 				 Integer lqNum = 0;
-				 if(StringUtils.isNotBlank(appUserId)){
+//				 if(StringUtils.isNotBlank(appUserId)){
 					 //返回该用户已领取的数量
 					 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId AND `status`!=0");
 					 userCardFinder.setParam("cardId", posterPackage.getCardId());
@@ -456,7 +456,7 @@ public class PosterPackageController  extends BaseController {
 							 lqNum = userCards.get(0).getLqNum();
 						 }
 					 }
-				 }
+//				 }
 				 posterPackage.setCardLqNum(lqNum);
 			 }
 			 
