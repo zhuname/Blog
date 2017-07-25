@@ -749,6 +749,8 @@ public class CardController  extends BaseController {
 						cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
 						sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
 					}
+				}else{
+					sumMoney = new BigDecimal(userCard.getSumMoney());
 				}
 				if(appUser.getBalance()==null){
 					appUser.setBalance(sumMoney.doubleValue());

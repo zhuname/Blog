@@ -539,6 +539,8 @@ public class AppointController  extends BaseController {
 						appointChargeMoney = new BigDecimal(appo.getMoney()).multiply(appointCharge);
 						sumMoney = new BigDecimal(appo.getMoney()).subtract(appointChargeMoney);
 					}
+				}else{
+					sumMoney = new BigDecimal(appo.getMoney());
 				}
 				if(appUser.getBalance()==null){
 					appUser.setBalance(sumMoney.doubleValue());

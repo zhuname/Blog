@@ -458,6 +458,7 @@ function changeMoneyDialog(id) {
 						<th id="th_lqNum" >可领取次数</th>
 						<th id="th_isCloseFee" >是否关闭卡券手续费</th>
 						<th id="th_isBlack" >是否是黑名单</th>
+						<th id="th_isAppoint" >是否关闭预约手续费</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -515,13 +516,29 @@ function changeMoneyDialog(id) {
 	                                        </button>
                                         </#if>
                                         
-                                         <button class="btn btn-xs btn-danger" title="余额变动"
+                                         <button class="btn btn-xs btn-purple" title="余额变动"
 	                                                onclick="javascript:changeMoneyDialog(${(_data.id)!''}) ;">
 	                                            <i class="ace-icon fa bigger-120">
 	                                            <i class=" fa fa-jpy"></i>
 	                                            </i>
 	                                     </button>
                                         
+                                        <#if (_data.isAppointFee) == 0>
+	                                         <button class="btn btn-xs btn-warning" title="预约手续费关闭"
+	                                                onclick="mydelete('${ctx}/system/appuser/isAppointFee?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+	                                            <i class="ace-icon fa bigger-120">
+	                                            <i class=" fa  fa-power-off"></i>
+	                                            </i>
+	                                        </button>
+                                        </#if>
+                                        <#if (_data.isAppointFee) == 1>
+	                                        <button class="btn btn-xs btn-danger" title="预约手续费开启"
+	                                                onclick="mydelete('${ctx}/system/appuser/isAppointFee?id=${(_data.id)!''}','${ctx}/system/appuser/list',null,'确认操作？');">
+	                                            <i class="ace-icon fa bigger-120">
+	                                            <i class=" fa  fa-power-off"></i>
+	                                            </i>
+	                                        </button>
+                                        </#if>
                                         
                                     </div>
                                     <div class="hidden-md hidden-lg">
@@ -609,6 +626,14 @@ function changeMoneyDialog(id) {
 								</#if>
 								<#if (_data.isBlack) == 1>
 								黑名单用户
+								</#if>
+							</td>
+							<td >
+								<#if (_data.isAppointFee) == 0>
+								未关闭
+								</#if>
+								<#if (_data.isAppointFee) == 1>
+								关闭
 								</#if>
 							</td>
 						</tr>

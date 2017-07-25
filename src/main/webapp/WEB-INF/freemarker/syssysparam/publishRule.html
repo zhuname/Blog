@@ -33,7 +33,7 @@ jQuery(document).ready(function(){
 	});
 	
 	
-	jQuery('#editor').html(jQuery('#value').val());
+	/* jQuery('#editor').html(jQuery('#value').val());
 
     var ue = UE.getEditor('editor');
 	
@@ -42,6 +42,11 @@ jQuery(document).ready(function(){
 		
 		jQuery("#submit").click();
 		
+	} */
+	function submit(){
+		//jQuery("#value").val(UE.getEditor('editor').getContent());
+		jQuery("#value").val(jQuery("#editor").val());
+		jQuery("#submit").click();
 	}
 	
 	
@@ -54,9 +59,11 @@ jQuery(document).ready(function(){
 			<input type="hidden" id="code" name="code" value="${(returnDatas.data.code)!''}"/>	
 			<input type="hidden" id="value" name="value" value="${(returnDatas.data.value)!''}"/>	
 	        <div>
-		    	<script id="editor" type="text/plain" style="width:1024px;height:500px;">
+		    	<!-- <script id="editor" type="text/plain" style="width:1024px;height:500px;">
 					${(returnDatas.data.value)!''}
-				</script>
+				</script> -->
+				
+				<textarea id="editor" style="height: 400px;width: 30%;">${(returnDatas.data.value)!''}</textarea>
 				
 			</div>
 		</form>

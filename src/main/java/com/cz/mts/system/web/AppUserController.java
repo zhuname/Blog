@@ -1338,6 +1338,41 @@ public class AppUserController  extends BaseController {
 	
 	
 	/**
+	 * 关闭预约手续费操作
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/isAppointFee")
+	public @ResponseBody ReturnDatas isAppointFee(HttpServletRequest request) throws Exception {
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+				AppUser appUser=appUserService.findAppUserById(id);
+				
+				if(appUser.getIsAppointFee()==0){
+					appUser.setIsAppointFee(1);
+				}else if(appUser.getIsAppointFee()==1){
+					appUser.setIsAppointFee(0);
+				}else {
+					appUser.setIsAppointFee(1);
+				}
+				appUserService.update(appUser,true);
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.SUCCESS, MessageUtils.UPDATE_SUCCESS);
+	}
+	
+	
+	
+	/**
 	 * 首页平台统计（总用户、红包总金额、已领红包金额）
 	 * @author wj
 	 * @param request
