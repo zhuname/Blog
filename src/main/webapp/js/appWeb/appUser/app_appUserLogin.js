@@ -1,7 +1,6 @@
 var This=this;
 
 
-	debugger;
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
     	var openid=null;
@@ -39,8 +38,11 @@ var This=this;
     	$.ajax({
 			url : '/mts/system/appuser/openWx/json',
 			type : "get",
+			dataType:'json',
 			success : function(result){
-				window.location.href=result;
+				console.log(result.data);
+				//window.location.href=""+result.data;
+				window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuser.jsp&response_type=code&scope=snsapi_userinfo";
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;

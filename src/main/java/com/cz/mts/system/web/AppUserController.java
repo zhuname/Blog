@@ -1339,20 +1339,11 @@ public class AppUserController  extends BaseController {
 	}
 	
 	
-	/**
-	 * 列表数据,调用listjson方法,保证和app端数据统一
-	 * 
-	 * @param request
-	 * @param model
-	 * @param appUser
-	 * @return
-	 * @throws Exception
-	 */
 	@RequestMapping(value = "/openWx/json")
-	public @ResponseBody ReturnDatas openWx(HttpServletRequest request) 
+	public @ResponseBody String openWx(HttpServletRequest request,HttpServletResponse response,Model model) 
 			throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		returnObject.setData("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuser.jsp&response_type=code&scope=snsapi_userinfo#wechat_redirect");
-		return returnObject;
+		model.addAttribute(GlobalStatic.returnDatas, returnObject);
+		return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuser.jsp&response_type=code&scope=snsapi_userinfo";
 	}
 }
