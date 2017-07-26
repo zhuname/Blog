@@ -499,7 +499,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
     
     @Override
     public String statics() throws Exception{
-    	Finder finder = new Finder("SELECT GROUP_CONCAT(posterpackageCount) as countNum FROM( SELECT COUNT(id) AS posterpackageCount FROM t_poster_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) AS mediapackageCount FROM t_media_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) as cardCount FROM t_card WHERE isDel=0 AND `status`=1 UNION ALL SELECT COUNT(id) as applyMedalCount FROM t_apply_medal where `status`=1 UNION ALL SELECT COUNT(id) AS applyWithdrawCount FROM t_withdraw WHERE `status`=1)a");
+    	Finder finder = new Finder("SELECT GROUP_CONCAT(posterpackageCount) as countNum FROM( SELECT COUNT(id) AS posterpackageCount FROM t_poster_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) AS mediapackageCount FROM t_media_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) as cardCount FROM t_card WHERE isDel=0 AND `status`=1 UNION ALL SELECT COUNT(id) as applyMedalCount FROM t_apply_medal where `status`=1 UNION ALL SELECT COUNT(id) AS applyWithdrawCount FROM t_withdraw WHERE `status`=1 UNION ALL SELECT COUNT(id) AS activityCount FROM t_activity WHERE `status`=1 AND isDel=0)a");
     	List lists = queryForList(finder);
     	String countNum = "";
     	if(null != lists && lists.size() > 0){

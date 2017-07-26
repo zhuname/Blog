@@ -114,7 +114,7 @@ public class ActivityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		
-		Finder finder = Finder.getSelectFinder(Activity.class).append(" where 1=1 ");
+		Finder finder = Finder.getSelectFinder(Activity.class).append(" where 1=1 and isDel=0");
 	
 		if(StringUtils.isNotBlank(activity.getUserName())){
 			finder.append(" and userId in (select id from t_app_user where name like '%"+activity.getUserName()+"%')");
@@ -134,6 +134,10 @@ public class ActivityController  extends BaseController {
 		}
 		if(StringUtils.isNotBlank(activity.getPhone())){
 			finder.append(" and phone like '%"+activity.getPhone()+"%'");
+		}
+		if(null != activity.getStatus()){
+			finder.append(" and status = :status");
+			finder.setParam("status", activity.getStatus());
 		}
 		
 		// ==执行分页查询
@@ -499,7 +503,8 @@ public class ActivityController  extends BaseController {
 			String awards= request.getParameter("awards");
 			String cityIds=request.getParameter("cityIds");
 			if(StringUtils.isNotBlank(awards)||StringUtils.isNotBlank(cityIds)){
-				activityService.addOrUpdate(activity, awards,cityIds);
+				Object id = activityService.addOrUpdate(activity, awards,cityIds);
+				returnObject.setData(id);
 			}else {
 				logger.error("参数缺失");
 				returnObject.setStatus(ReturnDatas.ERROR);

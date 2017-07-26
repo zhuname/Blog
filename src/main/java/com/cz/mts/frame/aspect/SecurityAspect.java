@@ -72,15 +72,14 @@ public class SecurityAspect {
 			
 			String encodeData = null;
 			try {
-//				encodeData = Des3.encode(result);
+				encodeData = Des3.encode(result);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				returnDatas.setStatus(ReturnDatas.WARNING);
 				returnDatas.setMessage("加密失败！");
 			}
-//			returnDatas.setData(encodeData);
-			returnDatas.setData(result);
+			returnDatas.setData(encodeData);
 		}
 	}
 	
@@ -101,20 +100,18 @@ public class SecurityAspect {
 //	       HttpServletRequest request = attr.getRequest(); 
 //	    Map<String,String[]> paramMap = HttpUtil.getRequestMap(request) ;
 	    
-	    
-	    /***************加密解密从这开始****************/
-//	    if(!paramMap.containsKey("signCode")){  //说明是非法请求
-//	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
-//	    }else {
-//	    	try {
-//	    		String[] sign = (String[])paramMap.get("signCode") ;
-//	    		//解密
-//        		String params=SecureRSA.decrypt(sign[0], privateKey, "UTF-8") ;   //公钥
-//        		JSONObject json = JSONObject.fromObject(params) ;
-//        		//验证时间戳，防止爬虫请求
-//        		if(!json.containsKey("T")){
-//	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
-//        		}else {
+	    if(!paramMap.containsKey("signCode")){  //说明是非法请求
+	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+	    }else {
+	    	try {
+	    		String[] sign = (String[])paramMap.get("signCode") ;
+	    		//解密
+        		String params=SecureRSA.decrypt(sign[0], privateKey, "UTF-8") ;   //公钥
+        		JSONObject json = JSONObject.fromObject(params) ;
+        		//验证时间戳，防止爬虫请求
+        		if(!json.containsKey("T")){
+	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+        		}else {
         			
         			/*Long T = json.getLong("T") ;
 					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
@@ -122,26 +119,17 @@ public class SecurityAspect {
 						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
 					}*/
 					
+					if(json.containsKey("sessionId")){
+						Integer userId = json.getInt("sessionId") ;
+						AppUser user = appUserService.findAppUserById(userId) ;
+						if(user != null){
+							if(null != user.getIsBlack() && user.getIsBlack() == 1){  //黑名单
+								return new ReturnDatas(ReturnDatas.Black, "黑名单成员！") ; 
+							}
+						}
+					}
         			
         			
-        			
-        			
-        			 /***************加密解密从这开始****************/
-//					if(json.containsKey("sessionId")){
-//						Integer userId = json.getInt("sessionId") ;
-//						AppUser user = appUserService.findAppUserById(userId) ;
-//						if(user != null){
-//							if(null != user.getIsBlack() && user.getIsBlack() == 1){  //黑名单
-//								return new ReturnDatas(ReturnDatas.Black, "黑名单成员！") ; 
-//							}
-//						}
-//					}
-//        			
-        			 /***************加密解密从这结束****************/
-					
-					
-					
-					
 //        			Iterator<String> keys = json.keys() ;
 //        			String key  = "" ;
 //        			while(keys.hasNext()){
@@ -159,27 +147,22 @@ public class SecurityAspect {
 //        			paramMap.put("sign",new String[]{"1"}) ;
 //        			HttpServletRequest req = new ParameterRequestWrapper(request, paramMap) ;
 //        			args[0] = req ;
-//        			try {
-//						object = proceedingJoinPoint.proceed() ;
-//					} catch (Throwable e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//        		}
+        			try {
+						object = proceedingJoinPoint.proceed() ;
+					} catch (Throwable e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
 //	    		object = proceedingJoinPoint.proceed() ;
-//	    	}catch ( BadPaddingException e){
-//	    		return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
-//	    	}catch (Throwable e) {
-//	    		// TODO Auto-generated catch block
-//	    		e.printStackTrace();
-//	    	}
-//	    }
-	    try {
-			object = proceedingJoinPoint.proceed() ;
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    	}catch ( BadPaddingException e){
+	    		return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+	    	}catch (Throwable e) {
+	    		// TODO Auto-generated catch block
+	    		e.printStackTrace();
+	    	}
+	    }
+		
 		return object ;
 	}
 }

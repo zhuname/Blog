@@ -60,7 +60,10 @@ public class NotificationController extends BaseController{
 		Integer applyWithdrawCount = Integer.parseInt(res[4]);
 		notificationBean.setApplyWithdrawCount(applyWithdrawCount);
 		
-		Integer sumCount = posterpackageCount+mediapackageCount+cardCount+applyMedalCount+applyWithdrawCount;
+		Integer activityCount = Integer.parseInt(res[5]);
+		notificationBean.setActivityCount(activityCount);
+		
+		Integer sumCount = posterpackageCount+mediapackageCount+cardCount+applyMedalCount+applyWithdrawCount+activityCount;
 		notificationBean.setSumCount(sumCount);
 		
 		returnObject.setData(notificationBean);

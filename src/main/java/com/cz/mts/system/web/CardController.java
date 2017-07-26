@@ -672,14 +672,14 @@ public class CardController  extends BaseController {
 			}
 			
 			//用户的购买的卡券信息
-			UserCard usercard=usercards.get(0);
+			UserCard usercard1=usercards.get(0);
 			
 			//发布人发布的卡券信息
 			Card card=null;
 			
 			//判断是否过期
-			if(usercard.getExpTime()!=null){
-				if(usercard.getExpTime().getTime()<new Date().getTime()){
+			if(usercard1.getExpTime()!=null){
+				if(usercard1.getExpTime().getTime()<new Date().getTime()){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("此卡券已过期");
 					return returnObject;
@@ -687,14 +687,14 @@ public class CardController  extends BaseController {
 			}
 			
 			//判断是否兑换
-			if(usercard.getStatus()!=null&&usercard.getStatus()!=1){
+			if(usercard1.getStatus()!=null&&usercard1.getStatus()!=1){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("此卡券已兑换");
 				return returnObject;
 			}
 			
-			if(usercard.getCardId()!=null){
-				card=cardService.findCardById(usercard.getCardId());
+			if(usercard1.getCardId()!=null){
+				card=cardService.findCardById(usercard1.getCardId());
 				if(card==null){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("此卡券不存在");
@@ -714,18 +714,18 @@ public class CardController  extends BaseController {
 			}
 			
 			//改变状态
-			usercard.setStatus(2);
-			usercard.setChangeTime(new Date());
+			usercard1.setStatus(2);
+			usercard1.setChangeTime(new Date());
 			
-			if(null != usercard && null != usercard.getUserId()){
-				AppUser user = appUserService.findAppUserById(usercard.getUserId());
-				if(null != user && 1 == user.getIsPush() && null != usercard.getCardId()){
+			if(null != usercard1 && null != usercard1.getUserId()){
+				AppUser user = appUserService.findAppUserById(usercard1.getUserId());
+				if(null != user && 1 == user.getIsPush() && null != usercard1.getCardId()){
 					//给自己发推送
-					notificationService.notify(14, usercard.getCardId(), usercard.getUserId());
+					notificationService.notify(14, usercard1.getCardId(), usercard1.getUserId());
 					
 				}
 			}
-			userCardService.update(usercard,true);
+			userCardService.update(usercard1,true);
 			
 			
 			//手续费比例
@@ -743,14 +743,25 @@ public class CardController  extends BaseController {
 				BigDecimal cardChargeMoney = new BigDecimal(0.0);
 				
 				//判断是否关闭卡券手续费
-				if(null != appUser.getIsCloseFee() && 0 == appUser.getIsCloseFee()){
-					//算出这次总共是多少钱的收益
-					if(usercard.getSumMoney()!=null){
-						cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
-						sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
+				if(null != appUser.getIsCloseFee()){
+					if(0 == appUser.getIsCloseFee()){
+						//算出这次总共是多少钱的收益
+						if(usercard1.getSumMoney()!=null){
+							cardChargeMoney=new BigDecimal(usercard1.getSumMoney()).multiply(cardCharge);
+							sumMoney=new BigDecimal(usercard1.getSumMoney()).subtract(cardChargeMoney);
+						}else{
+							sumMoney = new BigDecimal(0.0);
+						}
+					}else{
+						if(null != usercard1.getSumMoney()){
+							sumMoney = new BigDecimal(usercard1.getSumMoney());
+						}else{
+							sumMoney = new BigDecimal(0.0);
+						}
 					}
+					
 				}else{
-					sumMoney = new BigDecimal(userCard.getSumMoney());
+					sumMoney = new BigDecimal(0.0);
 				}
 				if(appUser.getBalance()==null){
 					appUser.setBalance(sumMoney.doubleValue());
@@ -759,15 +770,15 @@ public class CardController  extends BaseController {
 				}
 				
 				appUserService.update(appUser,true);
-				usercard.setPlateMoney(cardChargeMoney.doubleValue());
-				userCardService.update(usercard,true);
+				usercard1.setPlateMoney(cardChargeMoney.doubleValue());
+				userCardService.update(usercard1,true);
 				//先保存收益记录
 				MoneyDetail moneyDetail=new MoneyDetail();
 				moneyDetail.setUserId(userId);
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setType(8);
 				moneyDetail.setMoney(+sumMoney.doubleValue());
-				moneyDetail.setItemId(usercard.getId());
+				moneyDetail.setItemId(usercard1.getId());
 				moneyDetail.setBalance(appUser.getBalance());
 				moneyDetail.setPlateMoney(cardChargeMoney.doubleValue());
 				moneyDetailService.save(moneyDetail);

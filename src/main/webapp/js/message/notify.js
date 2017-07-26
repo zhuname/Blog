@@ -13,11 +13,12 @@ $(function(){
 				$('#applyWithdrawCount').html(result.data.applyWithdrawCount);
 				$('#sumStatics').html(result.data.sumCount);
 				$('#sumCount').html(result.data.sumCount);
+				$('#activityCount').html(result.data.activityCount);
 				
 			}
 		});
 	
-	},1000);
+	},5000);
 	
 	
 });

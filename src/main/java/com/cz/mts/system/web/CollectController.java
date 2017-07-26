@@ -148,9 +148,12 @@ public class CollectController  extends BaseController {
 				}
 				returnObject.setData(0);
 			}else {
-				collect.setCreateTime(new Date());
-				collectService.saveorupdate(collect);
-				returnObject.setData(1);
+				synchronized (this) {
+					collect.setCreateTime(new Date());
+					collectService.saveorupdate(collect);
+					returnObject.setData(1);
+				}
+				
 			}
 			
 		} catch (Exception e) {

@@ -388,8 +388,8 @@ public class CircleController  extends BaseController {
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
 		
-			circleService.saveorupdate(circle);
-			
+			Object id = circleService.saveorupdate(circle);
+			returnObject.setData(id);
 		} catch (ParameterErrorException e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);

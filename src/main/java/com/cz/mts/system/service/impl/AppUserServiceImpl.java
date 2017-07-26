@@ -1247,16 +1247,16 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					AppUser appUserD=this.findAppUserById(cityCircle.getUserId());
 					
 					//记录用户的余额记录
-					MoneyDetail moneyDetailD=new MoneyDetail();
-					moneyDetailD.setBalance(appUserD.getBalance());
-					moneyDetailD.setCreateTime(new Date());
-					moneyDetailD.setCode(code);
-					moneyDetailD.setMoney(-cityCircle.getMoney());
-					moneyDetailD.setType(14);
-					moneyDetailD.setAliTrade(wxCode);
-					moneyDetailD.setPayType(payType);
-					moneyDetailD.setUserId(cityCircle.getUserId());
-					super.save(moneyDetailD);
+//					MoneyDetail moneyDetailD=new MoneyDetail();
+//					moneyDetailD.setBalance(appUserD.getBalance());
+//					moneyDetailD.setCreateTime(new Date());
+//					moneyDetailD.setCode(code);
+//					moneyDetailD.setMoney(-cityCircle.getMoney());
+//					moneyDetailD.setType(14);
+//					moneyDetailD.setAliTrade(wxCode);
+//					moneyDetailD.setPayType(payType);
+//					moneyDetailD.setUserId(cityCircle.getUserId());
+//					super.save(moneyDetailD);
 					
 					
 					
