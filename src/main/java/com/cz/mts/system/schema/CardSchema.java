@@ -88,7 +88,7 @@ public class CardSchema extends BaseLogger{
 					for (UserCard userCard : userCards) {
 						//查询用户信息
 						AppUser appUser2 = appUserService.findAppUserById(userCard.getUserId());
-						if(null != appUser2 && 1 == appUser2.getIsPush()){
+						if(null != appUser2 && null != appUser2.getIsPush() &&  1 == appUser2.getIsPush()){
 							//对该用户发推送
 							notificationService.notify(13, userCard.getCardId(), userCard.getUserId());
 						}
@@ -112,7 +112,7 @@ public class CardSchema extends BaseLogger{
 			for (Card card : cards) {
 				//查询用户信息
 				AppUser appUser = appUserService.findAppUserById(card.getUserId());
-				if(null != appUser && 1 == appUser.getIsPush()){
+				if(null != appUser && null != appUser.getIsPush()&& 1 == appUser.getIsPush()){
 					//给发布人发推送
 					notificationService.notify(6, card.getId(), card.getUserId());
 				}
@@ -148,7 +148,7 @@ public class CardSchema extends BaseLogger{
 				appUser.setCurrentLqNum(appUser.getLqNum());
 				appUser.setCurrentShareNum(appUser.getShareNum());
 				appUserService.update(appUser,true);
-				if(1 == appUser.getIsPush()){
+				if(null != appUser.getIsPush() && 1 == appUser.getIsPush()){
 					//给用户发推送
 					notificationService.notify(12, appUser.getId(), appUser.getId(), appUser.getCurrentLqNum()+"");
 				}
@@ -245,7 +245,12 @@ public class CardSchema extends BaseLogger{
 		List<UserCard> userCards = userCardService.queryForList(finder,UserCard.class);
 		if(null != userCards && userCards.size() > 0){
 			for (UserCard userCard : userCards) {
-				notificationService.notify(35, userCard.getId(), userCard.getUserId());
+				if(null != userCard.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(userCard.getUserId());
+					if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+						notificationService.notify(35, userCard.getId(), userCard.getUserId());
+					}
+				}
 			}
 		}
 	}
@@ -265,7 +270,10 @@ public class CardSchema extends BaseLogger{
 			for (PosterPackage posterPackage : posterPackages) {
 				posterPackage.setIsValid(1);
 				posterPackageService.update(posterPackage,true);
-				notificationService.notify(37, posterPackage.getId(), posterPackage.getUserId());
+				AppUser appUser = appUserService.findAppUserById(posterPackage.getUserId());
+				if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+					notificationService.notify(37, posterPackage.getId(), posterPackage.getUserId());
+				}
 			}
 		}
 	}
@@ -282,7 +290,10 @@ public class CardSchema extends BaseLogger{
 			for (MediaPackage mediaPackage : mediaPackages) {
 				mediaPackage.setIsValid(1);
 				mediaPackageService.update(mediaPackage,true);
-				notificationService.notify(36, mediaPackage.getId(), mediaPackage.getUserId());
+				AppUser appUser = appUserService.findAppUserById(mediaPackage.getUserId());
+				if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+					notificationService.notify(36, mediaPackage.getId(), mediaPackage.getUserId());
+				}
 			}
 		}
 	}
@@ -301,7 +312,10 @@ public class CardSchema extends BaseLogger{
 				activity.setStatus(4);
 				activityService.update(activity,true);
 				//给发布人发推送
-				notificationService.notify(24, activity.getId(), activity.getUserId());
+				AppUser appUser = appUserService.findAppUserById(activity.getUserId());
+				if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+					notificationService.notify(24, activity.getId(), activity.getUserId());
+				}
 			}
 		}
 	}

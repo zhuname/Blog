@@ -524,84 +524,87 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			finderAppoint.setParam("code", code);
 			finderAppoint.setParam("userId", userId);
 			Appoint appoint = null;
-			List<Appoint> appoints=super.queryForList(finderAppoint, Appoint.class);
-			if(null != appoints && appoints.size() > 0){
-				appoint = appoints.get(0);
-			}
-			if(appoint==null||appoint.getMoney()==null||userId.intValue()!=appoint.getUserId().intValue()){
-				return 4;
-			}
-			
-			//判断用户余额足不足
-			if(appUser.getBalance()<appoint.getMoney()){
-				return 5;
-			}
-			if(appoint.getMoney() <=0){
-				return 6;
-			}
-			
-			//扣除余额并且加到余额记录
-			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(appoint.getMoney())).doubleValue());
-			super.update(appUser, true);
-			//改变红包状态
-			appoint.setStatus(1);
-			appoint.setPayType(3);
-			appoint.setPayMoney(appoint.getMoney());
-			appoint.setPayTime(new Date());
-			
-			
-			
+			synchronized (this) {
+				List<Appoint> appoints=super.queryForList(finderAppoint, Appoint.class);
+				if(null != appoints && appoints.size() > 0){
+					appoint = appoints.get(0);
+				}
+				if(appoint==null||appoint.getMoney()==null||userId.intValue()!=appoint.getUserId().intValue()){
+					return 4;
+				}
+				
+				//判断用户余额足不足
+				if(appUser.getBalance()<appoint.getMoney()){
+					return 5;
+				}
+				if(appoint.getMoney() <=0){
+					return 6;
+				}
+				
+				//扣除余额并且加到余额记录
+				appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(appoint.getMoney())).doubleValue());
+				super.update(appUser, true);
+				//改变红包状态
+				appoint.setStatus(1);
+				appoint.setPayType(3);
+				appoint.setPayMoney(appoint.getMoney());
+				appoint.setPayTime(new Date());
+				
+				
+				
 
-			//1给海报红包加一个预约数量   2给视频红包加一个预约数量
-			switch (appoint.getType()) {
-			case 1:
-				
-				PosterPackage posterPackageApp=super.findById(appoint.getItemId(), PosterPackage.class);
-				
-				//查询海报红包
-				if(posterPackageApp!=null){
+				//1给海报红包加一个预约数量   2给视频红包加一个预约数量
+				switch (appoint.getType()) {
+				case 1:
 					
-					if(posterPackageApp.getAppointCount()==null){
-						posterPackageApp.setAppointCount(1);
-					}else {
-						posterPackageApp.setAppointCount(posterPackageApp.getAppointCount()+1);
-					}
-					super.update(posterPackageApp);
-				}
-				
-				break;
-			case 2:
-				
-				MediaPackage mediaPackageApp=super.findById(appoint.getItemId(), MediaPackage.class);
-				
-				if(mediaPackageApp!=null){
+					PosterPackage posterPackageApp=super.findById(appoint.getItemId(), PosterPackage.class);
 					
-					if(mediaPackageApp.getAppointCount()==null){
-						mediaPackageApp.setAppointCount(1);
+					//查询海报红包
+					if(posterPackageApp!=null){
 						
-					}else {
-						mediaPackageApp.setAppointCount(mediaPackageApp.getAppointCount()+1);
+						if(posterPackageApp.getAppointCount()==null){
+							posterPackageApp.setAppointCount(1);
+						}else {
+							posterPackageApp.setAppointCount(posterPackageApp.getAppointCount()+1);
+						}
+						super.update(posterPackageApp);
 					}
-					super.update(mediaPackageApp);
+					
+					break;
+				case 2:
+					
+					MediaPackage mediaPackageApp=super.findById(appoint.getItemId(), MediaPackage.class);
+					
+					if(mediaPackageApp!=null){
+						
+						if(mediaPackageApp.getAppointCount()==null){
+							mediaPackageApp.setAppointCount(1);
+							
+						}else {
+							mediaPackageApp.setAppointCount(mediaPackageApp.getAppointCount()+1);
+						}
+						super.update(mediaPackageApp);
+					}
+					
+					break;
 				}
 				
-				break;
+				
+				super.update(appoint,true);
+				
+				//记录用户的余额记录
+				MoneyDetail moneyDetailA=new MoneyDetail();
+				moneyDetailA.setBalance(appUser.getBalance());
+				moneyDetailA.setCreateTime(new Date());
+				moneyDetailA.setItemId(itemId);
+				moneyDetailA.setMoney(-appoint.getMoney());
+				moneyDetailA.setType(13);
+				moneyDetailA.setPayType(3);
+				moneyDetailA.setUserId(userId);
+				moneyDetailA.setOsType(osType);
+				super.save(moneyDetailA);
 			}
 			
-			
-			super.update(appoint,true);
-			
-			//记录用户的余额记录
-			MoneyDetail moneyDetailA=new MoneyDetail();
-			moneyDetailA.setBalance(appUser.getBalance());
-			moneyDetailA.setCreateTime(new Date());
-			moneyDetailA.setItemId(itemId);
-			moneyDetailA.setMoney(-appoint.getMoney());
-			moneyDetailA.setType(13);
-			moneyDetailA.setPayType(3);
-			moneyDetailA.setUserId(userId);
-			moneyDetailA.setOsType(osType);
-			super.save(moneyDetailA);
 			
 			break;
 		case 5:
@@ -613,77 +616,80 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			finderCircle.setParam("code", code);
 			finderCircle.setParam("userId", userId);
 			CityCircle cityCircle = null;
-			List<CityCircle> cityCircles = super.queryForList(finderCircle, CityCircle.class);
-			if(null != cityCircles && cityCircles.size() > 0){
-				cityCircle = cityCircles.get(0);
-			}
-			
-			if(cityCircle==null||cityCircle.getMoney()==null||userId.intValue()!=cityCircle.getUserId().intValue()){
-				return 4;
-			}
-			
-			//判断用户余额足不足
-			if(appUser.getBalance()<cityCircle.getMoney()){
-				return 5;
-			}
-			
-			if(cityCircle.getMoney() <=0){
-				return 6;
-			}
-			//扣除余额并且加到余额记录
-			appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(cityCircle.getMoney())).doubleValue());
-			super.update(appUser, true);
-			//改变状态
-			cityCircle.setStatus(1);
-			cityCircle.setPayType(3);
-			cityCircle.setPayMoney(cityCircle.getMoney());
-			cityCircle.setPayTime(new Date());
-			
-			//更新circle表的打赏总金额字段
-			Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney WHERE id=:id");
-			circleFinder.setParam("sumMoney", cityCircle.getMoney());
-			circleFinder.setParam("id", cityCircle.getItemId());
-			super.update(circleFinder);
-			
-			
-			super.update(cityCircle,true);
-			
-			//记录用户的余额记录
-			MoneyDetail moneyDetailC=new MoneyDetail();
-			moneyDetailC.setBalance(appUser.getBalance());
-			moneyDetailC.setCreateTime(new Date());
-			moneyDetailC.setItemId(itemId);
-			moneyDetailC.setMoney(-cityCircle.getMoney());
-			moneyDetailC.setType(14);
-			moneyDetailC.setPayType(3);
-			moneyDetailC.setUserId(userId);
-			moneyDetailC.setOsType(osType);
-			super.save(moneyDetailC);
-			
-			//更新被打赏用户的记录
-			Circle circle = circleService.findCircleById(itemId);
-			if(null != circle && null != circle.getUserId()){
-				AppUser circleAppUser = appUserService.findAppUserById(circle.getUserId());
-				if(null != circleAppUser){
-					if(null == circleAppUser.getBalance()){
-						circleAppUser.setBalance(0.0);
+			synchronized (this) {
+				List<CityCircle> cityCircles = super.queryForList(finderCircle, CityCircle.class);
+				if(null != cityCircles && cityCircles.size() > 0){
+					cityCircle = cityCircles.get(0);
+				}
+				
+				if(cityCircle==null||cityCircle.getMoney()==null||userId.intValue()!=cityCircle.getUserId().intValue()){
+					return 4;
+				}
+				
+				//判断用户余额足不足
+				if(appUser.getBalance()<cityCircle.getMoney()){
+					return 5;
+				}
+				
+				if(cityCircle.getMoney() <=0){
+					return 6;
+				}
+				//扣除余额并且加到余额记录
+				appUser.setBalance(new BigDecimal(appUser.getBalance()).subtract(new BigDecimal(cityCircle.getMoney())).doubleValue());
+				super.update(appUser, true);
+				//改变状态
+				cityCircle.setStatus(1);
+				cityCircle.setPayType(3);
+				cityCircle.setPayMoney(cityCircle.getMoney());
+				cityCircle.setPayTime(new Date());
+				
+				//更新circle表的打赏总金额字段
+				Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney WHERE id=:id");
+				circleFinder.setParam("sumMoney", cityCircle.getMoney());
+				circleFinder.setParam("id", cityCircle.getItemId());
+				super.update(circleFinder);
+				
+				
+				super.update(cityCircle,true);
+				
+				//记录用户的余额记录
+				MoneyDetail moneyDetailC=new MoneyDetail();
+				moneyDetailC.setBalance(appUser.getBalance());
+				moneyDetailC.setCreateTime(new Date());
+				moneyDetailC.setItemId(itemId);
+				moneyDetailC.setMoney(-cityCircle.getMoney());
+				moneyDetailC.setType(14);
+				moneyDetailC.setPayType(3);
+				moneyDetailC.setUserId(userId);
+				moneyDetailC.setOsType(osType);
+				super.save(moneyDetailC);
+				
+				//更新被打赏用户的记录
+				Circle circle = circleService.findCircleById(itemId);
+				if(null != circle && null != circle.getUserId()){
+					AppUser circleAppUser = appUserService.findAppUserById(circle.getUserId());
+					if(null != circleAppUser){
+						if(null == circleAppUser.getBalance()){
+							circleAppUser.setBalance(0.0);
+						}
+						circleAppUser.setBalance(new BigDecimal(circleAppUser.getBalance()).add(new BigDecimal(cityCircle.getMoney())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						
+						MoneyDetail moneyDetailB=new MoneyDetail();
+						moneyDetailB.setBalance(circleAppUser.getBalance());
+						moneyDetailB.setCreateTime(new Date());
+						moneyDetailB.setItemId(userId);
+						moneyDetailB.setMoney(+cityCircle.getMoney());
+						moneyDetailB.setType(16);
+						moneyDetailB.setUserId(circleAppUser.getId());
+						moneyDetailB.setOsType(osType);
+						super.save(moneyDetailB);
+						
+						notificationService.notify(34, itemId, circle.getUserId());
+						appUserService.update(circleAppUser,true);
 					}
-					circleAppUser.setBalance(new BigDecimal(circleAppUser.getBalance()).add(new BigDecimal(cityCircle.getMoney())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-					
-					MoneyDetail moneyDetailB=new MoneyDetail();
-					moneyDetailB.setBalance(circleAppUser.getBalance());
-					moneyDetailB.setCreateTime(new Date());
-					moneyDetailB.setItemId(userId);
-					moneyDetailB.setMoney(+cityCircle.getMoney());
-					moneyDetailB.setType(16);
-					moneyDetailB.setUserId(circleAppUser.getId());
-					moneyDetailB.setOsType(osType);
-					super.save(moneyDetailB);
-					
-					notificationService.notify(34, itemId, circle.getUserId());
-					appUserService.update(circleAppUser,true);
 				}
 			}
+			
 			
 			
 			break;
