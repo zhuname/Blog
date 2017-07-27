@@ -28,6 +28,7 @@ import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICircleService;
+import com.cz.mts.system.service.ICityCircleService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IShieldService;
@@ -62,6 +63,8 @@ public class CircleController  extends BaseController {
 	private IAttentionService attentionService;
 	@Resource
 	private IOperService operService;
+	@Resource
+	private ICityCircleService cityCircleService;
 	
 	
 	private String listurl="/circle/circleList";
@@ -373,6 +376,16 @@ public class CircleController  extends BaseController {
 					}
 				
 				}
+			  
+			  Finder cityCircleFinder = new Finder("SELECT * FROM t_city_circle WHERE `status`=1 and itemId=:itemId");
+			  cityCircleFinder.setParam("itemId", id);
+			  List cityCircleList = cityCircleService.queryForList(cityCircleFinder);
+			  if(null != cityCircleList && cityCircleList.size() > 0){
+				  circle.setCityCirclePerson(cityCircleList.size());
+			  }else{
+				  circle.setCityCirclePerson(0);
+			  }
+			  
 		  }
 		returnObject.setData(circle);
 		}else{
