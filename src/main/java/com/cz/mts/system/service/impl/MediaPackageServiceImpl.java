@@ -304,20 +304,20 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						 }else{
 							 mp.setIsTop(0);
 						 }
+					}else{
+						 //是否点赞过
+						 Oper oper = new Oper();
+						 oper.setUserId(mp.getUserId());
+						 oper.setItemId(mp.getId());
+						 oper.setType(3);
+						 Page operPage = new Page();
+						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+						 if(null != opers && opers.size() > 0){
+							 mp.setIsTop(1);
+						 }else{
+							 mp.setIsTop(0);
+						 }
 					}
-					
-					 //是否点赞过
-					 Oper oper = new Oper();
-					 oper.setUserId(mp.getUserId());
-					 oper.setItemId(mp.getId());
-					 oper.setType(3);
-					 Page operPage = new Page();
-					 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
-					 if(null != opers && opers.size() > 0){
-						 mp.setIsTop(1);
-					 }else{
-						 mp.setIsTop(0);
-					 }
 					
 					
 				}
