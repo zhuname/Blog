@@ -22,6 +22,7 @@ import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Shield;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IShieldService;
+import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.GlobalStatic;
@@ -160,6 +161,7 @@ public class ShieldController  extends BaseController {
 	 * 
 	 */
 	@RequestMapping("/update/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas saveorupdate(Model model,Shield shield,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
@@ -171,7 +173,6 @@ public class ShieldController  extends BaseController {
 				// ==执行分页查询
 				List<Shield> datas=shieldService.findListDataByFinder(null,page,Shield.class,shield);
 				if(datas.size()>0){
-					//删除所有收藏的
 					for (Shield shieldD : datas) {
 						shieldService.deleteByEntity(shieldD);
 					}
