@@ -30,6 +30,7 @@ import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
@@ -40,6 +41,7 @@ import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
@@ -82,7 +84,8 @@ public class MoneyDetailController  extends BaseController {
 	private ICardService cardService;
 	@Resource
 	private ICategoryService categoryService;
-	
+	@Resource
+	private ICircleService circleService;
 	
 	private String listurl="/moneydetail/moneydetailList";
 	
@@ -639,6 +642,13 @@ public class MoneyDetailController  extends BaseController {
 							Card card = cardService.findCardById(md.getItemId());
 							if(null != card && StringUtils.isNotBlank(card.getTitle())){
 								md.setContent(card.getTitle());
+							}
+						}
+						
+						if(14 == md.getType() || 16 == md.getType()){
+							Circle circle = circleService.findCircleById(md.getItemId());
+							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
+								md.setContent(circle.getContent());
 							}
 						}
 						

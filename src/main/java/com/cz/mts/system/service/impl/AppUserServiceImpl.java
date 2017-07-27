@@ -677,7 +677,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						MoneyDetail moneyDetailB=new MoneyDetail();
 						moneyDetailB.setBalance(circleAppUser.getBalance());
 						moneyDetailB.setCreateTime(new Date());
-						moneyDetailB.setItemId(userId);
+						moneyDetailB.setItemId(itemId);
 						moneyDetailB.setMoney(+cityCircle.getMoney());
 						moneyDetailB.setType(16);
 						moneyDetailB.setUserId(circleAppUser.getId());
@@ -1279,7 +1279,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 							MoneyDetail moneyDetailB=new MoneyDetail();
 							moneyDetailB.setBalance(circleAppUser.getBalance());
 							moneyDetailB.setCreateTime(new Date());
-							moneyDetailB.setItemId(cityCircle.getUserId());
+							moneyDetailB.setItemId(cityCircle.getItemId());
 							moneyDetailB.setMoney(+cityCircle.getMoney());
 							moneyDetailB.setType(16);
 							moneyDetailB.setUserId(circleAppUser.getId());
