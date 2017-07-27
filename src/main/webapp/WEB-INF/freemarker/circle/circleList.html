@@ -93,7 +93,7 @@ $(document).on("click", ".selectBtn", function() {
                     <tr>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_type" >类型</th>
+						<th id="th_type">类型</th>
 						<th id="th_image" >图片</th>
 						<th id="th_mediaUrl" >视频</th>
 						<th id="th_content" width="20%">主题</th>
@@ -104,8 +104,8 @@ $(document).on("click", ".selectBtn", function() {
 						<th id="th_commentCount" >评论次数</th>
 						<th id="th_sumMoney" >打赏总金额</th>
 						<th id="th_count" >打赏次数</th>
-						<th id="th_height" >单张图片的高</th>
-						<th id="th_width" >单张图片的宽</th>
+						<!-- <th id="th_height" >单张图片的高</th>
+						<th id="th_width" >单张图片的宽</th> -->
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -175,11 +175,12 @@ $(document).on("click", ".selectBtn", function() {
 								</#if>
 							</td>
 							<td >
-									<#list "${(_data.image)!''}"?split(";") as s>
+									<!-- <#list "${(_data.image)!''}"?split(";") as s>
 										<a >
 										<img class="sim"  height="120px" width="120px" alt="" src="${s}" onclick="checkImg('${s}','360px','360px');" >
 										<a>
-									</#list>
+									</#list> -->
+									<img class="sim"  height="120px" width="120px" alt="" src="${(_data.image)!''}" onclick="checkImg('${(_data.image)!''}','360px','360px');" >
 							</td>
 							<td >
 							<video class="vid" poster="" width='240px' height="120px" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
@@ -209,12 +210,12 @@ $(document).on("click", ".selectBtn", function() {
 							<td >
 								${(_data.count)!0}
 							</td>
-							<td >
+							<!-- <td >
 								${(_data.height)!0}
 							</td>
 							<td >
 								${(_data.width)!0}
-							</td>
+							</td> -->
 						</tr>
 					</#list>
 					 </#if>

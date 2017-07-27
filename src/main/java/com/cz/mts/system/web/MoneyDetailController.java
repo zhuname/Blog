@@ -700,6 +700,17 @@ public class MoneyDetailController  extends BaseController {
 				map.put("lqSum", 0);
 			}
 			
+			//获取人数
+			Finder sumFinder = new Finder("SELECT * FROM t_user_card WHERE cardId=:itemId AND `status`!=0 GROUP BY userId");
+			sumFinder.setParam("itemId", moneyDetail.getItemId());
+			List sumLists = moneyDetailService.queryForList(sumFinder);
+			if(null != sumLists && sumLists.size() > 0){
+				map.put("lqPerson", sumLists.size());
+			}else{
+				map.put("lqPerson", 0);
+			}
+			
+			
 			//获取卡券分类图片
 			Finder cardFinder = new Finder("SELECT * from t_category WHERE id in (SELECT catergoryId from t_card WHERE id=:itemId)");
 			cardFinder.setParam("itemId", moneyDetail.getItemId());

@@ -120,6 +120,13 @@ public class CircleController  extends BaseController {
 						  circle2.setUserName(appUser.getName());
 					  }
 				  }
+				if(StringUtils.isNotBlank(circle2.getImage())){
+					if(circle2.getImage().contains(";")){
+						circle2.setImage(circle2.getImage().split(";")[0]);
+					}else{
+						circle2.setImage(circle2.getImage());
+					}
+				}
 			}
 		}
 		

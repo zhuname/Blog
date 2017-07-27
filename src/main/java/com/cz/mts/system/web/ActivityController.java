@@ -155,6 +155,14 @@ public class ActivityController  extends BaseController {
 					  }
 					  
 				  }
+				
+				if(StringUtils.isNotBlank(activity2.getImage())){
+					if(activity2.getImage().contains(";")){
+						activity2.setImage(activity2.getImage().split(";")[0]);
+					}else{
+						activity2.setImage(activity2.getImage());
+					}
+				}
 			}
 		}
 		returnObject.setQueryBean(activity);
