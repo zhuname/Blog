@@ -40,11 +40,13 @@ $(document).on("click", ".selectBtn", function() {
 			 <label for="search_userName"><b>发布人名称:</b></label> 
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人名称"  value="${(returnDatas.queryBean.userName)!''}">
 			 
-			 <label for="search_joinUserName"><b>参与人名称:</b></label> 
-			 <input type="text" id="search_joinUserName"  name="joinUserName" placeholder="请填写参与人名称"  value="${(returnDatas.queryBean.joinUserName)!''}">
+			 <label for="search_joinUserName"><b>获奖者:</b></label> 
+			 <input type="text" id="search_joinUserName"  name="joinUserName" placeholder="请填写获奖者名称"  value="${(returnDatas.queryBean.joinUserName)!''}">
 			 
 			 <label for="search_awardName"><b>奖项名称:</b></label> 
 			 <input type="text" id="search_awardName"  name="awardName" placeholder="请填写奖项名称"  value="${(returnDatas.queryBean.awardName)!''}">
+			  <label for="search_activityName"><b>活动主题:</b></label> 
+			 <input type="text" id="search_activityName"  name="activityName" placeholder="请填写活动主题"  value="${(returnDatas.queryBean.activityName)!''}">
 			 
 			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
 				</a>
@@ -90,10 +92,12 @@ $(document).on("click", ".selectBtn", function() {
                         <!--first_start_no_export-->
                         <!-- <th>操作</th> -->
                         <!--first_end_no_export-->
-						<th id="th_userId" >发布人名称</th>
-						<th id="th_joinUserId" >参与人名称</th>
+						<th id="th_userId" >发布人</th>
+						<th id="th_activityId" >活动主题</th>
+						<th id="th_joinUserId" >获奖者</th>
 						<th id="th_createTime" >颁奖时间</th>
-						<th id="th_awardId" >奖项名称</th>
+						<th id="th_awardId" >奖项标题</th>
+						<th id="th_awardId" >奖项内容</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -158,6 +162,9 @@ $(document).on("click", ".selectBtn", function() {
 								${(_data.userName)!''}
 							</td>
 							<td >
+								${(_data.activityName)!''}
+							</td>
+							<td >
 								${(_data.joinUserName)!''}
 							</td>
 							<td >
@@ -166,6 +173,9 @@ $(document).on("click", ".selectBtn", function() {
 							</td>
 							<td >
 								${(_data.awardName)!''}
+							</td>
+							<td >
+								${(_data.awardsContent)!''}
 							</td>
 						</tr>
 					</#list>

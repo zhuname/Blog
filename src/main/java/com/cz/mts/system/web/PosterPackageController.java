@@ -888,6 +888,9 @@ public class PosterPackageController  extends BaseController {
 			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=1) ");
 			finder.setParam("cityId", Integer.parseInt(posterPackage.getCityIds()));
 		}
+		if(StringUtils.isNotBlank(posterPackage.getTitle())){
+			finder.append(" and title like '%"+posterPackage.getTitle()+"%'");
+		}
 		finder.append(" and status!=0");
 		
 		Double sumPayMoney = 0.0;

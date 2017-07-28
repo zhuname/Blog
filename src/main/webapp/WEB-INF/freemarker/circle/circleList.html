@@ -180,7 +180,7 @@ $(document).on("click", ".selectBtn", function() {
 										<img class="sim"  height="120px" width="120px" alt="" src="${s}" onclick="checkImg('${s}','360px','360px');" >
 										<a>
 									</#list> -->
-									<img class="sim"  height="120px" width="120px" alt="" src="${(_data.image)!''}" onclick="checkImg('${(_data.image)!''}','360px','360px');" >
+									<img class="sim"  height="120px" width="120px" alt="" src="${(_data.image)!''}" onclick="checkImg('${(_data.image)!''}','${(_data.width)!''}px','${(_data.height)!''}px');" >
 							</td>
 							<td >
 							<video class="vid" poster="" width='240px' height="120px" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>

@@ -161,13 +161,14 @@
 	
 	function checkImg(s,width,height){
 		var me="<img style=\"height:"+height+";width:"+width+";\" alt=\"\" src=\""+s+"\">";
+		console.log(width,height);
     	var a = s;
     	if(a != ""){
     		//iframe层-多媒体
         	layer.open({
 			  type: 1,
 			  title: false,
-			  closeBtn: 0,
+			  closeBtn: 1,
 			  area: width,
 			  skin: 'layui-layer-nobg', //没有背景色
 			  shadeClose: true,

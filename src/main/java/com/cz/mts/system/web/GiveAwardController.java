@@ -106,6 +106,9 @@ public class GiveAwardController  extends BaseController {
 		if(StringUtils.isNotBlank(giveAward.getAwardName())){
 			finder.append(" and awardId in (select id from t_awards where title like '%"+giveAward.getAwardName()+"%')");
 		}
+		if(StringUtils.isNotBlank(giveAward.getActivityName())){
+			finder.append(" AND awardId in (SELECT id from t_awards WHERE activityId in (SELECT id FROM t_activity WHERE content LIKE '%"+giveAward.getActivityName()+"%'))");
+		}
 		
 		List<GiveAward> datas=giveAwardService.findListDataByFinder(finder,page,GiveAward.class,giveAward);
 		
@@ -132,6 +135,16 @@ public class GiveAwardController  extends BaseController {
 					Awards awards=awardsService.findAwardsById(ga.getAwardId());
 					if(awards!=null && StringUtils.isNotBlank(awards.getTitle())){
 						ga.setAwardName(awards.getTitle());
+					}
+					if(null != awards && StringUtils.isNotBlank(awards.getContent())){
+						ga.setAwardsContent(awards.getContent());
+					}
+					
+					if(null != awards && null != awards.getActivityId()){
+						Activity activity = activityService.findActivityById(awards.getActivityId());
+						if(null != activity && StringUtils.isNotBlank(activity.getContent())){
+							ga.setActivityName(activity.getContent());
+						}
 					}
 				}
 			

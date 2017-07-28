@@ -206,16 +206,18 @@ public class ApplyMedalController  extends BaseController {
 				returnObject.setMessage("参数缺失");
 			}else{
 				//首先判断该用户是否已经认证通过并且没有过期
-				Finder successFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=2 and isEndStatus=0 and medalId=:medalId");
+				Finder successFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=2 and isEndStatus=0 and medalId=:medalId and userId=:userId");
 				successFinder.setParam("medalId", applyMedal.getMedalId());
+				successFinder.setParam("userId", applyMedal.getUserId());
 				List successList = applyMedalService.queryForList(successFinder);
 				if(null != successList && successList.size() > 0){
 					returnObject.setMessage("您已经拥有该勋章，暂不能申请");
 					returnObject.setStatus(ReturnDatas.ERROR);
 				}else{
 					//判断该用户是否有申请中的勋章
-					Finder applyFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=1 and isEndStatus=0 and medalId=:medalId"); 
+					Finder applyFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=1 and isEndStatus=0 and medalId=:medalId and userId=:userId"); 
 					applyFinder.setParam("medalId", applyMedal.getMedalId());
+					applyFinder.setParam("userId", applyMedal.getUserId());
 					List applyList = applyMedalService.queryForList(applyFinder);
 					if(null != applyList && applyList.size() > 0){
 						returnObject.setMessage("您申请的勋章正在认证中，暂不能申请");

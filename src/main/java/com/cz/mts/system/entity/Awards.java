@@ -64,12 +64,25 @@ public class Awards  extends BaseEntity {
 	
 	private String activityName;
 	
+	private String userName;
+	
+	
+	
 	
 	
 	
 	//columns END 数据库字段结束
 	
 	//concstructor
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	@Transient
 	public String getActivityName() {

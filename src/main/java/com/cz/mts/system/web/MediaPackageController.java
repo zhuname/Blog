@@ -714,6 +714,10 @@ public class MediaPackageController  extends BaseController {
 			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=2)");
 			finder.setParam("cityId", Integer.parseInt(mediaPackage.getCityIds()));
 		}
+		
+		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
+			finder.append(" and title like '%"+mediaPackage.getTitle()+"%'");
+		}
 		finder.append(" and status!=0");
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
 		Double sumPayMoney = 0.0;

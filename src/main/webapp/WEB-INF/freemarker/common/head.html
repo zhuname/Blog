@@ -429,6 +429,9 @@
                  <li class="next disabled"><a href="javascript:void(0);"><i class="fa fa-angle-double-right"></i></a></li>
                 </#if>
                  <li class="disabled"><a href="javascript:void(0);">共${page.pageCount}页${page.totalCount}条</a></li>
+                 <li class="disabled" id="pageFooterSearch"><a href="javascript:void(0);" data-toggle="popover" title="enter键跳转">至<input onkeyup="searchPage('${formId}',$(this).val());"   type="number" style="width: 50px;height: 18px;margin-right: 5px;margin-left: 5px;" />页
+							</a></li>
+                 
             </ul>
         </div>
     </div>

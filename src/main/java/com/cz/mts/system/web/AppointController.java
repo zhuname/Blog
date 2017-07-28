@@ -396,10 +396,25 @@ public class AppointController  extends BaseController {
 				appointCount = 0;
 				appintMoney = 0.0;
 			}
+			
+			Integer appoinPerson = 0;
+			//预约总人数
+			Finder sumFinder = new Finder("SELECT * FROM t_appoint WHERE type=:type and itemId=:itemId  and status != 0 GROUP BY userId");
+			sumFinder.setParam("type", appoint.getType());
+			sumFinder.setParam("itemId", appoint.getItemId());
+			List appList = appointService.queryForList(sumFinder);
+			if(null != appList && appList.size() > 0){
+				appoinPerson = appList.size();
+			}else{
+				appoinPerson = 0;
+			}
+			
+			
+			
 			Map<String, Object> map = new HashMap<>();
 			map.put("appointCount", appointCount);
 			map.put("appintMoney", new BigDecimal(appintMoney).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-			
+			map.put("appoinPerson", appoinPerson);
 			returnObject.setData(map);
 		}
 		
@@ -483,7 +498,7 @@ public class AppointController  extends BaseController {
 				}
 				if(userId.intValue()!=appo.getPackageUserId().intValue()){
 					returnObject.setStatus(ReturnDatas.ERROR);
-					returnObject.setMessage("仅能兑换自己发布的红包");
+					returnObject.setMessage("只能兑换自己发布的预约");
 					return returnObject;
 				}
 			}

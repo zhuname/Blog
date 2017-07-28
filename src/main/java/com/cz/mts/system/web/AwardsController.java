@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.system.entity.Activity;
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.service.IActivityService;
+import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAwardsService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
@@ -43,6 +45,8 @@ public class AwardsController  extends BaseController {
 	private IAwardsService awardsService;
 	@Resource
 	private IActivityService activityService;
+	@Resource
+	private IAppUserService appUserService;
 	
 	private String listurl="/awards/awardsList";
 	
@@ -89,6 +93,9 @@ public class AwardsController  extends BaseController {
 		if(StringUtils.isNotBlank(awards.getContent())){
 			finder.append(" and content like '%"+awards.getContent()+"%'");
 		}
+		if(StringUtils.isNotBlank(awards.getUserName())){
+			finder.append(" AND activityId in (SELECT id FROM t_activity WHERE userId in (SELECT id FROM t_app_user where `name` like '%"+awards.getUserName()+"%'))");
+		}
 		// ==执行分页查询
 		List<Awards> datas=awardsService.findListDataByFinder(finder,page,Awards.class,null);
 		if(null != datas && datas.size() > 0){
@@ -97,6 +104,12 @@ public class AwardsController  extends BaseController {
 					Activity activity = activityService.findActivityById(ad.getActivityId());
 					if(null != activity && StringUtils.isNotBlank(activity.getContent())){
 						ad.setActivityName(activity.getContent());
+					}
+					if(null != activity && null != activity.getUserId()){
+						AppUser appUser = appUserService.findAppUserById(activity.getUserId());
+						if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+							ad.setUserName(appUser.getName());
+						}
 					}
 				}
 			}

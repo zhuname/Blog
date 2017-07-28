@@ -27,6 +27,7 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Appoint;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
@@ -39,6 +40,7 @@ import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAppointService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICircleService;
@@ -86,6 +88,8 @@ public class MoneyDetailController  extends BaseController {
 	private ICategoryService categoryService;
 	@Resource
 	private ICircleService circleService;
+	@Resource
+	private IAppointService appointService;
 	
 	private String listurl="/moneydetail/moneydetailList";
 	
@@ -649,6 +653,28 @@ public class MoneyDetailController  extends BaseController {
 							Circle circle = circleService.findCircleById(md.getItemId());
 							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
 								md.setContent(circle.getContent());
+							}
+						}
+						if(13 == md.getType()){
+							Appoint appoint = appointService.findAppointById(md.getItemId());
+							if(null != appoint && null != appoint.getType()){
+								switch (appoint.getType()) {
+								case 1:
+									
+									PosterPackage posterPackageApp = posterPackageService.findPosterPackageById(appoint.getItemId());
+									//查询海报红包
+									if(posterPackageApp!=null && StringUtils.isNotBlank(posterPackageApp.getTitle())){
+										md.setContent(posterPackageApp.getTitle());
+									}
+									break;
+								case 2:
+									
+									MediaPackage mediaPackageApp=mediaPackageService.findMediaPackageById(appoint.getItemId());
+									if(mediaPackageApp!=null && StringUtils.isNotBlank(mediaPackageApp.getTitle())){
+										md.setContent(mediaPackageApp.getTitle());
+									}
+									break;
+								}
 							}
 						}
 						

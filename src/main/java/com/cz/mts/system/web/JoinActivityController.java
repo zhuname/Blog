@@ -309,6 +309,11 @@ public class JoinActivityController  extends BaseController {
 			finder.setParam("title", joinActivity.getAwardName());
 		}
 		
+		if(StringUtils.isNotBlank(joinActivity.getActivityName())){
+			finder.append(" and activityId in (select id from t_activity where INSTR(`content`,:activityName)>0)");
+			finder.setParam("activityName", joinActivity.getActivityName());
+		}
+		
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);	
 		if(null != datas && datas.size() > 0){
 			for (JoinActivity ja : datas) {
@@ -334,6 +339,13 @@ public class JoinActivityController  extends BaseController {
 						String[] strs = ja.getImage().split(";");
 						String image = strs[0];
 						ja.setImage(image);
+					}
+				}
+				
+				if(null != ja.getActivityId()){
+					Activity activity = activityService.findActivityById(ja.getActivityId());
+					if(null != activity && StringUtils.isNotBlank(activity.getContent())){
+						ja.setActivityName(activity.getContent());
 					}
 				}
 				

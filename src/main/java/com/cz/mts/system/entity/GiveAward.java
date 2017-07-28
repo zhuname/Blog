@@ -69,11 +69,35 @@ public class GiveAward  extends BaseEntity {
 	
 	private String joinUserName;
 	
+	private String activityName;
+	
+	private String awardsContent;
+	
+	
+	
+	
 	
 	
 	//concstructor
 	
 	
+    @Transient
+	public String getAwardsContent() {
+		return awardsContent;
+	}
+
+	public void setAwardsContent(String awardsContent) {
+		this.awardsContent = awardsContent;
+	}
+
+	@Transient
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
 
 	@Transient
 	public String getAwardName() {

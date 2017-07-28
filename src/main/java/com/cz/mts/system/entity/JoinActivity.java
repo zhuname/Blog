@@ -92,6 +92,10 @@ public class JoinActivity  extends BaseEntity {
 	
 	private Integer activityId;
 	
+	private String awardsTitle;
+	
+	private String activityName;
+	
 	
 	//columns END 数据库字段结束
 	
@@ -116,7 +120,20 @@ public class JoinActivity  extends BaseEntity {
 	
 	
 	
-	
+	@Transient
+	public String getAwardsTitle() {
+		return awardsTitle;
+	}
+	public void setAwardsTitle(String awardsTitle) {
+		this.awardsTitle = awardsTitle;
+	}
+	@Transient
+	public String getActivityName() {
+		return activityName;
+	}
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
 	@Transient
 	public String getAwardName() {
 		return awardName;

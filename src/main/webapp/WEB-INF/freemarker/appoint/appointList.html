@@ -15,6 +15,8 @@ function deleteAppoint(){
 		mydelete(_url,listurl);
 	}
 }
+
+jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
 </script>
 
 
@@ -41,7 +43,7 @@ function deleteAppoint(){
 			<label for="search_status"><b>状态:</b></label> 
 			 <select id="search_status" name="status" class="col-10">
 			 	<option value="">请选择</option>
-				<option value="0">待支付</option>
+				<!-- <option value="0">待支付</option> -->
 				<option value="1">未兑换</option>
 				<option value="2">已兑换</option>
 			</select>
@@ -49,7 +51,7 @@ function deleteAppoint(){
 			 <input type="text" id="search_code" name="code" placeholder="请填写订单编码" value="${(returnDatas.queryBean.code)!''}">
 			 <label for="search_phone"><b>电话:</b></label> 
 			 <input type="text" id="search_phone" name="phone" placeholder="请填写手机号" value="${(returnDatas.queryBean.phone)!''}">
-			<a href="javascript:mySubmitForm('searchForm');"
+			<a href="javascript:mySubmitForm('searchForm');" onclick="$('#pageIndex').val(1);"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
@@ -206,13 +208,13 @@ function deleteAppoint(){
 								${(_data.payMoney)!0}
 							</td>
 							<td >
-								<#if (_data.status) == 1 >
+								<#if (_data.status) == 0 >
 									待支付
 								</#if>
-								<#if (_data.status) == 2 >
+								<#if (_data.status) == 1 >
 									未兑换
 								</#if>
-								<#if (_data.status) == 3 >
+								<#if (_data.status) == 2 >
 									已兑换
 								</#if>
 							</td>

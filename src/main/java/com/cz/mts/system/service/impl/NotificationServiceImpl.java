@@ -319,9 +319,9 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			break;
 			case 34:
-				JPushUtil.sendJPushNotification("您发布的朋友圈被人打赏了哟，请注意查看", type+"", id, userId, "");
+				JPushUtil.sendJPushNotification("您发布的城事圈被人打赏啦，快去领赏吧！", type+"", id, userId, "");
 				try {
-					message=new Message(null, 34, userId, new Date(), "您发布的朋友圈被人打赏了哟，请注意查看", id, null, 0, "城事圈被人打赏", 2);
+					message=new Message(null, 34, userId, new Date(), "您发布的城事圈被人打赏啦，快去领赏吧！", id, null, 0, "城事圈被人打赏", 2);
 					messageService.save(message);
 				} catch (Exception e) {
 					// TODO: handle exception

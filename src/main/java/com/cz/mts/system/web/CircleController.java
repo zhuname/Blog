@@ -1,11 +1,22 @@
 package  com.cz.mts.system.web;
 
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -126,9 +137,42 @@ public class CircleController  extends BaseController {
 				if(StringUtils.isNotBlank(circle2.getImage())){
 					if(circle2.getImage().contains(";")){
 						circle2.setImage(circle2.getImage().split(";")[0]);
+						
+						
 					}else{
 						circle2.setImage(circle2.getImage());
 					}
+					
+					//获取图片宽和高
+					BufferedImage image=getBufferedImage(circle2.getImage());  
+			        if (image!=null)  
+			        {  
+			        	int height = image.getHeight();
+			        	int width = image.getWidth();
+		        		Double percent = 0.0;
+		        		Toolkit kit = Toolkit.getDefaultToolkit(); //定义工具包
+			        	Dimension screenSize = kit.getScreenSize(); //获取屏幕的尺寸  
+			        	int screenWidth = screenSize.width; //获取屏幕的宽  
+			        	int screenHeight = screenSize.height; //获取屏幕的高  
+			        	if(height > screenHeight){
+			        		percent = 500 / (double) width;
+			        		height = (int) (height * percent);
+			        		circle2.setHeight(height);
+				        	circle2.setWidth(500);
+			        	}else{
+			        		circle2.setHeight(height);
+				        	circle2.setWidth(width);
+			        	}
+			        	
+//			        	circle2.setHeight(height);
+//			        	circle2.setWidth(width);
+			        	
+//			        	Image smallImg =image.getScaledInstance( height, width/2,Image.SCALE_REPLICATE );
+			        	
+			        	
+//			            System.out.println("图片高度:"+image.getHeight());  
+//			            System.out.println("图片宽度:"+image.getWidth());  
+			        }  
 				}
 			}
 		}
@@ -531,5 +575,34 @@ public class CircleController  extends BaseController {
 		
 		
 	}
+	
+	
+	 /** 
+     *  
+     * @param imgUrl 图片地址 
+     * @return  
+     */  
+    public static BufferedImage getBufferedImage(String imgUrl) {  
+        URL url = null;  
+        InputStream is = null;  
+        BufferedImage img = null;  
+        try {  
+            url = new URL(imgUrl);  
+            is = url.openStream();  
+            img = ImageIO.read(is);  
+        } catch (MalformedURLException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } finally {  
+              
+            try {  
+                is.close();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+        }  
+        return img;  
+    }  
 
 }
