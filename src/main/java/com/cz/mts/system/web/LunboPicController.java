@@ -21,6 +21,7 @@ import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LunboPic;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
@@ -29,6 +30,7 @@ import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICircleService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ILunboPicService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IPosterPackageService;
@@ -66,6 +68,8 @@ public class LunboPicController  extends BaseController {
 	private IActivityService activityService;
 	@Resource
 	private ICircleService circleService;
+	@Resource
+	private ICityService cityService;
 	
 	private String listurl="/lunbopic/lunbopicList";
 	private String listurl4="/lunbopic/lunbopicList4";
@@ -358,6 +362,12 @@ public class LunboPicController  extends BaseController {
 					}
 				}else{
 					lp.setItemName("暂无链接目标");
+				}
+				if(StringUtils.isNotBlank(lp.getCityIds())){
+					City city = cityService.findCityById(lp.getCityIds());
+					if(null != city && StringUtils.isNotBlank(city.getName())){
+						lp.setCityName(city.getName());
+					}
 				}
 			}
 		}

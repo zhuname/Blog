@@ -147,6 +147,7 @@ $(document).on("change", "#city", function() {
 						<th   style="width: 10%"  id="th_itemId" >对应的目标</th>
 						<th   style="width: 10%"  id="th_position" >展示位置</th>
 						<th   style="width: 10%"  id="th_url" >url</th>
+						<th   style="width: 10%"  id="th_cityIds" >地区</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -262,6 +263,9 @@ $(document).on("change", "#city", function() {
 							</td>
 							<td >
 								${(_data.url)!''}
+							</td>
+							<td >
+								${(_data.cityName)!''}
 							</td>
 						</tr>
 					</#list>

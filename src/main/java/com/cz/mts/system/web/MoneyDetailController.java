@@ -162,6 +162,13 @@ public class MoneyDetailController  extends BaseController {
 					if(null != card && StringUtils.isNotBlank(card.getTitle())){
 						uc.setCardName(card.getTitle());
 					}
+					
+					if(null != card && null != card.getCatergoryId()){
+						Category category = categoryService.findCategoryById(card.getCatergoryId());
+						if(null != category && StringUtils.isNotBlank(category.getName())){
+							uc.setCategoryName(category.getName());
+						}
+					}
 				}
 				
 				
@@ -188,6 +195,18 @@ public class MoneyDetailController  extends BaseController {
 					}
 					if(3 == uc.getStatus()){
 						uc.setStatusName("已过期");
+					}
+				}
+				
+				if(null != uc.getPayType()){
+					if(1 == uc.getPayType()){
+						uc.setPayName("支付宝");
+					}
+					if(2 == uc.getPayType()){
+						uc.setPayName("微信");
+					}
+					if(3 == uc.getPayType()){
+						uc.setPayName("余额支付");
 					}
 				}
 			}

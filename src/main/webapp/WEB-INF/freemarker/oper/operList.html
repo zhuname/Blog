@@ -45,8 +45,8 @@ jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("
 			 <input type="text" id="search_nickName"  name="nickName" placeholder="请填写评论人名称"  value="${(returnDatas.queryBean.nickName)!''}">
 			 <label for="search_content"><b>评论内容:</b></label> 
 			 <input type="text" id="search_content"  name="content" placeholder="请填写评论内容"  value="${(returnDatas.queryBean.content)!''}">
-			  <label for="search_itemName"><b>目标内容:</b></label> 
-			 <input type="text" id="search_itemName"  name="itemName" placeholder="请填写目标内容"  value="${(returnDatas.queryBean.itemName)!''}">
+			  <label for="search_itemName"><b>所在目标主题内容:</b></label> 
+			 <input type="text" id="search_itemName"  name="itemName" placeholder="所在目标主题内容"  value="${(returnDatas.queryBean.itemName)!''}">
 			<a  href="javascript:mySubmitForm('searchForm');" onclick="$('#pageIndex').val(1);" 
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -95,7 +95,7 @@ jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("
                         <th width="10%">操作</th>
                         <!--first_end_no_export-->
 						<th id="th_userId" width="10%" >评论人名称</th>
-						<th id="th_itemId" width="20%">目标名称</th>
+						<th id="th_itemId" width="20%">所在目标主题内容</th>
 						<th id="th_createTime" width="10%">评论时间</th>
 						<th id="th_type" width="10%"> 类型</th>
 						<th id="th_content" width="40%">评论内容</th>

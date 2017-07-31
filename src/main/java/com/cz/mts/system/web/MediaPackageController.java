@@ -198,6 +198,7 @@ public class MediaPackageController  extends BaseController {
 				 
 				 
 				 Page newPage = new Page();
+				 newPage.setPageSize(1000000);
 				 //查询评论个数
 				 Oper commentOper = new Oper();
 				 commentOper.setType(4);

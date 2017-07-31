@@ -37,7 +37,7 @@ public class CircleServiceImpl extends BaseSpringrainServiceImpl implements ICir
 	      Circle circle=(Circle) entity;
 	      
 	      
-	      if(circle.getType()==null||circle.getContent()==null||circle.getUserId()==null||circle.getCityId()==null){
+	      if(circle.getType()==null||circle.getUserId()==null||circle.getCityId()==null){
 	    	  throw new ParameterErrorException();
 	      }
 	      

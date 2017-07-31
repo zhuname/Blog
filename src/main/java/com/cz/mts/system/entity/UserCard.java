@@ -147,9 +147,31 @@ public class UserCard  extends BaseEntity {
 	private Double plateMoney;
 	
 	private Integer lqNum;
+	
+	private String categoryName;
+	
+	private String payName;
+	
 
 	
-	
+	@Transient
+	public String getPayName() {
+		return payName;
+	}
+
+	public void setPayName(String payName) {
+		this.payName = payName;
+	}
+
+	@Transient
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
 	@Transient
 	public Integer getLqNum() {
 		return lqNum;

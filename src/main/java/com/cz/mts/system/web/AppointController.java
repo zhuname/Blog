@@ -96,10 +96,85 @@ public class AppointController  extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, Model model,Appoint appoint) 
 			throws Exception {
-		ReturnDatas returnObject = listjson(request, model, appoint);
+		ReturnDatas returnObject = adminlistjson(request, model, appoint);
 		model.addAttribute(GlobalStatic.returnDatas, returnObject);
 		return listurl;
 	}
+	
+	/**
+	 * 我的预约列表
+	 * @author wml
+	 * @param request
+	 * @param model
+	 * @param appoint
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/adminlist/json")
+	public @ResponseBody
+	ReturnDatas adminlistjson(HttpServletRequest request, Model model,Appoint appoint) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		// ==构造分页请求
+		Page page = newPage(request);
+		
+		Finder finder=Finder.getSelectFinder(Appoint.class).append(" where 1=1 and status!=0");
+		
+		if(StringUtils.isNotBlank(appoint.getUserName())){
+			finder.append(" and userId in (select id from t_app_user where name like '%"+appoint.getUserName()+"%')");
+		}
+		if(StringUtils.isNotBlank(appoint.getTitle())){
+			finder.append(" and ((itemId in (select id from t_poster_package where title like '%"+appoint.getTitle()+"%') and type=1) "
+					+ "or (itemId in (select id from t_media_package where title like '%"+appoint.getTitle()+"%') and type=2))");
+		}
+		
+		// ==执行分页查询
+		List<Appoint> datas=appointService.findListDataByFinder(finder,page,Appoint.class,appoint);
+		if(null != datas && datas.size()> 0){
+			
+			for (Appoint ap : datas) {
+				if(null != ap.getUserId()){
+					AppUser appUser = appUserService.findAppUserById(ap.getUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						ap.setUserName(appUser.getName());
+					}
+				}
+				
+				
+				//1给海报红包加一个预约数量   2给视频红包加一个预约数量
+				switch (ap.getType()) {
+				case 1:
+					
+					PosterPackage posterPackageApp=posterPackageService.findById(ap.getItemId(), PosterPackage.class);
+					
+					//查询海报红包
+					if(posterPackageApp!=null){
+						ap.setTitle(posterPackageApp.getTitle());
+					}
+					
+					break;
+				case 2:
+					
+					MediaPackage mediaPackageApp=mediaPackageService.findById(ap.getItemId(), MediaPackage.class);
+					
+					if(mediaPackageApp!=null){
+						ap.setTitle(mediaPackageApp.getTitle());
+					}
+					
+					break;
+				}
+				
+				
+				
+				
+			}
+		}
+		
+		returnObject.setQueryBean(appoint);
+		returnObject.setPage(page);
+		returnObject.setData(datas);
+		return returnObject;
+	}
+	
 	
 	/**
 	 * 我的预约列表

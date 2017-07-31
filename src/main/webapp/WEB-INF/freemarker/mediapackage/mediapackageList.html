@@ -153,8 +153,8 @@ function deleteMediaPackage(){
 			
 			<label for="search_categoryName"><b>分类名称:</b></label> 
 			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}" style="width: 8%;">
-			 <label for="search_userName"><b>用户名称:</b></label> 
-			 <input type="text" id="search_name"  name="name" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.name)!''}" style="width: 8%;">
+			 <label for="search_userName"><b>发布人:</b></label> 
+			 <input type="text" id="search_name"  name="name" placeholder="请填写发布人"  value="${(returnDatas.queryBean.name)!''}" style="width: 8%;">
 			
 			 <label for="search_state">支付开始时间</label>
 			<input name="startTime"  class="date-picker"  style="width:100px;"   id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
@@ -235,7 +235,7 @@ function deleteMediaPackage(){
                     <tr>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >用户名称</th>
+						<th id="th_userId" >发布人</th>
 						<th id="th_categoryId" >分类名称</th>
 						<th id="th_title" >主题</th>
 						<th id="th_encrypt" >是否加密</th>
@@ -245,6 +245,7 @@ function deleteMediaPackage(){
 						<th id="th_isRelevance" >是否关联卡券</th>
 						<th id="th_cardId" >卡券主题</th>
 						<th id="th_sumMoney" >红包金额</th>
+						<th id="th_sumMoney" >总红包数</th>
 						<th id="th_status" >状态</th>
 						<th id="th_payType" >支付类型</th>
 						<th id="th_payTime" >支付时间</th>
@@ -253,10 +254,10 @@ function deleteMediaPackage(){
 						<th id="th_endTime" >抢完时间</th>
 						<th id="th_failReason" >失败原因</th>
 						<th id="th_balance" >剩余金额</th>
-						<th id="th_num" >剩余待抢次数</th>
-						<th id="th_code" >订单编号</th>
-						<th id="th_mediaUrl" >视频url</th>
-						<th id="th_mediaImage" >视频图片</th>
+						<th id="th_num" >剩余红包数</th>
+						<!-- <th id="th_code" >订单编号</th> -->
+						<th id="th_mediaUrl" >视频</th>
+						<!-- <th id="th_mediaImage" >视频图片</th> -->
 						<th id="th_mediaImage" >分享次数</th>
                     </tr>
                     </thead>
@@ -380,6 +381,9 @@ function deleteMediaPackage(){
 								${(_data.sumMoney)!0}
 							</td>
 							<td >
+								${(_data.lqNum)!0}
+							</td>
+							<td >
 								<#if (_data.status) == 0 >
 									未支付
 								</#if>
@@ -424,16 +428,16 @@ function deleteMediaPackage(){
 							<td >
 								${(_data.num)!0}
 							</td>
-							<td >
+							<!-- <td >
 								${(_data.code)!''}
-							</td>
+							</td> -->
 							<td >
 								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
 								
 							</td>
-							<td >
+							<!-- <td >
 								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage" onclick="checkImg('${(_data.mediaImage)!''}','600px','300px');"/>
-							</td>
+							</td> -->
 							<td >
 								${(_data.shareNum)!''}
 							</td>

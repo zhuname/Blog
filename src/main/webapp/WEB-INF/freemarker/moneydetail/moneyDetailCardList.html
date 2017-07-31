@@ -121,7 +121,7 @@ $(document).on("click", ".selectBtn", function() {
 	</div>
 </div>
 
-   <div class="row">
+   <div class="row" >
             <div class="col-xs-12">
 	            <!--start_export-->
                 <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover">
@@ -131,14 +131,17 @@ $(document).on("click", ".selectBtn", function() {
                     <tr>
                         <!--first_start_no_export-->
                         <!--first_end_no_export-->
-                        <th id="th_userName" style="width: 12.5%;">购买人</th>
-						<th id="th_createTime" style="width: 12.5%;">购买时间</th>
-						<th id="th_money" style="width: 12.5%;">卡券状态</th>
-						<th id="th_balance" style="width: 12.5%;">购买金额</th>
-						<th id="th_itemId" style="width: 12.5%;">兑换时间</th>
-						<th id="th_itemId" style="width: 12.5%;">发布人</th>
-						<th id="th_itemId" style="width: 12.5%;">卡券名称</th>
-						<th id="th_itemId" style="width: 12.5%;">过期时间</th>
+                        <th id="th_userName" style="width: 10%;">购买人</th>
+						<th id="th_createTime" style="width: 10%;">购买时间</th>
+						<th id="th_money" style="width: 10%;">卡券状态</th>
+						<th id="th_balance" style="width: 10%;">购买金额</th>
+						<th id="th_itemId" style="width: 10%;">兑换时间</th>
+						<th id="th_itemId" style="width: 10%;">发布人</th>
+						<th id="th_itemId" style="width: 12.5%;">卡券主题</th>
+						<th id="th_itemId" style="width: 12.5%;">卡券过期时间</th>
+						<th id="th_itemId" style="width: 5%;">分类</th>
+						<th id="th_itemId" style="width: 5%;">支付方式</th>
+						<th id="th_itemId" style="width: 5%;">兑换码</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -175,6 +178,15 @@ $(document).on("click", ".selectBtn", function() {
 							</td>
 							<td>
 								${((_data.gqTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td>
+								${(_data.categoryName)!''}
+							</td>
+							<td >
+								${(_data.payName)!''}
+							</td>
+							<td>
+								${(_data.cardCode)!''}
 							</td>
 						</tr>
 					</#list>

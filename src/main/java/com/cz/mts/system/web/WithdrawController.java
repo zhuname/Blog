@@ -121,6 +121,9 @@ public class WithdrawController  extends BaseController {
 						if(StringUtils.isNotBlank(appUser.getName())){
 							wd.setUserName(appUser.getName());
 						}
+						if(StringUtils.isNotBlank(appUser.getPhone())){
+							wd.setUserPhone(appUser.getPhone());
+						}
 					}
 				}
 			}

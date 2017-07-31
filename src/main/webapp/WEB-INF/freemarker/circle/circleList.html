@@ -42,7 +42,7 @@ $(document).on("click", ".selectBtn", function() {
             <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
 			<label for="search_content"><b>主题:</b></label> 
 			 <input type="text" id="search_content"  name="content" placeholder="请填写主题"  value="${(returnDatas.queryBean.content)!''}">
-			 <label for="search_type"><b>活动类型:</b></label> 
+			 <label for="search_type"><b>类型:</b></label> 
 			 <select id="search_type" name="type" class="col-10">
 			 	<option value="">请选择</option>
 				<option value="1">图片</option>
@@ -96,10 +96,10 @@ $(document).on("click", ".selectBtn", function() {
 						<th id="th_type">类型</th>
 						<th id="th_image" >图片</th>
 						<th id="th_mediaUrl" >视频</th>
-						<th id="th_content" width="20%">主题</th>
-						<th id="th_mediaImage" >视频封面</th>
-						<th id="th_createTime" >创建时间</th>
-						<th id="th_userId" >用户</th>
+						<th id="th_content">主题内容</th>
+						<!-- <th id="th_mediaImage" >视频封面</th> -->
+						<th id="th_createTime" >发布时间</th>
+						<th id="th_userId" >发布人</th>
 						<th id="th_topCount" >点赞次数</th>
 						<th id="th_commentCount" >评论次数</th>
 						<th id="th_sumMoney" >打赏总金额</th>
@@ -188,9 +188,9 @@ $(document).on("click", ".selectBtn", function() {
 							<td >
 								${(_data.content)!''}
 							</td>
-							<td >
+							<!-- <td >
 							<img class="sim"  height="120px" width="120px" alt="" src="${(_data.mediaImage)!''}" onclick="checkImg('${(_data.mediaImage)!''}','360px','360px');" >
-							</td>
+							</td> -->
 							<td >
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}

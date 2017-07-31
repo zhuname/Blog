@@ -136,10 +136,22 @@ public class Appoint  extends BaseEntity {
 	
 	private String osType;
 	
+	private String userName;
+	
+	
+	
 	
 	//concstructor
 
 	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Transient
 	public Integer getAppointCount() {
 		return appointCount;

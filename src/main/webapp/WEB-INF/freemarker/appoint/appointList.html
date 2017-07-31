@@ -47,10 +47,14 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 				<option value="1">未兑换</option>
 				<option value="2">已兑换</option>
 			</select>
-			 <label for="search_code"><b>订单编码:</b></label>
-			 <input type="text" id="search_code" name="code" placeholder="请填写订单编码" value="${(returnDatas.queryBean.code)!''}">
+			 <!-- <label for="search_code"><b>订单编码:</b></label>
+			 <input type="text" id="search_code" name="code" placeholder="请填写订单编码" value="${(returnDatas.queryBean.code)!''}"> -->
 			 <label for="search_phone"><b>电话:</b></label> 
 			 <input type="text" id="search_phone" name="phone" placeholder="请填写手机号" value="${(returnDatas.queryBean.phone)!''}">
+			 <label for="search_userName"><b>预约人:</b></label> 
+			 <input type="text" id="search_userName" name="userName" placeholder="请填写预约人" value="${(returnDatas.queryBean.userName)!''}">
+			 <label for="search_title"><b>预约主题:</b></label> 
+			 <input type="text" id="search_title" name="title" placeholder="请填写预约主题" value="${(returnDatas.queryBean.title)!''}">
 			<a href="javascript:mySubmitForm('searchForm');" onclick="$('#pageIndex').val(1);"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
@@ -98,17 +102,15 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
                         </th>
                         <th>操作</th> -->
                         <!--first_end_no_export-->
-						<th id="th_itemId" >红包</th>
-						<th id="th_money" >金额</th>
+						<th id="th_itemId" >预约主题</th>
+						<th id="th_money" >预约金额</th>
 						<th id="th_phone" >预约电话</th>
 						<th id="th_payType" >支付方式</th>
 						<th id="th_userId" >预约人</th>
 						<th id="th_payTime" >支付时间</th>
-						<th id="th_payMoney" >支付金额</th>
 						<th id="th_status" >状态</th>
-						<th id="th_createTime" >提交时间</th>
+						<th id="th_createTime" >预约时间</th>
 						<th id="th_changeTime" >兑换时间</th>
-						<th id="th_code" >订单编码</th>
 						<th id="th_cardCode" >兑换券编码</th>
 						<th id="th_type" >类型</th>
                     </tr>
@@ -194,18 +196,17 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 								</#if>
 							</td>
 							<td >
-								<#if (_data.appUser) ??>
+								<!-- <#if (_data.appUser) ??>
 									<#if (_data.appUser.name) ??>
 										${(_data.appUser.name)!''}
 									</#if>
-								</#if>
+								</#if> -->
+								${(_data.userName)!''}
+							</td>
 							</td>
 							<td >
 								<!--日期型-->
 							${((_data.payTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
-							</td>
-							<td >
-								${(_data.payMoney)!0}
 							</td>
 							<td >
 								<#if (_data.status) == 0 >
@@ -225,9 +226,6 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 							<td >
 								<!--日期型-->
 							${((_data.changeTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
-							</td>
-							<td >
-								${(_data.code)!''}
 							</td>
 							<td >
 								${(_data.cardCode)!''}

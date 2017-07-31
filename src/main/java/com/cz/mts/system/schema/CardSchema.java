@@ -326,7 +326,7 @@ public class CardSchema extends BaseLogger{
 	 * 自动更新天气
 	 * 
 	 */
-	@Scheduled(cron="0 0 0 * * ?")
+	@Scheduled(cron="0 0 0/3 * * ?")
 	public void tianqi() throws Exception{
 		logger.info("获取天气");
 		

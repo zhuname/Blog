@@ -120,7 +120,19 @@ public class Withdraw  extends BaseEntity {
 	
 	private Double realSumMoney;
 	
+	private String userPhone;
 	
+	
+	
+	@Transient
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
+
 	@Transient
 	public Double getFactorageSumMoney() {
 		return factorageSumMoney;
