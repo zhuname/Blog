@@ -44,6 +44,7 @@ public class ConfigBean implements Serializable{
 	private String appVersionNumber;
 	private String andForceUpdate;
 	private String iosForceUpdate;
+	
 	private String posterPackageDetail;
 	private String mediaPackageDetail;
 	private String cardDetail;
