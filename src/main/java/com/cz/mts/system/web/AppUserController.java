@@ -1119,7 +1119,7 @@ public class AppUserController  extends BaseController {
 					}else{
 						
 						//判断是否存在该用户的该勋章记录
-						Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId and medalId=:medalId");
+						Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=0");
 						finder.setParam("userId", Integer.parseInt(userId));
 						finder.setParam("medalId", Integer.parseInt(s));
 						List<UserMedal> userMedals = userMedalService.queryForList(finder, UserMedal.class);
@@ -1128,6 +1128,18 @@ public class AppUserController  extends BaseController {
 							returnObject.setStatus(ReturnDatas.ERROR);
 							return returnObject;
 						}else{
+							//先删除过期的勋章
+							Finder deleteUserFinder = new Finder("delete from t_user_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=1");
+							deleteUserFinder.setParam("userId", Integer.parseInt(userId));
+							deleteUserFinder.setParam("medalId", Integer.parseInt(s));
+							userMedalService.update(deleteUserFinder);
+							
+							Finder deleteApplyFinder = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and medalId=:medalId AND status=2 and isEndStatus=1");
+							deleteApplyFinder.setParam("userId", Integer.parseInt(userId));
+							deleteApplyFinder.setParam("medalId", Integer.parseInt(s));
+							applyMedalService.update(deleteApplyFinder);
+							
+							
 							Medal medal = medalService.findMedalById(Integer.parseInt(s));
 							userMedal.setMedalId(Integer.parseInt(s));
 							if(StringUtils.isNotBlank(userId)){

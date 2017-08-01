@@ -361,7 +361,12 @@ public class ApplyMedalController  extends BaseController {
 					userMedal.setIsEndStatus(applyMedal2.getIsEndStatus());
 					Medal medal = medalService.findMedalById(userMedal.getMedalId());
 					if(null != medal && StringUtils.isNotBlank(medal.getName())){
-						notificationService.notify(7, userMedal.getMedalId(), userMedal.getUserId(), medal.getName());
+						if(null != userMedal.getUserId()){
+							AppUser appUser = appUserService.findAppUserById(userMedal.getUserId());
+							if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+								notificationService.notify(7, userMedal.getMedalId(), userMedal.getUserId(), medal.getName());
+							}
+						}
 					}
 					
 				}
@@ -401,10 +406,15 @@ public class ApplyMedalController  extends BaseController {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(3);
 				applyMedal.setOperTime(new Date());
-				Object id = applyMedalService.update(applyMedal,true);
-				ApplyMedal appMedal = applyMedalService.findApplyMedalById(id);
+				applyMedalService.update(applyMedal,true);
+				ApplyMedal appMedal = applyMedalService.findApplyMedalById(applyMedal.getId());
 				if(null != appMedal){
-					notificationService.notify(41, applyMedal.getId(), appMedal.getUserId());
+					if(null != appMedal.getUserId()){
+						AppUser appUser = appUserService.findAppUserById(appMedal.getUserId());
+						if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
+							notificationService.notify(41, applyMedal.getId(), appMedal.getUserId());
+						}
+					}
 				}
 				
 			}
