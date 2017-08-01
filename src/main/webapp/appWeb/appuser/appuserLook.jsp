@@ -1,7 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+Object data=session.getAttribute("data");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -9,7 +11,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>测试页面</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -21,8 +22,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="Cache-Control" content="no-transform" />
         <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta  name="keywords" content="定客"/>
-        <meta  name="description"  content="定客"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
         <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
         <meta http-equiv="Pragma" content="no-cache"/>
@@ -32,14 +31,189 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
         <meta   name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"  />   
         
-         <script src="<%=basePath%>/js/coms/ajaxfileupload/jquery.js"></script>
-        <script src="<%=basePath%>/js/jquery/jquery.form.js"></script>
-		<script src="<%=basePath%>/js/jquery/ajaxfileupload.js"></script>
-        <script type="text/javascript" src="<%=basePath%>/js/appWeb/appUser/app_appUser.js"></script>
+		<script type="text/javascript" src="<%=basePath%>/js/appWeb/weixinjs/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="<%=basePath%>/js/appWeb/weixinjs/TouchSlide.1.1.js"></script>
+		<script type="text/javascript" src="<%=basePath%>/js/appWeb/weixinjs/global_phone.js"></script>
+		<link rel="stylesheet" type="text/css" href="<%=basePath%>/js/appWeb/css/css.css" />
+        <script type="text/javascript" src="<%=basePath%>/js/appWeb/appUser/app_appUserLook.js"></script>
 
-  </head>
-  
-  <body>
-    微信登陆测试页面 <br>
-  </body>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+		<title>首页</title>
+		
+		
+		
+		
+</head>
+
+<body>
+
+	<div class="wraper overh">
+		<div class="center_bg">
+			<div class="pad_30 dis_f jus_rt ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/msg4.png" class="dis_b" style="width:0.8rem;" />
+			</div>
+
+			<div class="pad_30 dis_f ali_end jus_bt">
+				<div class="dis_f ali_ct">
+					<img src="<%=data%>/js/appWeb/images/face2.png" class="dis_b" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
+					<div class="clr_f">
+						<span class="f_28">用户名称</span>
+						<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/badge2.png" class="ver_mid" style="width:0.5rem;" />
+						<br />
+						<p class="f_20 clr_f">美天给生活一点惊喜</p>
+					</div>
+				</div>
+
+				<div class="opa8">
+					<img src="<%=basePath%>/js/appWeb/images/fans2.png" class="ver_mid" style="width:0.55rem;" />
+					<span class="ver_mid f_22 clr_f">22</span>
+
+				</div>
+			</div>
+
+			<div class="f_20 clr_f dis_f ali_ct jus_rt padl_30">
+				<img src="<%=basePath%>/js/appWeb/images/wenhao.png" class="ver_mid" style="width:0.55rem;" />
+				&nbsp;
+				<span class="f_30">55:00</span>分钟后   获得<span class="f_30">3</span>次领取机会
+			</div>
+		</div>
+
+
+	<div class="bg_f padl_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdqb.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的钱包</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdfb.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的发布</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wddt.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的动态</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+	</div>
+
+<div class="bg_f padl_20 mt_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdyy.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的预约</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdkq.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的卡券</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdcy.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的参与</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+
+
+	</div>
+
+
+	<div class="bg_f padl_20 mt_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdsc.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的收藏</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdgz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的关注</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdxz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的勋章</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+	<div class="bg_f padl_20 mt_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/sz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>设置</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+	</div>
+
+
+		<div class="pad_30"></div>
+		<div class="pad_30"></div>
+
+		<div class="bg_f fixed_nav">
+			<ul class="nav_ul dis_f ali_ct jus_bt" style="width:12rem;margin:0 auto;">
+				<li><a href="#" class="dis_f ali_ct flex_col clr_6 jus_ct">
+				<img src="<%=basePath%>/js/appWeb/images/b1_no.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">美天赏</p></a></li>
+				<li><a href="#"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
+				<li><a href="#" class="dis_f ali_ct flex_col clr_r jus_ct">
+				<img src="<%=basePath%>/js/appWeb/images/b2h.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">我的</p></a></li>
+			</ul>
+		</div>
+		
+	</div>
+</body>
+
 </html>

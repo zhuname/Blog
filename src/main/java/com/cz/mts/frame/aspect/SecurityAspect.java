@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.crypto.BadPaddingException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -66,6 +68,13 @@ public class SecurityAspect {
 			returning = "returnDatas")
 	public void securityAfter(ReturnDatas returnDatas){
 		
+		
+    	
+		Map<String,String[]> paramMap = new HashMap(request.getParameterMap()) ;
+    	if(session.getAttribute("appUserSessionId")!=null||paramMap.containsKey("web")){
+    		return;
+    	}
+		
 		if(returnDatas != null && returnDatas.getData() != null){
 			//返回数据
 			String result = JsonUtils.writeValueAsString(returnDatas.getData()) ;
@@ -87,6 +96,8 @@ public class SecurityAspect {
 	HttpServletRequest request; 
 	@Autowired
 	IAppUserService appUserService ;
+	@Autowired  
+	HttpSession session;  
 	
 	@Around("securityAop()")
 	public Object around(ProceedingJoinPoint proceedingJoinPoint){
@@ -101,6 +112,19 @@ public class SecurityAspect {
 //	    Map<String,String[]> paramMap = HttpUtil.getRequestMap(request) ;
 	    
 	    if(!paramMap.containsKey("signCode")){  //说明是非法请求
+	    	
+	    	
+	    	if(session.getAttribute("appUserSessionId")!=null||paramMap.containsKey("web")){
+	    		try {
+					object = proceedingJoinPoint.proceed() ;
+					return object ;
+				} catch (Throwable e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return object;
+				}
+	    	}
+	    	
 	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
 	    }else {
 	    	try {
@@ -113,11 +137,11 @@ public class SecurityAspect {
 	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
         		}else {
         			
-        			/*Long T = json.getLong("T") ;
+        			Long T = json.getLong("T") ;
 					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
 					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
 						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
-					}*/
+					}
 					
 					if(json.containsKey("sessionId")){
 						Integer userId = json.getInt("sessionId") ;
@@ -153,7 +177,7 @@ public class SecurityAspect {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-        		}
+        			}
 //	    		object = proceedingJoinPoint.proceed() ;
 	    	}catch ( BadPaddingException e){
 	    		return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;

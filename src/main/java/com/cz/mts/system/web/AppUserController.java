@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -35,6 +36,7 @@ import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,6 +103,8 @@ public class AppUserController  extends BaseController {
 	private NotificationService notificationService;
 	@Resource
 	private IMoneyDetailService moneyDetailService;
+	@Autowired  
+	HttpSession session;  
 	
 	
 	private String listurl="/appuser/appuserList";
@@ -238,8 +242,13 @@ public class AppUserController  extends BaseController {
 		  String  strId=request.getParameter("id");
 		  String itemId = request.getParameter("itemId");
 		  java.lang.Integer id=null;
-		  if(StringUtils.isNotBlank(strId)){
-			 id= java.lang.Integer.valueOf(strId.trim());
+		  if(StringUtils.isNotBlank(strId)||session.getAttribute("appUserSessionId")!=null){
+			  if(StringUtils.isNotBlank(strId)){
+				  id= java.lang.Integer.valueOf(strId.trim());
+			  }else if (session.getAttribute("appUserSessionId")!=null) {
+				  String userId = session.getAttribute("appUserSessionId").toString();
+				  id= java.lang.Integer.valueOf(userId.trim());
+			}
 			 AppUser appUser = appUserService.findAppUserById(id);
 			 if(null != appUser){
 				 
@@ -656,6 +665,7 @@ public class AppUserController  extends BaseController {
 						returnObject.setStatus(ReturnDatas.WARNING);
 						returnObject.setMessage("黑名单成员！");
 					}else {
+						session.setAttribute("appUserSessionId", user.getId());
 						returnObject.setData(datas.get(0));
 					}
 				}else {

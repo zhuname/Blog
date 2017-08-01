@@ -2,6 +2,17 @@ package com.cz.mts.frame.util;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.mgt.SessionFactory;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 /**
  * 返回对象的封装
  * @author caomei
@@ -21,6 +32,7 @@ public class ReturnDatas implements Serializable{
 	private Map map;
 	private Page page;
 	private Object queryBean;
+	
 	
 	public ReturnDatas() {
 		
@@ -104,5 +116,8 @@ public class ReturnDatas implements Serializable{
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
+
+	
+	
 	
 }
