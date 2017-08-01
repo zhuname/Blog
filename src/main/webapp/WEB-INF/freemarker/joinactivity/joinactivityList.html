@@ -1,0 +1,227 @@
+<#escape x as x?html>
+
+<script type="text/javascript" src="${ctx}/js/system/joinactivity/joinactivity.js"></script>
+
+<script type="text/javascript">
+
+function deleteJoinActivity(){
+	var id=jQuery("#id").val();
+	if(!id||id==""){
+		myalert("请选择你要删除的记录");
+		return;
+	}else{
+		var _url="${ctx}/system/joinactivity/delete?id="+id;
+		var listurl="${ctx}/system/joinactivity/list";
+		mydelete(_url,listurl);
+	}
+}
+
+
+jQuery(document).ready(function(){
+	//回选 下拉框
+	jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
+});
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+</script>
+
+
+	
+
+<!-- /.page-header -->
+
+<div class="row">
+    <div class="col-xs-12">
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/joinactivity/list" role="form">
+            <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
+            <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
+            <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+			<label for="search_type"><b>类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10" >
+			 	<option value="">请选择</option>
+				<option value="1">图片</option>
+				<option value="2">视频</option>
+			</select>
+			
+			<label for="search_content">内容:</label>
+			<input type="text" id="search_content"  name="content" placeholder="请填写参与内容"  value="${(returnDatas.queryBean.content)!''}">
+			
+			<label for="search_userName">参与人:</label>
+			<input type="text" id="search_userName"  name="userName" placeholder="请填写参与人昵称"  value="${(returnDatas.queryBean.userName)!''}">
+			
+			<!-- <label for="search_awardName">奖项名称:</label>
+			<input type="text" id="search_awardName"  name="awardName" placeholder="请填写奖项名称"  value="${(returnDatas.queryBean.awardName)!''}"> -->
+			<label for="search_activityName">活动主题:</label>
+			<input type="text" id="search_activityName"  name="activityName" placeholder="请填写活动主题"  value="${(returnDatas.queryBean.activityName)!''}">
+			
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
+
+</form>
+		</div>
+		<div class="pull-right">
+			    <@shiro.hasPermission name="/system/joinactivity/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/system/joinactivity/list/export');" class="btn  btn-sm  btn-primary">
+                      
+                        导出
+                    </button>
+		    	</@shiro.hasPermission>
+			    <@shiro.hasPermission name="/system/joinactivity/update" >
+				  <button onclick="myhref('${ctx}/system/joinactivity/update/pre');" class="btn  btn-sm  btn-primary">
+                        添加
+                    </button>
+			    </@shiro.hasPermission>
+			    <@shiro.hasPermission name="/joinactivity/delete" >
+			    |
+				  <button onclick="deleteJoinActivity();" class="btn btn-sm btn-danger">
+                        删除
+                    </button>
+			    </@shiro.hasPermission>
+			
+		</div>
+	</div>
+</div>
+
+   <div class="row">
+            <div class="col-xs-12">
+	            <!--start_export-->
+                <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover">
+                    <!--end_no_export-->
+                    <!--first_start_export-->
+                    <thead>
+                    <tr>
+                        <!--first_start_no_export-->
+                        <th width="10%">操作</th>
+                        <!--first_end_no_export-->
+						<th id="th_type" width="10%" >类型</th>
+						<th id="th_image" width="10%" >图片</th>
+						<th id="th_mediaUrl" width="10%">视频</th>
+						<!-- <th id="th_mediaImage" width="10%">视频封面</th> -->
+						<th id="th_content" width="20%">参与内容</th>
+						<th id="th_userId" width="10%">参与人</th>
+						<th id="th_createTime" width="10%">参与时间</th>
+						<th id="th_awardId" width="10%">获奖标题</th>
+						<th id="th_awardId" width="10%">参与的活动主题</th>
+						
+                    </tr>
+                    </thead>
+                    <!--first_end_export-->
+
+                    <!--start_export-->
+                    <tbody>
+           
+				   <#if (returnDatas.data??)&&(returnDatas.data?size>0)>
+					 <#list returnDatas.data as _data>
+                            <!--start_no_export-->
+                            <tr class="">
+                                <td>
+                                    <div class="hidden-sm hidden-xs btn-group">
+                                       <!--  <button class="btn btn-xs btn-info"
+                                                onclick="myhref('${ctx}/system/joinactivity/update/pre?id=${(_data.id)!''}');">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </button> -->
+                                        <button class="btn btn-xs btn-danger"
+                                                onclick="mydelete('${ctx}/system/joinactivity/delete?id=${(_data.id)!''}','${ctx}/system/joinactivity/list','','确认删除？');">
+                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                        </button>
+                                    </div>
+                                    <div class="hidden-md hidden-lg">
+                                        <div class="inline position-relative">
+                                            <button class="btn btn-minier btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" data-position="auto">
+                                                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+	                                          <li>
+													<a  href="javascript:myhref('${ctx}/system/joinactivity/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+														<span class="blue">
+															<i class="ace-icon fa fa-search-plus bigger-120"></i>
+														</span>
+													</a>
+											  </li>	
+                                                <!-- <li>
+                                                    <a data-original-title="Edit"
+                                                       href="javascript:myhref('${ctx}/system/joinactivity/update/pre?id=${(_data.id)!''}');"
+                                                       class="tooltip-success" data-rel="tooltip" title="">
+																		<span class="green">
+																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																		</span>
+                                                    </a>
+                                                </li> -->
+                                                <li>
+                                                    <a data-original-title="Delete"
+                                                       href="javascript:mydelete('${ctx}/system/joinactivity/delete?id=${(_data.id)!''}','${ctx}/system/joinactivity/list');"
+                                                       class="tooltip-error" data-rel="tooltip" title="">
+																		<span class="red">
+																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																		</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!--end_no_export-->
+
+							<td >
+								<#if (_data.type) == 1>
+									图片
+								</#if>
+								<#if (_data.type) == 2>
+									视频
+								</#if>
+							</td>
+							<td >
+								<img class="sim"  height="120px" width="120px" alt="" src="${(_data.image)!''}" onclick="checkImg('${(_data.image)!''}','360px','360px');" >
+							</td>
+							<td >
+								<video class="vid" poster="" width='240px' height="120px" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
+							</td>
+							<!-- <td >
+								<img class="sim"  height="120px" width="120px" alt="" src="${(_data.mediaImage)!''}" onclick="checkImg('${(_data.mediaImage)!''}','360px','360px');" >
+							</td> -->
+							<td >
+								${(_data.content)!''}
+							</td>
+							
+							<td >
+								${(_data.userName)!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.awardName)!''}
+							</td>
+							<td >
+								${(_data.activityName)!''}
+							</td>
+						</tr>
+					</#list>
+					 </#if>
+                    </tbody>
+                </table>
+                <!--end_export-->
+            </div>
+            <!-- /.span -->
+        </div>
+        <#if returnDatas.page??>	
+            <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
+         </#if>
+    </div>
+</div>
+<!-- /.main-container -->
+</#escape>

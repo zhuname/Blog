@@ -1,0 +1,234 @@
+<#escape x as x?html>
+
+<script type="text/javascript" src="${ctx}/js/system/circle/circle.js"></script>
+
+<script type="text/javascript">
+
+function deleteCircle(){
+	var id=jQuery("#id").val();
+	if(!id||id==""){
+		myalert("请选择你要删除的记录");
+		return;
+	}else{
+		var _url="${ctx}/circle/delete?id="+id;
+		var listurl="${ctx}/circle/list";
+		mydelete(_url,listurl);
+	}
+}
+
+jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("selected",true);
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
+</script>
+
+
+	
+
+<!-- /.page-header -->
+
+<div class="row">
+    <div class="col-xs-12">
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/circle/list" role="form">
+            <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
+            <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
+            <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+			<label for="search_content"><b>主题:</b></label> 
+			 <input type="text" id="search_content"  name="content" placeholder="请填写主题"  value="${(returnDatas.queryBean.content)!''}">
+			 <label for="search_type"><b>类型:</b></label> 
+			 <select id="search_type" name="type" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="1">图片</option>
+				<option value="2">视频</option>
+			</select>
+			<label for="search_userName"><b>发布人:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
+
+</form>
+		</div>
+		<div class="pull-right">
+			    <@shiro.hasPermission name="/circle/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/circle/list/export');" class="btn  btn-sm  btn-primary">
+                      
+                        导出
+                    </button>
+		    	</@shiro.hasPermission>
+			    <@shiro.hasPermission name="/circle/update" >
+				  <button onclick="myhref('${ctx}/circle/update/pre');" class="btn  btn-sm  btn-primary">
+                        添加
+                    </button>
+			    </@shiro.hasPermission>
+			    <@shiro.hasPermission name="/circle/delete" >
+			    |
+				  <button onclick="deleteCircle();" class="btn btn-sm btn-danger">
+                        删除
+                    </button>
+			    </@shiro.hasPermission>
+			
+		</div>
+	</div>
+</div>
+
+  <div class="row" style="overflow-x:scroll;">
+            <div class="col-xs-12">
+	            <!--start_export-->
+                <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover" style="width: 4500px">
+                    <!--end_no_export-->
+                    <!--first_start_export-->
+                    <thead>
+                    <tr>
+                        <th>操作</th>
+                        <!--first_end_no_export-->
+						<th id="th_type">类型</th>
+						<th id="th_image" >图片</th>
+						<th id="th_mediaUrl" >视频</th>
+						<th id="th_content">主题内容</th>
+						<!-- <th id="th_mediaImage" >视频封面</th> -->
+						<th id="th_createTime" >发布时间</th>
+						<th id="th_userId" >发布人</th>
+						<th id="th_topCount" >点赞次数</th>
+						<th id="th_commentCount" >评论次数</th>
+						<th id="th_sumMoney" >打赏总金额</th>
+						<th id="th_count" >打赏次数</th>
+						<!-- <th id="th_height" >单张图片的高</th>
+						<th id="th_width" >单张图片的宽</th> -->
+                    </tr>
+                    </thead>
+                    <!--first_end_export-->
+
+                    <!--start_export-->
+                    <tbody>
+           
+				   <#if (returnDatas.data??)&&(returnDatas.data?size>0)>
+					 <#list returnDatas.data as _data>
+                            <!--start_no_export-->
+                            <tr class="">
+                                <td>
+                                    <div class="hidden-sm hidden-xs btn-group">
+                                        <!-- <button class="btn btn-xs btn-info"
+                                                onclick="myhref('${ctx}/circle/update/pre?id=${(_data.id)!''}');">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </button> -->
+                                        <button class="btn btn-xs btn-danger"
+                                                onclick="mydelete('${ctx}/circle/delete?id=${(_data.id)!''}','${ctx}/system/circle/list','','确认删除？');">
+                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                        </button>
+                                    </div>
+                                    <div class="hidden-md hidden-lg">
+                                        <div class="inline position-relative">
+                                            <button class="btn btn-minier btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" data-position="auto">
+                                                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+	                                          <li>
+													<a  href="javascript:myhref('${ctx}/circle/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+														<span class="blue">
+															<i class="ace-icon fa fa-search-plus bigger-120"></i>
+														</span>
+													</a>
+											  </li>	
+                                                <li>
+                                                    <a data-original-title="Edit"
+                                                       href="javascript:myhref('${ctx}/circle/update/pre?id=${(_data.id)!''}');"
+                                                       class="tooltip-success" data-rel="tooltip" title="">
+																		<span class="green">
+																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																		</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a data-original-title="Delete"
+                                                       href="javascript:mydelete('${ctx}/circle/delete?id=${(_data.id)!''}','${ctx}/circle/list');"
+                                                       class="tooltip-error" data-rel="tooltip" title="">
+																		<span class="red">
+																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																		</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!--end_no_export-->
+
+							<td >
+								<#if (_data.type) == 1 >
+									图片
+								</#if>
+								<#if (_data.type) == 2 >
+									视频
+								</#if>
+							</td>
+							<td >
+									<!-- <#list "${(_data.image)!''}"?split(";") as s>
+										<a >
+										<img class="sim"  height="120px" width="120px" alt="" src="${s}" onclick="checkImg('${s}','360px','360px');" >
+										<a>
+									</#list> -->
+									<img class="sim"  height="120px" width="120px" alt="" src="${(_data.image)!''}" onclick="checkImg('${(_data.image)!''}','${(_data.width)!''}px','${(_data.height)!''}px');" >
+							</td>
+							<td >
+							<video class="vid" poster="" width='240px' height="120px" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
+							</td>
+							<td >
+								${(_data.content)!''}
+							</td>
+							<!-- <td >
+							<img class="sim"  height="120px" width="120px" alt="" src="${(_data.mediaImage)!''}" onclick="checkImg('${(_data.mediaImage)!''}','360px','360px');" >
+							</td> -->
+							<td >
+								<!--日期型-->
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.userName)!''}
+							</td>
+							<td >
+								${(_data.topCount)!0}
+							</td>
+							<td >
+								${(_data.commentCount)!0}
+							</td>
+							<td >
+								${(_data.sumMoney)!0}
+							</td>
+							<td >
+								${(_data.count)!0}
+							</td>
+							<!-- <td >
+								${(_data.height)!0}
+							</td>
+							<td >
+								${(_data.width)!0}
+							</td> -->
+						</tr>
+					</#list>
+					 </#if>
+                    </tbody>
+                </table>
+                <!--end_export-->
+            </div>
+            <!-- /.span -->
+        </div>
+        <#if returnDatas.page??>	
+            <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
+         </#if>
+    </div>
+</div>
+<!-- /.main-container -->
+</#escape>

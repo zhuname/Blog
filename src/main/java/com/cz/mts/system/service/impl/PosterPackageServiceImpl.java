@@ -162,97 +162,119 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 		String sha = jedis.scriptLoad(GlobalStatic.luaScript);
 //		//入参:待抢小红包列表，已抢小红包列表，已抢人map，抢包人id
 		Object object = jedis.eval(GlobalStatic.luaScript, 4, GlobalStatic.posterPackageL+packageId, GlobalStatic.posterPackageConsumedList +packageId, GlobalStatic.posterPackageConsumedMap +packageId, userId);  
+		
 		if(object == null){  //代表已抢
 			return "红包已抢" ;
 		}
-		synchronized (this) {
-			//实现持久化
-			//已抢红包的list,NO-SQL中的
-			List<String> list = jedis.lrange(GlobalStatic.posterPackageConsumedList + packageId , 0 , -1) ;
-			
-			if(list != null && list.size() !=0){
-				AppUser _user = findById(userId, AppUser.class) ;
-				if(null != _user &&  _user.getIsPush() != null && 1 == _user.getIsPush()){
-					//给发布人发推送
-					notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
-				}
+
+		
+		try {
+			synchronized (this) {
+				//实现持久化
+				//已抢红包的list,NO-SQL中的
+				List<String> list = jedis.lrange(GlobalStatic.posterPackageConsumedList + packageId , 0 , -1) ;
 				
-				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
-				finder.setParam("packageId", Integer.valueOf(packageId)) ;
-				List<LposterPackage> listMysql = super.queryForList(finder,LposterPackage.class) ;
-				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
-				//这样有可能是第三个或者第四个抢红包的人获得这个锁，造成脏数据的问题
-				if(list.size() >= listMysql.size()){   //可以进行批量更新已抢红包了
-					//最后需要持久化的小红包
-					List<LposterPackage> listPersistence = new ArrayList<LposterPackage>() ;
-					Iterator<String> iter = list.iterator() ;
-					while(iter.hasNext()){
-						
-						String lppStr = iter.next() ;
-						LposterPackage lpp = JsonUtils.readValue(lppStr, LposterPackage.class) ;
-						listPersistence.add(lpp) ;
-						
-					}
-					//批量更新小红包表
-					lposterPackageService.update(listPersistence) ;
-					//开始解决用户表的余额
-					//移除已经持久化的
-					//listNosql是需要更新的list
-					List<String> listNosql = list ;
-					List<LposterPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LposterPackage.class) ;
-					_listNosql.removeAll(listMysql) ;
-					Iterator<LposterPackage> iterNosql = _listNosql.iterator() ;
-					//需要更新的已抢金额
-					BigDecimal money = new BigDecimal(0) ;
-					while(iterNosql.hasNext()){
-						LposterPackage lpp = iterNosql.next() ;
-						//转换成bean
-//						LposterPackage lpp = JsonUtils.readValue(lppStr, LposterPackage.class) ;
-						//金额累计
-						money = money.add(new BigDecimal(lpp.getMoney())) ;
-						Integer _userId = lpp.getUserId() ;
-						AppUser user = super.findById(_userId, AppUser.class) ;
-						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
-						user.setBalance(nowBalance.doubleValue());
-						if(_package.getEncrypt().intValue()==0){
-							user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
-						}
-						//更新用户余额
-						appUserService.saveorupdate(user) ;
-						//更新明细表
-						MoneyDetail md = new MoneyDetail();
-						md.setCreateTime(new Date());
-						md.setUserId(_userId);
-						md.setType(1);  //海报红包
-						md.setMoney(+lpp.getMoney());
-						md.setBalance(nowBalance.doubleValue());
-						md.setItemId(lpp.getPackageId());
-						md.setOsType(osType);
-						moneyDetailService.saveorupdate(md) ;
+				if(list != null && list.size() !=0){
+					AppUser _user = findById(userId, AppUser.class) ;
+					if(null != _user &&  _user.getIsPush() != null && 1 == _user.getIsPush()){
+						//给发布人发推送
+						notificationService.notify(15, Integer.parseInt(packageId), _package.getUserId());
 					}
 					
-					//解决红包表的数据
-					//本次更新的已抢次数
-					Integer num = _listNosql.size() ;
-					//这里需要再取一次，防止并发造成pp数据不一致
-					PosterPackage pp = findById(packageId, PosterPackage.class) ;
-					pp.setNum(pp.getNum() - num);
-					pp.setBalance((new BigDecimal(pp.getBalance()).subtract(money)).doubleValue());
-					//看红包是否抢完
-					if(pp.getNum() == 0){
-						pp.setStatus(4);
-						pp.setEndTime(new Date());
-						if(null != appUser && 1 == appUser.getIsPush()){
-							//给发布人发推送
-							notificationService.notify(16, pp.getId(), pp.getUserId());
+					//已抢红包的list，mysql中的
+					Finder finder = Finder.getSelectFinder(LposterPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
+					finder.setParam("packageId", Integer.valueOf(packageId)) ;
+					List<LposterPackage> listMysql = super.queryForList(finder,LposterPackage.class) ;
+					//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
+					//这样有可能是第三个或者第四个抢红包的人获得这个锁，造成脏数据的问题
+					if(list.size() >= listMysql.size()){   //可以进行批量更新已抢红包了
+						//最后需要持久化的小红包
+						List<LposterPackage> listPersistence = new ArrayList<LposterPackage>() ;
+						Iterator<String> iter = list.iterator() ;
+						while(iter.hasNext()){
+							
+							String lppStr = iter.next() ;
+							LposterPackage lpp = JsonUtils.readValue(lppStr, LposterPackage.class) ;
+							listPersistence.add(lpp) ;
+							
 						}
+						//批量更新小红包表
+						lposterPackageService.update(listPersistence) ;
+						//开始解决用户表的余额
+						//移除已经持久化的
+						//listNosql是需要更新的list
+						List<String> listNosql = list ;
+						List<LposterPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LposterPackage.class) ;
+						_listNosql.removeAll(listMysql) ;
+						Iterator<LposterPackage> iterNosql = _listNosql.iterator() ;
+						//需要更新的已抢金额
+						BigDecimal money = new BigDecimal(0) ;
+						while(iterNosql.hasNext()){
+							LposterPackage lpp = iterNosql.next() ;
+							//转换成bean
+//							LposterPackage lpp = JsonUtils.readValue(lppStr, LposterPackage.class) ;
+							//金额累计
+							if(null != lpp.getMoney()){
+								money = money.add(new BigDecimal(lpp.getMoney())) ;
+							}
+							Integer _userId = lpp.getUserId() ;
+							AppUser user = super.findById(_userId, AppUser.class) ;
+							if(null != user){
+								if(null == user.getBalance()){
+									user.setBalance(0.0);
+								}
+								
+							}
+							if(null == lpp.getMoney()){
+								lpp.setMoney(0.0);
+							}
+							
+							BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
+							user.setBalance(nowBalance.doubleValue());
+							if(_package.getEncrypt().intValue()==0){
+								user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
+							}
+							//更新用户余额
+							appUserService.saveorupdate(user) ;
+							
+							//更新明细表
+							MoneyDetail md = new MoneyDetail();
+							md.setCreateTime(new Date());
+							md.setUserId(_userId);
+							md.setType(1);  //海报红包
+							md.setMoney(+lpp.getMoney());
+							md.setBalance(nowBalance.doubleValue());
+							md.setItemId(lpp.getPackageId());
+							md.setOsType(osType);
+							moneyDetailService.saveorupdate(md) ;
+						}
+						
+						//解决红包表的数据
+						//本次更新的已抢次数
+						Integer num = _listNosql.size() ;
+						//这里需要再取一次，防止并发造成pp数据不一致
+						PosterPackage pp = findById(packageId, PosterPackage.class) ;
+						pp.setNum(pp.getNum() - num);
+						pp.setBalance((new BigDecimal(pp.getBalance()).subtract(money)).doubleValue());
+						//看红包是否抢完
+						if(pp.getNum() == 0){
+							pp.setStatus(4);
+							pp.setEndTime(new Date());
+							if(null != appUser && 1 == appUser.getIsPush()){
+								//给发布人发推送
+								notificationService.notify(16, pp.getId(), pp.getUserId());
+							}
+						}
+						super.saveorupdate(pp) ;
 					}
-					super.saveorupdate(pp) ;
 				}
+				
 			}
+		} catch (Exception e) {
+			// TODO: handle exception
 			
 		}
+		
 		return object;
 	
 	}
@@ -477,7 +499,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
     
     @Override
     public String statics() throws Exception{
-    	Finder finder = new Finder("SELECT GROUP_CONCAT(posterpackageCount) as countNum FROM( SELECT COUNT(id) AS posterpackageCount FROM t_poster_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) AS mediapackageCount FROM t_media_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) as cardCount FROM t_card WHERE isDel=0 AND `status`=1 UNION ALL SELECT COUNT(id) as applyMedalCount FROM t_apply_medal where `status`=1 UNION ALL SELECT COUNT(id) AS applyWithdrawCount FROM t_withdraw WHERE `status`=1)a");
+    	Finder finder = new Finder("SELECT GROUP_CONCAT(posterpackageCount) as countNum FROM( SELECT COUNT(id) AS posterpackageCount FROM t_poster_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) AS mediapackageCount FROM t_media_package WHERE isDel = 0 AND `status` = 1 UNION ALL SELECT COUNT(id) as cardCount FROM t_card WHERE isDel=0 AND `status`=1 UNION ALL SELECT COUNT(id) as applyMedalCount FROM t_apply_medal where `status`=1 UNION ALL SELECT COUNT(id) AS applyWithdrawCount FROM t_withdraw WHERE `status`=1 UNION ALL SELECT COUNT(id) AS activityCount FROM t_activity WHERE `status`=1 AND isDel=0)a");
     	List lists = queryForList(finder);
     	String countNum = "";
     	if(null != lists && lists.size() > 0){

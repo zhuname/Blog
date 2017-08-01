@@ -14,8 +14,17 @@ public class NotificationBean implements Serializable {
 	private Integer applyMedalCount;
 	private Integer applyWithdrawCount;
 	private Integer sumCount;
+	private Integer activityCount;
 	
 	
+	
+	
+	public Integer getActivityCount() {
+		return activityCount;
+	}
+	public void setActivityCount(Integer activityCount) {
+		this.activityCount = activityCount;
+	}
 	public Integer getSumCount() {
 		return sumCount;
 	}

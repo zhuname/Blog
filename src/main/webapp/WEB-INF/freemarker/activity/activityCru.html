@@ -1,0 +1,368 @@
+<#escape x as x?html>
+
+<SCRIPT type="text/javascript">
+<!--
+
+jQuery(document).ready(function(){
+	//回选 下拉框
+	//jQuery("#search_state option[value='是']").prop("selected",true);
+	
+	/*
+	$('.date-picker').datepicker({
+		    autoclose: true,
+		    format: 'yyyy-mm-dd',
+		    language: 'zh-CN'
+		    //,todayBtn: 'linked',
+		    //startDate:new Date(2014,10,27),
+			//endDate:'+60d',
+		    //startDate: '+1d',
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	*/
+	
+	
+	
+	});
+	
+	
+	
+	
+var type = $("#type").val();
+if(1 == type){
+	$("#divImage").show();
+	$("#divMedia").hide();
+}else{
+	$("#divImage").hide();
+	$("#divMedia").show();
+}
+$("#inputType").on('change',function(){
+	if(1 == $("#inputType").val()){
+		$("#divImage").show();
+		$("#divMedia").hide();
+	}else{
+		$("#divImage").hide();
+		$("#divMedia").show();
+	}
+	
+	jQuery("#type").attr('value',$("#inputType").val());
+});
+var type1 = $("#type1").val();
+var type2 = $("#type2").val();
+if(type1 == type){
+	$("#type1").attr("selected","selected");
+}
+if(type2 == type){
+	$("#type2").attr("selected","selected");
+}
+
+//这是上传视频
+function yincang(){
+	var v_file=document.getElementById('v_file');
+	v_file.click();
+	}
+	function play(){
+ var file = document.getElementById('v_file').files[0];
+        var url = URL.createObjectURL(file);
+        document.getElementById("video_id").src = url;
+ 
+}
+
+
+function go(){
+
+	$.ajaxFileUpload({
+        url : '/mts/adminFileUpload',
+        secureuri : false,
+        fileElementId : 'v_file',
+        dataType : 'text',
+        data : {},
+        success : function(data, status) {
+        	console.log(data);
+        	jQuery("#mediaUrl").attr('value',data); 
+        },
+        error : function(data, status, e) {
+       		console.log(data);
+            alert('上传出错');
+        }
+    })
+}
+	
+	
+	
+initimages("add_promise_div","addPgod");
+
+initCity("localtion",null,"cityId");
+
+initMCitys("tableIds","cityIds");
+
+$(document).on("change", "#city", function() {
+	var cityId=jQuery("#city").val();
+	jQuery("#cityId").val(cityId);
+	
+});
+	
+//-->
+</SCRIPT>
+
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/system/activity/update" > 
+			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >类型</label>
+				<!-- <div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="type" class="col-xs-12 col-sm-6" id="type" value="${(returnDatas.data.type)!''}"  type="text" />
+					</div><div class="help-block" for="type"></div>
+				</div> -->
+				<input type="text" id="type" name="type" class="col-xs-12 col-sm-6" value="${(returnDatas.data.type)!''}" style="display: none;"/>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<select id="inputType">
+							<option value="1" id="type1">图片</option>
+							<option value="2" id="type2">视频</option>
+						</select>
+					</div><div class="help-block" for="type"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group" id="divImage">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
+				<div class="col-xs-12 col-sm-9">
+						<div class="clearfix">
+							<ul class="addPromise_photo promise"  id="addPgod" style="width:97%;overflow:hidden;margin:0 auto;margin-top:8px;margin-left:38px">
+								<input type="file" id="filedTmpImgs" class="filedImgs" name="filed" style="display:none">
+								<input name="image" class="col-xs-12 col-sm-6 imagesVal" id="image" value="${(returnDatas.data.image)!''}" style="display:none"  type="text" />
+							<li class="addgoods_photo_a" style="float:left;width:100px;height:150px;border:1px solid #e6e6e6;padding:5px 16px 0px 16px;margin-right:20px">
+								<div class="move_Box" style="width:40px;"></div>
+								<div class="addgoods_photo_img">
+									<img  class="photoImgsVal"/>
+								</div>
+								<ul class="addgoods_photo_button">
+									<li><div class="layui-btn layui-btn-primary layui-btn-mini promise_edit" photo_no="1" style="float: left;width:46px;height:25px;line-height:25px;font-size:12px;margin-left: -8px;">上传</div>
+									</li>
+									<li class="button_float promise_deleteBt"><div class="layui-btn layui-btn-primary layui-btn-mini promise_delete" photo_no="1" style="float: left;width:46px;height:25px;line-height:25px;font-size:12px;background:#ccc;margin-left: -12px;">删除</div></li>
+								</ul>
+							</li>
+							<div id="add_promise_div">
+							
+							</div>
+							
+							<div>   
+								<span class="add_promise_li" div="add_promise_div" style="font-size:80px;color:#949494;font-family:-webkit-body;">+</span><br/>
+								<span >点击添加，图片尺寸2:1</span>
+							</div>
+						</ul>
+					</div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group" id="divMedia">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaUrl" >视频url</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="mediaUrl" class="col-xs-12 col-sm-6" style="display: none;" id="mediaUrl" value="${(returnDatas.data.mediaUrl)!''}"  type="text" />
+						<div class="content">
+							<input id="v_file" type="file" style="display:none;" onChange="play()"/>
+							<video id="video_id" style="width: 500px;height: 500px;" controls autoplay src="${(returnDatas.data.mediaUrl)!''}" ></video>
+							<a class="layui-btn layui-btn-primary" id="play" onClick="yincang()">修改</a>
+							<a class="layui-btn layui-btn-primary" id="play" onClick="go()">上传</a>
+						</div>
+						
+					</div><div class="help-block" for="mediaUrl"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content" >主题</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<!-- <input name="content" class="col-xs-12 col-sm-6" id="content" value="${(returnDatas.data.content)!''}"  type="text" /> -->
+						<textarea id="content" name="content" style="width: 30%;height: 100px;">${(returnDatas.data.content)!''}</textarea>
+					</div><div class="help-block" for="content"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="joinExplain" >参与说明</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<!-- <input name="joinExplain" class="col-xs-12 col-sm-6" id="joinExplain" value="${(returnDatas.data.joinExplain)!''}"  type="text" /> -->
+						<textarea id="joinExplain" name="joinExplain" style="width: 30%;height: 150px;">${(returnDatas.data.joinExplain)!''}</textarea>
+					</div><div class="help-block" for="joinExplain"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="endTime" >截止时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="endTime"  class="form-control date-picker"  id="endTime" readonly="readonly" value="${(returnDatas.data.endTime)!''}"  type="text" />
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="endTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="address" >地址</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="address" class="col-xs-12 col-sm-6" id="address" value="${(returnDatas.data.address)!''}"  type="text" />
+					</div><div class="help-block" for="address"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone" >电话</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="phone" class="col-xs-12 col-sm-6" id="phone" value="${(returnDatas.data.phone)!''}"  type="text" />
+					</div><div class="help-block" for="phone"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userName" >发布人名称</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="userName" class="col-xs-12 col-sm-6" id="userName" value="${(returnDatas.data.appUser.name)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="userName"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topCount" >点赞次数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="topCount" class="col-xs-12 col-sm-6" id="topCount" value="${(returnDatas.data.topCount)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="topCount"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="commentCount" >评论次数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="commentCount" class="col-xs-12 col-sm-6" id="commentCount" value="${(returnDatas.data.commentCount)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="commentCount"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="winPrizePerson" >中奖人数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="winPrizePerson" class="col-xs-12 col-sm-6" id="winPrizePerson" value="${(returnDatas.data.winPrizePerson)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="winPrizePerson"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumWinPrizePerson" >总的中奖人数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="sumWinPrizePerson" class="col-xs-12 col-sm-6" id="sumWinPrizePerson" value="${(returnDatas.data.sumWinPrizePerson)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="sumWinPrizePerson"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="statusName" >状态</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="statusName" class="col-xs-12 col-sm-6" id="statusName" value="${(returnDatas.data.statusName)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="statusName"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="aduitSuccessTime" >审核成功时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="aduitSuccessTime"  class="form-control date-picker"  id="aduitSuccessTime" readonly="readonly" value="${(returnDatas.data.aduitSuccessTime)!''}"  type="text" readonly="readonly"/>
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="aduitSuccessTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="reason" >拒绝原因</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="reason" class="col-xs-12 col-sm-6" id="reason" value="${(returnDatas.data.reason)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="reason"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="aduitFailTime" >审核失败时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="aduitFailTime"  class="form-control date-picker"  id="aduitFailTime" readonly="readonly" value="${(returnDatas.data.aduitFailTime)!''}"  type="text" readonly="readonly"/>
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="aduitFailTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+	        
+	              <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityId" >投放城市</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<div class="layui-form-item" id="localtion"> 
+						
+						</div>
+						<span class="layui-btn layui-btn-primary" onclick="checkCityIds('cityIds','tableIds');">添加</span>
+						<div class="help-block" for="cityId"></div>
+						<input name="cityId" class="col-xs-12 col-sm-6" id="cityId" value="${(returnDatas.data.cityId)!''}" style="display:none"  type="text" />
+						
+						<table class="layui-table" style="width:50%" >
+						  <thead>
+						    <tr>
+						      <th>省</th>
+						      <th>市</th>
+						      <th>操作</th>
+						    </tr>
+						  </thead>
+						  <tbody id="tableIds" class="cityIds">
+						  </tbody>
+						</table>
+						
+						<input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
+							</div>
+						</div>
+			</div>
+	        
+		</form>
+		<div class="wizard-actions">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/activity/list');" style="float: left;margin-left: 25.4%;">
+				保存
+			</button>
+		</div>
+	</div>
+</div>
+
+
+</#escape>

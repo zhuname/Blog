@@ -162,34 +162,20 @@ public class CardController  extends BaseController {
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
+		  String appUserId = request.getParameter("appUserId");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 Card card = cardService.findCardById(id);
-			 if(null != card.getUserId()){
+			 if(null != card && null != card.getUserId()){
 				 AppUser appUser = appUserService.findAppUserById(card.getUserId());
 				 if(null != appUser){
 					 card.setAppUser(appUser);
 				 }
 				 
-				 //查询勋章列表
-				 Page page = new Page();
-				 page.setOrder("createTime");
-				 page.setSort("desc");
-				 UserMedal userMedal = new UserMedal();
-				 userMedal.setUserId(card.getUserId());
-				List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-				if(null != userMedals && userMedals.size() > 0){
-					for (UserMedal um : userMedals) {
-						if(null != um.getMedalId()){
-							Medal medal = medalService.findMedalById(um.getMedalId());
-							if(null != medal){
-								um.setMedal(medal);
-							}
-						}
-					}
-					card.setUserMedals(userMedals);
-				}
+				 if(null != appUser.getUserMedals()){
+					 card.setUserMedals(appUser.getUserMedals());
+				 }
 			 }
 			 
 			 //返回分类名称
@@ -222,6 +208,22 @@ public class CardController  extends BaseController {
 				 card.setCityIds(cityIds);
 				 card.setRedCities(redCities);
 			 }
+			 
+			 Integer lqNum = 0;
+			 if(StringUtils.isNotBlank(appUserId)){
+				 //返回该用户已领取的数量
+				 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId AND userId=:userId AND `status`!=0");
+				 userCardFinder.setParam("cardId", Integer.parseInt(strId));
+				 userCardFinder.setParam("userId", Integer.parseInt(appUserId));
+				 List<UserCard> userCards = userCardService.queryForList(userCardFinder, UserCard.class);
+				 if(null != userCards && userCards.size() > 0){
+					 UserCard userCard = userCards.get(0);
+					 if(null != userCard && null != userCard.getLqNum() ){
+						 lqNum = userCards.get(0).getLqNum();
+					 }
+				 }
+			 }
+			card.setLqNum(lqNum);
 			 
 			 returnObject.setData(card);
 		}else{
@@ -422,7 +424,15 @@ public class CardController  extends BaseController {
 				card.setIsDel(0);
 				card.setNum(card.getConvertNum());
 				card.setCreateTime(new Date());
-				card.setStatus(1);
+				//判断是否有免审核勋章，并且该勋章是否已过期
+				Finder finder = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=3) AND (isEndStatus IS NULL OR isEndStatus != 1)");
+				finder.setParam("userId", card.getUserId());
+				List<UserMedal> userMedalms = userMedalService.queryForList(finder, UserMedal.class);
+				if(null != userMedalms && userMedalms.size() > 0){
+					card.setStatus(2);
+				}else{
+					card.setStatus(1);
+				}
 				card.setShareNum(0);
 				Object id=cardService.saveorupdate(card);
 				if(cityIds!=null){
@@ -479,7 +489,15 @@ public class CardController  extends BaseController {
 				}
 				
 				card.setNum(card.getConvertNum());
-				card.setStatus(1);
+				//判断是否有免审核勋章，并且该勋章是否已过期
+				Finder finder = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=3) AND isEndStatus != 1");
+				finder.setParam("userId", card.getUserId());
+				List<UserMedal> userMedalms = userMedalService.queryForList(finder, UserMedal.class);
+				if(null != userMedalms && userMedalms.size() > 0){
+					card.setStatus(2);
+				}else{
+					card.setStatus(1);
+				}
 				cardService.update(card,true);
 				returnObject.setData(cardService.findCardById(card.getId()));
 			}
@@ -599,7 +617,7 @@ public class CardController  extends BaseController {
 			}
 			userCardService.save(userCards);
 			
-			card.setNum(card.getNum()-num);
+//			card.setNum(card.getNum()-num);
 			
 			cardService.update(card, true);
 			
@@ -654,14 +672,14 @@ public class CardController  extends BaseController {
 			}
 			
 			//用户的购买的卡券信息
-			UserCard usercard=usercards.get(0);
+			UserCard usercard1=usercards.get(0);
 			
 			//发布人发布的卡券信息
 			Card card=null;
 			
 			//判断是否过期
-			if(usercard.getExpTime()!=null){
-				if(usercard.getExpTime().getTime()<new Date().getTime()){
+			if(usercard1.getExpTime()!=null){
+				if(usercard1.getExpTime().getTime()<new Date().getTime()){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("此卡券已过期");
 					return returnObject;
@@ -669,14 +687,14 @@ public class CardController  extends BaseController {
 			}
 			
 			//判断是否兑换
-			if(usercard.getStatus()!=null&&usercard.getStatus()!=1){
+			if(usercard1.getStatus()!=null&&usercard1.getStatus()!=1){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("此卡券已兑换");
 				return returnObject;
 			}
 			
-			if(usercard.getCardId()!=null){
-				card=cardService.findCardById(usercard.getCardId());
+			if(usercard1.getCardId()!=null){
+				card=cardService.findCardById(usercard1.getCardId());
 				if(card==null){
 					returnObject.setStatus(ReturnDatas.ERROR);
 					returnObject.setMessage("此卡券不存在");
@@ -696,18 +714,18 @@ public class CardController  extends BaseController {
 			}
 			
 			//改变状态
-			usercard.setStatus(2);
-			usercard.setChangeTime(new Date());
+			usercard1.setStatus(2);
+			usercard1.setChangeTime(new Date());
 			
-			if(null != usercard && null != usercard.getUserId()){
-				AppUser user = appUserService.findAppUserById(usercard.getUserId());
-				if(null != user && 1 == user.getIsPush() && null != usercard.getCardId()){
+			if(null != usercard1 && null != usercard1.getUserId()){
+				AppUser user = appUserService.findAppUserById(usercard1.getUserId());
+				if(null != user && 1 == user.getIsPush() && null != usercard1.getCardId()){
 					//给自己发推送
-					notificationService.notify(14, usercard.getCardId(), usercard.getUserId());
+					notificationService.notify(14, usercard1.getCardId(), usercard1.getUserId());
 					
 				}
 			}
-			userCardService.update(usercard,true);
+			userCardService.update(usercard1,true);
 			
 			
 			//手续费比例
@@ -725,12 +743,25 @@ public class CardController  extends BaseController {
 				BigDecimal cardChargeMoney = new BigDecimal(0.0);
 				
 				//判断是否关闭卡券手续费
-				if(null != appUser.getIsCloseFee() && 0 == appUser.getIsCloseFee()){
-					//算出这次总共是多少钱的收益
-					if(usercard.getSumMoney()!=null){
-						cardChargeMoney=new BigDecimal(usercard.getSumMoney()).multiply(cardCharge);
-						sumMoney=new BigDecimal(usercard.getSumMoney()).subtract(cardChargeMoney);
+				if(null != appUser.getIsCloseFee()){
+					if(0 == appUser.getIsCloseFee()){
+						//算出这次总共是多少钱的收益
+						if(usercard1.getSumMoney()!=null){
+							cardChargeMoney=new BigDecimal(usercard1.getSumMoney()).multiply(cardCharge);
+							sumMoney=new BigDecimal(usercard1.getSumMoney()).subtract(cardChargeMoney);
+						}else{
+							sumMoney = new BigDecimal(0.0);
+						}
+					}else{
+						if(null != usercard1.getSumMoney()){
+							sumMoney = new BigDecimal(usercard1.getSumMoney());
+						}else{
+							sumMoney = new BigDecimal(0.0);
+						}
 					}
+					
+				}else{
+					sumMoney = new BigDecimal(0.0);
 				}
 				if(appUser.getBalance()==null){
 					appUser.setBalance(sumMoney.doubleValue());
@@ -739,15 +770,15 @@ public class CardController  extends BaseController {
 				}
 				
 				appUserService.update(appUser,true);
-				usercard.setPlateMoney(cardChargeMoney.doubleValue());
-				userCardService.update(usercard,true);
+				usercard1.setPlateMoney(cardChargeMoney.doubleValue());
+				userCardService.update(usercard1,true);
 				//先保存收益记录
 				MoneyDetail moneyDetail=new MoneyDetail();
 				moneyDetail.setUserId(userId);
 				moneyDetail.setCreateTime(new Date());
 				moneyDetail.setType(8);
 				moneyDetail.setMoney(+sumMoney.doubleValue());
-				moneyDetail.setItemId(usercard.getId());
+				moneyDetail.setItemId(usercard1.getId());
 				moneyDetail.setBalance(appUser.getBalance());
 				moneyDetail.setPlateMoney(cardChargeMoney.doubleValue());
 				moneyDetailService.save(moneyDetail);
@@ -783,12 +814,10 @@ public class CardController  extends BaseController {
 		card.setIsDel(0);
 		Finder finder = Finder.getSelectFinder(Card.class).append("where 1=1");
 		if(StringUtils.isNotBlank(card.getCategoryName())){
-			finder.append(" and catergoryId in(select id from t_category where type=3 and INSTR(`name`,:categoryName)>0 )");
-			finder.setParam("categoryName", card.getCategoryName());
+			finder.append(" and catergoryId in(select id from t_category where type=3 and name like '%"+card.getCategoryName()+"%')");
 		}
 		if(StringUtils.isNotBlank(card.getUserName())){
-			finder.append(" and userId in(select id from t_app_user where INSTR(`name`,:userName)>0 )");
-			finder.setParam("userName", card.getUserName());
+			finder.append(" and userId in(select id from t_app_user where name like '%"+card.getUserName()+"%' )");
 		}
 		
 		if(StringUtils.isNotBlank(card.getStartTime())){
@@ -802,7 +831,7 @@ public class CardController  extends BaseController {
 		}
 		
 		if(StringUtils.isNotBlank(card.getCityIds())){
-			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId)");
+			finder.append(" and id in( SELECT packageId FROM t_red_city WHERE cityId=:cityId and type=3 group by packageId)");
 			finder.setParam("cityId", Integer.parseInt(card.getCityIds()));
 		}
 		
@@ -810,12 +839,21 @@ public class CardController  extends BaseController {
 			if(5 == card.getStatus()){
 				card.setStatus(null);
 				finder.append(" and status=2 and num=0");
+			}else{
+				finder.append(" and status = :status");
+				finder.setParam("status", card.getStatus());
 			}
+		}
+		if(StringUtils.isNotBlank(card.getTitle())){
+			finder.append(" and title like '%"+card.getTitle()+"%'");
+		}
+		if(StringUtils.isNotBlank(card.getPhone())){
+			finder.append(" and phone like '%"+card.getPhone()+"%'");
 		}
 		
 		
 		
-		List<Card> datas = cardService.findListDataByFinder(finder,page,Card.class,card);
+		List<Card> datas = cardService.queryForList(finder, Card.class, page);
 		if(null != datas && datas.size() > 0){
 			for (Card cd : datas) {
 				if(null != cd.getStatus()){

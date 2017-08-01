@@ -1,0 +1,146 @@
+<#escape x as x?html>
+
+<SCRIPT type="text/javascript">
+<!--
+
+jQuery(document).ready(function(){
+	//回选 下拉框
+	//jQuery("#search_state option[value='是']").prop("selected",true);
+	
+	/*
+	$('.date-picker').datepicker({
+		    autoclose: true,
+		    format: 'yyyy-mm-dd',
+		    language: 'zh-CN'
+		    //,todayBtn: 'linked',
+		    //startDate:new Date(2014,10,27),
+			//endDate:'+60d',
+		    //startDate: '+1d',
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	*/
+	
+	
+	
+	});
+	
+	
+//-->
+</SCRIPT>
+
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<form class="form-horizontal" id="validation-form" method="POST" novalidate="novalidate" action="${ctx}/joinactivity/update" > 
+			<input type="hidden" id="id" name="id" value="${(returnDatas.data.id)!''}"/>	
+<!--input  hidden  End-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="type" >1图片 2视频</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="type" class="col-xs-12 col-sm-6" id="type" value="${(returnDatas.data.type)!''}"  type="text" />
+					</div><div class="help-block" for="type"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="image" >图片</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="image" class="col-xs-12 col-sm-6" id="image" value="${(returnDatas.data.image)!''}"  type="text" />
+					</div><div class="help-block" for="image"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaUrl" >视频url</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="mediaUrl" class="col-xs-12 col-sm-6" id="mediaUrl" value="${(returnDatas.data.mediaUrl)!''}"  type="text" />
+					</div><div class="help-block" for="mediaUrl"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaImage" >视频封面</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="mediaImage" class="col-xs-12 col-sm-6" id="mediaImage" value="${(returnDatas.data.mediaImage)!''}"  type="text" />
+					</div><div class="help-block" for="mediaImage"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content" >内容</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="content" class="col-xs-12 col-sm-6" id="content" value="${(returnDatas.data.content)!''}"  type="text" />
+					</div><div class="help-block" for="content"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+					<!--日期型-->
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="createTime" >创建时间</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+					 <div class="input-group col-xs-12 col-sm-6">
+						<input name="createTime"  class="form-control date-picker"  id="createTime" readonly="readonly" value="${(returnDatas.data.createTime)!''}"  type="text" />
+					        <span class="input-group-addon">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+					   </div>
+					
+					</div><div class="help-block" for="createTime"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >参与人的userId</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="userId" class="col-xs-12 col-sm-6" id="userId" value="${(returnDatas.data.userId)!''}"  type="text" />
+					</div><div class="help-block" for="userId"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="awardId" >奖项id</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="awardId" class="col-xs-12 col-sm-6" id="awardId" value="${(returnDatas.data.awardId)!''}"  type="text" />
+					</div><div class="help-block" for="awardId"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topCount" >点赞次数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="topCount" class="col-xs-12 col-sm-6" id="topCount" value="${(returnDatas.data.topCount)!''}"  type="text" />
+					</div><div class="help-block" for="topCount"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="commentCount" >评论次数</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<input name="commentCount" class="col-xs-12 col-sm-6" id="commentCount" value="${(returnDatas.data.commentCount)!''}"  type="text" />
+					</div><div class="help-block" for="commentCount"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+		</form>
+		<div class="wizard-actions">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/joinactivity/list');">
+				保存
+			</button>
+		</div>
+	</div>
+</div>
+
+
+</#escape>

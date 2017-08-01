@@ -58,8 +58,8 @@ public class JPushUtil {
 				
 		Map<String,Object> optionsMap = new HashMap<String,Object>();
 		optionsMap.put("sendno", "1");
-//		optionsMap.put("apns_production", false);//开发环境
-		optionsMap.put("apns_production", true);//生产环境
+		optionsMap.put("apns_production", false);//开发环境
+//		optionsMap.put("apns_production", true);//生产环境
 		map.put("options", optionsMap);
 		String pushpayload = new Gson().toJson(map);
 		System.out.println(pushpayload);
@@ -109,9 +109,12 @@ public class JPushUtil {
 //		notificationMap.put("title", "美天赏");
 		Map<String,Object> androidiosextra = new HashMap<String,Object>();
 		androidiosextra.put("type", type);
-		for (Object key:other.keySet()) {			
-			androidiosextra.put(key.toString(), other.get(key));
+		if(null != other){
+			for (Object key:other.keySet()) {			
+				androidiosextra.put(key.toString(), other.get(key));
+			}
 		}
+		
 //		notificationMap.put("category", "identifier");
 //		notificationMap.put("category", "category str");
 		Map<String,Object> android = new HashMap<String,Object>();
@@ -125,8 +128,8 @@ public class JPushUtil {
 		
 		Map<String,Object> optionsMap = new HashMap<String,Object>();
 		optionsMap.put("sendno", "1");
-//		optionsMap.put("apns_production", false);//开发环境
-		optionsMap.put("apns_production", true);//生产环境
+		optionsMap.put("apns_production", false);//开发环境
+//		optionsMap.put("apns_production", true);//生产环境
 		map.put("options", optionsMap);
 		
 		String pushpayload = new Gson().toJson(map);

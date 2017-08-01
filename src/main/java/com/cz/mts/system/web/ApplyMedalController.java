@@ -123,8 +123,13 @@ public class ApplyMedalController  extends BaseController {
 				
 				if(null != am.getMedalId()){
 					Medal medal = medalService.findMedalById(am.getMedalId());
-					if(null != medal && StringUtils.isNotBlank(medal.getName())){
-						am.setMedalName(medal.getName());
+					if(null != medal){
+						if(StringUtils.isNotBlank(medal.getName())){
+							am.setMedalName(medal.getName());
+						}
+						if(null != medal.getStatus()){
+							am.setMedalStatus(medal.getStatus());
+						}
 					}
 				}
 			}
@@ -200,13 +205,50 @@ public class ApplyMedalController  extends BaseController {
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("参数缺失");
 			}else{
-				if(null == applyMedal.getId()){
-					applyMedal.setApplyTime(new Date());
-					applyMedal.setStatus(1);
-					applyMedalService.saveorupdate(applyMedal);
+				//首先判断该用户是否已经认证通过并且没有过期
+				Finder successFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=2 and isEndStatus=0 and medalId=:medalId and userId=:userId");
+				successFinder.setParam("medalId", applyMedal.getMedalId());
+				successFinder.setParam("userId", applyMedal.getUserId());
+				List successList = applyMedalService.queryForList(successFinder);
+				if(null != successList && successList.size() > 0){
+					returnObject.setMessage("您已经拥有该勋章，暂不能申请");
+					returnObject.setStatus(ReturnDatas.ERROR);
 				}else{
-					applyMedalService.update(applyMedal,true);
+					//判断该用户是否有申请中的勋章
+					Finder applyFinder = Finder.getSelectFinder(ApplyMedal.class).append(" where 1=1 and status=1 and isEndStatus=0 and medalId=:medalId and userId=:userId"); 
+					applyFinder.setParam("medalId", applyMedal.getMedalId());
+					applyFinder.setParam("userId", applyMedal.getUserId());
+					List applyList = applyMedalService.queryForList(applyFinder);
+					if(null != applyList && applyList.size() > 0){
+						returnObject.setMessage("您申请的勋章正在认证中，暂不能申请");
+						returnObject.setStatus(ReturnDatas.ERROR);
+					}else{
+						//查询是否存在已过期的勋章或者是拒绝通过的勋章申请,如果有，则先删除，再添加
+						Finder finder = Finder.getSelectFinder(ApplyMedal.class).append(" where (isEndStatus=1 or status=3) and userId=:userId and medalId=:medalId");
+						finder.setParam("userId", applyMedal.getUserId());
+						finder.setParam("medalId", applyMedal.getMedalId());
+						List<ApplyMedal> applyMedals = applyMedalService.queryForList(finder,ApplyMedal.class);
+						if(null != applyMedals && applyMedals.size() > 0){
+							for (ApplyMedal am : applyMedals) {
+								applyMedalService.deleteByEntity(am);
+							}
+						}
+						
+						if(null == applyMedal.getId()){
+							applyMedal.setApplyTime(new Date());
+							applyMedal.setStatus(1);
+							applyMedal.setIsEndStatus(0);
+							applyMedalService.saveorupdate(applyMedal);
+						}else{
+							applyMedalService.update(applyMedal,true);
+						}
+					}
+					
 				}
+				
+				
+				
+				
 			}
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -286,7 +328,7 @@ public class ApplyMedalController  extends BaseController {
 	
 	
 	/**
-	 * 申请勋章认证接口
+	 * 通过认证
 	 * @author wml
 	 * @param model
 	 * @param applyMedal
@@ -304,6 +346,7 @@ public class ApplyMedalController  extends BaseController {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(2);
 				applyMedal.setOperTime(new Date());
+				applyMedal.setEndMedalTime(applyMedal.getEndMedalTime());
 				applyMedalService.update(applyMedal,true);
 				
 				
@@ -314,6 +357,8 @@ public class ApplyMedalController  extends BaseController {
 					userMedal.setMedalId(applyMedal2.getMedalId());
 					userMedal.setUserId(applyMedal2.getUserId());
 					userMedal.setCreateTime(new Date());
+					userMedal.setEndMedalTime(applyMedal2.getEndMedalTime());
+					userMedal.setIsEndStatus(applyMedal2.getIsEndStatus());
 					Medal medal = medalService.findMedalById(userMedal.getMedalId());
 					if(null != medal && StringUtils.isNotBlank(medal.getName())){
 						notificationService.notify(7, userMedal.getMedalId(), userMedal.getUserId(), medal.getName());
@@ -338,7 +383,7 @@ public class ApplyMedalController  extends BaseController {
 	}
 	
 	/**
-	 * 申请勋章认证接口
+	 * 拒绝认证
 	 * @author wml
 	 * @param model
 	 * @param applyMedal
@@ -356,7 +401,12 @@ public class ApplyMedalController  extends BaseController {
 			if(null != applyMedal.getId()){
 				applyMedal.setStatus(3);
 				applyMedal.setOperTime(new Date());
-				applyMedalService.update(applyMedal,true);
+				Object id = applyMedalService.update(applyMedal,true);
+				ApplyMedal appMedal = applyMedalService.findApplyMedalById(id);
+				if(null != appMedal){
+					notificationService.notify(41, applyMedal.getId(), appMedal.getUserId());
+				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

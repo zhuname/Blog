@@ -27,8 +27,11 @@ import com.cz.mts.frame.util.MessageUtils;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
+import com.cz.mts.system.entity.Appoint;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Category;
+import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
@@ -37,7 +40,10 @@ import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.Withdraw;
 import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAppointService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICategoryService;
+import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
@@ -78,7 +84,12 @@ public class MoneyDetailController  extends BaseController {
 	private IWithdrawService withdrawService;
 	@Resource
 	private ICardService cardService;
-	
+	@Resource
+	private ICategoryService categoryService;
+	@Resource
+	private ICircleService circleService;
+	@Resource
+	private IAppointService appointService;
 	
 	private String listurl="/moneydetail/moneydetailList";
 	
@@ -151,6 +162,13 @@ public class MoneyDetailController  extends BaseController {
 					if(null != card && StringUtils.isNotBlank(card.getTitle())){
 						uc.setCardName(card.getTitle());
 					}
+					
+					if(null != card && null != card.getCatergoryId()){
+						Category category = categoryService.findCategoryById(card.getCatergoryId());
+						if(null != category && StringUtils.isNotBlank(category.getName())){
+							uc.setCategoryName(category.getName());
+						}
+					}
 				}
 				
 				
@@ -177,6 +195,18 @@ public class MoneyDetailController  extends BaseController {
 					}
 					if(3 == uc.getStatus()){
 						uc.setStatusName("已过期");
+					}
+				}
+				
+				if(null != uc.getPayType()){
+					if(1 == uc.getPayType()){
+						uc.setPayName("支付宝");
+					}
+					if(2 == uc.getPayType()){
+						uc.setPayName("微信");
+					}
+					if(3 == uc.getPayType()){
+						uc.setPayName("余额支付");
 					}
 				}
 			}
@@ -224,6 +254,18 @@ public class MoneyDetailController  extends BaseController {
 			}
 			
 			finder.setParam("status", moneyDetail.getStatus());
+		}
+		
+		//视频红包名称查询
+		if(2 == moneyDetail.getType() && StringUtils.isNotBlank(moneyDetail.getItemName())){
+			finder.append(" and itemId in (select id from t_media_package where INSTR(`title`,:title)>0 )");
+			finder.setParam("title", moneyDetail.getItemName());
+		}
+		
+		//海报名称查询
+		if(1 == moneyDetail.getType() && StringUtils.isNotBlank(moneyDetail.getItemName())){
+			finder.append(" and itemId in (select id from t_poster_package where INSTR(`title`,:title)>0 )");
+			finder.setParam("title", moneyDetail.getItemName());
 		}
 		
 		if(StringUtils.isNotBlank(moneyDetail.getPublishUserName())){
@@ -354,6 +396,11 @@ public class MoneyDetailController  extends BaseController {
 		if(StringUtils.isNotBlank(userCard.getPublishUserName())){
 			finder.append(" and publishUserId in(select id from t_app_user where INSTR(`name`,:publishUserName)>0 )");
 			finder.setParam("publishUserName", userCard.getPublishUserName());
+		}
+		
+		if(StringUtils.isNotBlank(userCard.getCardName())){
+			finder.append(" and cardId in (select id from t_card where INSTR(`title`,:title)>0 )");
+			finder.setParam("title", userCard.getCardName());
 		}
 		
 		
@@ -621,6 +668,35 @@ public class MoneyDetailController  extends BaseController {
 							}
 						}
 						
+						if(14 == md.getType() || 16 == md.getType()){
+							Circle circle = circleService.findCircleById(md.getItemId());
+							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
+								md.setContent(circle.getContent());
+							}
+						}
+						if(13 == md.getType()){
+							Appoint appoint = appointService.findAppointById(md.getItemId());
+							if(null != appoint && null != appoint.getType()){
+								switch (appoint.getType()) {
+								case 1:
+									
+									PosterPackage posterPackageApp = posterPackageService.findPosterPackageById(appoint.getItemId());
+									//查询海报红包
+									if(posterPackageApp!=null && StringUtils.isNotBlank(posterPackageApp.getTitle())){
+										md.setContent(posterPackageApp.getTitle());
+									}
+									break;
+								case 2:
+									
+									MediaPackage mediaPackageApp=mediaPackageService.findMediaPackageById(appoint.getItemId());
+									if(mediaPackageApp!=null && StringUtils.isNotBlank(mediaPackageApp.getTitle())){
+										md.setContent(mediaPackageApp.getTitle());
+									}
+									break;
+								}
+							}
+						}
+						
 					}
 				}
 			}
@@ -655,23 +731,53 @@ public class MoneyDetailController  extends BaseController {
 		if(moneyDetail.getItemId()!=null){
 			Finder finder=new Finder("SELECT au.*,mon.`status` AS cardStatus FROM t_user_card mon LEFT JOIN t_app_user au ON au.id=mon.userId WHERE mon.cardId = :itemId AND mon.status!=0  order by mon.id");
 			finder.setParam("itemId", moneyDetail.getItemId());
-			
-			
-			List<AppUser> appUsers=appUserService.findListDataByFinder(finder, page, AppUser.class,null);
-			
-			for (AppUser appUser : appUsers) {
-				
-				Page pageM=new Page();
-				pageM.setPageSize(1000);
-				Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId)");
-				finderM.setParam("userId", appUser.getId());
-				List<Medal> medals=medalService.findListDataByFinder(finderM, pageM, Medal.class, null);
-				appUser.setMedals(medals);
+			List<AppUser> appUsers = appUserService.findListDataByFinder(finder, page, AppUser.class,null);
+			if(null != appUsers && appUsers.size() > 0){
+				for (AppUser appUser : appUsers) {
+					Page pageM=new Page();
+					pageM.setPageSize(1000);
+					Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId)");
+					finderM.setParam("userId", appUser.getId());
+					List<Medal> medals=medalService.findListDataByFinder(finderM, pageM, Medal.class, null);
+					appUser.setMedals(medals);
+				}
 				
 			}
-			
 			returnObject.setData(appUsers);
+			java.util.Map<String, Object> map = new HashMap<>();
+			//获取已领取张数
+			Page allPage = new Page();
+			allPage.setPageSize(100000);
+			List<AppUser> allList = appUserService.findListDataByFinder(finder, allPage, AppUser.class,null);
+			if(null != allList && allList.size() > 0){
+				map.put("lqSum", allList.size());
+			}else{
+				map.put("lqSum", 0);
+			}
 			
+			//获取人数
+			Finder sumFinder = new Finder("SELECT * FROM t_user_card WHERE cardId=:itemId AND `status`!=0 GROUP BY userId");
+			sumFinder.setParam("itemId", moneyDetail.getItemId());
+			List sumLists = moneyDetailService.queryForList(sumFinder);
+			if(null != sumLists && sumLists.size() > 0){
+				map.put("lqPerson", sumLists.size());
+			}else{
+				map.put("lqPerson", 0);
+			}
+			
+			
+			//获取卡券分类图片
+			Finder cardFinder = new Finder("SELECT * from t_category WHERE id in (SELECT catergoryId from t_card WHERE id=:itemId)");
+			cardFinder.setParam("itemId", moneyDetail.getItemId());
+			List<Category> categories = categoryService.queryForList(cardFinder, Category.class);
+			if(null != categories && categories.size() > 0){
+				Category category = categories.get(0);
+				if(null != category && StringUtils.isNotBlank(category.getImage())){
+					map.put("categoryImage", category.getImage());
+				}
+			}
+			
+			returnObject.setMap(map);
 			
 		}else {
 			returnObject.setMessage("参数缺失");

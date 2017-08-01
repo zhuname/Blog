@@ -49,7 +49,7 @@ public class Configuration  extends BaseEntity {
 	 */
 	private java.lang.String chooseFlag;
 	
-	private java.lang.Integer isImage;
+	private java.lang.Integer type;
 	
 	private java.lang.Integer id;
 	//columns END 数据库字段结束
@@ -74,13 +74,13 @@ public class Configuration  extends BaseEntity {
 	}
 	
 	
-	@WhereSQL(sql="isImage=:Configuration_isImage")
-	 public java.lang.Integer getIsImage() {
-		return isImage;
+	@WhereSQL(sql="type=:Configuration_type")
+	 public java.lang.Integer getType() {
+		return type;
 	}
 
-	public void setIsImage(java.lang.Integer isImage) {
-		this.isImage = isImage;
+	public void setType(java.lang.Integer type) {
+		this.type = type;
 	}
 
 	@WhereSQL(sql="id=:Configuration_id")
@@ -137,6 +137,7 @@ public class Configuration  extends BaseEntity {
 			.append("系统表的值[").append(getValue()).append("],")
 			.append("描述[").append(getDescr()).append("],")
 			.append("是否使用(Y是N否)[").append(getChooseFlag()).append("],")
+			.append("1图片 2文本  3富文本编辑框 4多图[").append(getType()).append("],")
 			.toString();
 	}
 	

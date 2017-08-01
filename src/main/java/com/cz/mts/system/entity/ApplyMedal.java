@@ -95,6 +95,18 @@ public class ApplyMedal  extends BaseEntity {
 	private Date endMedalTime;
 	private Integer isEndStatus;
 	
+	private Integer medalStatus;
+	
+	
+	@Transient
+	public Integer getMedalStatus() {
+		return medalStatus;
+	}
+
+	public void setMedalStatus(Integer medalStatus) {
+		this.medalStatus = medalStatus;
+	}
+
 	@Transient
 	public String getStartTime() {
 		return startTime;

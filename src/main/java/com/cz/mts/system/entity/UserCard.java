@@ -145,10 +145,42 @@ public class UserCard  extends BaseEntity {
 	private String cardName;
 	
 	private Double plateMoney;
+	
+	private Integer lqNum;
+	
+	private String categoryName;
+	
+	private String payName;
+	
 
 	
-	
-	
+	@Transient
+	public String getPayName() {
+		return payName;
+	}
+
+	public void setPayName(String payName) {
+		this.payName = payName;
+	}
+
+	@Transient
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	@Transient
+	public Integer getLqNum() {
+		return lqNum;
+	}
+
+	public void setLqNum(Integer lqNum) {
+		this.lqNum = lqNum;
+	}
+
 	@WhereSQL(sql="plateMoney=:UserCard_plateMoney")
 	public Double getPlateMoney() {
 		return plateMoney;

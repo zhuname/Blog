@@ -2,6 +2,7 @@ package com.cz.mts.system.entity;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -50,7 +51,25 @@ public class Attention  extends BaseEntity {
 	private java.lang.Integer isUpdate;
 	//columns END 数据库字段结束
 	
+	private AppUser appUser;
+	
+	private AppUser itemUser;
+	
+	private Integer isAttr;
+	
+	
+	
+	
 	//concstructor
+	
+	@Transient
+	public Integer getIsAttr() {
+		return isAttr;
+	}
+
+	public void setIsAttr(Integer isAttr) {
+		this.isAttr = isAttr;
+	}
 
 	public Attention(){
 	}
@@ -59,6 +78,24 @@ public class Attention  extends BaseEntity {
 		java.lang.Integer id
 	){
 		this.id = id;
+	}
+
+	@Transient
+	public AppUser getItemUser() {
+		return itemUser;
+	}
+
+	public void setItemUser(AppUser itemUser) {
+		this.itemUser = itemUser;
+	}
+
+	@Transient
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 	//get and set

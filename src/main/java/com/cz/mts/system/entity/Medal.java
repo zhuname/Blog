@@ -66,7 +66,17 @@ public class Medal  extends BaseEntity {
 	
 	private Integer isAvoidAudit;
 	
+	private Integer status;
 	
+	@WhereSQL(sql="status=:Medal_status")
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	@Transient
 	public Integer getUserId() {
 		return userId;
@@ -166,6 +176,7 @@ public class Medal  extends BaseEntity {
 			.append("类型：1图片认证 2视频认证[").append(getType()).append("],")
 			.append("申请说明[").append(getApplyInstructions()).append("],")
 			.append("是否免审核[").append(getIsAvoidAudit()).append("],")
+			.append("审核状态[").append(getStatus()).append("],")
 			.toString();
 	}
 	

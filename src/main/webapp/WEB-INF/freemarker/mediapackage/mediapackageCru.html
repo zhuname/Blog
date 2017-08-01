@@ -160,6 +160,101 @@ jQuery(document).ready(function(){
 		$("#encrypt2").attr("selected","selected");
 	}
 	
+	
+	
+	var isAppoint = $("#isAppoint").val();
+	if(1 == isAppoint){
+		$("#divExplain").show();
+	}else{
+		$("#divExplain").hide();
+	}
+	$("#inputAppoint").on('change',function(){
+		if(1 == $("#inputAppoint").val()){
+			$("#divExplain").show();
+		}else{
+			$("#divExplain").hide();
+		}
+		
+		jQuery("#isAppoint").attr('value',$("#inputAppoint").val());
+	});
+	var isAppoint1 = $("#isAppoint1").val();
+	var isAppoint2 = $("#isAppoint2").val();
+	if(isAppoint1 == isAppoint){
+		$("#isAppoint1").attr("selected","selected");
+	}
+	if(isAppoint2 == isAppoint){
+		$("#isAppoint2").attr("selected","selected");
+	}
+	
+	
+	//是否开启关联卡券
+	var isRelevance = $("#isRelevance").val();
+	if(1 == isRelevance){
+		$("#cardIdDiv").show();
+	}else{
+		$("#cardIdDiv").hide();
+	}
+	//加载链接目标
+	jQuery.ajax({
+		url : ctx+"/system/lunbopic/position/list?position=4",
+		type : "post",
+		dataType : "json",
+		success : function(_json) {
+			if(_json.status=="error"){
+				return;
+			}
+			//先清除原来的数据
+			$("#cardId").empty();
+			jQuery(_json.data).each(function(i,_obj){
+				jQuery("#cardId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
+			});
+			
+			jQuery("#cardId").select2();
+			$('#cardId').select2().val($('#cardId').attr("code"));
+			$('#cardId').select2().val($('#cardId').attr("code"));
+		}
+	});
+	
+	$("#inputRelevance").on('change',function(){
+		if(1 == $("#inputRelevance").val()){
+			$("#cardIdDiv").show();
+		}else{
+			$("#cardIdDiv").hide();
+		}
+		
+		//加载链接目标
+		jQuery.ajax({
+			url : ctx+"/system/lunbopic/position/list?position=4",
+			type : "post",
+			dataType : "json",
+			success : function(_json) {
+				if(_json.status=="error"){
+					return;
+				}
+				//先清除原来的数据
+				$("#cardId").empty();
+				jQuery(_json.data).each(function(i,_obj){
+					jQuery("#cardId").append("<option value='"+_obj.id+"'>"+"发布人："+_obj.name+"---标题："+_obj.title+"</option>");
+				});
+				
+				jQuery("#cardId").select2();
+			}
+		});
+		
+		jQuery("#isRelevance").attr('value',$("#inputRelevance").val());
+	});
+	var isRelevance1 = $("#isRelevance1").val();
+	var isRelevance2 = $("#isRelevance2").val();
+	if(isRelevance1 == isRelevance){
+		$("#isRelevance1").attr("selected","selected");
+	}
+	if(isRelevance2 == isRelevance){
+		$("#isRelevance2").attr("selected","selected");
+	}
+	
+	
+	
+	
 	initCity("localtion",null,"cityId");
     
 	initMCitys("tableIds","cityIds");
@@ -169,6 +264,7 @@ jQuery(document).ready(function(){
 		jQuery("#cityId").val(cityId);
 		
 	});
+        
 	
 //-->
 </SCRIPT>
@@ -234,6 +330,57 @@ jQuery(document).ready(function(){
 					</div><div class="help-block" for="command"></div>
 				</div>
 			</div>
+			
+			<div class="space-2"></div>
+			<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isAppoint" >是否开启预约</label>
+				<input name="isAppoint" class="col-xs-12 col-sm-6" id="isAppoint" value="${(returnDatas.data.isAppoint)!''}"  type="hidden" />
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<select id="inputAppoint">
+							<option value="0" id="isAppoint1">不开启</option>
+							<option value="1" id="isAppoint2">开启</option>
+						</select>
+						
+					</div><div class="help-block" for="isAppoint"></div>
+				</div>
+			</div>
+	        <div class="space-2"></div>
+	        
+	        <div class="form-group" id="divExplain">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="appointExplain" >预约说明</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<textarea id="appointExplain" name="appointExplain" style="width: 30%;height: 100px;">${(returnDatas.data.appointExplain)!''}</textarea>
+					</div><div class="help-block" for="appointExplain"></div>
+				</div>
+			</div>
+			
+			
+			<div class="space-2"></div>
+	        
+        	<div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="isRelevance" >是否关联卡券</label>
+				<input name="isRelevance" class="col-xs-12 col-sm-6" id="isRelevance" value="${(returnDatas.data.isRelevance)!''}"  type="hidden" />
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<select id="inputRelevance">
+							<option value="0" id="isRelevance1">不开启</option>
+							<option value="1" id="isRelevance2">开启</option>
+						</select>
+						
+					</div><div class="help-block" for="isRelevance"></div>
+				</div>
+			</div>
+			
+			<div class="space-2"></div>
+			<div class="form-group" id="cardIdDiv">
+					<label class="col-sm-3 control-label no-padding-right" for="cardId"> 关联卡券</label>
+					<div class="col-sm-6">
+						<select  id="cardId" name="cardId" code="${(returnDatas.data.cardId)!''}"   class="form-control">
+						</select>
+					</div>
+				</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
 				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="mediaUrl" >视频url</label>

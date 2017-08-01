@@ -1,0 +1,257 @@
+<#escape x as x?html>
+
+<script type="text/javascript" src="${ctx}/js/system/citycircle/citycircle.js"></script>
+
+<script type="text/javascript">
+
+function deleteCityCircle(){
+	var id=jQuery("#id").val();
+	if(!id||id==""){
+		myalert("请选择你要删除的记录");
+		return;
+	}else{
+		var _url="${ctx}/citycircle/delete?id="+id;
+		var listurl="${ctx}/citycircle/list";
+		mydelete(_url,listurl);
+	}
+}
+
+jQuery("#search_payType option[value='${(returnDatas.queryBean.payType)!''}']").prop("selected",true);
+
+jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").prop("selected",true);
+
+//点击查询按钮
+$(document).on("click", ".selectBtn", function() {
+	jQuery('#pageIndex').val(1);
+	jQuery('#selectA')[0].click();
+});
+
+</script>
+
+
+	
+
+<!-- /.page-header -->
+
+<div class="row">
+    <div class="col-xs-12">
+<div class="operate panel panel-default" style="height:65px;">
+	<div class="panel-body">
+		<div class="pull-left">
+ <form class="form-horizontal" name="searchForm" id="searchForm" action="${ctx}/system/citycircle/list" role="form">
+            <input type="hidden" name="pageIndex" id="pageIndex" value="${(returnDatas.page.pageIndex)!'1'}"/>
+            <input type="hidden" name="sort" id="page_sort" value="${(returnDatas.page.sort)!'desc'}"/>
+            <input type="hidden" name="order" id="page_order" value="${(returnDatas.page.order)!'id'}"/>
+			 <label for="search_title"><b>城事圈主题:</b></label> 
+			 <input type="text" id="search_title"  name="title" placeholder="请填写主题"  value="${(returnDatas.queryBean.title)!''}">
+			  <label for="search_userName"><b>打赏用户:</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
+			  <label for="search_code"><b>订单编号:</b></label> 
+			 <input type="text" id="search_code"  name="code" placeholder="请填写订单编号"  value="${(returnDatas.queryBean.code)!''}">
+			 <label for="search_payType"><b>支付类型:</b></label>
+			 <select id="search_payType" name="payType" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="1">支付宝</option>
+				<option value="2">微信</option>
+				<option value="3">余额</option>
+			</select>
+			<label for="search_status"><b>状态:</b></label> 
+			 <select id="search_status" name="status" class="col-10">
+			 	<option value="">请选择</option>
+				<option value="0">待支付</option>
+				<option value="1">已支付</option>
+			</select>
+			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
+				</a>
+				
+				<a 
+				class="btn btn-purple btn-sm selectBtn">
+					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10 "></i>
+				</a>
+
+</form>
+		</div>
+		<div class="pull-right">
+			    <@shiro.hasPermission name="/citycircle/list/export" >
+				  <button onclick="myexport('searchForm','${ctx}/citycircle/list/export');" class="btn  btn-sm  btn-primary">
+                      
+                        导出
+                    </button>
+		    	</@shiro.hasPermission>
+			    <@shiro.hasPermission name="/citycircle/update" >
+				  <button onclick="myhref('${ctx}/citycircle/update/pre');" class="btn  btn-sm  btn-primary">
+                        添加
+                    </button>
+			    </@shiro.hasPermission>
+			    <@shiro.hasPermission name="/citycircle/delete" >
+			    |
+				  <button onclick="deleteCityCircle();" class="btn btn-sm btn-danger">
+                        删除
+                    </button>
+			    </@shiro.hasPermission>
+			
+		</div>
+	</div>
+</div>
+
+   <div class="row">
+            <div class="col-xs-12">
+	            <!--start_export-->
+                <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover">
+                    <!--end_no_export-->
+                    <!--first_start_export-->
+                    <thead>
+                    <tr>
+                        <!--first_start_no_export-->
+                       <!--  <th class="center">
+                            <label class="position-relative">
+                                <input class="ace" type="checkbox">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>操作</th> -->
+                        <!--first_end_no_export-->
+						<th id="th_itemId" width="15%">城事圈主题</th>
+						<th id="th_money" width="5%">打赏金额</th>
+						<th id="th_content" width="15%">打赏留言</th>
+						<th id="th_payType" width="5%">支付方式</th>
+						<th id="th_userId" width="15%">打赏用户</th>
+						<th id="th_payTime" width="10%">支付时间</th>
+						<th id="th_payMoney" width="10%">支付金额</th>
+						<th id="th_status" width="5%">状态</th>
+						<th id="th_createTime" width="10%">创建时间</th>
+						<th id="th_code" width="10%">订单编号</th>
+                    </tr>
+                    </thead>
+                    <!--first_end_export-->
+
+                    <!--start_export-->
+                    <tbody>
+           
+				   <#if (returnDatas.data??)&&(returnDatas.data?size>0)>
+					 <#list returnDatas.data as _data>
+                            <!--start_no_export-->
+                            <tr class="">
+                               <!--  <td class="center">
+                                    <label class="position-relative">
+                                        <input name="check_li" value="${_data.id}" class="ace" type="checkbox">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="hidden-sm hidden-xs btn-group">
+                                        <button class="btn btn-xs btn-info"
+                                                onclick="myhref('${ctx}/citycircle/update/pre?id=${(_data.id)!''}');">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-danger"
+                                                onclick="mydelete('${ctx}/citycircle/delete?id=${(_data.id)!''}','${ctx}/citycircle/list');">
+                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                        </button>
+                                    </div>
+                                    <div class="hidden-md hidden-lg">
+                                        <div class="inline position-relative">
+                                            <button class="btn btn-minier btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" data-position="auto">
+                                                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+	                                          <li>
+													<a  href="javascript:myhref('${ctx}/citycircle/look?id=${(_data.id)!''}');"  class="tooltip-info" data-rel="tooltip" title="View">
+														<span class="blue">
+															<i class="ace-icon fa fa-search-plus bigger-120"></i>
+														</span>
+													</a>
+											  </li>	
+                                                <li>
+                                                    <a data-original-title="Edit"
+                                                       href="javascript:myhref('${ctx}/citycircle/update/pre?id=${(_data.id)!''}');"
+                                                       class="tooltip-success" data-rel="tooltip" title="">
+																		<span class="green">
+																			<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																		</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a data-original-title="Delete"
+                                                       href="javascript:mydelete('${ctx}/citycircle/delete?id=${(_data.id)!''}','${ctx}/citycircle/list');"
+                                                       class="tooltip-error" data-rel="tooltip" title="">
+																		<span class="red">
+																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																		</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td> -->
+                                <!--end_no_export-->
+
+							<td >
+								${(_data.title)!''}
+							</td>
+							<td >
+								${(_data.money)!0}
+							</td>
+							<td >
+								${(_data.content)!''}
+							</td>
+							<td >
+							<#if (_data.payType) ??>
+								<#if (_data.payType) == 1 >
+									支付宝
+								</#if>
+								<#if (_data.payType) == 2 >
+									微信
+								</#if>
+								<#if (_data.payType) == 3 >
+									余额
+								</#if>
+								</#if>
+							</td>
+							<td >
+								<!-- <#if (_data.appUser) ??>
+									<#if (_data.appUser.name) ??>
+										${(_data.appUser.name)!''}
+									</#if>
+								</#if> -->
+								${(_data.userName)!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.payTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
+							</td>
+							<td >
+								${(_data.payMoney)!0}
+							</td>
+							<td >
+								<#if (_data.status) == 0 >
+									待支付
+								</#if>
+								<#if (_data.status) == 1 >
+									已支付
+								</#if>
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
+							</td>
+							<td >
+								${(_data.code)!''}
+							</td>
+						</tr>
+					</#list>
+					 </#if>
+                    </tbody>
+                </table>
+                <!--end_export-->
+            </div>
+            <!-- /.span -->
+        </div>
+        <#if returnDatas.page??>	
+            <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
+         </#if>
+    </div>
+</div>
+<!-- /.main-container -->
+</#escape>

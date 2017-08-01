@@ -17,6 +17,7 @@ jQuery(document).ready(function(){
 				type : "post",
 				dataType : "json",
 				success : function(_json) {
+					console.log(_json);
 					if(_json.status=="success"){
 						showdata(_json);
 					}
@@ -202,7 +203,7 @@ function headOnc(){
 					<option value="否">否</option>
 				</select> -->
 				<!-- <a href="javascript:mySubmitForm('searchForm');" class="btn btn-purple btn-sm">  -->
-				<a href="javascript:searchCategory(type);" class="btn btn-purple btn-sm">
+				<a href="javascript:searchCategory(type);" class="btn btn-purple btn-sm" onclick="$('#pageIndex').val(1);">
 				    查询 
 					<i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
@@ -265,6 +266,7 @@ function headOnc(){
 										 <!--first_end_no_export-->
 												<th id="th_name" style="width: 20%;" >分类名称</th>
 												<th id="th_image" style="width: 20%;">分类图片</th>
+												<th id="th_sort" style="width: 20%;">分类排序</th>
 
 										</tr>
 									</thead>
@@ -288,6 +290,9 @@ function headOnc(){
 											</td>
 											<td >
 													<img src="${(_data.image)!''}"/>
+											</td>
+											<td >
+													${(_data.sort)!''}
 											</td>
 										</tr>
 										
@@ -327,17 +332,12 @@ function headOnc(){
 					   								<input name="image" class="form-control" id="image" style="display:none"  type="text" />
 										</div>
 										
-									<!-- 	<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right" for="isDel" >是否可用</label>
+									<div class="form-group">
+											<label class="col-sm-3 control-label no-padding-right" for="sort" >分类排序</label>
 												 <div class="col-sm-9">
-													<select id="isDel" name="isDel" class="col-10">
-													<option value="0">可用</option>
-													<option value="1">不可用</option>
-													</select>
-													
-													
+													<input name="sort"  id="sort" value="" placeholder="分类排序" class="form-control"  type="text" />
 												 </div> 
-										</div> -->
+									</div>
 											<input name="type"  id="type" value="" class="form-control"  type="text" style="display: none;"/>							
 									</div>
 

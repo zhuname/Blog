@@ -184,6 +184,7 @@ $(document).on("click", ".selectBtn", function() {
 						<th  style="width: 3%"  id="th_ownerPhone" >户主手机号/微信绑定手机号</th>
 						<th  style="width: 3%"  id="th_cardNum" >卡号/支付宝账号/微信账号</th>
 						<th  style="width: 3%"  id="th_withdrawType" >提现方式</th>
+						<th  style="width: 3%"  id="th_withdrawType" >手机号</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -312,6 +313,9 @@ $(document).on("click", ".selectBtn", function() {
 								<#if (_data.withdrawType) == 3>
 									微信
 								</#if>
+							</td>
+							<td >
+								${(_data.userPhone)!''}
 							</td>
 						</tr>
 					</#list>

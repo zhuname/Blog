@@ -85,8 +85,17 @@ public class CityController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		page.setPageSize(100000);
+		Finder finder = Finder.getSelectFinder(City.class).append(" where 1=1");
+		if(null != city.getOpen()){
+			finder.append(" and open=:open");
+			finder.setParam("open", city.getOpen());
+		}
+		if(StringUtils.isNotBlank(city.getName())){
+			finder.append(" and (INSTR(`name`,:name)>0 OR INSTR(`capital`,:name)>0 )");
+			finder.setParam("name", city.getName());
+		}
 		// ==执行分页查询
-		List<City> datas=cityService.findListDataByFinder(null,page,City.class,city);
+		List<City> datas=cityService.findListDataByFinder(finder,page,City.class,null);
 		returnObject.setQueryBean(city);
 		returnObject.setPage(page);
 		returnObject.setData(datas);
@@ -335,7 +344,7 @@ public class CityController  extends BaseController {
 		}else if(level==2){
 			if(fatherId!=null){
 				city.setFatherId(fatherId);
-				//city.setOpen(1);
+//				city.setOpen(1);
 			}else {
 				returnObject.setMessage("参数缺失");
 				returnObject.setStatusCode(ReturnDatas.ERROR);
@@ -456,6 +465,31 @@ public class CityController  extends BaseController {
 			 if(list != null && list.size() > 0){
 				 returnObject.setData(list.get(0));
 			 }
+		 }else{
+			 returnObject.setMessage("参数缺失");
+			 returnObject.setStatus(ReturnDatas.ERROR);
+		 }
+		 return returnObject;
+	}
+	
+	/**
+	 * 根据城市名称查询城市bean
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/detail/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas detailjson(Model model,HttpServletRequest request,HttpServletResponse response,City city) throws Exception {
+		 ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		 if(null != city.getId()){
+			City cityDetail = cityService.findCityById(city.getId());
+			if(null != cityDetail){
+				returnObject.setData(cityDetail);
+			}
 		 }else{
 			 returnObject.setMessage("参数缺失");
 			 returnObject.setStatus(ReturnDatas.ERROR);

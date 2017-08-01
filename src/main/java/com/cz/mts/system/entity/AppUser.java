@@ -221,8 +221,82 @@ public class AppUser  extends BaseEntity {
 	private Integer topedCount;
 	private Integer attenedCount;
 	
+	private Integer isAppointFee;
+	
+	private Integer activityCount;
+	private Integer cityCircleCount;
+	
+	private Double posterSumMoney;
+	private Double posterRemainMoney;
+	private Double mediaSumMoney;
+	private Double mediaRemainMoney;
 	
 	
+	
+	
+	@Transient
+	public Double getPosterSumMoney() {
+		return posterSumMoney;
+	}
+
+	public void setPosterSumMoney(Double posterSumMoney) {
+		this.posterSumMoney = posterSumMoney;
+	}
+
+	@Transient
+	public Double getPosterRemainMoney() {
+		return posterRemainMoney;
+	}
+
+	public void setPosterRemainMoney(Double posterRemainMoney) {
+		this.posterRemainMoney = posterRemainMoney;
+	}
+
+	@Transient
+	public Double getMediaSumMoney() {
+		return mediaSumMoney;
+	}
+
+	public void setMediaSumMoney(Double mediaSumMoney) {
+		this.mediaSumMoney = mediaSumMoney;
+	}
+
+	@Transient
+	public Double getMediaRemainMoney() {
+		return mediaRemainMoney;
+	}
+
+	public void setMediaRemainMoney(Double mediaRemainMoney) {
+		this.mediaRemainMoney = mediaRemainMoney;
+	}
+
+	@Transient
+	public Integer getActivityCount() {
+		return activityCount;
+	}
+
+	public void setActivityCount(Integer activityCount) {
+		this.activityCount = activityCount;
+	}
+
+	@Transient
+	public Integer getCityCircleCount() {
+		return cityCircleCount;
+	}
+
+	public void setCityCircleCount(Integer cityCircleCount) {
+		this.cityCircleCount = cityCircleCount;
+	}
+
+	@WhereSQL(sql="isAppointFee=:AppUser_isAppointFee")
+	public Integer getIsAppointFee() {
+		return isAppointFee;
+	}
+
+	public void setIsAppointFee(Integer isAppointFee) {
+		this.isAppointFee = isAppointFee;
+	}
+
 	@Transient
 	public Double getSumMoney() {
 		return sumMoney;
@@ -813,12 +887,13 @@ public class AppUser  extends BaseEntity {
 			.append("海报最后浏览时间[").append(getPosterScanTime()).append("],")
 			.append("视频最后浏览时间[").append(getMediaScanTime()).append("],")
 			.append("同城活动最后浏览时间[").append(getActivityScanTime()).append("],")
-			.append("同城圈最后浏览时间[").append(getCircleScanTime()).append("],")
+			.append("城事圈最后浏览时间[").append(getCircleScanTime()).append("],")
 			.append("总收入[").append(getSumAllMoney()).append("],")
 			.append("被浏览次数[").append(getViewedCount()).append("],")
 			.append("被评论次数[").append(getCommentedCount()).append("],")
 			.append("被点赞次数[").append(getTopedCount()).append("],")
 			.append("被关注次数[").append(getAttenedCount()).append("],")
+			.append("是否有预约佣金[").append(getIsAppointFee()).append("],")
 			.toString();
 	}
 	

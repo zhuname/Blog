@@ -29,6 +29,7 @@ import com.cz.mts.frame.util.Page;
 import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
+import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LmediaPackage;
@@ -36,18 +37,25 @@ import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
+import com.cz.mts.system.entity.UserCard;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IRedCityService;
+import com.cz.mts.system.service.IUserCardService;
 import com.cz.mts.system.service.IUserMedalService;
+import com.cz.mts.system.service.NotificationService;
 
 
 /**
@@ -80,6 +88,15 @@ public class MediaPackageController  extends BaseController {
 	private ICategoryService categoryService;
 	@Resource
 	private ICityService cityService;
+	@Resource
+	private IOperService operService;
+	@Resource
+	private IUserCardService userCardService;
+	@Resource
+	private NotificationService notificationService;
+	@Resource
+	private ICardService cardService;
+	
 	
 	
 	private String listurl="/mediapackage/mediapackageList";
@@ -122,7 +139,8 @@ public class MediaPackageController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		String appUserId = request.getParameter("appUserId");
-		returnObject = mediaPackageService.list(mediaPackage, page, appUserId , personType);
+		String selectType = request.getParameter("selectType");
+		returnObject = mediaPackageService.list(mediaPackage, page, appUserId , personType,selectType);
 		return returnObject;
 	}
 	
@@ -172,6 +190,34 @@ public class MediaPackageController  extends BaseController {
 					 mediaPackage.setScanNum(0);
 				 }
 				 mediaPackage.setScanNum(mediaPackage.getScanNum() + 1);
+				 
+				 //超过100人浏览
+				 if(mediaPackage.getScanNum() % 100 == 0 && mediaPackage.getScanNum() / 100 > 0){
+					 notificationService.notify(26, mediaPackage.getId(), mediaPackage.getUserId(),mediaPackage.getScanNum()+"");
+				 }
+				 
+				 
+				 Page newPage = new Page();
+				 newPage.setPageSize(1000000);
+				 //查询评论个数
+				 Oper commentOper = new Oper();
+				 commentOper.setType(4);
+				 commentOper.setItemId(id);
+				 List<Oper> commentNums = operService.findListDataByFinder(null, newPage, Oper.class, commentOper);
+				 if(null != commentNums && commentNums.size() > 0){
+					 mediaPackage.setCommentCount(commentNums.size());
+				 }
+				 
+				 //查询点赞个数
+				 Oper topOper = new Oper();
+				 topOper.setType(3);
+				 topOper.setItemId(id);
+				 List<Oper> topNums = operService.findListDataByFinder(null, newPage, Oper.class, topOper);
+				 if(null != topNums && topNums.size() > 0){
+					 mediaPackage.setTopCount(topNums.size());
+				 }
+				 
+				 
 				 mediaPackageService.update(mediaPackage,true);
 			 }
 			  
@@ -183,22 +229,8 @@ public class MediaPackageController  extends BaseController {
 					 mediaPackage.setAppUser(appUser);
 				 }
 				 
-				 //查询该用户的勋章列表
-				 UserMedal userMedal = new UserMedal();
-				 userMedal.setUserId(mediaPackage.getUserId());
-				 Page page = new Page();
-				 //查询勋章列表
-				 List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page, UserMedal.class, userMedal);
-				 if(null != userMedals && userMedals.size() > 0){
-					for (UserMedal um : userMedals) {
-						if(null != um.getMedalId()){
-							Medal medal = medalService.findMedalById(um.getMedalId());
-							if(null != medal){
-								um.setMedal(medal);
-							}
-						}
-					 }
-					mediaPackage.setUserMedals(userMedals);
+				 if(null != appUser.getUserMedals()){
+					 mediaPackage.setUserMedals(appUser.getUserMedals());
 				 }
 			  }
 			 //是否领取  look 1 为领取过的
@@ -233,8 +265,28 @@ public class MediaPackageController  extends BaseController {
 					}else{
 						mediaPackage.setIsAttention(0);
 					}
+					
+					
+					 //是否点赞过
+					 Oper oper = new Oper();
+					 oper.setUserId(Integer.parseInt(appUserId));
+					 oper.setItemId(mediaPackage.getId());
+					 oper.setType(3);
+					 Page operPage = newPage(request);
+					 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+					 if(null != opers && opers.size() > 0){
+						 mediaPackage.setIsTop(1);
+					 }else{
+						 mediaPackage.setIsTop(0);
+					 }
 			 }
 			 
+			 if(null != mediaPackage && null != mediaPackage.getCardId()){
+				 Card card = cardService.findCardById(mediaPackage.getCardId());
+				 if(null != card && StringUtils.isNotBlank(card.getTitle())){
+					 mediaPackage.setCardTitle(card.getTitle());
+				 }
+			 }
 			 
 			 //返回分类名称
 			 if(mediaPackage != null && mediaPackage.getCategoryId() != null){
@@ -245,6 +297,42 @@ public class MediaPackageController  extends BaseController {
 					 }
 				 }
 			 }
+			 
+			//返回卡券分类名称以及卡券分类图片
+			 if(null != mediaPackage && null != mediaPackage.getCardCategoryId()){
+				 Category category = categoryService.findCategoryById(mediaPackage.getCardCategoryId());
+				 if(null != category){
+					 if(StringUtils.isNotBlank(category.getName())){
+						 mediaPackage.setCardCategoryName(category.getName());
+					 }
+					 if(StringUtils.isNotBlank(category.getImage())){
+						 mediaPackage.setCardCategoryImage(category.getImage());
+					 }
+				 }
+			 }
+			 
+			 
+			 //返回卡券已领取数量
+			 if(null != mediaPackage && null != mediaPackage.getCardId()){
+				 Integer lqNum = 0;
+//				 if(StringUtils.isNotBlank(appUserId)){
+					 //返回该用户已领取的数量
+					 Finder userCardFinder = new Finder("SELECT COUNT(id) as lqNum FROM t_user_card WHERE cardId=:cardId  AND `status`!=0");
+					 userCardFinder.setParam("cardId", mediaPackage.getCardId());
+					 List<UserCard> userCards = userCardService.queryForList(userCardFinder, UserCard.class);
+					 if(null != userCards && userCards.size() > 0){
+						 UserCard userCard = userCards.get(0);
+						 if(null != userCard && null != userCard.getLqNum() ){
+							 lqNum = userCards.get(0).getLqNum();
+						 }
+					 }
+//				 }
+				 mediaPackage.setCardLqNum(lqNum);
+			 }
+			 
+			 
+			 
+			 
 			 
 			 String cityIds= ""; 
 			//返回城市名称
@@ -319,6 +407,10 @@ public class MediaPackageController  extends BaseController {
 					redCity.setPackageId(mediaPackage.getId());
 					redCity.setType(2);
 					redCityService.save(redCity);
+				}
+				
+				if(0 == mediaPackage.getIsRelevance()){
+					mediaPackage.setCardId(0);
 				}
 				
 				mediaPackageService.update(mediaPackage,true);
@@ -461,29 +553,40 @@ public class MediaPackageController  extends BaseController {
 				mediaPackage.setNum(mediaPackage.getLqNum());
 				mediaPackage.setIsDel(0);
 				mediaPackage.setShareNum(0);
+				mediaPackage.setIsValid(0);
 				
-				Object id=mediaPackageService.saveorupdate(mediaPackage);
-				returnObject.setData(mediaPackageService.findMediaPackageById(id));
-				
-				if(cityIds!=null){
-				
-					String[] cityId=cityIds.split(",");
-				
-						for (String string : cityId) {
-							RedCity redCity=new RedCity();
-							redCity.setCityId(Integer.parseInt(string));
-							redCity.setPackageId(Integer.parseInt(id.toString()));
-							redCity.setType(2);
-							redCityService.save(redCity);
-						}
-				
+				//保证没人最少领取0.01
+				if(mediaPackage.getSumMoney()/mediaPackage.getLqNum() >= 0.01){
+					Object id=mediaPackageService.saveorupdate(mediaPackage);
+					returnObject.setData(mediaPackageService.findMediaPackageById(id));
+					
+					if(cityIds!=null){
+					
+						String[] cityId=cityIds.split(",");
+					
+							for (String string : cityId) {
+								RedCity redCity=new RedCity();
+								redCity.setCityId(Integer.parseInt(string));
+								redCity.setPackageId(Integer.parseInt(id.toString()));
+								redCity.setType(2);
+								redCityService.save(redCity);
+							}
+					
+					}else{
+						RedCity redCity=new RedCity();
+						redCity.setCityId(0);
+						redCity.setPackageId(Integer.parseInt(id.toString()));
+						redCity.setType(2);
+						redCityService.save(redCity);
+					}
 				}else{
-					RedCity redCity=new RedCity();
-					redCity.setCityId(0);
-					redCity.setPackageId(Integer.parseInt(id.toString()));
-					redCity.setType(2);
-					redCityService.save(redCity);
+					returnObject.setMessage("每个人的领取金额最少是0.01元");
+					returnObject.setStatus(ReturnDatas.ERROR);
+					return returnObject;
 				}
+				
+				
+				
 				
 			}else{
 				
@@ -519,46 +622,55 @@ public class MediaPackageController  extends BaseController {
 				
 				mediaPackage.setTradeNo(null);
 				
-				RedCity redCitySelect = new RedCity();
-				
-				redCitySelect.setPackageId(mediaPackage.getId());
-				redCitySelect.setType(2);
-				
-				// ==构造分页请求
-				Page page = newPage(request);
-				// ==执行分页查询
-				List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
-				
-				for (RedCity redCity : datas) {
+				//每个人应该最少领取金额是0.01
+				if(mediaPackage.getSumMoney()/mediaPackage.getLqNum() >= 0.01){
+					RedCity redCitySelect = new RedCity();
 					
-					redCityService.deleteByEntity(redCity);
+					redCitySelect.setPackageId(mediaPackage.getId());
+					redCitySelect.setType(2);
 					
-				}
-				
-				if(cityIds!=null){
+					// ==构造分页请求
+					Page page = newPage(request);
+					// ==执行分页查询
+					List<RedCity> datas=redCityService.findListDataByFinder(null,page,RedCity.class,redCitySelect);
 					
-					String[] cityId=cityIds.split(",");
-				
-						for (String string : cityId) {
-							RedCity redCity=new RedCity();
-							redCity.setCityId(Integer.parseInt(string));
-							redCity.setPackageId(mediaPackage.getId());
-							redCity.setType(2);
-							redCityService.save(redCity);
-						}
-				
+					for (RedCity redCity : datas) {
+						
+						redCityService.deleteByEntity(redCity);
+						
+					}
+					
+					if(cityIds!=null){
+						
+						String[] cityId=cityIds.split(",");
+					
+							for (String string : cityId) {
+								RedCity redCity=new RedCity();
+								redCity.setCityId(Integer.parseInt(string));
+								redCity.setPackageId(mediaPackage.getId());
+								redCity.setType(2);
+								redCityService.save(redCity);
+							}
+					
+					}else{
+						RedCity redCity=new RedCity();
+						redCity.setCityId(0);
+						redCity.setPackageId(mediaPackage.getId());
+						redCity.setType(2);
+						redCityService.save(redCity);
+					}
+					
+					
+					Object id=mediaPackageService.update(mediaPackage,true);
+					
+					returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				}else{
-					RedCity redCity=new RedCity();
-					redCity.setCityId(0);
-					redCity.setPackageId(mediaPackage.getId());
-					redCity.setType(2);
-					redCityService.save(redCity);
+					returnObject.setMessage("每个人的领取金额最少是0.01元");
+					returnObject.setStatus(ReturnDatas.ERROR);
+					return returnObject;
 				}
 				
 				
-				Object id=mediaPackageService.update(mediaPackage,true);
-				
-				returnObject.setData(mediaPackageService.findMediaPackageById(id));
 				
 			}
 			
@@ -600,8 +712,12 @@ public class MediaPackageController  extends BaseController {
 			finder.setParam("endTime", mediaPackage.getEnddTime());
 		}
 		if(StringUtils.isNotBlank(mediaPackage.getCityIds())){
-			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId)");
+			finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId and type=2)");
 			finder.setParam("cityId", Integer.parseInt(mediaPackage.getCityIds()));
+		}
+		
+		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
+			finder.append(" and title like '%"+mediaPackage.getTitle()+"%'");
 		}
 		finder.append(" and status!=0");
 		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
@@ -609,6 +725,15 @@ public class MediaPackageController  extends BaseController {
 		Double sumBalance = 0.0;
 		if(null != datas && datas.size() > 0){
 			for (MediaPackage mp : datas) {
+				
+				if(null != mp.getCardId() && 0 != mp.getCardId()){
+					Card card = cardService.findCardById(mp.getCardId());
+					if(null != card && StringUtils.isNotBlank(card.getTitle())){
+						mp.setCardTitle(card.getTitle());
+					}
+				}
+				
+				
 				//获取用户名称
 				if(null != mp.getUserId()){
 					AppUser appUser = appUserService.findAppUserById(mp.getUserId());

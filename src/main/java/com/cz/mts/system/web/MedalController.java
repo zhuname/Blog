@@ -142,6 +142,26 @@ public class MedalController  extends BaseController {
 		
 	}
 	
+	/**
+	 * 查看的Json格式数据,为APP端提供数据
+	 */
+	@RequestMapping(value = "/lookadmin/json")
+	public @ResponseBody
+	ReturnDatas lookadminjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+		  Medal medal = medalService.findMedalById(id);
+		   returnObject.setData(medal);
+		}else{
+		returnObject.setStatus(ReturnDatas.ERROR);
+		}
+		return returnObject;
+		
+	}
+	
 	
 	/**
 	 * 新增/修改 操作吗,返回json格式数据
@@ -260,7 +280,7 @@ public class MedalController  extends BaseController {
 			returnObject.setStatus(ReturnDatas.ERROR);
 			returnObject.setMessage("参数缺失");
 		}else{
-			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status`,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId )a ON md.id=a.id");
+			Finder finder = new Finder("SELECT a.*,md.* FROM t_medal md LEFT JOIN (SELECT m.id,am.`status` as applyStatus,am.userId from t_medal m LEFT JOIN t_apply_medal am ON am.medalId=m.id WHERE am.userId=:userId and isEndStatus != 1)a ON md.id=a.id");
 			finder.setParam("userId", medal.getUserId());
 			List datas = medalService.queryForList(finder);
 			returnObject.setData(datas);

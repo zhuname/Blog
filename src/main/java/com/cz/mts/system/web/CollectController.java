@@ -139,6 +139,7 @@ public class CollectController  extends BaseController {
 		
 			Page page=new Page();
 			// ==执行分页查询
+			collect.setOsType(null);
 			List<Collect> datas=collectService.findListDataByFinder(null,page,Collect.class,collect);
 			if(datas.size()>0){
 				//删除所有收藏的
@@ -147,9 +148,12 @@ public class CollectController  extends BaseController {
 				}
 				returnObject.setData(0);
 			}else {
-				collect.setCreateTime(new Date());
-				collectService.saveorupdate(collect);
-				returnObject.setData(1);
+				synchronized (this) {
+					collect.setCreateTime(new Date());
+					collectService.saveorupdate(collect);
+					returnObject.setData(1);
+				}
+				
 			}
 			
 		} catch (Exception e) {

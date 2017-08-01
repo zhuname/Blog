@@ -119,8 +119,8 @@ $(document).on("change", "#city", function() {
 			 <input type="text" id="search_phone"  name="phone" placeholder="请填写联系电话"  value="${(returnDatas.queryBean.phone)!''}" style="width: 8%;">
 			 <label for="search_categoryName"><b>分类名称</b></label> 
 			 <input type="text" id="search_categoryName"  name="categoryName" placeholder="请填写分类名称"  value="${(returnDatas.queryBean.categoryName)!''}" style="width: 8%;">
-			 <label for="search_userName"><b>用户名称</b></label> 
-			 <input type="text" id="search_userName"  name="userName" placeholder="请填写用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			 <label for="search_userName"><b>发布人</b></label> 
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
 			  <label for="search_state">到期开始时间</label>
 			<input name="startTime"  class="date-picker"  id="startTime" value="${(returnDatas.queryBean.startTime)!''}"  type="text"/>
 			  <span >
@@ -188,21 +188,23 @@ $(document).on("change", "#city", function() {
                         <!--first_start_no_export-->
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_images" >图片</th>
+						<th id="th_images" >卡券图片</th>
 						<th id="th_catergoryId" >分类名称</th>
-						<th id="th_userId" >用户名称</th>
-						<th id="th_title" >标题</th>
+						<th id="th_userId" >发布人</th>
+						<th id="th_title" >主题</th>
 						<th id="th_descr" >状态</th>
-						<th id="th_convertMoney" >兑换金额</th>
-						<th id="th_convertNum" >兑换数量</th>
-						<th id="th_address" >领取地址</th>
+						<th id="th_convertMoney" >购买金额</th>
+						<th id="th_convertNum" >卡券总数量</th>
+						<th id="th_address" >兑换地址</th>
 						<th id="th_phone" >联系电话</th>
 						<th id="th_endTime" >到期时间</th>
 						<th id="th_failTime" >失败时间</th>
-						<th id="th_succTime" >通过时间</th>
+						<th id="th_succTime" >审核通过时间</th>
 						<th id="th_failReason" >失败原因</th>
-						<th id="th_num" >剩余兑换次数</th>
+						<th id="th_num" >剩余卡券数</th>
 						<th id="th_num" >分享次数</th>
+						<th id="th_limitNumber">每人限领次数</th>
+						<th id="th_limitNumber">发布时间</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -324,6 +326,12 @@ $(document).on("change", "#city", function() {
 							</td>
 							<td >
 								${(_data.shareNum)!0}
+							</td>
+							<td >
+								${(_data.limitNumber)!0}
+							</td>
+							<td >
+								${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 						</tr>
 					</#list>

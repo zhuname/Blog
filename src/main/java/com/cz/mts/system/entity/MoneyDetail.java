@@ -127,8 +127,83 @@ public class MoneyDetail  extends BaseEntity {
 	
 	private String publishUserName;
 	
+	private Integer isLuck;
+	
+	private Double todayMoney;
+	
+	private Integer scanNum = 0;//浏览数量
+	private Integer topNum = 0;//点赞总数
+	private Integer commentNum = 0;//评论个数
+	private Integer attenNum = 0;
+	
+	private String descr;
 	
 	
+	
+	
+	@WhereSQL(sql="descr=:MoneyDetail_descr")
+	public String getDescr() {
+		return descr;
+	}
+
+	public void setDescr(String descr) {
+		this.descr = descr;
+	}
+
+	@Transient
+	public Integer getScanNum() {
+		return scanNum;
+	}
+
+	public void setScanNum(Integer scanNum) {
+		this.scanNum = scanNum;
+	}
+
+	@Transient
+	public Integer getTopNum() {
+		return topNum;
+	}
+
+	public void setTopNum(Integer topNum) {
+		this.topNum = topNum;
+	}
+
+	@Transient
+	public Integer getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(Integer commentNum) {
+		this.commentNum = commentNum;
+	}
+
+	@Transient
+	public Integer getAttenNum() {
+		return attenNum;
+	}
+
+	public void setAttenNum(Integer attenNum) {
+		this.attenNum = attenNum;
+	}
+
+	@Transient
+	public Double getTodayMoney() {
+		return todayMoney;
+	}
+
+	public void setTodayMoney(Double todayMoney) {
+		this.todayMoney = todayMoney;
+	}
+
+	@Transient
+	public Integer getIsLuck() {
+		return isLuck;
+	}
+
+	public void setIsLuck(Integer isLuck) {
+		this.isLuck = isLuck;
+	}
+
 	@Transient
 	public String getPublishUserName() {
 		return publishUserName;
@@ -437,6 +512,7 @@ public class MoneyDetail  extends BaseEntity {
 			.append("操作系统[").append(getOsType()).append("],")
 			.append("平台金额[").append(getPlateMoney()).append("],")
 			.append("发布人id[").append(getPublishUserId()).append("],")
+			.append("余额变动描述[").append(getDescr()).append("],")
 			.toString();
 	}
 	

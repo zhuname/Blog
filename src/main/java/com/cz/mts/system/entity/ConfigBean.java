@@ -42,9 +42,61 @@ public class ConfigBean implements Serializable{
 	private String appDownload;
 	private String appExplain;
 	private String appVersionNumber;
+	private String andForceUpdate;
+	private String iosForceUpdate;
+	
+	private String posterPackageDetail;
+	private String mediaPackageDetail;
+	private String cardDetail;
+	private String activityDetail;
+	private String circleDetail;
 	
 	
 	
+	
+	
+	public String getPosterPackageDetail() {
+		return posterPackageDetail;
+	}
+	public void setPosterPackageDetail(String posterPackageDetail) {
+		this.posterPackageDetail = posterPackageDetail;
+	}
+	public String getMediaPackageDetail() {
+		return mediaPackageDetail;
+	}
+	public void setMediaPackageDetail(String mediaPackageDetail) {
+		this.mediaPackageDetail = mediaPackageDetail;
+	}
+	public String getCardDetail() {
+		return cardDetail;
+	}
+	public void setCardDetail(String cardDetail) {
+		this.cardDetail = cardDetail;
+	}
+	public String getActivityDetail() {
+		return activityDetail;
+	}
+	public void setActivityDetail(String activityDetail) {
+		this.activityDetail = activityDetail;
+	}
+	public String getCircleDetail() {
+		return circleDetail;
+	}
+	public void setCircleDetail(String circleDetail) {
+		this.circleDetail = circleDetail;
+	}
+	public String getAndForceUpdate() {
+		return andForceUpdate;
+	}
+	public void setAndForceUpdate(String andForceUpdate) {
+		this.andForceUpdate = andForceUpdate;
+	}
+	public String getIosForceUpdate() {
+		return iosForceUpdate;
+	}
+	public void setIosForceUpdate(String iosForceUpdate) {
+		this.iosForceUpdate = iosForceUpdate;
+	}
 	public String getAppDownload() {
 		return appDownload;
 	}

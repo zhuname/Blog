@@ -160,7 +160,30 @@ public class Card  extends BaseEntity {
 	
 	private Integer limitNumber;
 	
+	private Category category;
 	
+	private Integer lqNum;
+	
+	
+	
+	@Transient
+	public Integer getLqNum() {
+		return lqNum;
+	}
+
+	public void setLqNum(Integer lqNum) {
+		this.lqNum = lqNum;
+	}
+
+	@Transient
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	@WhereSQL(sql="limitNumber=:Card_limitNumber")
 	public Integer getLimitNumber() {
 		return limitNumber;

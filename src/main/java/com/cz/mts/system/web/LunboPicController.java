@@ -17,14 +17,20 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.LunboPic;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.User;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICircleService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ILunboPicService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IPosterPackageService;
@@ -58,6 +64,12 @@ public class LunboPicController  extends BaseController {
 	private ICardService cardService;
 	@Resource
 	private IAppUserService appUserService;
+	@Resource
+	private IActivityService activityService;
+	@Resource
+	private ICircleService circleService;
+	@Resource
+	private ICityService cityService;
 	
 	private String listurl="/lunbopic/lunbopicList";
 	private String listurl4="/lunbopic/lunbopicList4";
@@ -116,22 +128,25 @@ public class LunboPicController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
-		
-		if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
-			Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name=:name ");
-			if(StringUtils.isBlank(lunboPic.getName())){
-				finder.setParam("name", "android启动广告图");
-			}else{
-				finder.setParam("name", lunboPic.getName());
+		if(null == lunboPic.getPosition()){
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
+		}else{
+			if(lunboPic.getPosition()!=null&&lunboPic.getPosition()==4){
+				Finder finder=Finder.getSelectFinder(LunboPic.class).append(" WHERE 1=1 and name=:name ");
+				if(StringUtils.isBlank(lunboPic.getName())){
+					finder.setParam("name", "android启动广告图");
+				}else{
+					finder.setParam("name", lunboPic.getName());
+				}
+				returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
+			}else {
+				List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
+				returnObject.setQueryBean(lunboPic);
+				returnObject.setPage(page);
+				returnObject.setData(datas);
 			}
-			returnObject.setData(lunboPicService.queryForList(finder,LunboPic.class));
-		}else {
-			List<LunboPic> datas=lunboPicService.findListDataByFinder(null,page,LunboPic.class,lunboPic);
-			returnObject.setQueryBean(lunboPic);
-			returnObject.setPage(page);
-			returnObject.setData(datas);
 		}
-		
 		return returnObject;
 	}
 	
@@ -330,6 +345,28 @@ public class LunboPicController  extends BaseController {
 							}
 						}
 						
+						if(5 == lp.getType()){
+							Activity activity = activityService.findActivityById(lp.getItemId());
+							if(null != activity && StringUtils.isNotBlank(activity.getContent())){
+								lp.setItemName(activity.getContent());
+							}
+						}
+						
+						if(6 == lp.getType()){
+							Circle circle = circleService.findCircleById(lp.getItemId());
+							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
+								lp.setItemName(circle.getContent());
+							}
+						}
+						
+					}
+				}else{
+					lp.setItemName("暂无链接目标");
+				}
+				if(StringUtils.isNotBlank(lp.getCityIds())){
+					City city = cityService.findCityById(lp.getCityIds());
+					if(null != city && StringUtils.isNotBlank(city.getName())){
+						lp.setCityName(city.getName());
 					}
 				}
 			}
@@ -355,7 +392,7 @@ public class LunboPicController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		String position = request.getParameter("position");
 		if(StringUtils.isNotBlank(position)){
-			//2.海报    3.视频   4.卡券
+			//2.海报    3.视频   4.卡券 5.同城活动   6城事圈
 			if("2".equals(position)){
 				//查询海报
 				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(PosterPackage.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
@@ -375,6 +412,19 @@ public class LunboPicController  extends BaseController {
 				Finder finder = new Finder("SELECT pp.id,pp.title,u.name FROM ").append(Finder.getTableName(Card.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
 				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.status=2") ;
 				List list = cardService.queryForList(finder) ;
+				returnObject.setData(list);
+			}
+			if("5".equals(position)){
+				//查询同城活动
+				Finder finder = new Finder("SELECT pp.id,pp.content as title,u.name FROM ").append(Finder.getTableName(Activity.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
+				finder.append(" u on pp.userId = u.id where pp.isDel = 0 and pp.status=3") ;
+				List list = activityService.queryForList(finder) ;
+				returnObject.setData(list);
+			}
+			if("6".equals(position)){
+				Finder finder = new Finder("SELECT pp.id,pp.content as title,u.name FROM ").append(Finder.getTableName(Circle.class)).append(" pp left join ").append(Finder.getTableName(AppUser.class));
+				finder.append(" u on pp.userId = u.id ") ;
+				List list = activityService.queryForList(finder) ;
 				returnObject.setData(list);
 			}
 		}

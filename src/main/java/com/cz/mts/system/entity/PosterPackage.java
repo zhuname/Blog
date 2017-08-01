@@ -226,8 +226,63 @@ public class PosterPackage  extends BaseEntity {
 	private Integer cardLqNum;
 	private Integer cardCategoryId;
 	
+	private String cardCategoryName;
+	private String cardCategoryImage;
+	
+	private Integer isTop;
+	
+	private Integer isValid;
+	
+	private String cardTitle;
 	
 	
+	
+	
+	@Transient
+	public String getCardTitle() {
+		return cardTitle;
+	}
+
+	public void setCardTitle(String cardTitle) {
+		this.cardTitle = cardTitle;
+	}
+	
+	@WhereSQL(sql="isValid=:PosterPackage_isValid")
+	public Integer getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(Integer isValid) {
+		this.isValid = isValid;
+	}
+
+	@Transient
+	public Integer getIsTop() {
+		return isTop;
+	}
+
+	public void setIsTop(Integer isTop) {
+		this.isTop = isTop;
+	}
+
+	@Transient
+	public String getCardCategoryName() {
+		return cardCategoryName;
+	}
+
+	public void setCardCategoryName(String cardCategoryName) {
+		this.cardCategoryName = cardCategoryName;
+	}
+
+	@Transient
+	public String getCardCategoryImage() {
+		return cardCategoryImage;
+	}
+
+	public void setCardCategoryImage(String cardCategoryImage) {
+		this.cardCategoryImage = cardCategoryImage;
+	}
+
 	@WhereSQL(sql="isAppoint=:PosterPackage_shareNum")
 	public Integer getIsAppoint() {
 		return isAppoint;
@@ -818,6 +873,7 @@ public class PosterPackage  extends BaseEntity {
 			.append("预约说明").append(getAppointExplain()).append("],")
 			.append("卡券已领取次数").append(getCardLqNum()).append("],")
 			.append("卡券分类id").append(getCardCategoryId()).append("],")
+			.append("红包领完是否在三天内").append(getIsValid()).append("],")
 			.toString();
 	}
 	

@@ -1,3 +1,4 @@
+
 <#escape x as x?html>
 
 <script type="text/javascript" src="${ctx}/js/system/applymedal/applymedal.js"></script>
@@ -67,6 +68,47 @@ function checkRefuse(id){
     	}
 	}); */
 	
+	function confirmApply(id){
+		var index = layer.load(0, {    //0为加载样式  有 0  ，  1   2
+	        shade: [0.1,'#fff'] //0.1透明度的白色背景
+	    });
+		
+		layer.open({
+			  btn: ['确定'],
+			  yes: function(index, layero){
+				    //提交时间
+				    var endMedalTime = $('#endMedalTime').val();
+				  jQuery.post("${ctx}/system/applymedal/check/json",{ id: id, endMedalTime: endMedalTime },
+							function(_json) {
+								if (_json.status == "success") {
+									myalert("审核成功");
+									myhref("${ctx}/system/applymedal/list")
+									return false;
+								} else {
+									myalert("审核失败");
+									return false;
+								}
+							});
+				  },
+			  btnAlign: 'c',
+			  title:'请填写过期时间',
+		      type: 1,
+		      anim: 2,
+		      resize :true,
+		      area: ['400px', '170px'],
+		      shadeClose: false, //开启遮罩关闭
+		      content: $('#confirmApply'),
+				success:function (layero,index) {
+		            dialog = $(layero) ;
+		            dialog.find("#confirmApply").show() ;
+		        }
+			  ,cancel: function(){ 
+			    //return false 开启该代码可禁止点击该按钮关闭
+			  }
+			});
+	    layer.close(index);
+	}
+	
 
 jQuery(document).ready(function(){
 	
@@ -122,7 +164,7 @@ jQuery(document).ready(function(){
 					<i class="fa fa-calendar bigger-110"></i>
 				</span>
 			
-			<a  href="javascript:mySubmitForm('searchForm');"
+			<a  onclick="$('#pageIndex').val(1);" href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
@@ -183,9 +225,19 @@ jQuery(document).ready(function(){
                             <tr class="">
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        
-                                        <#if (_data.status) == 1>
+                                       
+                                        <#if (_data.status) == 1 && (_data.medalStatus)?? && (_data.medalStatus) gt 0>
                                             <button class="btn btn-xs btn-success" title="审核成功"
+                                                onclick="confirmApply(${(_data.id)!''});">
+                                            	<i class="ace-icon fa fa-check bigger-120"></i>
+                                        	</button>
+                                        	<button class="btn btn-xs btn-pink" title="审核失败"
+                                                onclick="checkRefuse(${(_data.id)!''})">
+                                            	<i class="ace-icon fa fa-close bigger-120"></i>
+                                        	</button>
+                                        </#if>
+                                        <#if (_data.status) == 1 && (_data.medalStatus)?? && (_data.medalStatus) == 0>
+                                        	<button class="btn btn-xs btn-success" title="审核成功"
                                                 onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list',null,'确认成功？');">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
                                         	</button>
@@ -194,6 +246,9 @@ jQuery(document).ready(function(){
                                             	<i class="ace-icon fa fa-close bigger-120"></i>
                                         	</button>
                                         </#if>
+                                        
+                                        	
+                                        	
                                         
                                         
                                     </div>
@@ -297,6 +352,19 @@ jQuery(document).ready(function(){
             <@h.pagetoolbar page=returnDatas.page formId='searchForm' />
          </#if>
     </div>
+</div>
+
+<div style="display:none;" id="confirmApply" >
+<div style="
+    text-align: center;
+    margin-top: 10px;
+">
+<span class="input-group-addon" style="width:15px;display: inline-table;height:15px;margin-left: 5px;margin-top: -;">
+								<i class="fa fa-calendar bigger-110"></i>
+							</span>
+<input style="width:300px;display:inline-block;" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',})" name="endMedalTime" id="endMedalTime"  type="text" value=""/>
+					        
+</div>
 </div>
 <!-- /.main-container -->
 </#escape>

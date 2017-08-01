@@ -120,21 +120,24 @@ public class UserCardController  extends BaseController {
 					 }
 					 
 					 //查询勋章列表
-					 Page page1 = new Page();
-					 UserMedal userMedal = new UserMedal();
-					 userMedal.setUserId(card.getUserId());
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page1, UserMedal.class, userMedal);
-					if(null != userMedals && userMedals.size() > 0){
-						for (UserMedal um : userMedals) {
-							if(null != um.getMedalId()){
-								Medal medal = medalService.findMedalById(um.getMedalId());
-								if(null != medal){
-									um.setMedal(medal);
-								}
-							}
-						}
-						card.setUserMedals(userMedals);
-					}
+//					 Page page1 = new Page();
+//					 UserMedal userMedal = new UserMedal();
+//					 userMedal.setUserId(card.getUserId());
+//					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, page1, UserMedal.class, userMedal);
+//					if(null != userMedals && userMedals.size() > 0){
+//						for (UserMedal um : userMedals) {
+//							if(null != um.getMedalId()){
+//								Medal medal = medalService.findMedalById(um.getMedalId());
+//								if(null != medal){
+//									um.setMedal(medal);
+//								}
+//							}
+//						}
+//						card.setUserMedals(userMedals);
+//					}
+					 if(null != appUser.getUserMedals()){
+						 card.setUserMedals(appUser.getUserMedals());
+					 }
 				 }
 				userCard2.setCard(card);
 			}

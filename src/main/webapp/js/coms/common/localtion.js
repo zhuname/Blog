@@ -35,6 +35,7 @@ function initDcity(localtion,provinceId,cityId){
 								if(obj1[int].id==cityFatherId){
 									pro += "<option value='"+obj1[int].id+"'  selected = \"selected\" >"+obj1[int].name+"</option>";
 								}else {
+									console.log(obj1[int].name);
 									pro += "<option value='"+obj1[int].id+"' >"+obj1[int].name+"</option>";
 								}
 								$("#province").html(pro);

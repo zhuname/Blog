@@ -36,11 +36,11 @@
 
 		
 		<!-- Êý¾Ý¿â ÕËºÅÃÜÂë  -->
-	<entry key="jdbc.username">chuizi</entry>
-	<entry key="jdbc.password">Chuizikeji123</entry>
+	<entry key="jdbc.username">root</entry>
+	<entry key="jdbc.password">Meitianshang123_$$</entry>
 	<!-- Mysql -->
 
-	<entry key="jdbc.url">jdbc:mysql://114.55.4.234:9306/meitianshang?useUnicode=true&amp;characterEncoding=UTF-8</entry>
+	<entry key="jdbc.url">jdbc:mysql://106.15.60.65:9306/mts_v2?useUnicode=true&amp;characterEncoding=UTF-8</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
 
 	

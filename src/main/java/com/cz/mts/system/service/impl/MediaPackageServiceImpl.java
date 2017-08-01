@@ -36,6 +36,7 @@ import com.cz.mts.system.entity.LposterPackage;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserMedal;
@@ -49,6 +50,7 @@ import com.cz.mts.system.service.ILmediaPackageService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.system.service.NotificationService;
@@ -88,6 +90,8 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 	private ILmediaPackageService iLmediaPackageService ;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private IOperService operService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -143,37 +147,69 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 	@Override
-	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType) throws Exception{
+	public ReturnDatas list(MediaPackage mediaPackage,Page page,String appUserId,Integer personType, String selectType) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
-		Finder finder1 = Finder.getSelectFinder(MediaPackage.class).append(" where isDel=0");
+		Finder finder1 = new Finder("SELECT a.*,c.num FROM(SELECT p.command,p.topCount,p.commentCount,p.appointCount,p.cardId,p.userId,p.id,p.title,u.header as userHeader ,p.createTime,p.categoryId,p.isValid,p.encrypt,p.balance,u.name as userName,p.mediaImage,p.scanNum,p.status,p.failReason FROM t_media_package p LEFT JOIN t_app_user u ON p.userId = u.id WHERE  p.isDel = 0)a LEFT JOIN t_card c ON a.cardId=c.id where 1=1");
 		if(null != mediaPackage.getCityId()){
-			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=2)");
+			finder1.append(" and a.id in( SELECT packageId FROM t_red_city WHERE (cityId=:cityId or cityId=0) and type=2 group by packageId)");
 			finder1.setParam("cityId", mediaPackage.getCityId());
 		}else{
-			finder1.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE  type=2)");
+			finder1.append(" and a.id in( SELECT packageId FROM t_red_city WHERE  type=2 group by packageId)");
 		}
 		
-		if(personType!=null&&mediaPackage.getStatus()==3){
-			finder1.append(" and (status = 3 or status = 4 )");
-		}else if(null != mediaPackage.getStatus()){
-			finder1.append(" and status=:status");
-			finder1.setParam("status", mediaPackage.getStatus());
+//		if(personType!=null&&mediaPackage.getStatus()==3){
+//			finder1.append(" and (status = 3 or status = 4 )");
+//		}else if(null != mediaPackage.getStatus()){
+//			finder1.append(" and status=:status");
+//			finder1.setParam("status", mediaPackage.getStatus());
+//		}
+		
+		//1首页（通过和抢完三天内的。排序：已抢完的默认排到最下边，最新发布的在最上边） 2个人主页（通过和已抢完的所有） 3我的发布（传什么状态查什么状态）
+		if(null != personType){
+			switch (personType) {
+			case 1:
+				finder1.append(" and (a.status = 3 or a.status = 4 ) and a.isValid != 1");
+				break;
+			case 2:
+				finder1.append(" and (a.status = 3 or a.status = 4 )");
+				break;
+			case 3:
+				finder1.append(" and a.status = :status");
+				finder1.setParam("status", mediaPackage.getStatus());
+				break;
+			}
 		}
 		
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
-			finder1.append(" and (INSTR(`title`,:title)>0 or userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
+			finder1.append(" and (INSTR(a.title,:title)>0 or a.userId IN (SELECT id FROM t_app_user WHERE INSTR(`name`,:title)>0 )) ");
 			finder1.setParam("title", mediaPackage.getTitle());
 		}
 		if(null != mediaPackage.getUserId()){
-			finder1.append(" and userId=:userId");
+			finder1.append(" and a.userId=:userId");
 			finder1.setParam("userId", mediaPackage.getUserId());
 		}
 		if(null != mediaPackage.getCategoryId()){
-			finder1.append(" and categoryId=:categoryId");
+			finder1.append(" and a.categoryId=:categoryId");
 			finder1.setParam("categoryId", mediaPackage.getCategoryId());
 		}
 		
-		finder1.append(" order by balance desc,createTime desc");
+		//筛选
+		if(StringUtils.isNotBlank(selectType)){
+			switch (selectType) {//1最新发布 2预约最多 3卡券最多，如果筛选金额最多的话，客户端不传该字段
+			case "1":
+				finder1.append(" order by a.createTime desc");
+				break;
+			case "2":
+				finder1.append(" order by a.appointCount IS NULL,a.appointCount desc,a.balance desc");
+				break;
+			case "3":
+				finder1.append(" order by c.num IS NULL,c.num DESC,a.balance desc");
+				break;
+			}
+		}else{
+			finder1.append(" order by a.status asc, a.balance desc,a.createTime desc");
+		}
+		
 		List<MediaPackage> dataList = queryForList(finder1,MediaPackage.class,page);
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
@@ -224,24 +260,11 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						if(StringUtils.isNotBlank(appUser.getPhone())){
 							mp.setPhone(appUser.getPhone());
 						}
+						if(null != appUser.getUserMedals()){
+							mp.setUserMedals(appUser.getUserMedals());
+						}
 					}
 					
-					Page newPage = new Page();
-					UserMedal userMedal = new UserMedal();
-					userMedal.setUserId(mp.getUserId());
-					//查询勋章列表
-					List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-					if(null != userMedals && userMedals.size() > 0){
-						for (UserMedal um : userMedals) {
-							if(null != um.getMedalId()){
-								Medal medal = medalService.findMedalById(um.getMedalId());
-								if(null != medal){
-									um.setMedal(medal);
-								}
-							}
-						}
-						mp.setUserMedals(userMedals);
-					}
 					
 					Page attPage = new Page();
 					//返回是否关注
@@ -268,7 +291,35 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						}else{
 							mp.setIsCollect(0);
 						}
+						
+						 //是否点赞过
+						 Oper oper = new Oper();
+						 oper.setUserId(Integer.parseInt(appUserId));
+						 oper.setItemId(mp.getId());
+						 oper.setType(3);
+						 Page operPage = new Page();
+						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+						 if(null != opers && opers.size() > 0){
+							 mp.setIsTop(1);
+						 }else{
+							 mp.setIsTop(0);
+						 }
+					}else{
+						 //是否点赞过
+						 Oper oper = new Oper();
+						 oper.setUserId(mp.getUserId());
+						 oper.setItemId(mp.getId());
+						 oper.setType(3);
+						 Page operPage = new Page();
+						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+						 if(null != opers && opers.size() > 0){
+							 mp.setIsTop(1);
+						 }else{
+							 mp.setIsTop(0);
+						 }
 					}
+					
+					
 				}
 				
 				Page moneyPage = new Page();
@@ -343,95 +394,111 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		if(object == null){  //代表已抢
 			return "红包已抢" ;
 		}
-		synchronized (this) {
-			//实现持久化
-			//已抢红包的list,NO-SQL中的
-			List<String> list = jedis.lrange(GlobalStatic.mediaPackageConsumedList + packageId , 0 , -1) ;
-			
-			if(list != null && list.size() !=0){
+		try{
+			synchronized (this) {
+				//实现持久化
+				//已抢红包的list,NO-SQL中的
+				List<String> list = jedis.lrange(GlobalStatic.mediaPackageConsumedList + packageId , 0 , -1) ;
 				
-				if(null != appUser && 1 == appUser.getIsPush()){
-					//给发布人发推送
-					notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
-				}
-				
-				//已抢红包的list，mysql中的
-				Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
-				finder.setParam("packageId", Integer.valueOf(packageId)) ;
-				List<LmediaPackage> listMysql = super.queryForList(finder,LmediaPackage.class) ;
-				//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
-				//这样有可能是第三个或者第四个抢红包的人获得这个锁，造成脏数据的问题
-				if(list.size() >= listMysql.size()){   //可以进行批量更新已抢红包了
-					//最后需要持久化的小红包
-					List<LmediaPackage> listPersistence = new ArrayList<LmediaPackage>() ;
-					Iterator<String> iter = list.iterator() ;
-					while(iter.hasNext()){
-						
-						String lppStr = iter.next() ;
-						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
-						listPersistence.add(lpp) ;
-						
-					}
-					//批量更新小红包表
-					iLmediaPackageService.update(listPersistence) ;
-					//开始解决用户表的余额
-					//移除已经持久化的
-					//listNosql是需要更新的list
-					List<String> listNosql = list ;
-					List<LmediaPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LmediaPackage.class) ;
-					_listNosql.removeAll(listMysql) ;
-					Iterator<LmediaPackage> iterNosql = _listNosql.iterator() ;
-					//需要更新的已抢金额
-					BigDecimal money = new BigDecimal(0) ;
-					while(iterNosql.hasNext()){
-						LmediaPackage lpp = iterNosql.next() ;
-						//转换成bean
-//						LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
-						//金额累计
-						money = money.add(new BigDecimal(lpp.getMoney())) ;
-						Integer _userId = lpp.getUserId() ;
-						AppUser user = super.findById(_userId, AppUser.class) ;
-						BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
-						user.setBalance(nowBalance.doubleValue());
-						if(_package.getEncrypt().intValue()==0){
-							user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
-						}
-						//更新用户余额
-						appUserService.saveorupdate(user) ;
-						//更新明细表
-						MoneyDetail md = new MoneyDetail();
-						md.setCreateTime(new Date());
-						md.setUserId(_userId);
-						md.setType(2);  //海报红包
-						md.setMoney(+lpp.getMoney());
-						md.setBalance(nowBalance.doubleValue());
-						md.setItemId(lpp.getPackageId());
-						md.setOsType(osType);
-						moneyDetailService.saveorupdate(md) ;
+				if(list != null && list.size() !=0){
+					
+					if(null != appUser && 1 == appUser.getIsPush()){
+						//给发布人发推送
+						notificationService.notify(2, Integer.parseInt(packageId), _package.getUserId());
 					}
 					
-					//解决红包表的数据
-					//本次更新的已抢次数
-					Integer num = _listNosql.size() ;
-					//这里需要再取一次，防止并发造成pp数据不一致
-					MediaPackage pp = findById(packageId, MediaPackage.class) ;
-					pp.setNum(pp.getNum() - num);
-					pp.setBalance((new BigDecimal(pp.getBalance()).subtract(money)).doubleValue());
-					//看红包是否抢完
-					if(pp.getNum() == 0){
-						pp.setStatus(4);
-						pp.setEndTime(new Date());
-						if(null != appUser && 1 == appUser.getIsPush()){
-							//给发布人发推送
-							notificationService.notify(3, pp.getId(), pp.getUserId());
+					//已抢红包的list，mysql中的
+					Finder finder = Finder.getSelectFinder(LmediaPackage.class).append("where packageId = :packageId and !ISNULL(userId) ") ;
+					finder.setParam("packageId", Integer.valueOf(packageId)) ;
+					List<LmediaPackage> listMysql = super.queryForList(finder,LmediaPackage.class) ;
+					//现在判断，如果mysql的list size比nosql中的大，说明是脏数据，因为java明确说明：对象锁不一定会再一个线程结束后给第二个排队的线程
+					//这样有可能是第三个或者第四个抢红包的人获得这个锁，造成脏数据的问题
+					if(list.size() >= listMysql.size()){   //可以进行批量更新已抢红包了
+						//最后需要持久化的小红包
+						List<LmediaPackage> listPersistence = new ArrayList<LmediaPackage>() ;
+						Iterator<String> iter = list.iterator() ;
+						while(iter.hasNext()){
+							
+							String lppStr = iter.next() ;
+							LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
+							listPersistence.add(lpp) ;
+							
+						}
+						//批量更新小红包表
+						iLmediaPackageService.update(listPersistence) ;
+						//开始解决用户表的余额
+						//移除已经持久化的
+						//listNosql是需要更新的list
+						List<String> listNosql = list ;
+						List<LmediaPackage> _listNosql = JSONArray.toList(JSONArray.fromObject(listNosql), LmediaPackage.class) ;
+						_listNosql.removeAll(listMysql) ;
+						Iterator<LmediaPackage> iterNosql = _listNosql.iterator() ;
+						//需要更新的已抢金额
+						BigDecimal money = new BigDecimal(0) ;
+						while(iterNosql.hasNext()){
+							LmediaPackage lpp = iterNosql.next() ;
+							//转换成bean
+//							LmediaPackage lpp = JsonUtils.readValue(lppStr, LmediaPackage.class) ;
+							//金额累计
+							if(null != lpp.getMoney()){
+								money = money.add(new BigDecimal(lpp.getMoney())) ;
+							}
+							Integer _userId = lpp.getUserId() ;
+							AppUser user = super.findById(_userId, AppUser.class) ;
+							if(null != user){
+								if(null == user.getBalance()){
+									user.setBalance(0.0);
+								}
+								
+							}
+							if(null == lpp.getMoney()){
+								lpp.setMoney(0.0);
+							}
+							BigDecimal nowBalance = new BigDecimal(user.getBalance()).add(new BigDecimal(lpp.getMoney())) ;
+							user.setBalance(nowBalance.doubleValue());
+							if(_package.getEncrypt().intValue()==0){
+								user.setCurrentLqNum(user.getCurrentLqNum() - 1);  //剩余待抢次数
+							}
+							//更新用户余额
+							appUserService.saveorupdate(user) ;
+							//更新明细表
+							MoneyDetail md = new MoneyDetail();
+							md.setCreateTime(new Date());
+							md.setUserId(_userId);
+							md.setType(2);  //海报红包
+							md.setMoney(+lpp.getMoney());
+							md.setBalance(nowBalance.doubleValue());
+							md.setItemId(lpp.getPackageId());
+							md.setOsType(osType);
+							moneyDetailService.saveorupdate(md) ;
 						}
 						
+						//解决红包表的数据
+						//本次更新的已抢次数
+						Integer num = _listNosql.size() ;
+						//这里需要再取一次，防止并发造成pp数据不一致
+						MediaPackage pp = findById(packageId, MediaPackage.class) ;
+						pp.setNum(pp.getNum() - num);
+						pp.setBalance((new BigDecimal(pp.getBalance()).subtract(money)).doubleValue());
+						//看红包是否抢完
+						if(pp.getNum() == 0){
+							pp.setStatus(4);
+							pp.setEndTime(new Date());
+							if(null != appUser && 1 == appUser.getIsPush()){
+								//给发布人发推送
+								notificationService.notify(3, pp.getId(), pp.getUserId());
+							}
+							
+						}
+						super.saveorupdate(pp) ;
 					}
-					super.saveorupdate(pp) ;
 				}
+				
 			}
+		}catch(Exception e){
 			
 		}
+	
 		return object;
 	
 	}

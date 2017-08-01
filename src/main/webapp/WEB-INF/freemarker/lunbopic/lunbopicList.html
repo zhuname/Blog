@@ -67,6 +67,9 @@ $(document).on("change", "#city", function() {
 				<option value="1">海报</option>
 				<option value="2">视频</option>
 				<option value="3">卡券</option>
+				<option value="5">同城活动</option>
+				<option value="6">城事圈</option>
+				<option value="7">发布页面</option>
 			</select>
 			
 			 <label for="search_type"><b>跳转类型:</b></label> 
@@ -76,6 +79,8 @@ $(document).on("change", "#city", function() {
 				<option value="2">海报</option>
 				<option value="3">视频</option>
 				<option value="4">卡券</option>
+				<option value="5">同城活动</option>
+				<option value="6">城事圈</option>
 			</select>
 			<label for="search_cityIds" ><b>城市名称:</b></label>
 			  <div id="localtion" style="display: inline-block;">
@@ -142,6 +147,7 @@ $(document).on("change", "#city", function() {
 						<th   style="width: 10%"  id="th_itemId" >对应的目标</th>
 						<th   style="width: 10%"  id="th_position" >展示位置</th>
 						<th   style="width: 10%"  id="th_url" >url</th>
+						<th   style="width: 10%"  id="th_cityIds" >地区</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -160,7 +166,7 @@ $(document).on("change", "#city", function() {
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger"
-                                                onclick="mydelete('${ctx}/system/lunbopic/delete?id=${(_data.id)!''}','${ctx}/system/lunbopic/list');">
+                                                onclick="mydelete('${ctx}/system/lunbopic/delete?id=${(_data.id)!''}','${ctx}/system/lunbopic/list1',null,'确认删除？');">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -189,7 +195,7 @@ $(document).on("change", "#city", function() {
                                                 </li>
                                                 <li>
                                                     <a data-original-title="Delete"
-                                                       href="javascript:mydelete('${ctx}/system/lunbopic/delete?id=${(_data.id)!''}','${ctx}/system/lunbopic/list');"
+                                                       href="javascript:mydelete('${ctx}/system/lunbopic/delete?id=${(_data.id)!''}','${ctx}/system/lunbopic/list1');"
                                                        class="tooltip-error" data-rel="tooltip" title="">
 																		<span class="red">
 																			<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -218,13 +224,19 @@ $(document).on("change", "#city", function() {
 								<#if (_data.type) == 4 >
 									卡券
 								</#if>
+								<#if (_data.type) == 5 >
+									同城活动
+								</#if>
+								<#if (_data.type) == 6 >
+									城事圈
+								</#if>
 							</td>
 							<td >
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
-								${(_data.itemName)!''}
+								${(_data.itemName)!''} 
 							</td>
 							<td >
 								<#if (_data.position) == 1 >
@@ -239,9 +251,21 @@ $(document).on("change", "#city", function() {
 								<#if (_data.position) == 4 >
 									广告位
 								</#if>
+								<#if (_data.position) == 5 >
+									同城活动
+								</#if>
+								<#if (_data.position) == 6 >
+									城事圈
+								</#if>
+								<#if (_data.position) == 7 >
+									发布页面
+								</#if>
 							</td>
 							<td >
 								${(_data.url)!''}
+							</td>
+							<td >
+								${(_data.cityName)!''}
 							</td>
 						</tr>
 					</#list>

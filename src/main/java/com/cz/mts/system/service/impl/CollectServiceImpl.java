@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Card;
@@ -14,9 +15,11 @@ import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.User;
 import com.cz.mts.system.entity.UserMedal;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICardService;
@@ -24,6 +27,7 @@ import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.entity.IBaseEntity;
@@ -58,6 +62,11 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 	private IAttentionService attentionService;
 	@Resource
 	private IMoneyDetailService moneyDetailService;
+	@Resource
+	private IActivityService activityService;
+	@Resource
+	private IOperService operService;
+	
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -128,7 +137,7 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 				for (Collect ct : datas) {
 					//计算收藏个数
 					ct.setCollectNum(datas.size());
-					//判断类型： 1海报红包   2视频红包   3卡券
+					//判断类型： 1海报红包   2视频红包   3卡券  4同城活动
 					if(1 == collect.getType()){
 						//查询海报红包的信息
 						PosterPackage posterPackage = posterPackageService.findPosterPackageById(ct.getItemId());
@@ -147,25 +156,12 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							if(null != appUser){
 								card.setAppUser(appUser);
 							}
-							UserMedal userMedal = new UserMedal();
-							userMedal.setUserId(card.getUserId());
-							//查询勋章列表
-							Page umpage = new Page();
-							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, umpage, UserMedal.class, userMedal);
-							if(null != userMedals && userMedals.size() > 0){
-								for (UserMedal um : userMedals) {
-									if(null != um.getMedalId()){
-										Medal medal = medalService.findMedalById(um.getMedalId());
-										if(null != medal){
-											um.setMedal(medal);
-										}
-									}
-								}
-								card.setUserMedals(userMedals);
+							if(null != appUser.getUserMedals()){
+								card.setUserMedals(appUser.getUserMedals());
 							}
 						}
 						ct.setCard(card);
-					}else{
+					}else if(2 == collect.getType()){
 						//查询视频红包信息
 						MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(ct.getItemId());
 						if(null != mediaPackage && null != mediaPackage.getUserId()){
@@ -173,24 +169,8 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							if(null != appUser){
 								mediaPackage.setAppUser(appUser);
 							}
-							//获取勋章列表
-							UserMedal userMedal = new UserMedal();
-							if(null != mediaPackage.getUserId()){
-								userMedal.setUserId(mediaPackage.getUserId());
-							}
-							Page meUmPage = new Page();
-							//查询勋章列表
-							List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, meUmPage, UserMedal.class, userMedal);
-							if(null != userMedals && userMedals.size() > 0){
-								for (UserMedal um : userMedals) {
-									if(null != um.getMedalId()){
-										Medal medal = medalService.findMedalById(um.getMedalId());
-										if(null != medal){
-											um.setMedal(medal);
-										}
-									}
-								}
-								mediaPackage.setUserMedals(userMedals);
+							if(null != appUser.getUserMedals()){
+								mediaPackage.setUserMedals(appUser.getUserMedals());
 							}
 							mediaPackage.setIsCollect(1);
 							
@@ -205,6 +185,20 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							}else{
 								mediaPackage.setIsAttention(0);
 							}
+							
+							 //是否点赞过
+							 Oper oper = new Oper();
+							 oper.setUserId(ct.getUserId());
+							 oper.setItemId(mediaPackage.getId());
+							 oper.setType(3);
+							 Page operPage = new Page();
+							 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
+							 if(null != opers && opers.size() > 0){
+								 mediaPackage.setIsTop(1);
+							 }else{
+								 mediaPackage.setIsTop(0);
+							 }
+							
 							
 							//已抢红包列表
 							MoneyDetail moneyDetail = new MoneyDetail();
@@ -225,6 +219,10 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 							}
 							ct.setMediaPackage(mediaPackage);
 						}
+					}else{
+						//同城活动
+						Activity activity = activityService.findActivityById(ct.getItemId());
+						ct.setActivity(activity);
 					}
 					
 				}
@@ -272,6 +270,15 @@ public class CollectServiceImpl extends BaseSpringrainServiceImpl implements ICo
 				collect.setCardCount(0);
 			}
 			
+			//查询同城活动数量
+			Finder activityFinder = new Finder("SELECT id FROM t_collect WHERE userId=:userId AND type=4 ;");
+			activityFinder.setParam("userId", collect.getUserId());
+			List activityList = queryForList(activityFinder);
+			if(null != activityList && activityList.size() > 0){
+				collect.setActivityCount(activityList.size());
+			}else{
+				collect.setActivityCount(0);
+			}
 			returnObject.setData(collect);
 		}
 		return returnObject;

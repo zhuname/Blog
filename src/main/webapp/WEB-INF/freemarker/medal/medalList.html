@@ -64,7 +64,7 @@ jQuery(document).ready(function(){
 				<option value="1">图片认证</option>
 				<option value="2">视频认证</option>
 			</select>
-			<a  href="javascript:mySubmitForm('searchForm');"
+			<a  onclick="$('#pageIndex').val(1);" href="javascript:mySubmitForm('searchForm');"
 				class="btn btn-purple btn-sm">
 					查询 <i class="ace-icon fa fa-search icon-on-right bigger-10"></i>
 				</a>
@@ -191,7 +191,7 @@ jQuery(document).ready(function(){
 							<td >
 								${(_data.descr)!''}
 							</td>
-							<td >
+							<td>
 								<#if (_data.type) == 1 >
 									图片认证
 								</#if>
@@ -199,7 +199,6 @@ jQuery(document).ready(function(){
 									视频认证
 								</#if>
 							</td>
-							
 							<td >
 								${(_data.applyInstructions)!''}
 							</td>

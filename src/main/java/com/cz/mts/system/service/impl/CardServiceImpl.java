@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.IMedalService;
 import com.cz.mts.system.service.IUserMedalService;
 import com.cz.mts.frame.entity.IBaseEntity;
@@ -40,6 +42,8 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 	private IUserMedalService userMedalService;
 	@Resource
 	private IMedalService medalService;
+	@Resource
+	private ICategoryService categoryService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -105,7 +109,7 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 			Finder finder = Finder.getSelectFinder(Card.class).append(" where isDel=0");
 			
 			if(null != card.getCityId()){
-				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE cityId=:cityId || cityId=0 and type=3)");
+				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE (cityId=:cityId || cityId=0) and type=3)");
 				finder.setParam("cityId", card.getCityId());
 			}else{
 				finder.append(" and id in( SELECT DISTINCT(packageId) FROM t_red_city WHERE type=3)");
@@ -149,21 +153,14 @@ public class CardServiceImpl extends BaseSpringrainServiceImpl implements ICardS
 						if(null != appUser){
 							cd.setAppUser(appUser);
 						}
-						Page newPage = new Page();
-						UserMedal userMedal = new UserMedal();
-						userMedal.setUserId(cd.getUserId());
-						//查询勋章列表
-						List<UserMedal> userMedals = userMedalService.findListDataByFinder(null, newPage, UserMedal.class, userMedal);
-						if(null != userMedals && userMedals.size() > 0){
-							for (UserMedal um : userMedals) {
-								if(null != um.getMedalId()){
-									Medal medal = medalService.findMedalById(um.getMedalId());
-									if(null != medal){
-										um.setMedal(medal);
-									}
-								}
-							}
-							cd.setUserMedals(userMedals);
+						if(null != appUser.getUserMedals()){
+							cd.setUserMedals(appUser.getUserMedals());
+						}
+					}
+					if(null != cd.getCatergoryId()){
+						Category category = categoryService.findCategoryById(cd.getCatergoryId());
+						if(null != category){
+							cd.setCategory(category);
 						}
 					}
 				}
