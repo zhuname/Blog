@@ -95,10 +95,10 @@ jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("
                         <th width="10%">操作</th>
                         <!--first_end_no_export-->
 						<th id="th_userId" width="10%" >评论人名称</th>
-						<th id="th_itemId" width="20%">所在目标主题内容</th>
-						<th id="th_createTime" width="10%">评论时间</th>
-						<th id="th_type" width="10%"> 类型</th>
 						<th id="th_content" width="40%">评论内容</th>
+						<th id="th_createTime" width="10%">评论时间</th>
+						<th id="th_type" width="10%"> 类型</th>						
+						<th id="th_itemId" width="20%">所在目标主题内容</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -169,7 +169,7 @@ jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("
 								${(_data.nickName)!''}
 							</td>
 							<td >
-								${(_data.itemName)!''}
+								${(_data.content)!''}
 							</td>
 							<td >
 								<!--日期型-->
@@ -190,8 +190,9 @@ jQuery("#search_type option[value='${(returnDatas.queryBean.type)!''}']").prop("
 									城事圈评论
 								</#if>
 							</td>
+							
 							<td >
-								${(_data.content)!''}
+								${(_data.itemName)!''}
 							</td>
 						</tr>
 					</#list>
