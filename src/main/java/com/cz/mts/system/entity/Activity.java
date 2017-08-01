@@ -176,10 +176,34 @@ public class Activity  extends BaseEntity {
 	
 	private String userName;
 	
+	private Integer cityId;
+	
+	private String statusName;
 	
 	
 	
-	
+	@Transient
+	public String getStatusName() {
+		return statusName;
+	}
+
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+
+	@Transient
+	public Integer getCityId() {
+		return cityId;
+	}
+
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
+
 	@Transient
 	public String getUserName() {
 		return userName;

@@ -29,6 +29,7 @@ import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.Medal;
+import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.UserMedal;
@@ -224,6 +225,24 @@ public class ActivityController  extends BaseController {
 					  
 				  }
 				  
+			  }
+			  
+			  if(null != activity.getStatus()){
+				  switch (activity.getStatus()) {
+				case 1:
+					activity.setStatusName("待审核");
+					break;
+
+				case 2:
+					activity.setStatusName("审核失败");
+					break;
+				case 3:
+					activity.setStatusName("审核通过");
+					break;
+				case 4:
+					activity.setStatusName("已过期");
+					break;
+				}
 			  }
 			  
 			  
@@ -683,5 +702,65 @@ public class ActivityController  extends BaseController {
 		return returnObject;
 	
 	}
+	
+
+	/**
+	 * 新增/修改 操作吗,返回json格式数据
+	 * 
+	 */
+	@RequestMapping("/update")
+	public @ResponseBody
+	ReturnDatas saveorupdateAdmin(Model model,Activity activity,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			if(null == activity.getId()){
+				activityService.saveorupdate(activity);
+			}else{
+				//cityIds是否为空
+				if(StringUtils.isNotBlank(activity.getCityIds())){
+					String cityIds[] = activity.getCityIds().split(",");
+					if(null != cityIds && cityIds.length > 0){
+						//删除红包表中的记录
+						Finder finder = new Finder("DELETE FROM t_red_city WHERE type=4 and packageId=:packageId");
+						finder.setParam("packageId", activity.getId());
+						redCityService.update(finder);
+						for (String cid : cityIds) {
+							Integer cityId = Integer.parseInt(cid);
+							//更新redCity表
+							RedCity redCity = new RedCity();
+							redCity.setCityId(cityId);
+							redCity.setPackageId(activity.getId());
+							redCity.setType(4);
+							redCityService.save(redCity);
+						}
+					}
+				}else{
+					//删除红包表中的记录
+					Finder finder = new Finder("DELETE FROM t_red_city WHERE type=4 and packageId=:packageId");
+					finder.setParam("packageId", activity.getId());
+					redCityService.update(finder);
+					//更新redCity表
+					RedCity redCity = new RedCity();
+					redCity.setCityId(0);
+					redCity.setPackageId(activity.getId());
+					redCity.setType(4);
+					redCityService.save(redCity);
+				}
+				
+				
+				activityService.update(activity,true);
+			}
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
 
 }

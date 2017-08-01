@@ -245,6 +245,8 @@ $(document).on("change", "#city", function() {
 						<th id="th_num" >剩余红包数</th>
 						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
 						<th id="th_num" >抢完时间</th>
+						<th id="th_mediaImage" >点赞次数</th>
+						<th id="th_mediaImage" >评论次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -422,6 +424,12 @@ $(document).on("change", "#city", function() {
 							</td>
 							<td >
 								${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.topCount)!''}
+							</td>
+							<td >
+								${(_data.commentCount)!''}
 							</td>
 						</tr>
 					</#list>

@@ -259,6 +259,8 @@ function deleteMediaPackage(){
 						<th id="th_mediaUrl" >视频</th>
 						<!-- <th id="th_mediaImage" >视频图片</th> -->
 						<th id="th_mediaImage" >分享次数</th>
+						<th id="th_mediaImage" >点赞次数</th>
+						<th id="th_mediaImage" >评论次数</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -440,6 +442,12 @@ function deleteMediaPackage(){
 							</td> -->
 							<td >
 								${(_data.shareNum)!''}
+							</td>
+							<td >
+								${(_data.topCount)!''}
+							</td>
+							<td >
+								${(_data.commentCount)!''}
 							</td>
 						</tr>
 					</#list>

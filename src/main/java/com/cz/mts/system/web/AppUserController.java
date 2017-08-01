@@ -1039,7 +1039,7 @@ public class AppUserController  extends BaseController {
 						+" AND mp.isDel != 1 WHERE au.id = :id ) a LEFT JOIN t_poster_package pp ON pp.userId = a.id"
 						+" AND pp. STATUS != 0 AND pp.isDel != 1 ) b LEFT JOIN t_card ca ON ca.userId = b.id"
 						+" AND ca.isDel != 1 ) c LEFT JOIN t_collect co ON co.userId = c.id ) d"
-						+" LEFT JOIN t_attention `at` ON `at`.userId = d.id ) e LEFT JOIN t_user_medal um ON um.userId = e.id"
+						+" LEFT JOIN t_attention `at` ON `at`.userId = d.id ) e LEFT JOIN t_user_medal um ON um.userId = e.id AND um.isEndStatus=0"
 						+" ) f LEFT JOIN t_user_card uc ON uc.userId = f.id AND uc.`status` != 0 ) g"
 						+" LEFT JOIN t_activity ac ON ac.userId = g.id AND ac.isDel != 1) h LEFT JOIN t_circle ci ON ci.userId = h.id"
 						+" )j LEFT JOIN t_appoint ap ON ap.userId = j.id AND ap.`status` !=0");
@@ -1707,6 +1707,57 @@ public class AppUserController  extends BaseController {
 		return new ReturnDatas(ReturnDatas.SUCCESS, "余额修改成功");
 	}
 	
+	
+	/**
+	 * 查询我的发布数量
+	 * @author wj
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/selectNum")
+	public @ResponseBody ReturnDatas selectNum(HttpServletRequest request) throws Exception {
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			  id= java.lang.Integer.valueOf(strId.trim());
+			  AppUser appUser=appUserService.findAppUserById(id);
+			  Finder finder = new Finder("SELECT j.*,COUNT(ap.id) AS totalAppoint FROM(SELECT h.*, COUNT(ci.id) AS totalCircle"
+						+" FROM ( SELECT g.*, COUNT(ac.id) AS totalActivity FROM (SELECT f.*, COUNT(uc.id) AS totalUserCard FROM ("
+						+" SELECT e.*, COUNT(um.id) AS totalMedal FROM ( SELECT d.*, COUNT(`at`.id) AS totalAttention FROM"
+						+"  ( SELECT c.*, COUNT(co.id) AS totalCollect FROM ( SELECT b.*, COUNT(ca.id) AS totalCard FROM"
+						+" (SELECT a.*, COUNT(pp.id) AS totalPoster FROM ( SELECT au.balance,COUNT(mp.id) AS totalMedia,"
+						+" au.id FROM t_app_user au LEFT JOIN t_media_package mp ON mp.userId = au.id AND mp. STATUS != 0"
+						+" AND mp.isDel != 1 WHERE au.id = :id ) a LEFT JOIN t_poster_package pp ON pp.userId = a.id"
+						+" AND pp. STATUS != 0 AND pp.isDel != 1 ) b LEFT JOIN t_card ca ON ca.userId = b.id"
+						+" AND ca.isDel != 1 ) c LEFT JOIN t_collect co ON co.userId = c.id ) d"
+						+" LEFT JOIN t_attention `at` ON `at`.userId = d.id ) e LEFT JOIN t_user_medal um ON um.userId = e.id AND um.isEndStatus=0"
+						+" ) f LEFT JOIN t_user_card uc ON uc.userId = f.id AND uc.`status` != 0 ) g"
+						+" LEFT JOIN t_activity ac ON ac.userId = g.id AND ac.isDel != 1) h LEFT JOIN t_circle ci ON ci.userId = h.id"
+						+" )j LEFT JOIN t_appoint ap ON ap.userId = j.id AND ap.`status` !=0");
+			finder.setParam("id", appUser.getId());
+			List<Map<String, Object>> datas = appUserService.queryForList(finder);
+			Finder joinFinder = new Finder("SELECT count(*) as totalJoin FROM t_activity  where 1=1  and id in (select activityId from t_join_activity where userId=:userId ) and (status=3 or status=5) "
+					+ "order by status ASC,aduitSuccessTime DESC");
+			joinFinder.setParam("userId", appUser.getId());
+			Map<String, Object> joinMap = appUserService.queryForObject(joinFinder);
+			Map<String, Object> object = new HashMap<String, Object>();
+			if(null != datas && datas.size() > 0){
+				object = datas.get(0);
+				object.putAll(joinMap);
+			}
+			returnObject.setData(object);	
+			  
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return returnObject;
+	}
 	
 
 }

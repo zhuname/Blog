@@ -239,33 +239,9 @@ $(document).on("click", ".selectBtn", function() {
 
 
 
-/* function addMoney(id){
-	//prompt层
-	layer.prompt({title: '请输入金额:', formType: 3,width: '10px',height:'100px'}, function(text, index){
-		
-	  if(!/^\d+(\.\d+)?$/.test(text)){
-		  myalert("请输入数字!");
-		  return ;
-	    }else{
-	    	jQuery.post("${ctx}/system/appuser/addMoney",{ id: id, money: text },
-	    	function(_json) {
-	    		if (_json.status == "success") {
-	    			myalert(_json.message);
-	    			myhref("${ctx}/system/appuser/list")
-	    			return false;
-	    		} else {
-	    			myalert("余额修改失败");
-	    			return false;
-	    		}
-	    	});
-	    }	
- 			layer.close(index);
-	});
-	
-} */
-
 
 var changeMoneyDialogHtml = $('#changeMoneyDialog').prop("outerHTML") ;
+
 function changeMoneyDialog(id) {
     var index = layer.load(0, {    //0为加载样式  有 0  ，  1   2
         shade: [0.1,'#fff'] //0.1透明度的白色背景
@@ -330,6 +306,57 @@ function changeMoneyDialog(id) {
     });
     layer.close(index);
 }
+
+var detailDialogHtml = $('#detailDialog').prop("outerHTML");
+function getDetail(id) {
+    var index = layer.load(0, {    //0为加载样式  有 0  ，  1   2
+        shade: [0.1,'#fff'] //0.1透明度的白色背景
+    });
+    layer.open({
+    	
+        title:'查看详情',
+        type: 1,
+        anim: 2,
+        resize :true,
+        btnAlign:'c',
+       // btn: ['确定', '取消'],
+        area: ['500px', '500px'],
+        shadeClose: false, //开启遮罩关闭
+        content: detailDialogHtml,
+        success:function (layero,index) {
+            dialog = $(layero) ;
+            dialog.find("#detailDialog").show() ;
+            $.ajax({
+                url:'${ctx}/system/appuser/selectNum',
+                data:{'id':id
+				},
+                success:function (result) {
+					//layer.close(loadIndex) ;
+                    if (result.status == "success") {
+                        dialog.find("#posterSum").html(result.data.totalPoster);
+                        dialog.find("#mediaSum").html(result.data.totalMedia);
+                        dialog.find("#activitySum").html(result.data.totalActivity);
+                        dialog.find("#cardSum").html(result.data.totalCard);
+                        dialog.find("#circleSum").html(result.data.totalCircle);
+                        dialog.find("#medalSum").html(result.data.totalMedal);
+                        //return false;
+                    } else {
+                        myalert(result.message);
+                        return false;
+                    }
+				}
+			});
+        },
+		yes:function(index, layero){
+           // var loadIndex = layer.load() ;
+          	 
+            
+           
+		}
+    });
+    layer.close(index);
+}
+
 
 </script>
 
@@ -540,6 +567,12 @@ function changeMoneyDialog(id) {
 	                                        </button>
                                         </#if>
                                         
+                                         <button class="btn btn-xs btn-purple" title="查看详情"
+	                                                onclick="javascript:getDetail(${(_data.id)!''}) ;">
+	                                            <i class="ace-icon fa bigger-120">
+	                                            <i class=" fa fa-asterisk"></i>
+	                                            </i>
+	                                     </button>
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">
@@ -688,6 +721,36 @@ function changeMoneyDialog(id) {
 		<dl class="information_content">
 			<dt>描述</dt>
 			<dd><textarea id="descr" name="descr" style="width: 140%;height: 100px;"></textarea></dd>
+		</dl>
+	</div>
+</div>
+
+
+<div id="detailDialog" style="display: none;margin: 20px;text-align:center">
+    <div class="information3">
+		<dl class="information_content">
+			<dt>海报数：</dt>
+			<dd id="posterSum"></dd>
+		</dl>
+		<dl class="information_content">
+			<dt>视频数：</dt>
+			<dd id="mediaSum"></dd>
+		</dl>
+		<dl class="information_content">
+			<dt>活动数：</dt>
+			<dd id="activitySum"></dd>
+		</dl>
+		<dl class="information_content">
+			<dt>卡券数：</dt>
+			<dd id="cardSum"></dd>
+		</dl>
+		<dl class="information_content">
+			<dt>城事圈数：</dt>
+			<dd id="circleSum"></dd>
+		</dl>
+		<dl class="information_content">
+			<dt>勋章数：</dt>
+			<dd id="medalSum"></dd>
 		</dl>
 	</div>
 </div>

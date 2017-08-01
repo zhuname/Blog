@@ -89,6 +89,19 @@ function go(){
 }
 	
 	
+	
+initimages("add_promise_div","addPgod");
+
+initCity("localtion",null,"cityId");
+
+initMCitys("tableIds","cityIds");
+
+$(document).on("change", "#city", function() {
+	var cityId=jQuery("#city").val();
+	jQuery("#cityId").val(cityId);
+	
+});
+	
 //-->
 </SCRIPT>
 
@@ -219,11 +232,11 @@ function go(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userId" >发布人名称</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="userName" >发布人名称</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="userId" class="col-xs-12 col-sm-6" id="userId" value="${(returnDatas.data.appUser.name)!''}"  type="text" readonly="readonly"/>
-					</div><div class="help-block" for="userId"></div>
+						<input name="userName" class="col-xs-12 col-sm-6" id="userName" value="${(returnDatas.data.appUser.name)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="userName"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -264,11 +277,11 @@ function go(){
 			</div>
 	        <div class="space-2"></div>
 			<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status" >状态</label>
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="statusName" >状态</label>
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
-						<input name="status" class="col-xs-12 col-sm-6" id="status" value="${(returnDatas.data.status)!''}"  type="text" readonly="readonly"/>
-					</div><div class="help-block" for="status"></div>
+						<input name="statusName" class="col-xs-12 col-sm-6" id="statusName" value="${(returnDatas.data.statusName)!''}"  type="text" readonly="readonly"/>
+					</div><div class="help-block" for="statusName"></div>
 				</div>
 			</div>
 	        <div class="space-2"></div>
@@ -313,9 +326,38 @@ function go(){
 				</div>
 			</div>
 	        <div class="space-2"></div>
+	        
+	              <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="cityId" >投放城市</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<div class="layui-form-item" id="localtion"> 
+						
+						</div>
+						<span class="layui-btn layui-btn-primary" onclick="checkCityIds('cityIds','tableIds');">添加</span>
+						<div class="help-block" for="cityId"></div>
+						<input name="cityId" class="col-xs-12 col-sm-6" id="cityId" value="${(returnDatas.data.cityId)!''}" style="display:none"  type="text" />
+						
+						<table class="layui-table" style="width:50%" >
+						  <thead>
+						    <tr>
+						      <th>省</th>
+						      <th>市</th>
+						      <th>操作</th>
+						    </tr>
+						  </thead>
+						  <tbody id="tableIds" class="cityIds">
+						  </tbody>
+						</table>
+						
+						<input name="cityIds" class="col-xs-12 col-sm-6" id="cityIds" value="${(returnDatas.data.cityIds)!''}" style="display:none"  type="text" />
+							</div>
+						</div>
+			</div>
+	        
 		</form>
 		<div class="wizard-actions">
-			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/activity/list');">
+			<button class="btn btn-success btn-info" data-last="Finish" onclick="commonUpdateForm('validation-form','${ctx}/system/activity/list');" style="float: left;margin-left: 25.4%;">
 				保存
 			</button>
 		</div>
