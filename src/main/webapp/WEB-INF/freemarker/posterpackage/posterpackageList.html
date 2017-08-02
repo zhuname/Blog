@@ -223,30 +223,30 @@ $(document).on("change", "#city", function() {
                         <!--first_start_no_export-->
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >发布人</th>
+                        <th id="th_categoryId" width="8%">分类名称</th>
+						<th id="th_userId" width="10%">发布人</th>
+						<th id="th_title" width="15%">主题</th>
 						<th id="th_image" >海报图片</th>
-						<th id="th_categoryId" >分类名称</th>
-						<th id="th_title" >主题</th>
-						<th id="th_encrypt" >是否加密</th>
-						<th id="th_command" >加密口令</th>
-						<th id="th_isAppoint" >是否预约</th>
-						<th id="th_appointExplain" >预约说明</th>
-						<th id="th_isRelevance" >是否关联卡券</th>
-						<th id="th_cardId" >卡券主题</th>
-						<th id="th_sumMoney" >红包金额</th>
-						<th id="th_sumMoney" >总红包数</th>
-						<th id="th_status" >状态</th>
-						<th id="th_payType" >支付类型</th>
-						<th id="th_payTime" >支付时间</th>
-						<th id="th_failTime" >失败时间</th>
-						<th id="th_succTime" >审核通过时间</th>
-						<th id="th_failReason" >失败原因</th>
-						<th id="th_balance" >剩余金额</th>
-						<th id="th_num" >剩余红包数</th>
-						<th  style="width: 3%"  id="th_mediaImage" >分享次数</th>
-						<th id="th_num" >抢完时间</th>
-						<th id="th_mediaImage" >点赞次数</th>
-						<th id="th_mediaImage" >评论次数</th>
+						<th id="th_encrypt" width="8%">是否加密</th>
+						<!-- <th id="th_command" width="8%">加密口令</th> -->
+						<th id="th_isRelevance" width="8%">是否关联卡券</th>
+						<!-- <th id="th_cardId" width="10%">卡券主题</th> -->
+						<th id="th_isAppoint" width="8%">是否预约</th>
+						<!-- <th id="th_appointExplain" width="15%">预约说明</th> -->
+						<th id="th_sumMoney" width="5%">红包金额</th>
+						<th id="th_sumMoney" width="5%">总红包数</th>
+						<th id="th_payType" width="10%">支付类型</th>
+						<th id="th_payTime" width="8%">支付时间</th>
+						<th id="th_balance" width="8%">剩余金额</th>
+						<th id="th_num" width="10%">剩余红包数</th>
+						<th id="th_num" width="8%">抢完时间</th>
+						<th id="th_mediaImage" width="8%">点赞次数</th>
+						<th id="th_mediaImage" width="8%">评论次数</th>
+						<th  style="width: 8%"  id="th_mediaImage" >分享次数</th>
+						<th id="th_status" width="8%">状态</th>
+						<th id="th_succTime" width="8%">审核通过时间</th>
+						<th id="th_failTime" width="8%">失败时间</th>
+						<th id="th_failReason" width="8%">失败原因</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -320,19 +320,20 @@ $(document).on("change", "#city", function() {
                                     </div>
                                 </td>
                                 <!--end_no_export-->
-
-							<td>
-								${(_data.appUserName)!''}
-							</td>
-							<td>
-								<img  class="sim" src="${(_data.image)!''}" height="140px;" width="100px;" onclick="checkImg('${(_data.image)!''}','300px','420px');"/>
-							</td>
 							<td >
 								${(_data.categoryName)!''}
+							</td>
+							<td>
+								${(_data.appUserName)!''}
 							</td>
 							<td >
 								${(_data.title)!''}
 							</td>
+							<td>
+								<img  class="sim" src="${(_data.image)!''}" height="140px;" width="100px;" onclick="checkImg('${(_data.image)!''}','300px','420px');"/>
+							</td>
+							
+							
 							<td >
 								<#if (_data.encrypt) == 0 >
 									不加密
@@ -342,22 +343,9 @@ $(document).on("change", "#city", function() {
 								</#if>
 								
 							</td>
-							<td >
+							<!-- <td >
 								${(_data.command)!''}
-							</td>
-							<td >
-								<#if (_data.isAppoint) == 0 >
-									不预约
-								</#if>
-								<#if (_data.isAppoint) == 1 >
-									预约
-								</#if>
-								
-							</td>
-							<td >
-								${(_data.appointExplain)!''}
-							</td>
-							
+							</td> -->
 							<td >
 								<#if (_data.isRelevance) == 0 >
 									不关联
@@ -367,9 +355,23 @@ $(document).on("change", "#city", function() {
 								</#if>
 								
 							</td>
-							<td >
+							<!-- <td >
 								${(_data.cardTitle)!''}
+							</td> -->
+							<td >
+								<#if (_data.isAppoint) == 0 >
+									不预约
+								</#if>
+								<#if (_data.isAppoint) == 1 >
+									预约
+								</#if>
+								
 							</td>
+							<!-- <td >
+								${(_data.appointExplain)!''}
+							</td> -->
+							
+							
 							
 							
 							<td >
@@ -377,6 +379,31 @@ $(document).on("change", "#city", function() {
 							</td>
 							<td >
 								${(_data.lqNum)!0}
+							</td>
+							<td >
+								${(_data.payName)!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.payTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.balance)!0}
+							</td>
+							<td >
+								${(_data.num)!0}
+							</td>
+							<td >
+								${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.topCount)!''}
+							</td>
+							<td >
+								${(_data.commentCount)!''}
+							</td>
+							<td >
+								${(_data.shareNum)!''}
 							</td>
 							<td >
 								<#if (_data.status) == 0 >
@@ -396,41 +423,22 @@ $(document).on("change", "#city", function() {
 								</#if>
 							</td>
 							<td >
-								${(_data.payName)!''}
-							</td>
-							<td >
 								<!--日期型-->
-							${((_data.payTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							${((_data.succTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
 								<!--日期型-->
 							${((_data.failTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
-							<td >
-								<!--日期型-->
-							${((_data.succTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
+							
 							<td >
 								${(_data.failReason)!''}
 							</td>
-							<td >
-								${(_data.balance)!0}
-							</td>
-							<td >
-								${(_data.num)!0}
-							</td>
-							<td >
-								${(_data.shareNum)!''}
-							</td>
-							<td >
-								${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
-							<td >
-								${(_data.topCount)!''}
-							</td>
-							<td >
-								${(_data.commentCount)!''}
-							</td>
+							
+							
+							
+							
+							
 						</tr>
 					</#list>
 					 </#if>

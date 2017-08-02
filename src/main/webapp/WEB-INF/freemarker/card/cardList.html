@@ -177,7 +177,7 @@ $(document).on("change", "#city", function() {
 	</div>
 </div>
 </form>
-   <div class="row">
+   <div class="row" style="overflow-x:scroll;">
             <div class="col-xs-12">
 	            <!--start_export-->
                 <table id="listDataTable" border="1" class="table table-striped table-bordered table-hover">
@@ -188,23 +188,23 @@ $(document).on("change", "#city", function() {
                         <!--first_start_no_export-->
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_images" >卡券图片</th>
-						<th id="th_catergoryId" >分类名称</th>
+						<th id="th_catergoryId" width="8%">分类名称</th>
 						<th id="th_userId" >发布人</th>
-						<th id="th_title" >主题</th>
-						<th id="th_descr" >状态</th>
-						<th id="th_convertMoney" >购买金额</th>
-						<th id="th_convertNum" >卡券总数量</th>
-						<th id="th_address" >兑换地址</th>
-						<th id="th_phone" >联系电话</th>
-						<th id="th_endTime" >到期时间</th>
-						<th id="th_failTime" >失败时间</th>
-						<th id="th_succTime" >审核通过时间</th>
-						<th id="th_failReason" >失败原因</th>
-						<th id="th_num" >剩余卡券数</th>
-						<th id="th_num" >分享次数</th>
-						<th id="th_limitNumber">每人限领次数</th>
 						<th id="th_limitNumber">发布时间</th>
+						<th id="th_title" width="15%">主题</th>
+						<th id="th_images" >卡券图片</th>
+						<th id="th_convertMoney" width="8%">购买金额</th>
+						<th id="th_convertNum" width="8%">卡券总数量</th>
+						<th id="th_limitNumber" width="10%">每人限领次数</th>
+						<th id="th_phone" >联系电话</th>
+						<th id="th_address" width="8%">兑换地址</th>
+						<th id="th_endTime" >到期时间</th>
+						<th id="th_num" width="8%">剩余卡券数</th>
+						<th id="th_num" width="8%">分享次数</th>
+						<th id="th_descr" width="5%">状态</th>
+						<th id="th_succTime" width="8%">审核通过时间</th>
+						<th id="th_failTime" >失败时间</th>
+						<th id="th_failReason" width="15%">失败原因</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -279,9 +279,7 @@ $(document).on("change", "#city", function() {
                                 </td>
                                 <!--end_no_export-->
 
-							<td>
-								<img  class="sim" src="${(_data.images)!''}" height="75px;" width="200px;" onclick="checkImg('${(_data.images)!''}','400px','150px');"/>
-							</td>
+							
 							<td >
 								${(_data.categoryName)!''}
 							</td>
@@ -289,10 +287,13 @@ $(document).on("change", "#city", function() {
 								${(_data.userName)!''}
 							</td>
 							<td >
-								${(_data.title)!''}
+								${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
-								${(_data.cardStatus)!''}
+								${(_data.title)!''}
+							</td>
+							<td>
+								<img  class="sim" src="${(_data.images)!''}" height="75px;" width="200px;" onclick="checkImg('${(_data.images)!''}','400px','150px');"/>
 							</td>
 							<td >
 								${(_data.convertMoney)!0}
@@ -301,25 +302,17 @@ $(document).on("change", "#city", function() {
 								${(_data.convertNum)!0}
 							</td>
 							<td >
-								${(_data.address)!''}
+								${(_data.limitNumber)!0}
 							</td>
 							<td >
 								${(_data.phone)!''}
 							</td>
 							<td >
+								${(_data.address)!''}
+							</td>
+							<td >
 								<!--日期型-->
 							${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.failTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.succTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
-							<td >
-								${(_data.failReason)!''}
 							</td>
 							<td >
 								${(_data.num)!0}
@@ -328,11 +321,28 @@ $(document).on("change", "#city", function() {
 								${(_data.shareNum)!0}
 							</td>
 							<td >
-								${(_data.limitNumber)!0}
+								${(_data.cardStatus)!''}
 							</td>
+							
+							
+							
 							<td >
-								${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+								<!--日期型-->
+							${((_data.succTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
+							
+							<td >
+								<!--日期型-->
+							${((_data.failTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							
+							<td >
+								${(_data.failReason)!''}
+							</td>
+							
+							
+							
+							
 						</tr>
 					</#list>
 					 </#if>

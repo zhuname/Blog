@@ -102,17 +102,20 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
                         </th>
                         <th>操作</th> -->
                         <!--first_end_no_export-->
+                        <th id="th_type" >类型</th>
+                        <th id="th_userId" >预约人</th>
 						<th id="th_itemId" >预约主题</th>
-						<th id="th_money" >预约金额</th>
 						<th id="th_phone" >预约电话</th>
+						<th id="th_money" >预约金额</th>
+						
 						<th id="th_payType" >支付方式</th>
-						<th id="th_userId" >预约人</th>
-						<th id="th_payTime" >支付时间</th>
-						<th id="th_status" >状态</th>
 						<th id="th_createTime" >预约时间</th>
+						<th id="th_cardCode" >兑换码</th>
+						<th id="th_status" >状态</th>
+						
 						<th id="th_changeTime" >兑换时间</th>
-						<th id="th_cardCode" >兑换券编码</th>
-						<th id="th_type" >类型</th>
+						
+						
                     </tr>
                     </thead>
                     <tbody>
@@ -174,16 +177,27 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
                                     </div>
                                 </td> -->
                                 <!--end_no_export-->
-
+							<td >
+								<#if (_data.type) == 1 >
+									海报
+								</#if>
+								<#if (_data.type) == 2 >
+									视频
+								</#if>
+							</td>
+							<td >
+								${(_data.userName)!''}
+							</td>
 							<td >
 								${(_data.title)!''}
 							</td>
 							<td >
-								${(_data.money)!0}
-							</td>
-							<td >
 								${(_data.phone)!''}
 							</td>
+							<td >
+								${(_data.money)!0}
+							</td>
+							
 							<td >
 								<#if (_data.payType) == 1 >
 									支付宝
@@ -196,17 +210,11 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 								</#if>
 							</td>
 							<td >
-								<!-- <#if (_data.appUser) ??>
-									<#if (_data.appUser.name) ??>
-										${(_data.appUser.name)!''}
-									</#if>
-								</#if> -->
-								${(_data.userName)!''}
-							</td>
+								<!--日期型-->
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
 							</td>
 							<td >
-								<!--日期型-->
-							${((_data.payTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
+								${(_data.cardCode)!''}
 							</td>
 							<td >
 								<#if (_data.status) == 0 >
@@ -219,25 +227,13 @@ jQuery("#search_status option[value='${(returnDatas.queryBean.status)!''}']").pr
 									已兑换
 								</#if>
 							</td>
-							<td >
-								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
-							</td>
+							
 							<td >
 								<!--日期型-->
 							${((_data.changeTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
 							</td>
-							<td >
-								${(_data.cardCode)!''}
-							</td>
-							<td >
-								<#if (_data.type) == 1 >
-									海报
-								</#if>
-								<#if (_data.type) == 2 >
-									视频
-								</#if>
-							</td>
+							
+							
 						</tr>
 					</#list>
 					 </#if>
