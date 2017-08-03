@@ -192,7 +192,7 @@ public class JoinActivityController  extends BaseController {
 				}
 				
 				//获取评论列表
-				Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId");
+				Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId order by createTime desc");
 				
 				finderOper.setParam("itemId", joinActivity2.getId());
 				
