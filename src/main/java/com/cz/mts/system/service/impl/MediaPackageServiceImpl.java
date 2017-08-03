@@ -556,7 +556,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			finderSelect.setParam("itemId", pp.getUserId());
 			List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 			for (Attention attention : attentions) {
-				AttenThreadController attenThreadController = new AttenThreadController(null, pp, attention, null, notificationService, appUser);
+				AttenThreadController attenThreadController = new AttenThreadController(null, pp, attention, null,null,null, notificationService, appUser);
 				attenThreadController.run();
 			}
 			

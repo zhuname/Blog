@@ -180,6 +180,8 @@ public class Activity  extends BaseEntity {
 	
 	private String statusName;
 	
+	private Integer shareNum;
+	
 	
 	
 	@Transient
@@ -249,6 +251,16 @@ public class Activity  extends BaseEntity {
 	}
 
 
+
+	@WhereSQL(sql="shareNum=:Activity_shareNum")
+	public Integer getShareNum() {
+		return shareNum;
+	}
+
+
+	public void setShareNum(Integer shareNum) {
+		this.shareNum = shareNum;
+	}
 
 
 	@WhereSQL(sql="osType=:Activity_osType")
@@ -635,6 +647,7 @@ public class Activity  extends BaseEntity {
 			.append("是否删除[").append(getIsDel()).append("],")
 			.append("参与人数[").append(getJoinCount()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
+			.append("分享次数[").append(getShareNum()).append("],")
 			.toString();
 	}
 	

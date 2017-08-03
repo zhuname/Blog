@@ -235,7 +235,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				finderSelect.setParam("itemId", posterPackage.getUserId());
 				List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 				for (Attention attention : attentions) {
-					AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null, notificationService, appUser);
+					AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null,null,null, notificationService, appUser);
 					attenThreadController.run();
 				}
 				
@@ -356,7 +356,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				finderSelect.setParam("itemId", mediaPackage.getUserId());
 				List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 				for (Attention attention : attentions) {
-					AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, notificationService, appUser);
+					AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, null,null,notificationService, appUser);
 					attenThreadController.run();
 				}
 				
@@ -766,7 +766,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						finderSelect.setParam("itemId", posterPackage.getUserId());
 						List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 						for (Attention attention : attentions) {
-							AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null, notificationService, appUser);
+							AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null, null,null,notificationService, appUser);
 							attenThreadController.run();
 						}
 						
@@ -894,7 +894,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						finderSelect.setParam("itemId", mediaPackage.getUserId());
 						List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 						for (Attention attention : attentions) {
-							AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, notificationService, appUserM);
+							AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, null,null,notificationService, appUserM);
 							attenThreadController.run();
 						}
 						

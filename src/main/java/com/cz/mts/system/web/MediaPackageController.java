@@ -719,8 +719,23 @@ public class MediaPackageController  extends BaseController {
 		if(StringUtils.isNotBlank(mediaPackage.getTitle())){
 			finder.append(" and title like '%"+mediaPackage.getTitle()+"%'");
 		}
+		
+		if(null != mediaPackage.getStatus()){
+			finder.append(" and status = :status");
+			finder.setParam("status", mediaPackage.getStatus());
+		}
+		if(null != mediaPackage.getEncrypt()){
+			finder.append(" and encrypt = :encrypt");
+			finder.setParam("encrypt", mediaPackage.getEncrypt());
+		}
+		
+		if(null != mediaPackage.getPayType()){
+			finder.append(" and payType=:payType");
+			finder.setParam("payType", mediaPackage.getPayType());
+		}
+		
 		finder.append(" and status!=0");
-		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,mediaPackage);
+		List<MediaPackage> datas = mediaPackageService.findListDataByFinder(finder,page,MediaPackage.class,null);
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
 		if(null != datas && datas.size() > 0){

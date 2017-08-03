@@ -938,7 +938,7 @@ public class CardController  extends BaseController {
 			finderSelect.setParam("itemId", card.getUserId());
 			List<Attention> attentions = cardService.queryForList(finderSelect,Attention.class);
 			for (Attention attention : attentions) {
-				AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, card, notificationService, appUser);
+				AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, card,null,null, notificationService, appUser);
 				attenThreadController.run();
 			}
 		}

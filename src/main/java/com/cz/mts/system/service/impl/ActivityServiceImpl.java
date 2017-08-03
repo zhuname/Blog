@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,12 +16,18 @@ import com.cz.mts.frame.entity.IBaseEntity;
 import com.cz.mts.frame.util.Finder;
 import com.cz.mts.frame.util.Page;
 import com.cz.mts.system.entity.Activity;
+import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.exception.ParameterErrorException;
 import com.cz.mts.system.service.BaseSpringrainServiceImpl;
 import com.cz.mts.system.service.IActivityService;
+import com.cz.mts.system.service.IAppUserService;
+import com.cz.mts.system.service.IAttentionService;
+import com.cz.mts.system.service.NotificationService;
+import com.cz.mts.system.web.AttenThreadController;
 
 
 /**
@@ -32,6 +40,12 @@ import com.cz.mts.system.service.IActivityService;
 @Service("activityService")
 public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IActivityService {
 
+	@Resource
+	private IAttentionService attentionService;
+	@Resource
+	private NotificationService notificationService;
+	@Resource
+	private IAppUserService appUserService;
    
     @Override
 	public String  save(Object entity ) throws Exception{
@@ -143,6 +157,29 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 		
 		//从数据库拿出来
 		activity = super.findById(id,Activity.class);
+		
+		if(null != activity && null != activity.getStatus() && 3 == activity.getStatus()){
+			AppUser appUser = appUserService.findAppUserById(activity.getUserId());
+			//更新attention表中的isUpdate字段
+			Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+			finderAtte.setParam("itemId", activity.getUserId());
+			attentionService.update(finderAtte);
+			//更新appUser表中的isUpdate字段
+			Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
+			finderAppUser.setParam("itemId",  activity.getUserId());
+			appUserService.update(finderAppUser);
+			
+			
+			//查询接收推送的用户
+			Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+			finderSelect.setParam("itemId", activity.getUserId());
+			List<Attention> attentions = attentionService.queryForList(finderSelect,Attention.class);
+			for (Attention attention : attentions) {
+				AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, null, activity, null, notificationService, appUser);
+				attenThreadController.run();
+			}
+		}
+		
 		
 		//删除保存的奖项列表
 		Awards awardsDel=new Awards();

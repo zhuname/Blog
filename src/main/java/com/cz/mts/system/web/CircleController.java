@@ -43,6 +43,7 @@ import com.cz.mts.system.service.ICityCircleService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IShieldService;
+import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -76,6 +77,8 @@ public class CircleController  extends BaseController {
 	private IOperService operService;
 	@Resource
 	private ICityCircleService cityCircleService;
+	@Resource
+	private NotificationService notificationService;
 	
 	
 	private String listurl="/circle/circleList";
@@ -453,6 +456,29 @@ public class CircleController  extends BaseController {
 		try {
 		
 			Object id = circleService.saveorupdate(circle);
+			Circle cir = circleService.findCircleById(id);
+			if(null != cir && null != cir.getUserId()){
+				AppUser appUser = appUserService.findAppUserById(cir.getUserId());
+				//更新attention表中的isUpdate字段
+				Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+				finderAtte.setParam("itemId", cir.getUserId());
+				attentionService.update(finderAtte);
+				//更新appUser表中的isUpdate字段
+				Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
+				finderAppUser.setParam("itemId",  cir.getUserId());
+				appUserService.update(finderAppUser);
+				
+				
+				//查询接收推送的用户
+				Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+				finderSelect.setParam("itemId", cir.getUserId());
+				List<Attention> attentions = attentionService.queryForList(finderSelect,Attention.class);
+				for (Attention attention : attentions) {
+					AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, null, null, cir, notificationService, appUser);
+					attenThreadController.run();
+				}
+			}
+			
 			returnObject.setData(id);
 		} catch (ParameterErrorException e) {
 			String errorMessage = e.getLocalizedMessage();

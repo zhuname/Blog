@@ -892,11 +892,24 @@ public class PosterPackageController  extends BaseController {
 		if(StringUtils.isNotBlank(posterPackage.getTitle())){
 			finder.append(" and title like '%"+posterPackage.getTitle()+"%'");
 		}
+		if(null != posterPackage.getStatus()){
+			finder.append(" and status = :status");
+			finder.setParam("status", posterPackage.getStatus());
+		}
+		if(null != posterPackage.getEncrypt()){
+			finder.append(" and encrypt = :encrypt");
+			finder.setParam("encrypt", posterPackage.getEncrypt());
+		}
+		
+		if(null != posterPackage.getPayType()){
+			finder.append(" and payType=:payType");
+			finder.setParam("payType", posterPackage.getPayType());
+		}
 		finder.append(" and status!=0");
 		
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
-		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,posterPackage);
+		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,null);
 		if(null != datas && datas.size() > 0){
 			for (PosterPackage pc : datas) {
 				if(StringUtils.isNotBlank(pc.getImage())){

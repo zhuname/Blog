@@ -143,11 +143,12 @@ jQuery(document).ready(function(){
 						<th id="th_mediaUrl" >视频url</th>
 						<th id="th_content" >主题</th>
 						<!-- <th id="th_mediaImage" >视频封面</th> -->
-						<th id="th_joinExplain" >参与说明</th>
+						<!-- <th id="th_joinExplain" >参与说明</th> -->
 						<th id="th_endTime" >截止时间</th>
-						<th id="th_address" >地址</th>
+						<!-- <th id="th_address" >地址</th>
 						<th id="th_longitude" >经度</th>
-						<th id="th_latitude" >纬度</th>
+						<th id="th_latitude" >纬度</th> -->
+						<th id="th_aduitFailTime" >分享次数</th>
 						<th id="th_phone" >电话</th>
 						<th id="th_createTime" >创建时间</th>
 						<th id="th_topCount" >点赞次数</th>
@@ -259,14 +260,14 @@ jQuery(document).ready(function(){
 								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" onclick="checkImg('${(_data.mediaImage)!''}','400px','200px');"/>
 								
 							</td> -->
-							<td >
+							<!-- <td >
 								${(_data.joinExplain)!''}
-							</td>
+							</td> -->
 							<td >
 								<!--日期型-->
 							${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
-							<td >
+							<!-- <td >
 								${(_data.address)!''}
 							</td>
 							<td >
@@ -274,6 +275,9 @@ jQuery(document).ready(function(){
 							</td>
 							<td >
 								${(_data.latitude)!0}
+							</td> -->
+							<td >
+								${(_data.shareNum)!0}
 							</td>
 							<td >
 								${(_data.phone)!''}

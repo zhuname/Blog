@@ -430,6 +430,16 @@ public class NotificationServiceImpl implements NotificationService {
 				message=new Message(null, 42, userId, new Date(), "您发布的预约已被人兑换，请及时关注预约动态。", id, "", 0, "视频预约卡券兑换", 2);
 				messageService.save(message);
 			break;
+			case 44:
+				JPushUtil.sendJPushNotification("您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”同城活动，赶快去参与吧", type+"", id, userId, "");
+				message=new Message(null, 44, userId, new Date(), "您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”同城活动，赶快去参与吧", id, null, 0, "关注人发布同城活动", 2);
+				messageService.save(message);
+			break;
+			case 45:
+				JPushUtil.sendJPushNotification("您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”城事圈，赶快去参与吧", type+"", id, userId, "");
+				message=new Message(null, 45, userId, new Date(), "您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”城事圈，赶快去参与吧", id, null, 0, "关注人发布城事圈", 2);
+				messageService.save(message);
+			break;
 			
 			
 			}
