@@ -83,10 +83,9 @@ Object data=session.getAttribute("data");
 					</div>
 				</div>
 
-				<div class="opa8">
+				<div class="opa8" onclick="window.location.href='/mts/appWeb/appuser/fansList.jsp';">
 					<img src="<%=basePath%>/js/appWeb/images/fans2.png" class="ver_mid" style="width:0.55rem;" />
 					<span class="ver_mid f_22 clr_f">{{= fansNum}}</span>
-
 				</div>
 			</div>
 
@@ -321,11 +320,11 @@ Object data=session.getAttribute("data");
 	
 	<!-- 这个是已读消息 -->
 	<script id="message_yidu_tmpl" type="text/x-jquery-tmpl">
-		<img src="<%=basePath%>/js/appWeb/images/msg4.png" class="dis_b" style="width:0.8rem;" />
+		<img src="<%=basePath%>/js/appWeb/images/msg4.png" class="dis_b" style="width:0.8rem;"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"/>
 	</script>
 	<!-- 这个是未读消息 -->
 	<script id="message_weidu_tmpl" type="text/x-jquery-tmpl">
-		<img src="<%=basePath%>/js/appWeb/images/weiduxx.png" class="dis_b" style="width:0.8rem;" />
+		<img src="<%=basePath%>/js/appWeb/images/weiduxx.png" class="dis_b" style="width:0.8rem;"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"/>
 	</script>
 	
 	

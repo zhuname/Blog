@@ -91,11 +91,9 @@ Object data=session.getAttribute("data");
 			<div class="f_26 clr_he dis_f jus_bt flex_col">
 				3号<p class="f_30">16:46</p>
 			</div>
-
 			<div class="f_28 clr_3 dis_f flex_col jus_bt" style="width:6rem;">
 				充值<p class="f_24 clr_he">充值失败 <a href="#" class="clr_r">查看原因</a></p>
 			</div>
-
 			<div class="f_28 clr_3 dis_f jus_rt flex_col ali_end">
 				<span class="f_40 clr_r"><span class="f_24">+</span>0.5</span>
 				<p class="f_22 clr_he">剩余金额：￥0.5</p>

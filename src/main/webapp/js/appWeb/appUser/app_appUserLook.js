@@ -113,8 +113,6 @@ function countTime() {
 		//获取当前时间  
 		var date = new Date();  
 		var now = date.getTime();  
-		//设置截止时间  
-		var endDate = new Date("2016-10-22 23:23:23");  
 		
 		var x = date; // 取得的TextBox中的时间
 		var time = new Date(x);
@@ -125,7 +123,7 @@ function countTime() {
 		//时间差  
 		var leftTime = end-now;  
 		//定义变量 d,h,m,s保存倒计时的时间  
-		var m,s;  
+		var m,s;
 		if (leftTime>=0) {  
 			m = Math.floor(leftTime/1000/60%60);  
 			s = Math.floor(leftTime/1000%60);                     
