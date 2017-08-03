@@ -327,10 +327,11 @@ public class CardSchema extends BaseLogger{
 	 * 
 	 */
 	@Scheduled(cron="0 0 0/3 * * ?")
+	/*@Scheduled(cron="0 0/3 * * * ?")*/
 	public void tianqi() throws Exception{
 		logger.info("获取天气");
 		
-		Finder finder=Finder.getSelectFinder(City.class).append(" where open=1 ");
+		Finder finder=Finder.getSelectFinder(City.class).append(" where open=1 order by date asc");
 		
 		List<City> citys=cityService.queryForList(finder, City.class);
 		
