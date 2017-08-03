@@ -152,29 +152,8 @@ public class CircleController  extends BaseController {
 			        {  
 			        	int height = image.getHeight();
 			        	int width = image.getWidth();
-		        		Double percent = 0.0;
-		        		Toolkit kit = Toolkit.getDefaultToolkit(); //定义工具包
-			        	Dimension screenSize = kit.getScreenSize(); //获取屏幕的尺寸  
-			        	int screenWidth = screenSize.width; //获取屏幕的宽  
-			        	int screenHeight = screenSize.height; //获取屏幕的高  
-			        	if(height > screenHeight){
-			        		percent = 500 / (double) width;
-			        		height = (int) (height * percent);
-			        		circle2.setHeight(height);
-				        	circle2.setWidth(500);
-			        	}else{
-			        		circle2.setHeight(height);
-				        	circle2.setWidth(width);
-			        	}
-			        	
-//			        	circle2.setHeight(height);
-//			        	circle2.setWidth(width);
-			        	
-//			        	Image smallImg =image.getScaledInstance( height, width/2,Image.SCALE_REPLICATE );
-			        	
-			        	
-//			            System.out.println("图片高度:"+image.getHeight());  
-//			            System.out.println("图片宽度:"+image.getWidth());  
+			        	circle2.setHeight(height);
+			        	circle2.setWidth(width);
 			        }  
 				}
 			}

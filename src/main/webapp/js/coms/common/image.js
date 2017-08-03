@@ -160,6 +160,12 @@
 	
 	
 	function checkImg(s,width,height){
+		var screenHeigh = window.screen.availHeight;
+		var screenWidth = window.screen.availWidth;
+		if(width >= screenWidth){
+			width = width * 0.2;
+			height = height * 0.2;
+		}
 		var me="<img style=\"height:"+height+";width:"+width+";\" alt=\"\" src=\""+s+"\">";
 		console.log(width,height);
     	var a = s;
