@@ -170,6 +170,7 @@ public class ShieldController  extends BaseController {
 		
 			if(shield.getItemId()!=null&&shield.getUserId()!=null){
 				Page page=new Page();
+				shield.setOsType(null);
 				// ==执行分页查询
 				List<Shield> datas=shieldService.findListDataByFinder(null,page,Shield.class,shield);
 				if(datas.size()>0){
