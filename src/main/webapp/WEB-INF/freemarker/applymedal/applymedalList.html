@@ -204,14 +204,15 @@ jQuery(document).ready(function(){
                         <!--first_start_no_export-->
                         <th  style="width: 5%">操作</th>
                         <!--first_end_no_export-->
-						<th  style="width: 12%" id="th_userId" >用户名称</th>
-						<th  style="width: 12%" id="th_medalId" >勋章名称</th>
+						<th  style="width: 10%" id="th_userId" >用户名称</th>
+						<th  style="width: 10%" id="th_medalId" >勋章名称</th>
 						<th  style="width: 5%" id="th_type" >类型</th>
 						<th  style="width: 5%" id="th_status" >状态</th>
 						<th  style="width: 11%" id="th_applyTime" >申请时间</th>
 						<th  style="width: 11%" id="th_operTime" >审核时间</th>
-						<th  style="width: 17%" id="th_reason" >失败原因</th>
-						<th  style="width: 17%" id="th_multiAddress" >多媒体地址</th>
+						<th  style="width: 12%" id="th_reason" >失败原因</th>
+						<th  style="width: 15%" id="th_multiAddress" >多媒体地址</th>
+						<th  style="width: 11%" id="th_multiAddress" >过期时间</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -226,7 +227,7 @@ jQuery(document).ready(function(){
                                 <td>
                                     <div class="hidden-sm hidden-xs btn-group">
                                        
-                                        <#if (_data.status) == 1 && (_data.medalStatus)?? && (_data.medalStatus) gt 0>
+                                        <#if (_data.status) == 1>
                                             <button class="btn btn-xs btn-success" title="审核成功"
                                                 onclick="confirmApply(${(_data.id)!''});">
                                             	<i class="ace-icon fa fa-check bigger-120"></i>
@@ -236,16 +237,7 @@ jQuery(document).ready(function(){
                                             	<i class="ace-icon fa fa-close bigger-120"></i>
                                         	</button>
                                         </#if>
-                                        <#if (_data.status) == 1 && (_data.medalStatus)?? && (_data.medalStatus) == 0>
-                                        	<button class="btn btn-xs btn-success" title="审核成功"
-                                                onclick="mydelete('${ctx}/system/applymedal/check/json?id=${(_data.id)!''}','${ctx}/system/applymedal/list',null,'确认成功？');">
-                                            	<i class="ace-icon fa fa-check bigger-120"></i>
-                                        	</button>
-                                        	<button class="btn btn-xs btn-pink" title="审核失败"
-                                                onclick="checkRefuse(${(_data.id)!''})">
-                                            	<i class="ace-icon fa fa-close bigger-120"></i>
-                                        	</button>
-                                        </#if>
+                                       
                                         
                                         	
                                         	
@@ -338,6 +330,10 @@ jQuery(document).ready(function(){
 								<#if (_data.type) == 2 >
 									<video class="vid" poster="" width='240px' height="120px" src="${(_data.multiAddress)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
 								</#if>
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.endMedalTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 						</tr>
 					</#list>
