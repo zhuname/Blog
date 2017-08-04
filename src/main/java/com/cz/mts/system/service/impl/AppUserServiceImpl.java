@@ -645,7 +645,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				cityCircle.setPayTime(new Date());
 				
 				//更新circle表的打赏总金额字段
-				Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney WHERE id=:id");
+				Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney,count=count+1 WHERE id=:id");
 				circleFinder.setParam("sumMoney", cityCircle.getMoney());
 				circleFinder.setParam("id", cityCircle.getItemId());
 				super.update(circleFinder);
@@ -1245,7 +1245,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					cityCircle.setPayTime(new Date());
 					
 					//更新circle表的打赏总金额字段
-					Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney WHERE id=:id");
+					Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney,count=count+1 WHERE id=:id");
 					circleFinder.setParam("sumMoney", cityCircle.getMoney());
 					circleFinder.setParam("id", cityCircle.getItemId());
 					super.update(circleFinder);
