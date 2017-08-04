@@ -293,7 +293,9 @@ public class ActivityController  extends BaseController {
 		  if(activity.getViewedCount()==null){
 			  activity.setViewedCount(1);
 		  }else {
-			  activity.setViewedCount(activity.getViewedCount()+1);
+			  if(null != activity.getStatus() && 3 == activity.getStatus()){
+				  activity.setViewedCount(activity.getViewedCount()+1);
+			  }
 			  //每100个人浏览的情况下，发推送
 			  notificationService.notify(27, activity.getId(), activity.getUserId());
 		  }

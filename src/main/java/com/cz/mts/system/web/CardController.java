@@ -616,8 +616,10 @@ public class CardController  extends BaseController {
 				userCards.add(userCar);
 			}
 			userCardService.save(userCards);
+			if(null == card.getConvertMoney() || (null != card.getConvertMoney() && 0.0 == card.getConvertMoney())){
+				card.setNum(card.getNum()-num);
+			}
 			
-//			card.setNum(card.getNum()-num);
 			
 			cardService.update(card, true);
 			

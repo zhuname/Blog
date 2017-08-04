@@ -529,7 +529,7 @@ public class CircleController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 Circle circle = circleService.findCircleById(id);
 			 if(null != circle && null != circle.getUserId()){
-				 if(userId == circle.getUserId()){
+				 if(userId.intValue() == circle.getUserId().intValue()){
 					 circleService.deleteById(id,Circle.class);
 						return new ReturnDatas(ReturnDatas.SUCCESS,
 								MessageUtils.DELETE_SUCCESS);

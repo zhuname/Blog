@@ -201,7 +201,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//判断用户余额足不足
-			if(appUser.getBalance()<posterPackage.getSumMoney()){
+			if(appUser.getBalance().doubleValue()<posterPackage.getSumMoney().doubleValue()){
 				return 5;
 			}
 			
@@ -322,7 +322,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//判断用户余额足不足
-			if(appUser.getBalance()<mediaPackage.getSumMoney()){
+			if(appUser.getBalance().doubleValue()<mediaPackage.getSumMoney().doubleValue()){
 				return 5;
 			}
 			
