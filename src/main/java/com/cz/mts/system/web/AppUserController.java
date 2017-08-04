@@ -323,6 +323,7 @@ public class AppUserController  extends BaseController {
 	ReturnDatas saveorupdatejson(Model model,AppUser appUser,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		appUser.setBalance(null);
 		try {
 			Page page = newPage(request);
 			if(null == appUser.getId()){

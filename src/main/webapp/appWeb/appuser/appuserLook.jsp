@@ -59,14 +59,14 @@ Object data=session.getAttribute("data");
 	<div class="wraper overh" id="detail"></div>
 
 	<script id="appuser_detail_tmpl" type="text/x-jquery-tmpl">
-	<div class="center_bg" >
-			<div class="pad_30 dis_f jus_rt ali_ct" id="msg">
+	<div class="center_bg">
+			<div class="pad_30 dis_f jus_rt ali_ct" id="msg" >
 				<img src="<%=basePath%>/js/appWeb/images/msg4.png" class="dis_b" style="width:0.8rem;" />
 			</div>
 
 			<div class="pad_30 dis_f ali_end jus_bt">
 				<div class="dis_f ali_ct">
-					<img src="{{= header}}" class="dis_b" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
+					<img src="{{= header}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
 					<div class="clr_f">
 						<span class="f_28">{{= name}}</span>
 						{{if sex}}
@@ -120,7 +120,7 @@ Object data=session.getAttribute("data");
 	<script id="appuser_statics_tmpl" type="text/x-jquery-tmpl">
 
 <div class="bg_f padl_20">
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/moneyDetail/appMoneyDetail.jsp?userId={{= id}}';">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/moneyDetail/appMoneyDetail.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdqb.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的钱包</p>
@@ -257,7 +257,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/appuser/myMedal.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdxz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的勋章</p>
