@@ -1221,10 +1221,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//看是不是第一次进来
 					MoneyDetail moneyDetailC=new MoneyDetail();
-					moneyDetailC.setCode(code);
-					moneyDetailC.setType(14);
+					moneyDetailC.setType(16);
 					moneyDetailC.setAliTrade(wxCode);
-					moneyDetailC.setUserId(cityCircle.getUserId());
 					
 					Page pageD=new Page();
 					List<MoneyDetail> moneyDetailcs=super.findListDataByFinder(null, pageD, MoneyDetail.class, moneyDetailC);
@@ -1285,6 +1283,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 							moneyDetailB.setMoney(+cityCircle.getMoney());
 							moneyDetailB.setType(16);
 							moneyDetailB.setUserId(circleAppUser.getId());
+							moneyDetailB.setCode(code);
+							moneyDetailB.setAliTrade(wxCode);
 							super.save(moneyDetailB);
 							
 							notificationService.notify(34, circle.getId(), circle.getUserId());

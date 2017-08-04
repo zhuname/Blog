@@ -625,7 +625,7 @@ public class CardController  extends BaseController {
 			
 			card.setUserCards(userCards);
 			returnObject.setData(card);
-			
+			                                         
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
