@@ -1307,7 +1307,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			returnObject.setMessage("参数缺失");
 		}else{
 			//查询海报数量
-			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId and (status = 3 or status=4) AND isDel=0 id in( SELECT packageId FROM t_red_city WHERE  type=1 group by packageId)");
+			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId and (status = 3 or status=4) AND isDel=0 ");
 			posterFinder.setParam("userId", appUser.getId());
 			List posterList = queryForList(posterFinder);
 			if(null != posterList && posterList.size() > 0){
@@ -1326,7 +1326,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//查询卡券数量
-			Finder cardFinder = new Finder("SELECT id FROM t_card WHERE userId=:userId AND isDel=0 and status = 2 id in( SELECT packageId FROM t_red_city WHERE  type=3 group by packageId)");
+			Finder cardFinder = new Finder("SELECT id FROM t_card WHERE userId=:userId AND isDel=0 and status = 2 ");
 			cardFinder.setParam("userId", appUser.getId());
 			List cardList = queryForList(cardFinder);
 			if(null != cardList && cardList.size() > 0){
@@ -1336,7 +1336,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//查询同城活动数量
-			Finder activityFinder = new Finder("SELECT id FROM t_activity WHERE userId=:userId AND isDel=0 and (status = 3 OR `status`=4) id in( SELECT packageId FROM t_red_city WHERE  type=4 group by packageId)");
+			Finder activityFinder = new Finder("SELECT id FROM t_activity WHERE userId=:userId AND isDel=0 and (status = 3 OR `status`=4) ");
 			activityFinder.setParam("userId", appUser.getId());
 			List activityList = queryForList(activityFinder);
 			if(null != activityList && activityList.size() > 0){
