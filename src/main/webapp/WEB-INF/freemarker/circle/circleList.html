@@ -24,6 +24,14 @@ $(document).on("click", ".selectBtn", function() {
 	jQuery('#selectA')[0].click();
 });
 
+initDcity("localtion",null,"cityId");
+
+$(document).on("change", "#city", function() {
+	var cityId=jQuery("#city").val();
+	jQuery("#cityId").val(cityId);
+	
+});
+
 </script>
 
 
@@ -50,6 +58,12 @@ $(document).on("click", ".selectBtn", function() {
 			</select>
 			<label for="search_userName"><b>发布人:</b></label> 
 			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
+			 
+			 <label for="search_cityId" ><b>城市名称:</b></label>
+			  <div id="localtion" style="display: inline-block;">
+			  </div>
+			 <input name="cityId" id="cityId" value="${(returnDatas.queryBean.cityId)!''}" style="display:none"  type="text"/>
+			 
 			<a id="selectA" href="javascript:mySubmitForm('searchForm');">
 				</a>
 				
@@ -105,6 +119,7 @@ $(document).on("click", ".selectBtn", function() {
 						<th id="th_sumMoney" >打赏金额</th>
 						<th id="th_topCount" >点赞数</th>
 						<th id="th_commentCount" >评论数</th>
+						<th id="th_commentCount" >城市名称</th>
 						
 						
 						<!-- <th id="th_height" >单张图片的高</th>
@@ -215,7 +230,9 @@ $(document).on("click", ".selectBtn", function() {
 							<td >
 								${(_data.commentCount)!0}
 							</td>
-							
+							<td >
+								${(_data.cityName)!''}
+							</td>
 							
 							<!-- <td >
 								${(_data.height)!0}

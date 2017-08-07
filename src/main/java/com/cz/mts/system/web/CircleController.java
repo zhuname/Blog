@@ -32,6 +32,7 @@ import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.Shield;
@@ -40,6 +41,7 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.ICityCircleService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IShieldService;
@@ -79,6 +81,8 @@ public class CircleController  extends BaseController {
 	private ICityCircleService cityCircleService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private ICityService cityService;
 	
 	
 	private String listurl="/circle/circleList";
@@ -126,6 +130,11 @@ public class CircleController  extends BaseController {
 			finder.setParam("type", circle.getType());
 		}
 		
+		if(null != circle.getCityId()){
+			finder.append(" and cityId = :cityId");
+			finder.setParam("cityId", circle.getCityId());
+		}
+		
 		
 		List<Circle> datas=circleService.queryForList(finder, Circle.class, page);
 		
@@ -155,6 +164,13 @@ public class CircleController  extends BaseController {
 			        	circle2.setHeight(height);
 			        	circle2.setWidth(width);
 			        }  
+				}
+				
+				if(null != circle2.getCityId()){
+					City city = cityService.findCityById(circle2.getCityId());
+					if(null != city && StringUtils.isNotBlank(city.getName())){
+						circle2.setCityName(city.getName());
+					}
 				}
 			}
 		}

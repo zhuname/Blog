@@ -119,6 +119,24 @@ public class Circle  extends BaseEntity {
 	private Integer cityCirclePerson;
 	
 	private Integer shareNum;
+	
+	private String cityName;
+	
+	
+	
+	
+	
+	//concstructor
+
+	@Transient
+	 public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	
 	@Transient
 	public Integer getCityCirclePerson() {
 		return cityCirclePerson;
