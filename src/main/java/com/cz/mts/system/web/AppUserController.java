@@ -152,7 +152,7 @@ public class AppUserController  extends BaseController {
 		if(datas != null && datas.size() > 0){
 			for (AppUser au : datas) {
 				if(StringUtils.isBlank(au.getHeader())){
-					au.setHeader("http://106.15.60.65:22222/images/mts/share/header.png");
+					au.setHeader("http://47.92.129.76:22222/images/mts/share/header.png");
 				}
 			}
 		}
