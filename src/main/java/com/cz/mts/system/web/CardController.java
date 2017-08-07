@@ -813,8 +813,8 @@ public class CardController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		card.setIsDel(0);
-		Finder finder = Finder.getSelectFinder(Card.class).append("where 1=1");
+//		card.setIsDel(0);
+		Finder finder = Finder.getSelectFinder(Card.class).append("where 1=1 and isDel=0");
 		if(StringUtils.isNotBlank(card.getCategoryName())){
 			finder.append(" and catergoryId in(select id from t_category where type=3 and name like '%"+card.getCategoryName()+"%')");
 		}

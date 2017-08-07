@@ -691,8 +691,7 @@ public class MediaPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		mediaPackage.setIsDel(0);
-		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1 = 1");
+		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1 = 1 and isDel=0");
 		if(StringUtils.isNotBlank(mediaPackage.getCategoryName())){
 			finder.append(" and categoryId in(select id from t_category where type=2 and INSTR(`name`,:categoryName)>0 )");
 			finder.setParam("categoryName", mediaPackage.getCategoryName());

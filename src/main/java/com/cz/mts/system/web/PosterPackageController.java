@@ -865,8 +865,7 @@ public class PosterPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		posterPackage.setIsDel(0);
-		Finder finder = Finder.getSelectFinder(PosterPackage.class).append(" where 1=1");
+		Finder finder = Finder.getSelectFinder(PosterPackage.class).append(" where 1=1 and isDel=0");
 		if(StringUtils.isNotBlank(posterPackage.getCategoryName())){
 			finder.append(" and categoryId in(select id from t_category where type=1 and INSTR(`name`,:categoryName)>0 )");
 			finder.setParam("categoryName", posterPackage.getCategoryName());
