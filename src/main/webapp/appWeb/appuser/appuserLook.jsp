@@ -241,7 +241,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/appuser/attrList.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdgz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的关注</p>
@@ -297,10 +297,10 @@ Object data=session.getAttribute("data");
 
 		<div class="bg_f fixed_nav">
 			<ul class="nav_ul dis_f ali_ct jus_bt" style="width:12rem;margin:0 auto;">
-				<li><a href="#" class="dis_f ali_ct flex_col clr_6 jus_ct">
+				<li><a  onclick="window.location.href='/mts/appWeb/index/index.jsp';" class="dis_f ali_ct flex_col clr_6 jus_ct">
 				<img src="<%=basePath%>/js/appWeb/images/b1_no.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">美天赏</p></a></li>
 				<li><a href="#"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
-				<li><a href="#" class="dis_f ali_ct flex_col clr_r jus_ct">
+				<li><a  onclick="window.location.href='/mts/appWeb/appuser/appuserLook.jsp';" class="dis_f ali_ct flex_col clr_r jus_ct">
 				<img src="<%=basePath%>/js/appWeb/images/b2h.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">我的</p></a></li>
 			</ul>
 		</div>

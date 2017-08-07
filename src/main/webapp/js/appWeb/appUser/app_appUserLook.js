@@ -8,7 +8,7 @@ $.ajax({
 	type : "post",
 	dataType : "json",
 	success : function(result){
-
+		
 		if(result.status=="error"){
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
@@ -129,6 +129,10 @@ function countTime() {
 			s = Math.floor(leftTime/1000%60);                     
 		}  
 		//递归每秒调用countTime方法，显示动态时间效果  
+		
+		if(m==0&&s==0){
+			window.location.reload();
+		}
 		
 		var lqHtml="<span class=\"f_30\">"+m+":"+s+"</span>后   获得<span class=\"f_30\">"+lqNum+"</span>次领取机会";
 		
