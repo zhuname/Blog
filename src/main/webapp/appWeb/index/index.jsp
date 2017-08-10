@@ -159,9 +159,13 @@ Object data=session.getAttribute("data");
 
 	<div class="pad_20 mt_20">
 		<ul class="haibao_ul dis_f ali_ct jus_bt flex_w">
-			<li class="bg_f">
-			<a href="#" class=" dis_f ali_ct flex_col jus_ct">
+			<li class="bg_f" >
+			<a  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackage.jsp?cityId={{= cityId}}';"  class=" dis_f ali_ct flex_col jus_ct">
+				{{if posterCount}}
+				{{if posterCount>0}}
 				<div class="haibao_tips">{{= posterCount}}</div>
+				{{/if}}
+				{{/if}}
 				<img src="<%=basePath%>/js/appWeb/images/haibao.png" class="dis_b" />
 				<p class="f_26 clr_3 mt_10">海报红包</p>
 				<p class="f_20 clr_r">还有<span class="f_28">{{= posterMoney}}元</span>待领</p>
@@ -169,7 +173,11 @@ Object data=session.getAttribute("data");
 			</li>
 			<li class="bg_f">
 			<a href="#" class=" dis_f ali_ct flex_col jus_ct" >
+			{{if mediaCount}}
+			{{if mediaCount>0}}
 			<div class="haibao_tips">{{= mediaCount}}</div>
+			{{/if}}
+			{{/if}}
 				<img src="<%=basePath%>/js/appWeb/images/shipin.png" class="dis_b" />
 				<p class="f_26 clr_3 mt_10">视频红包</p>
 				<p class="f_20 clr_r">还有<span class="f_28">{{= mediaMoney}}元</span>待领</p>
@@ -177,7 +185,11 @@ Object data=session.getAttribute("data");
 			</li>
 			<li class="bg_f">
 			<a href="#" class=" dis_f ali_ct flex_col jus_ct">
+			{{if activityCount}}
+			{{if activityCount>0}}
 			<div class="haibao_tips">{{= activityCount}}</div>
+			{{/if}}
+			{{/if}}
 				<img src="<%=basePath%>/js/appWeb/images/huodong.png" class="dis_b" />
 				<p class="f_26 clr_3 mt_10">同城活动</p>
 				<p class="f_20 clr_r">已有<span class="f_28">{{= joinCount}}</span>人参与</p>
@@ -185,7 +197,11 @@ Object data=session.getAttribute("data");
 			</li>
 			<li class="bg_f">
 			<a href="#" class=" dis_f ali_ct flex_col jus_ct">
+			{{if circleCount}}
+			{{if circleCount>0}}
 			<div class="haibao_tips">{{= circleCount}}</div>
+			{{/if}}
+			{{/if}}
 				<img src="<%=basePath%>/js/appWeb/images/xinxi.png" class="dis_b" />
 				<p class="f_26 clr_3 mt_10">趣闻趣事</p>
 				<p class="f_20 clr_r">还有<span class="f_28">{{= cityCircleCount}}</span>条</p>

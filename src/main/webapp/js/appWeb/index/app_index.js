@@ -30,7 +30,7 @@ function show(){
 					
 					if(result.data!=undefined){
 						//获取消息记录
-						
+							result.data.cityId = user.data.cityId;
 							$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 						
 							$('#name').html(user.data.name);

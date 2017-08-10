@@ -12,8 +12,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,6 +103,8 @@ public class PosterPackageController  extends BaseController {
 	private IOperService operService;
 	@Resource
 	private ICardService cardService;
+	@Autowired  
+	HttpSession session;
 	//定义一个默认大小的链表队列
 	private final LinkedBlockingQueue<Snatch> queue = new LinkedBlockingQueue<>() ;
 	
@@ -307,6 +311,15 @@ public class PosterPackageController  extends BaseController {
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response,String appUserId) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		if(StringUtils.isNotBlank(appUserId)||session.getAttribute("appUserSessionId")!=null){
+			  if(StringUtils.isNotBlank(appUserId)){
+				  appUserId=appUserId;
+			  }else if (session.getAttribute("appUserSessionId")!=null) {
+				  appUserId = session.getAttribute("appUserSessionId").toString();
+			}
+		}
+		
 		  String  strId=request.getParameter("id");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
@@ -377,6 +390,8 @@ public class PosterPackageController  extends BaseController {
 					posterPackage.setIsLook(0);
 				 }
 			 }
+			 
+			 
 			 
 			 //是否关注以及是否点赞过
 			 if(posterPackage!=null&&StringUtils.isNotBlank(appUserId)){

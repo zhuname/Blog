@@ -187,7 +187,6 @@ public class OperController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		page.setPageSize(100000);
 		// ==执行分页查询
 		List<Oper> datas=operService.findListDataByFinder(null,page,Oper.class,oper);
 		if(null != datas && datas.size() > 0){
