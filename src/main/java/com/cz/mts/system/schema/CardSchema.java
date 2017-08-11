@@ -238,7 +238,7 @@ public class CardSchema extends BaseLogger{
 	 * 勋章有效期前三天发推送
 	 * 
 	 */
-	@Scheduled(cron="0 0/15 * * * ?")
+	@Scheduled(cron="0 0 12 * * ?")
 	public void beEndMedal() throws Exception{
 		logger.info("勋章有效期前三天发推送");
 		Finder finder = Finder.getSelectFinder(UserMedal.class).append(" WHERE endMedalTime IS NOT NULL AND DATE(DATE_SUB(endMedalTime,INTERVAL 3 DAY)) = DATE(NOW())");
