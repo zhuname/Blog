@@ -2,20 +2,64 @@ var This=this;
 var nextPage=1;
 var type=1;
 var id;
+var userId;
+var packageUserId;
+var encrypt;
 
 
-//加载页面方法
-
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/appuser/look/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		userId=result.data.id;
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 	$.ajax({
 		url : '/mts/system/posterpackage/look/json?web=&id='+getQueryString("id"),
 		type : "post",
 		dataType : "json",
 		success : function(result){
+			
 			if(result.status=="error"){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
 			if(result.data!=undefined){
+				
+				if(result.data.appUser.name!=undefined){
+					
+					$('#name').html(result.data.appUser.name+"的红包");
+					
+				}
+				
+				if(result.data.appUser.header!=undefined){
+					
+					$('#header').attr('src',result.data.appUser.header);
+					
+				}
+				
+				if(result.data.encrypt!=undefined){
+					
+					encrypt=result.data.encrypt;
+					
+				}
+					
+					if(result.data.id!=undefined){
+						
+						packageUserId=result.data.id;
+						
+					}
 				
 					if(result.data.image!=undefined){
 						
@@ -30,8 +74,19 @@ var id;
 						
 					}
 					
-					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
+					
+					var lunbo=result.data.image.split(";");
+					
+					for (var int = 0; int < lunbo.length; int++) {
+						
+						if(int==0){
+							
+							$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
+							
+						}
+						
+					}
 					
 					//初始化页面
 					change(2);
@@ -239,6 +294,116 @@ var id;
 		return result;
 	}
 
+function yuyue(){
+	
+	
+	
+	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
+		
+		//加载页面方法
+		$.ajax({
+		url : '/mts/system/appoint/update/json?web=&type=1&itemId='+getQueryString("id")+"&userId="+userId+"&packageUserId="+packageUserId+"&phone="+$("#phone").val()+"&money="+$("#money").val(),
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+			window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
+	
+	}
+}
+
+
+function lingqu(){
+		if(encrypt!=undefined&&encrypt==1&&$('#command').val()!=undefined&&$('#command').val()==""){
+			$('.command_mask').show();
+		}else{
+			//加载页面方法
+			$.ajax({
+				url : '/mts/system/posterpackage/snatch/json?web=&id='+getQueryString("id")+"&userId="+userId,
+				type : "post",
+				dataType : "json",
+				success : function(result){
+					debugger;
+					if(result.status=="error"){
+						alert(result.message);
+						return;
+					}
+					$('#money').html(result.data.money);
+					$('.bonus_mask').show();
+				},
+				error:function(XMLHttpRequest, textStatus, errorThrown){
+					console.log(XMLHttpRequest) ;
+					console.log(textStatus) ;
+				}
+			});
+			
+		}
+		
+		
+}
+
+function lingquList(){
+	window.location.href="/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId="+id+"&type=1";
+}
+
+
+function oper(type){
+	if(type==2){
+		
+		if($("#comment").val()!=null&&$("#comment").val()!=""){
+			
+			//加载页面方法
+			$.ajax({
+				url : '/mts/system/oper/update/json?web=&type=2&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
+				type : "post",
+				dataType : "json",
+				success : function(result){
+					if(result.status=="error"){
+						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+						return;
+					}
+					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+				},
+				error:function(XMLHttpRequest, textStatus, errorThrown){
+					console.log(XMLHttpRequest) ;
+					console.log(textStatus) ;
+				}
+			});
+			
+		}
+	}else if(type==1){
+			
+			//加载页面方法
+			$.ajax({
+				url : '/mts/system/oper/update/json?web=&type=1'+"&itemId="+id+"&userId="+userId,
+				type : "post",
+				dataType : "json",
+				success : function(result){
+					if(result.status=="error"){
+						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+						return;
+					}
+				    window.location.reload();
+				},
+				error:function(XMLHttpRequest, textStatus, errorThrown){
+					console.log(XMLHttpRequest) ;
+					console.log(textStatus) ;
+				}
+			});
+			
+	}
+}
+	
+	
 window.onscroll=function(){
 	var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;

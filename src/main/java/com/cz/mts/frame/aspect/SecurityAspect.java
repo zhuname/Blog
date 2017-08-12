@@ -71,7 +71,7 @@ public class SecurityAspect {
 		
     	
 		Map<String,String[]> paramMap = new HashMap(request.getParameterMap()) ;
-    	if(session.getAttribute("appUserSessionId")!=null||paramMap.containsKey("web")){
+    	if(paramMap.containsKey("web")){
     		return;
     	}
 		

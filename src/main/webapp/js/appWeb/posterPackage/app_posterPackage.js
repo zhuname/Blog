@@ -1,6 +1,6 @@
 var This=this;
 var nextPage=1;
-var dataString;
+var dataString="";
 //初始化页面
 show();
 

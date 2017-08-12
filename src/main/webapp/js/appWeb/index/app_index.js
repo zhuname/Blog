@@ -18,7 +18,7 @@ function show(){
 			if(result.data!=undefined){
 		//获取用户信息
 			$.ajax({
-				url : '/mts/system/appuser/indexStatics/json?id='+result.data.id+'&cityId='+result.data.cityId,
+				url : '/mts/system/appuser/indexStatics/json?web=&id='+result.data.id+'&cityId='+result.data.cityId,
 				type : "post",
 				dataType : "json",
 				success : function(result){

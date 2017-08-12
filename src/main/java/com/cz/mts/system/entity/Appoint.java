@@ -143,7 +143,7 @@ public class Appoint  extends BaseEntity {
 	
 	//concstructor
 
-	
+	@Transient
 	public String getUserName() {
 		return userName;
 	}

@@ -275,3 +275,5 @@ line-height: 0.5rem; font-size: 0.2rem; border-radius: 50%;top: -0.1rem; right: 
 .bann>.hd>ul{width:100%;margin:0 auto;height:0.5rem;}
 .bann>.hd li{background:#fff;float:left;width:0.4rem;font-size:0;margin-left:0.25rem;height:0.4rem;border-radius:0.2rem;}
 .bann>.hd li.on{background:#dd2727;}
+
+.yuyue_bg{background: url(../images/yyyl_bg.png) no-repeat;background-size: 100%;width:11.25rem;height:18rem;margin:4rem auto 0 auto;}

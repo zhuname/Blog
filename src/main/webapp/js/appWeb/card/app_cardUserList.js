@@ -5,24 +5,14 @@ show();
 
 //加载页面方法
 function show(){
-	$.ajax({
-		url : '/mts/system/appuser/look/json?web=',
-		type : "post",
-		dataType : "json",
-		success : function(result){
-			
-			if(result.status=="error"){
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-				return;
-			}
-			if(result.data!=undefined){
 		//获取用户信息
+	if(getQueryString('id')!=undefined&&getQueryString('id')!=null){
+	
 			$.ajax({
-				url : '/mts/system/message/list/json?web=&userId='+result.data.id+'&pageIndex='+nextPage,
+				url : '/mts/system/moneydetail/listuser/json?web=&itemId='+getQueryString('id')+'&pageIndex='+nextPage,
 				type : "post",
 				dataType : "json",
 				success : function(result){
-					
 					if(result.status=="error"){
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
@@ -30,16 +20,11 @@ function show(){
 					
 					if(result.data!=undefined){
 						//获取消息记录
+						$('#card_top_tmpl').tmpl(result).appendTo($('#detail'));
 						
 						for (var int = 0; int < result.data.length; int++) {
 							
-							//处理日期，
-							if(result.data[int].createTime!=undefined){
-								var date=result.data[int].createTime.substring(0,16);
-								result.data[int].createTime=date;
-							}
-							
-							$('#message_list_tmpl').tmpl(result.data[int]).appendTo($('#messageList'));
+							$('#card_list_tmpl').tmpl(result.data[int]).appendTo($('#detail'));
 							
 						}
 						
@@ -51,13 +36,8 @@ function show(){
 					console.log(textStatus) ;
 				}
 			});
-			}
-		},
-		error:function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(XMLHttpRequest) ;
-			console.log(textStatus) ;
-		}
-	});
+			
+	}
 }
 
 

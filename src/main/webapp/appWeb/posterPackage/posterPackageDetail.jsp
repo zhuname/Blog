@@ -102,9 +102,9 @@ Object data=session.getAttribute("data");
 		<div class="pad_30"></div>
 
 		<div class="fixed_comment dis_f ali_ct jus_bt pad_20">
-			<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid" style="height:1rem;" />
-			<input placeholder="说点什么吧......" class="ipt1 f_26 clr_9" type="text" />
-			<input class="btn1 f_26 clr_f" type="button" value="发送" />
+			<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid"  onclick="oper(1);"  style="height:1rem;" />
+			<input placeholder="说点什么吧......" class="ipt1 f_26 clr_9" id="comment" type="text" />
+			<input class="btn1 f_26 clr_f" type="button" onclick="oper(2);"  value="发送" />
 		</div>
 	</div>
 	
@@ -132,7 +132,9 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="bg_f padl_20">
-			<img src="{{= image}}" class="dis_b" style="width:15rem;" />
+			
+			<div id="lunbo">
+			</div>
 
 			<div class="f_40 clr_3 mt_20">
 				<img src="<%=basePath%>/js/appWeb/images/bar.png" class="ver_mid" style="width:0.1rem;" />
@@ -170,25 +172,20 @@ Object data=session.getAttribute("data");
 					<img src="<%=basePath%>/js/appWeb/images/xjq.png" class="ver_mid" style="width:0.9rem;" />
 					<p >礼物券</p>
 				</div>
-
-				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= cardLqNum}}人领取</div>
+			
+				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}人领取</div>
 			</div>
-
-			<div class="dis_f ali_ct jus_bt">
-				<div class="ceng_img" id="lingquan">
+			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/card/cardUserList.jsp?id={{= cardId}}';">
+				<div class="ceng_img" id="lingquan" >
 				</div>
-
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
 			</div>
 		</div>
-
 		{{/if}}
-
-
 		{{if isRelevance}}
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap">
 			<div class="dis_f ali_ct">
-				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;">
+				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:$('.kq_mask').show();">
 					<img src="<%=basePath%>/js/appWeb/images/yyyl.png" class="ver_mid" style="width:0.9rem;" />
 					<p >预约有礼</p>
 				</div>
@@ -196,7 +193,7 @@ Object data=session.getAttribute("data");
 				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= appointCount}}人领取</div>
 			</div>
 
-			<div class="dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/appoint/appointUserList.jsp?itemId={{= id}}&type=1';">
 				<div class="ceng_img" id="yuyue">
 				</div>
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
@@ -205,7 +202,7 @@ Object data=session.getAttribute("data");
 		{{/if}}
 
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt" style="border-top:1px solid #f2f4f7;">
-			<div id="lingqu">
+			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';">
 			</div>
 			<div class="clr_3 f_30">…</div>
 
@@ -223,7 +220,17 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="pad_30 bg_f">
-			<a href="#" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">立即领取</a>
+			{{if isLook==1}}
+			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢</a>
+			{{else}}
+			{{if status}}	
+			{{if status==3}}
+			<a class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #f95d47;">立即领取</a>
+			{{else status==4}}
+			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢完</a>
+			{{/if}}	
+			{{/if}}
+			{{/if}}
 		</div>
 
 		<div class="mt_20 bg_f borderbot1">
@@ -241,7 +248,35 @@ Object data=session.getAttribute("data");
 				</li>
 			</ul>
 		</div>
+
+
+
+		<div class="kq_mask" id="payTmpl" style="display: none;">
+        <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
+            <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
+
+            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" id="money" type="number" placeholder="￥请填写打赏金额"/>
+            <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预约电话"/>
+            <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
+                ● 处为商家填写的预约支付说写的预约支付
+                约支付说预约支付说写的<br/>
+                ● 处为商家填写的预约支付说明的预约支预
+                家填写的预约支付说明的预约支预约支付
+                说明的预约支预约支
+            </div>
+            <div class="f_20 clr_3 al_ct pad_20">使用账户余额付款 ¥6.00 <a href="javascript:;" class="clr_b">更换</a></div>
+
+            <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预约"/>
+        </div>
+
+
+    	</div>
+
 	</script>
+	
+	
+		 
+	
 	
 	<script id="yuyue_tmpl" type="text/x-jquery-tmpl">
 		<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
@@ -280,7 +315,7 @@ Object data=session.getAttribute("data");
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
-					{{if appUser.sex}}
+						{{if appUser.sex}}
 							{{if appUser.sex == '男'}}
 							<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
 							{{else appUser.sex == '女'}}
@@ -294,7 +329,31 @@ Object data=session.getAttribute("data");
 			<div class="f_28 clr_3 mt_20">{{if appUser}}{{= appUser.sign}}{{/if}}</div>
 		</div>
 	</script>
+	<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
+			<li><img src="{{= image}}" class="dis_b" style="width:15rem;" /></li>
+	</script>
 	
+	<div class="bonus_mask" style="display: none;">
+
+			<div class="honus_bg pos_rela">
+				<div style="position: absolute; height: 2rem;width:7rem; bottom: 0.5rem; left: 3rem"  onclick="lingquList();"></div>
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" class="ver_mid close_hb" style="width:1rem;height:1rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
+				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="money"></span><span class="f_24">元</span></div>
+
+				<div class="al_ct" style="padding-top:4.5rem;">
+					<img class="ver_mid" id="header" style="width:3rem;border-radius: 1.5rem;" />
+					<p class="f_28 mt_30" style="color:#e08877;"  id="name"></p>
+					
+				</div>
+			</div>
+		</div>
+
+		<div class="command_mask" style="width:16rem;display: none;">
+			<div class="command pad_20">
+				<input class="ipt4 f_28 clr_9" placeholder="请输入加密口令方能进行领取哦" type="text" />
+				<input class="btn4 f_30 clr_f mt_30 qd_click" value="确定"  onclick="lingqu();" type="button" />
+			</div>
+		</div>
 	
 </body>
 
