@@ -198,6 +198,12 @@ public class OperController  extends BaseController {
 						op.setAppUser(appUser);
 					}
 				}
+				if(null != op.getToUserId()){
+					AppUser appUser = appUserService.findAppUserById(op.getToUserId());
+					if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+						op.setToUserName(appUser.getName());
+					}
+				}
 			}
 		}
 		returnObject.setQueryBean(oper);
@@ -260,6 +266,7 @@ public class OperController  extends BaseController {
 	ReturnDatas saveorupdate(Model model,Oper oper,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		Object id = null ;
 		try {
 			if(null == oper.getUserId() || null == oper.getItemId() || null == oper.getType()){
 				returnObject.setMessage("参数缺失");
@@ -390,7 +397,7 @@ public class OperController  extends BaseController {
 										}
 										break;
 									}
-									operService.saveorupdate(oper);
+									id = operService.saveorupdate(oper);
 								}
 								
 							}
@@ -507,7 +514,7 @@ public class OperController  extends BaseController {
 								}
 								break;
 							}
-							operService.saveorupdate(oper);
+							id = operService.saveorupdate(oper);
 						}
 					
 					}
@@ -622,14 +629,14 @@ public class OperController  extends BaseController {
 							}
 							break;
 						}
-						operService.saveorupdate(oper);
+						id = operService.saveorupdate(oper);
 					}
 				}
 				
 			}
 			
-			
-			
+			Oper dataoper = operService.findOperById(id);
+			returnObject.setData(dataoper);
 		} catch (Exception e) {
 			String errorMessage = e.getLocalizedMessage();
 			logger.error(errorMessage);
