@@ -138,7 +138,7 @@ public class CardSchema extends BaseLogger{
 	/**
 	 *领取次数更新提醒
 	 */
-	@Scheduled(cron="0 0 0/1 * * ?")
+	@Scheduled(cron="55 59 0/1 * * ?")
 	public void updateLqNum() throws Exception{
 		logger.info("*****************领取次数更新提醒******************");
 		Finder finder = new Finder("SELECT * FROM t_app_user WHERE currentLqNum != lqNum");
