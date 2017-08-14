@@ -547,6 +547,13 @@ public class CircleController  extends BaseController {
 			 if(null != circle && null != circle.getUserId()){
 				 if(userId.intValue() == circle.getUserId().intValue()){
 					 circleService.deleteById(id,Circle.class);
+					 
+					 //更新评论次数
+					 Finder finder = new Finder("UPDATE t_circle SET commentCount=commentCount-1 WHERE id=:id");
+					 finder.setParam("id", id);
+					 circleService.update(finder);
+					 
+					 
 						return new ReturnDatas(ReturnDatas.SUCCESS,
 								MessageUtils.DELETE_SUCCESS);
 				 }else{
