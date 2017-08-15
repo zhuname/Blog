@@ -1,5 +1,6 @@
 var This=this;
-
+var cityIds="";
+var cityNames="";
 $.ajax({
 	url : '/mts/system/city/list/json?web=&open=1',
 	type : "post",
@@ -17,10 +18,20 @@ $.ajax({
 			for (var int = 0; int < result.data.length; int++) {
 				
 				$('#city_list_tmpl').tmpl(result.data[int]).appendTo($('#'+result.data[int].capital+''));
-				$('#'+result.data[int].capital+'').show();
-				
+				$('#'+result.data[int].capital+'').prev().show();
 			}
 			
+			if(getCookie("posterPackageCityId")!=null){
+				var cityIdsStr=getCookie("posterPackageCityId").split(',');;
+				for (var cityIdsStrInt = 0; cityIdsStrInt < cityIdsStr.length; int2++) {
+					$('#'+cityIdsStr[cityIdsStrInt]+'').attr('check','1');
+					$('#'+cityIdsStr[cityIdsStrInt]+'').attr('src',$('#yes').attr('value'));
+					
+					//保存数据
+					cityNames=getCookie("posterPackageCityName");
+					cityIds=getCookie("posterPackageCityId");
+				}
+			}
 			
 		}
 		
@@ -31,13 +42,24 @@ $.ajax({
 	}
 });
 
-
 function check(id,name){
-	
-	setCookie("posterPackageCategoryId",id);
-	setCookie("posterPackageCategoryName", name);
+	if($('#'+id+'').attr('check')==0){
+		$('#'+id+'').attr('check','1');
+		$('#'+id+'').attr('src',$('#yes').attr('value'));
+		cityIds=cityIds+id+",";
+		cityNames=cityNames+name+",";
+	}else if($('#'+id+'').attr('check')==1){
+		$('#'+id+'').attr('check','0');
+		$('#'+id+'').attr('src',$('#no').attr('value'));
+		cityIds=cityIds.replace(id+",","");
+		cityNames=cityNames.replace(name+",","");
+	}
+}
+
+function checkSucc(){
+	setCookie("posterPackageCityId",cityIds);
+	setCookie("posterPackageCityName",cityNames);
 	window.location.href="/mts/appWeb/posterPackage/posterPackageSave.jsp";
-	
 }
 
 window.onscroll=function(){

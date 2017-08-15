@@ -61,10 +61,6 @@ Object data=session.getAttribute("data");
 		<div id="detail">
 		
 		
-
-		
-		
-		
 		</div>
 		
 		<div id="footDetail"></div>
@@ -172,7 +168,7 @@ Object data=session.getAttribute("data");
 			</a>
 			</li>
 			<li class="bg_f">
-			<a href="#" class=" dis_f ali_ct flex_col jus_ct" >
+			<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackage.jsp?cityId={{= cityId}}';" class=" dis_f ali_ct flex_col jus_ct" >
 			{{if mediaCount}}
 			{{if mediaCount>0}}
 			<div class="haibao_tips">{{= mediaCount}}</div>

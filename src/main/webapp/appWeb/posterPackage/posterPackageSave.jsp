@@ -46,6 +46,7 @@ Object data=session.getAttribute("data");
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/posterPackage/app_posterPackageSave.js"></script>
+	<script src="<%=basePath%>/js/jquery/ajaxfileupload.js"></script>
 	
 	
 	
@@ -77,9 +78,10 @@ body{background: #f0f2f5;}
 			<a ><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:0.9rem;" /></a>
 		</div>
 
-	<div class="bg_f pad_30 dis_f ali_ct jus_bt">
-		<a ><img src="<%=basePath%>/js/appWeb/images/upload.png" class="dis_b" style="width:4.5rem;" /></a>
-		<a ><img src="<%=basePath%>/js/appWeb/images/upload.png" class="dis_b" style="width:4.5rem;" /></a>
+ 	<input type="file" id="filed" name="filed" style="display:none">
+
+	<div class="bg_f pad_30 dis_f ali_ct jus_bt" id="images">
+		<a ><img src="<%=basePath%>/js/appWeb/images/upload.png" onclick="headOnc();" class="dis_b waitCheck"  style="width:4.5rem;" /></a>
 	</div>
 
 	<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba bordertop1">
@@ -87,12 +89,12 @@ body{background: #f0f2f5;}
 			<img src="<%=basePath%>/js/appWeb/images/zt.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
 			主题
 			</p>
-			<input class="ipt3 al_rt f_28 ph_red" type="text" placeholder="请填写视频主题，20字以内" style="width:9rem;" />
+			<input class="ipt3 al_rt f_28 ph_red" id="title" type="text" placeholder="请填写视频主题，20字以内" style="width:9rem;" />
 		</div>
 
 
 <div class="pad_2030 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
-	<textarea placeholder="请填写海报简介" class="f_24 clr_9 pad_20" style="width:15rem;height:3rem;border:0;background: #f0f2f5;"></textarea>
+	<textarea placeholder="请填写海报简介" id="descr" class="f_24 clr_9 pad_20" style="width:15rem;height:3rem;border:0;background: #f0f2f5;"></textarea>
 </div>
 
 <div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
@@ -113,7 +115,7 @@ body{background: #f0f2f5;}
 		城市
 	</p>
 	<p class="dis_f ali_ct clr_ph_red"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageCity.jsp';">
-		请选择海报投放城市
+		<span id="cityIds">请选择海报投放城市</span>
 		<img src="<%=basePath%>/js/appWeb/images/arr_he2.png" class="dis_b" style="height:0.6rem;margin-left: 0.5rem;" />
 	</p>
 </div>
@@ -125,7 +127,17 @@ body{background: #f0f2f5;}
 		卡券
 	</p>
 
-	<img src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" style="height:1rem;" />
+	<img id="cardImg" src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" onclick="onCard();" style="height:1rem;" />
+
+</div>
+
+<div id="cardShow" style="display:none;" class="pad_2030 f_24 clr_he2 bg_f dis_f ali_ct jus_bt borderbot1 kq_open">
+	<p class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/xjq2.png" class="dis_b clr_he2" style="width:0.7rem;margin-right: 0.5rem;" /> 现金券</p>
+	<p class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageCards.jsp';">
+		
+		<span id="cardId">这是卡券的主题券的主题券的...</span>
+		<img src="<%=basePath%>/js/appWeb/images/arr_he2.png" class="dis_b" style="height:0.6rem;margin-left: 0.5rem;" />
+	</p>
 
 </div>
 
@@ -135,8 +147,14 @@ body{background: #f0f2f5;}
 		预约
 	</p>
 
-	<img src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" style="height:1rem;" />
+	<img id="yuyueImg" src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" onclick="onYuyue();" style="height:1rem;" />
 
+</div>
+
+<div id="yuyueShow" style="display:none;" class="bg_f pad_2030 clr_he2 borderbot1 yuyue_open f_22">
+
+
+<input class="ipt3 al_rt f_28 ph_red" type="text" id="appointExplain" placeholder="请填写预约说明,例如预约1元抵10元,预约10元送礼物等等" style="width:100%;" />
 </div>
 
 <div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
@@ -145,43 +163,34 @@ body{background: #f0f2f5;}
 		加密
 	</p>
 
-	<img src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" style="height:1rem;" />
+	<img id="encryptImg" src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" onclick="onEncrypt();" style="height:1rem;" />
 
 </div>
 
 
-<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba bordertop1">
+<div id="encryptShow" style="display:none;"  class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba bordertop1">
 			<p class="dis_f ali_ct">
 			<img src="<%=basePath%>/js/appWeb/images/kl.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
 			口令
 			</p>
-			<input class="ipt3 al_rt f_28 ph_red" type="text" placeholder="请填写海报口令" style="width:9rem;" />
+			<input  id="command"  class="ipt3 al_rt f_28 ph_red" type="text" placeholder="请填写海报口令" style="width:9rem;" />
 		</div>
-
-		<script>
-			$('.switcher_toggle').click(function(){
-				if($(this).attr('src').indexOf('guan')>-1){
-					$(this).attr('src', '<%=basePath%>/js/appWeb/images/kai.png');
-				}else{
-					$(this).attr('src', '<%=basePath%>/js/appWeb/images/guan.png');
-				}
-			});
-		</script>
 
 		<div class="pad_30">
-			<input type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="下一步" />
+			<input type="button" onclick="save();" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="下一步" />
 		</div>
 	</div>
+	
+	<script id="images_update_tmpl" type="text/x-jquery-tmpl">
+		<a ><img src="<%=basePath%>/js/appWeb/images/upload.png" onclick="headOnc();" class="dis_b waitCheck" style="width:4.5rem;" /></a>
+	</script>
+	
+	<script type="text/javascript">
+	
+	init();
+	
+	</script>
+	
 </body>
-
-<script type="text/javascript">
-if(getCookie("posterPackageCategoryId")!=undefined&&getCookie("posterPackageCategoryId")!='undefined'&&getCookie("posterPackageCategoryName")!=undefined&&getCookie("posterPackageCategoryName")!='undefined'){
-	$('#categoryId').val(getCookie("posterPackageCategoryId"));
-	$('#categoryId').html(getCookie("posterPackageCategoryName"));
-	$('#categoryId').parent().attr("class","dis_f ali_ct");
-}
-
-
-</script>
 
 </html>

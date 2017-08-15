@@ -119,14 +119,12 @@ html,body{height:100%;}
 
 	<div class="wraper box22">
 		<div class="title_top dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="width:0.4rem;" /></a>
+			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="width:0.4rem;" /></a>
 			<p class="f_30 ">选择投放城市</p>
-			<a class="dis_b f_24 wancheng" href="#">完成</a>
+			<a class="dis_b f_24 wancheng"  onclick="checkSucc();">完成</a>
 		</div>
 
-
 		<div class=" top_title1">
-			
 			<span class="title_bt f_20" style="display: none;"><a name="A">A</a></span>
 			<span id="A" ></span>
 			<span class="title_bt f_20" style="display: none;"><a name="B">B</a></span>
@@ -211,12 +209,15 @@ html,body{height:100%;}
 		</div>
 
 		<script id="city_list_tmpl" type="text/x-jquery-tmpl">
-			<div class="title_content f_26 borderbot1">
+			<div class="title_content f_26 borderbot1" onclick="check({{= id}},'{{= name}}');">
 				<span class="cjdz_1">{{= name}}</span>
-				<img src="<%=basePath%>/js/appWeb/images/check_no.png" class="cjdz_2">
+				<img id="{{= id}}" src="<%=basePath%>/js/appWeb/images/check_no.png" class="cjdz_2" check="0">
 				<div class="clearfix"></div>
 			</div>
 		</script>
+		
+		<div id="yes" style="display: none;" value="<%=basePath%>/js/appWeb/images/check_yes.png"></div>
+		<div id="no" style="display: none;" value="<%=basePath%>/js/appWeb/images/check_no.png"></div>
 
 	</div>
 </body>

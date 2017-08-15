@@ -5,19 +5,17 @@ var dataString="";
 show();
 
 function select(){
-	console.log(1111);
 	var titleString= $('#title').val();
 	nextPage=1;
-	$('#posterPackage').html("");
+	$('#mediaPackage').html("");
 	dataString='&title='+titleString;
 	show();
 }
 
 function selectSort(){
-	console.log(1111);
 	var titleString= $('#title').val();
 	nextPage=1;
-	$('#posterPackage').html("");
+	$('#mediaPackage').html("");
 	dataString='&title='+titleString;
 	show();
 }
@@ -27,7 +25,7 @@ function show(){
 	var data='&pageIndex='+nextPage+dataString;
 	
 	$.ajax({
-		url : '/mts/system/posterpackage/list/json?web=&type=1'+data,
+		url : '/mts/system/mediapackage/list/json?web=&type=1'+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -38,7 +36,7 @@ function show(){
 			if(result.data!=undefined){
 				for (var int = 0; int < result.data.length; int++) {
 					
-					$('#posterPackage_list_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
+					$('#media_list_tmpl').tmpl(result.data[int]).appendTo($('#mediaPackage'));
 					
 				}
 			}
@@ -52,7 +50,7 @@ function show(){
 
 
 $.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=1&cityId='+getQueryString("cityId"),
+	url : '/mts/system/lunbopic/list/json?web=&position=2&cityId='+getQueryString("cityId"),
 	type : "post",
 	dataType : "json",
 	success : function(result){
@@ -89,7 +87,7 @@ $.ajax({
 
 
 $.ajax({
-	url : '/mts/system/category/list/json?web=&type=1',
+	url : '/mts/system/category/list/json?web=&type=2',
 	type : "post",
 	dataType : "json",
 	success : function(result){
