@@ -151,8 +151,9 @@ jQuery(document).ready(function(){
 						<th id="th_aduitFailTime" >分享次数</th>
 						<th id="th_phone" >电话</th>
 						<th id="th_createTime" >创建时间</th>
-						<th id="th_topCount" >点赞次数</th>
-						<th id="th_commentCount" >评论次数</th>
+						<!-- <th id="th_topCount" >点赞次数</th>
+						<th id="th_commentCount" >评论次数</th> -->
+						<th id="th_commentCount" >参与人数</th>
 						<th id="th_winPrizePerson" >中奖人数</th>
 						<th id="th_sumWinPrizePerson" >总的中奖人数</th>
 						<th id="th_status" >状态</th>
@@ -287,12 +288,13 @@ jQuery(document).ready(function(){
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							
-							<td >
+							<!-- <td >
 								${(_data.topCount)!0}
 							</td>
 							<td >
 								${(_data.commentCount)!0}
-							</td>
+							</td> -->
+							<td>${(_data.joinCount)!0}</td>
 							<td >
 								${(_data.winPrizePerson)!0}
 							</td>
