@@ -266,7 +266,7 @@ public class CircleController  extends BaseController {
 		List<Circle> datas=circleService.findListDataByFinder(finder, page, Circle.class, circle);
 		
 		//刷新城事圈儿事件
-		if(StringUtils.isNotBlank(appuserId)){
+		if(StringUtils.isNotBlank(appuserId) && null == circle.getUserId()){
 			
 			AppUser appUser = appUserService.findAppUserById(Integer.parseInt(appuserId));
 			if(appUser!=null){

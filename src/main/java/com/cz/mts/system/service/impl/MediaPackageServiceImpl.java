@@ -211,6 +211,18 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		}
 		
 		List<MediaPackage> dataList = queryForList(finder1,MediaPackage.class,page);
+		
+		//更新视频红包的最后浏览时间
+		if(StringUtils.isNotBlank(appUserId) && null == mediaPackage.getUserId()){
+			AppUser appUser = appUserService.findAppUserById(Integer.parseInt(appUserId));
+			if(appUser!=null){
+				appUser.setMediaScanTime(new Date());
+				appUserService.update(appUser, true);
+			}
+		}
+		
+		
+		
 		if(null != dataList && dataList.size() > 0){
 			for (MediaPackage mp : dataList) {
 				
@@ -304,21 +316,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 						 }else{
 							 mp.setIsTop(0);
 						 }
-					}else{
-						 //是否点赞过
-						 Oper oper = new Oper();
-						 oper.setUserId(mp.getUserId());
-						 oper.setItemId(mp.getId());
-						 oper.setType(3);
-						 Page operPage = new Page();
-						 List<Oper> opers = operService.findListDataByFinder(null, operPage, Oper.class, oper);
-						 if(null != opers && opers.size() > 0){
-							 mp.setIsTop(1);
-						 }else{
-							 mp.setIsTop(0);
-						 }
 					}
-					
 					
 				}
 				
