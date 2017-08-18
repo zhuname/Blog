@@ -5,7 +5,6 @@ var dataString="";
 show();
 
 function select(){
-	console.log(1111);
 	var titleString= $('#title').val();
 	nextPage=1;
 	$('#posterPackage').html("");
@@ -13,12 +12,16 @@ function select(){
 	show();
 }
 
-function selectSort(){
-	console.log(1111);
-	var titleString= $('#title').val();
+function selectSort(type){
 	nextPage=1;
 	$('#posterPackage').html("");
-	dataString='&title='+titleString;
+	if(type==1){
+		dataString='&selectType=1';
+	}else if(type==2){
+		dataString='&selectType=2';
+	}else if(type==3){
+		dataString='&selectType=3';
+	}
 	show();
 }
 

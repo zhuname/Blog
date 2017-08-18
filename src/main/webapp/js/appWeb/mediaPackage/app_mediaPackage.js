@@ -7,16 +7,21 @@ show();
 function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
-	$('#mediaPackage').html("");
+	$('#posterPackage').html("");
 	dataString='&title='+titleString;
 	show();
 }
 
-function selectSort(){
-	var titleString= $('#title').val();
+function selectSort(type){
 	nextPage=1;
-	$('#mediaPackage').html("");
-	dataString='&title='+titleString;
+	$('#posterPackage').html("");
+	if(type==1){
+		dataString='&selectType=1';
+	}else if(type==2){
+		dataString='&selectType=2';
+	}else if(type==3){
+		dataString='&selectType=3';
+	}
 	show();
 }
 
@@ -25,7 +30,7 @@ function show(){
 	var data='&pageIndex='+nextPage+dataString;
 	
 	$.ajax({
-		url : '/mts/system/mediapackage/list/json?web=&type=1'+data,
+		url : '/mts/system/mediapackage/list/json?web=&status=3&type=1'+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -63,6 +68,7 @@ $.ajax({
 		if(result.data!=undefined){
 			//获取消息记录
 			for (var int = 0; int < result.data.length; int++) {
+				console.log(result.data[int]);
 				$('#lunbo_list_tmpl').tmpl(result.data[int]).appendTo($('#lunbo'));
 			}
 			

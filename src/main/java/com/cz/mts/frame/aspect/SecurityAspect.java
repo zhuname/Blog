@@ -125,7 +125,7 @@ public class SecurityAspect {
 				}
 	    	}
 	    	
-	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+	    	return new ReturnDatas(ReturnDatas.ERROR, "非法请求");
 	    }else {
 	    	try {
 	    		String[] sign = (String[])paramMap.get("signCode") ;
@@ -134,13 +134,13 @@ public class SecurityAspect {
         		JSONObject json = JSONObject.fromObject(params) ;
         		//验证时间戳，防止爬虫请求
         		if(!json.containsKey("T")){
-	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求") ;
+	            	return new ReturnDatas(ReturnDatas.ERROR, "非法请求");
         		}else {
         			
         			Long T = json.getLong("T") ;
 					Date legalTime = DateUtils.addMinutes(new Date(), -10) ;
 					if(T < Double.valueOf(DateFormatUtils.format(legalTime, "yyyyMMddHHmmss"))) {  //说明请求时间差超过10分钟，不是合法的
-						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时") ; 
+						return new ReturnDatas(ReturnDatas.ERROR, "通讯超时"); 
 					}
 					
 					if(json.containsKey("sessionId")){

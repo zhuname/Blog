@@ -87,10 +87,10 @@ Object data=session.getAttribute("data");
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n"/>
 				<ul class="more_ul pad_20 dis_n" style="top:1.9rem;" >
-					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_money.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">金额最多</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png" onclick="selectSort(1);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png" onclick="selectSort(2);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" onclick="selectSort(3);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_money.png" onclick="selectSort(4);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">金额最多</span></li>
 				</ul>
 
 				<script type="text/javascript">

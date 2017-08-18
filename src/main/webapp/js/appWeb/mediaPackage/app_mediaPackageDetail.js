@@ -19,14 +19,9 @@ var encrypt;
 			return;
 		}
 		userId=result.data.id;
-	},
-	error:function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(XMLHttpRequest) ;
-			console.log(textStatus) ;
-		}
-	});
+	
 	$.ajax({
-		url : '/mts/system/posterpackage/look/json?web=&id='+getQueryString("id"),
+		url : '/mts/system/mediapackage/look/json?web=&id='+getQueryString("id")+"&appUserId="+userId,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -36,7 +31,6 @@ var encrypt;
 				return;
 			}
 			if(result.data!=undefined){
-				
 				if(result.data.appUser.name!=undefined){
 					
 					$('#name').html(result.data.appUser.name+"的红包");
@@ -76,25 +70,14 @@ var encrypt;
 					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
-					var lunbo=result.data.image.split(";");
-					
-					for (var int = 0; int < lunbo.length; int++) {
-						
-						if(int==0){
-							
-							$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
-							
-						}
-						
-					}
 					
 					//初始化页面
-					change(2);
+					change(4);
 					
 					id=result.data.id;
 					//获取预约列表
 					$.ajax({
-						url : '/mts/system/appoint/appointList/json?type=1&web=&itemId='+result.data.id,
+						url : '/mts/system/appoint/appointList/json?type=2&web=&itemId='+result.data.id,
 						type : "post",
 						dataType : "json",
 						success : function(result){
@@ -153,7 +136,7 @@ var encrypt;
 					
 					//领取人列表
 					$.ajax({
-						url : '/mts/system/moneydetail/list/json?type=1&web=&itemId='+result.data.id,
+						url : '/mts/system/moneydetail/list/json?type=2&web=&itemId='+result.data.id,
 						type : "post",
 						dataType : "json",
 						success : function(result){
@@ -185,6 +168,12 @@ var encrypt;
 			console.log(textStatus) ;
 		}
 	});
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 	
 	
 	function change(changeType){
@@ -196,7 +185,7 @@ var encrypt;
 	
 	
 	function show(type){
-		if(type==1){
+		if(type==3){
 			$('#topNo').hide();
 			$('#topChe').show();
 			
@@ -210,7 +199,7 @@ var encrypt;
 			$('#topNum').attr("class","clr_r f_26 ver_mid");
 			
 			
-		}else if(type==2){
+		}else if(type==4){
 			$('#topNo').show();
 			$('#topChe').hide();
 			
@@ -241,9 +230,9 @@ var encrypt;
 								result.data[int].createTime=getDateDiff(result.data[int].createTime);
 								
 							}
-							if(type==2){
+							if(type==4){
 								$('#content_tmpl').tmpl(result.data[int]).appendTo($('#content'));
-							}else if(type==1){
+							}else if(type==3){
 								$('#top_tmpl').tmpl(result.data[int]).appendTo($('#content'));
 							}
 						}
@@ -302,7 +291,7 @@ function yuyue(){
 		
 		//加载页面方法
 		$.ajax({
-		url : '/mts/system/appoint/update/json?web=&type=1&itemId='+getQueryString("id")+"&userId="+userId+"&packageUserId="+packageUserId+"&phone="+$("#phone").val()+"&money="+$("#money").val(),
+		url : '/mts/system/appoint/update/json?web=&type=2&itemId='+getQueryString("id")+"&userId="+userId+"&packageUserId="+packageUserId+"&phone="+$("#phone").val()+"&money="+$("#money").val(),
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -328,7 +317,7 @@ function lingqu(){
 		}else{
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/posterpackage/snatch/json?web=&id='+getQueryString("id")+"&userId="+userId,
+				url : '/mts/system/mediapackage/snatch/json?web=&id='+getQueryString("id")+"&userId="+userId,
 				type : "post",
 				dataType : "json",
 				success : function(result){
@@ -357,13 +346,12 @@ function lingquList(){
 
 
 function oper(type){
-	if(type==2){
-		
+	if(type==4){
 		if($("#comment").val()!=null&&$("#comment").val()!=""){
 			
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=2&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
+				url : '/mts/system/oper/update/json?web=&type=4&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
 				type : "post",
 				dataType : "json",
 				success : function(result){
@@ -371,7 +359,7 @@ function oper(type){
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
-					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=2+itemId="+packageUserId;
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
 					console.log(XMLHttpRequest) ;
@@ -380,11 +368,11 @@ function oper(type){
 			});
 			
 		}
-	}else if(type==1){
+	}else if(type==3){
 			
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=1'+"&itemId="+id+"&userId="+userId,
+				url : '/mts/system/oper/update/json?web=&type=3'+"&itemId="+id+"&userId="+userId,
 				type : "post",
 				dataType : "json",
 				success : function(result){
