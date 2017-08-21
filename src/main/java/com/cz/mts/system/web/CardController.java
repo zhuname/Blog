@@ -36,6 +36,7 @@ import com.cz.mts.system.entity.Category;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Medal;
 import com.cz.mts.system.entity.MoneyDetail;
+import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.RedCity;
 import com.cz.mts.system.entity.SysSysparam;
 import com.cz.mts.system.entity.UserCard;
@@ -46,7 +47,9 @@ import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICategoryService;
 import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.IMedalService;
+import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IMoneyDetailService;
+import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IRedCityService;
 import com.cz.mts.system.service.ISysSysparamService;
 import com.cz.mts.system.service.IUserCardService;
@@ -88,6 +91,10 @@ public class CardController  extends BaseController {
 	private IAttentionService attentionService;
 	@Resource
 	private NotificationService notificationService;
+	@Resource
+	private IPosterPackageService posterPackageService;
+	@Resource
+	private IMediaPackageService mediaPackageService;
 	
 	
 	private String listurl="/card/cardList";
@@ -276,6 +283,20 @@ public class CardController  extends BaseController {
 					redCity.setPackageId(card.getId());
 					redCity.setType(3);
 					redCityService.save(redCity);
+				}
+				
+				if(null != card.getCatergoryId()){
+					//查询海报红包
+					Finder postFinder = new Finder("update t_poster_package SET cardCategoryId=:cardCategoryId WHERE cardId=:cardId ");
+					postFinder.setParam("cardCategoryId", card.getCatergoryId());
+					postFinder.setParam("cardId", card.getId());
+					posterPackageService.update(postFinder);
+					
+					Finder mediaFinder = new Finder("update t_media_package SET cardCategoryId=:cardCategoryId WHERE cardId=:cardId ");
+					mediaFinder.setParam("cardCategoryId", card.getCatergoryId());
+					mediaFinder.setParam("cardId", card.getId());
+					mediaPackageService.update(mediaFinder);
+					
 				}
 				cardService.update(card,true);
 			}
