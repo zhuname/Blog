@@ -838,7 +838,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//记录用户的余额记录
 					MoneyDetail moneyDetail=new MoneyDetail();
-					moneyDetail.setBalance(appUser.getBalance());
+					moneyDetail.setBalance(-appUser.getBalance());
 					moneyDetail.setCreateTime(new Date());
 					moneyDetail.setItemId(itemId);
 					moneyDetail.setMoney(-posterPackage.getSumMoney());

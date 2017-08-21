@@ -440,7 +440,21 @@ public class NotificationServiceImpl implements NotificationService {
 				message=new Message(null, 45, userId, new Date(), "您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”城事圈，赶快去参与吧", id, null, 0, "关注人发布城事圈", 2);
 				messageService.save(message);
 			break;
-			
+			case 46:
+				JPushUtil.sendJPushNotification("您发布的内容被收藏了，赶快点击查看吧", type+"", id, userId, "");
+				message=new Message(null, 46, userId, new Date(), "您发布的内容被收藏了，赶快点击查看吧", id, null, 0, "被收藏", 2);
+				messageService.save(message);
+			break;
+			case 47:
+				JPushUtil.sendJPushNotification("您有新的留言，赶快点击查看吧", type+"", id, userId, "");
+				message=new Message(null, 47, userId, new Date(), "您有新的留言，赶快点击查看吧", id, null, 0, "被留言", 2);
+				messageService.save(message);
+			break;
+			case 48:
+				JPushUtil.sendJPushNotification("您有新的粉丝了，赶快点击查看吧", type+"", id, userId, "");
+				message=new Message(null, 48, userId, new Date(), "您有新的粉丝了，赶快点击查看吧", id, null, 0, "被关注", 2);
+				messageService.save(message);
+			break;
 			
 			}
 		} catch (Exception e) {
