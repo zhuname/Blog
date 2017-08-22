@@ -1128,46 +1128,62 @@ public class AppUserController  extends BaseController {
 							returnObject.setStatus(ReturnDatas.ERROR);
 							return returnObject;
 						}else{
-							//先删除过期的勋章
-							Finder deleteUserFinder = new Finder("delete from t_user_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=1");
-							deleteUserFinder.setParam("userId", Integer.parseInt(userId));
-							deleteUserFinder.setParam("medalId", Integer.parseInt(s));
-							userMedalService.update(deleteUserFinder);
-							
-							Finder deleteApplyFinder = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and medalId=:medalId AND status=2 and isEndStatus=1");
-							deleteApplyFinder.setParam("userId", Integer.parseInt(userId));
-							deleteApplyFinder.setParam("medalId", Integer.parseInt(s));
-							applyMedalService.update(deleteApplyFinder);
-							
-							
-							Medal medal = medalService.findMedalById(Integer.parseInt(s));
-							userMedal.setMedalId(Integer.parseInt(s));
-							if(StringUtils.isNotBlank(userId)){
-								userMedal.setUserId(Integer.parseInt(userId));
-								userMedal.setCreateTime(new Date());
-								userMedal.setIsEndStatus(0);
-								userMedal.setEndMedalTime(userMedal.getEndMedalTime());
-								userMedalService.save(userMedal);
-							
-								//向t_apply_medal表中插入数据
-								ApplyMedal applyMedal = new ApplyMedal();
-								applyMedal.setUserId(Integer.parseInt(userId));
-								applyMedal.setMedalId(Integer.parseInt(s));
-								applyMedal.setStatus(2);
-								applyMedal.setOperTime(new Date());
-								applyMedal.setType(medal.getType());
-								applyMedal.setIntroduction("后台赋予");
-								applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
-								applyMedal.setIsEndStatus(0);
-								applyMedalService.save(applyMedal);
-								
-								AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
-								if(null != appUser && 1 == appUser.getIsPush()){
-									//给该用户发推送
-									notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+							//判断是否存在该用户申请中的勋章
+							Finder applyfinder = new Finder("SELECT * FROM t_apply_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=0 and status=1");
+							applyfinder.setParam("userId", Integer.parseInt(userId));
+							applyfinder.setParam("medalId", Integer.parseInt(s));
+							List<ApplyMedal> applyMedals = applyMedalService.queryForList(applyfinder, ApplyMedal.class);
+							if(null != applyMedals && applyMedals.size() > 0){
+								returnObject.setMessage("该勋章正在申请中，暂不能授予！");
+								returnObject.setStatus(ReturnDatas.ERROR);
+								return returnObject;
+							}else{
+								synchronized (this) {
+									//先删除过期的勋章
+									Finder deleteUserFinder = new Finder("delete from t_user_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=1");
+									deleteUserFinder.setParam("userId", Integer.parseInt(userId));
+									deleteUserFinder.setParam("medalId", Integer.parseInt(s));
+									userMedalService.update(deleteUserFinder);
+									
+									Finder deleteApplyFinder = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and medalId=:medalId AND ((status=2 and isEndStatus=1) or (status=3 and isEndStatus=0))");
+									deleteApplyFinder.setParam("userId", Integer.parseInt(userId));
+									deleteApplyFinder.setParam("medalId", Integer.parseInt(s));
+									applyMedalService.update(deleteApplyFinder);
+									
+									
+									Medal medal = medalService.findMedalById(Integer.parseInt(s));
+									userMedal.setMedalId(Integer.parseInt(s));
+									if(StringUtils.isNotBlank(userId)){
+										userMedal.setUserId(Integer.parseInt(userId));
+										userMedal.setCreateTime(new Date());
+										userMedal.setIsEndStatus(0);
+										userMedal.setEndMedalTime(userMedal.getEndMedalTime());
+										userMedalService.save(userMedal);
+									
+										//向t_apply_medal表中插入数据
+										ApplyMedal applyMedal = new ApplyMedal();
+										applyMedal.setUserId(Integer.parseInt(userId));
+										applyMedal.setMedalId(Integer.parseInt(s));
+										applyMedal.setStatus(2);
+										applyMedal.setOperTime(new Date());
+										applyMedal.setType(medal.getType());
+										applyMedal.setIntroduction("后台赋予");
+										applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
+										applyMedal.setIsEndStatus(0);
+										applyMedalService.save(applyMedal);
+										
+										AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
+										if(null != appUser && 1 == appUser.getIsPush()){
+											//给该用户发推送
+											notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+										}
+										returnObject.setMessage("勋章授予成功！");
+									}
 								}
-								returnObject.setMessage("勋章授予成功！");
+								
 							}
+							
+						
 						}
 					}
 				}
