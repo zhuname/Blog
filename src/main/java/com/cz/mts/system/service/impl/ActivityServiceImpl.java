@@ -152,6 +152,8 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 			id = super.save(activity);
 		}else {
 			id=activity.getId();
+			activity.setAduitSuccessTime(null);
+			activity.setAduitFailTime(null);
 			super.update(activity, true);
 		}
 		
