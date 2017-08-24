@@ -216,12 +216,12 @@ $(document).on("change", "#filed", function() {
 				<div class="col-xs-12 col-sm-9">
 					<div class="clearfix">
 					 <div class="input-group col-xs-12 col-sm-6">
-						<input name="endTime"  class="form-control date-picker" readonly="readonly"  id="endTime" value="${(returnDatas.data.endTime)!''}"  type="text" />
+						<input class="form-control" readonly="readonly" value="${(returnDatas.data.endTime)!''}"  type="text" />
 					        <span class="input-group-addon">
 								<i class="fa fa-calendar bigger-110"></i>
 							</span>
 					   </div>
-					
+					<!-- <input name="endTime" class="col-xs-12 col-sm-6" id="endTime" value="${(returnDatas.data.endTime)!''}"  type="text" readonly="readonly"/> -->
 					</div><div class="help-block" for="endTime"></div>
 				</div>
 			</div>
