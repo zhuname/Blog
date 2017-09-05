@@ -145,7 +145,6 @@ public class CityCircleController  extends BaseController {
 		Page page = newPage(request);
 		// ==执行分页查询
 		
-		
 		Finder finder =Finder.getSelectFinder(CityCircle.class).append(" where 1=1 and status=1 ");
 		
 		if(cityCircle.getAppUser()!=null){

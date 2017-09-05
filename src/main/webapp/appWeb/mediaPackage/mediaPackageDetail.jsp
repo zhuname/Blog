@@ -203,7 +203,7 @@ Object data=session.getAttribute("data");
 		{{/if}}
 
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt" style="border-top:1px solid #f2f4f7;">
-			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';">
+			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';">
 			</div>
 			<div class="clr_3 f_30">…</div>
 
@@ -229,7 +229,7 @@ Object data=session.getAttribute("data");
 			<a class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #f95d47;">立即领取</a>
 			{{else status==4}}
 			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢完</a>
-			{{/if}}	
+			{{/if}}
 			{{/if}}
 			{{/if}}
 		</div>

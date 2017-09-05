@@ -16,7 +16,7 @@ Object data=session.getAttribute("data");
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-	<!--
+<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -45,7 +45,7 @@ Object data=session.getAttribute("data");
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
-	src="<%=basePath%>/js/appWeb/mediaPackage/app_mediaPackage.js"></script>
+	src="<%=basePath%>/js/appWeb/circle/app_circle.js"></script>
 	
 <script src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js" type="text/javascript"></script>
 
@@ -62,7 +62,7 @@ Object data=session.getAttribute("data");
 
 	<div class="wraper">
 
-				<div class="haibao_bg pos_rela">
+		<div class="haibao_bg pos_rela">
 		
 			<div class="bann pos_rela" id="bann">
 				<div class="hd">
@@ -83,8 +83,8 @@ Object data=session.getAttribute("data");
 					<div onclick="select();" class="btn2"  ></div>
 				</div>
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
-				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n"/>
-				<ul class="more_ul pad_20 dis_n" style="top:1.9rem;" >
+				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
+				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
 					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png"  onclick="selectSort(1);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  onclick="selectSort(2);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" onclick="selectSort(3);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
@@ -93,73 +93,96 @@ Object data=session.getAttribute("data");
 
 				<script type="text/javascript">
 					$('.filter_toggle').click(function(){
-						$('.more_ul').toggle();
-						$('.arr_up_down').toggle();
+						$('.xx_pic').toggle();
+						$('.xx_daohang').toggle();
 					});
 				</script>
 			</div>
 		</div>
 
-<div  class="overh" style="height:2.8rem;">
-	<div style="overflow-x: auto;padding-bottom:0.5rem;">
-		<div class="bg_f pad_2030 dis_f ali_ct jus_bt hbhb_nav" style="width:32rem;" id="category">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/c1.png" class="dis_b" style="width:1rem;" /><p class="f_20 clr_r">全部</p></a>
-		</div>
-	</div>
-</div>
+		<div id="circle"></div>
+		
+		
+		<script id="circle_list_tmpl" type="text/x-jquery-tmpl">
+				<div class="pad_30 bg_f borderbot1 mt_20"  onclick="locationHref({{= id}});" >
+			<div class="dis_f ali_top jus_bt pos_rela" >
+				<div class="dis_f ali_ct" >
+					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<div>
+						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
+						{{if appUser.sex}}
+						{{if appUser.sex == '男'}}
+						<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
+						{{else appUser.sex == '女'}}
+						<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
+						{{/if}}
+						{{/if}}
+						{{if appUser.userMedals}}
+						{{each appUser.userMedals}}
+							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
+   						 {{/each}}
+						{{/if}}
+						<div class="f_22 clr_9">{{= createTime}}</div>
+					</div>
+				</div>
 
-		<div id="mediaPackage">
-
+				<a  onclick="showCheck(this);" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
+				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n" />
+				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;">
+					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
+				</ul>
 			</div>
+			<div class="f_28 clr_3 mt_20">{{= content}}</div>
+
+			<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
+				{{if images}}
+						{{each images}}
+							<img src=" {{= $value}}" class="ver_mid" style="width:4.75rem;height:4.75rem;" />
+   						 {{/each}}
+						{{/if}}
+			</div>
+		</div>
+
+		<div class="bg_f dis_f jus_rt padl_30">
+			<div class="dis_f ali_ct jus_bt padt_20" style="width:5rem;">
+				<div>
+					<img src="<%=basePath%>/js/appWeb/images/xx.png" class="ver_mid" style="height:0.7rem;" />
+					<span class="f_20 clr_6 ver_mid">{{= commentCount}}</span>
+				</div>
+				<div>
+					{{if topCount==1}}
+						<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid" style="height:0.75rem;" />
+						<span class="f_20 clr_r ver_mid ">{{= topCount}}</span>
+					{{else}}
+						<div id="zan{{= id}}" style="display:none;">
+							<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid" style="height:0.75rem;" />
+							<span class="f_20 clr_r ver_mid " id="topCount{{= id}}">{{= topCount}}</span>
+						</div>
+						<div id="zanShow{{= id}}">
+							<img onclick="zan({{= id}});" src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid" style="height:0.75rem;" />
+							<span class="f_20 clr_6 ver_mid ">{{= topCount}}</span>
+						</div>
+					{{/if}}
+					
+				</div>
+			</div>
+		</div>
+			</script>
 
 		
-
-			
-
-			<script id="category_list_tmpl" type="text/x-jquery-tmpl">
-				<a href="#"><img src="{{= image}}" class="dis_b" style="width:1rem;" /><p class="f_20 clr_3">{{= name}}</p></a>
-			</script>
-			
-			<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
+	
+		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
 				<li><a href="#"><img src="{{= image}}" class="dis_b" /></a></li>
-			</script>
-			
-			<script id="media_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="mt_10 pos_rela ">
-				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';"  />
-				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
-					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
-					<p >{{= title}}</p>
-				</div>
+		</script>
 
-				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
-					<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';" ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
-					<div class="f_24 clr_f mt_40">还有<span class="clr_ora">{{= balance}}元</span>待抢</div>
-				</div>
-				<div class="bg_f pad_20 dis_f ali_ct jus_bt">
-					<div style="width:6rem;" class="dis_f ali_ct jus_bt">
-						<div><img src="<%=basePath%>/js/appWeb/images/play.png" class="ver_mid" style="height:0.6rem;" />
-						<span class="f_20 clr_6 ver_mid">{{= lqNum}}</span></div>
-						<div><img src="<%=basePath%>/js/appWeb/images/pl.png" class="ver_mid" style="height:0.6rem;" />
-						<span class="f_20 clr_6 ver_mid">{{= commentCount}}</span></div>
-						<div><img src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid" style="height:0.7rem;" />
-						<span class="f_20 clr_6 ver_mid">{{= topCount}}</span></div>
-					</div>
+<script type="text/javascript">
 
-					<div class="bg_f dis_f ali_ct jus_bt">
-						{{if moneyDetails}}
-					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
-   					 {{/each}}
-					{{/if}}
-						<div class="clr_3 f_30">…</div>
-						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
-					</div>
-				</div>
-			</div>
-			</script>
+</script>
 
-			<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageSave.jsp';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
+			<a onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 	</div>
 </body>
 

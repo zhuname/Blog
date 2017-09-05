@@ -375,15 +375,16 @@ public class CircleController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 		  Circle circle = circleService.findCircleById(id);
 		  
-		  if(circle!=null&&circle.getUserId()!=null){
+		  if( circle != null && circle.getUserId() != null ){
+			  
 			  AppUser appUser=appUserService.findAppUserById(circle.getUserId());
-			  if(appUser!=null){
+			  
+			  if( appUser != null ){
 				  circle.setAppUser(appUser);
 			  }
 			  
-			  
 			  if(StringUtils.isNotBlank(appuserId)){
-					
+				  	
 					//查询是否关注
 				  	Page page = newPage(request);
 					Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where type=7 and userId=:userId and itemId=:itemId ");
@@ -395,7 +396,6 @@ public class CircleController  extends BaseController {
 					}else {
 						circle.setIsOper(0);
 					}
-					
 					
 					//查询是否屏蔽
 					Finder shieldFinder=Finder.getSelectFinder(Shield.class).append(" where userId=:userId and itemId=:itemId ");
@@ -424,6 +424,7 @@ public class CircleController  extends BaseController {
 			  Finder cityCircleFinder = new Finder("SELECT * FROM t_city_circle WHERE `status`=1 and itemId=:itemId");
 			  cityCircleFinder.setParam("itemId", id);
 			  List cityCircleList = cityCircleService.queryForList(cityCircleFinder);
+			  
 			  if(null != cityCircleList && cityCircleList.size() > 0){
 				  circle.setCityCirclePerson(cityCircleList.size());
 			  }else{
@@ -431,9 +432,9 @@ public class CircleController  extends BaseController {
 			  }
 			  
 		  }
-		returnObject.setData(circle);
+		  	returnObject.setData(circle);
 		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setStatus(ReturnDatas.ERROR);
 		}
 		return returnObject;
 		
