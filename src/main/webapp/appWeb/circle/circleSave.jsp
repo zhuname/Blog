@@ -50,12 +50,13 @@ Object data=session.getAttribute("data");
 <script src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js" type="text/javascript"></script>
 
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/js/appWeb/css/swiper.min.css" />
-
+<script src="<%=basePath%>/js/jquery/ajaxfileupload.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
 <title>首页</title>
+
 <style>
 body{background: #f0f2f5;}
 </style>
@@ -67,7 +68,7 @@ body{background: #f0f2f5;}
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">发布同城圈</p>
-			<a ><img src="<%=basePath%>/js/appWeb/images/fabu2.png" class="dis_b" style="width:2.2rem;" /></a>
+			<a ><img src="<%=basePath%>/js/appWeb/images/fabu2.png" onclick="xinzeng();" class="dis_b" style="width:2.2rem;" /></a>
 	
 		</div>
 
@@ -76,13 +77,13 @@ body{background: #f0f2f5;}
 		<div class="dis_f ali_ct f_24 clr_3 baba">
 			<img src="<%=basePath%>/js/appWeb/images/image.png" class="dis_b" style="width:1rem;" /> 
 			<div style="margin:0 0.5rem;">图片</div>
-			<img src="<%=basePath%>/js/appWeb/images/check_yes.png" class="dis_b check_img" style="width:0.65rem;height:0.65rem;" /> 
+			<img src="<%=basePath%>/js/appWeb/images/check_yes.png" onclick="change(1);" class="dis_b check_img" style="width:0.65rem;height:0.65rem;" /> 
 		</div>
 
 		<div class="dis_f ali_ct f_24 clr_3 baba">
 			<img src="<%=basePath%>/js/appWeb/images/video2.png" class="dis_b" style="width:1rem;" /> 
 			<div style="margin:0 0.5rem;">视频</div>
-			<img src="<%=basePath%>/js/appWeb/images/check_no.png" class="dis_b check_img" style="width:0.65rem;" /> 
+			<img src="<%=basePath%>/js/appWeb/images/check_no.png" onclick="change(2);" class="dis_b check_img" style="width:0.65rem;" /> 
 		</div>
 
 		<script>
@@ -98,51 +99,35 @@ body{background: #f0f2f5;}
 	</div>
 
 	<div class="bg_f pad_20 bordertop1">
-		<textarea placeholder="说点什么吧..." class="f_20 clr_9" style="width:15rem;height:4rem;border:0;"></textarea>
-		<img src="<%=basePath%>/js/appWeb/images/smile.png" class="dis_b" style="width:1rem;" /> 
+		<textarea placeholder="说点什么吧..." id="content" class="f_20 clr_9" style="width:15rem;height:4rem;border:0;"></textarea>
 	</div>
 
-
 	<div class="bg_f pad_30 mt_20" id="shipinShow" style="display:none;">
-		
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/xzsp.png" class="dis_b" style="width:14.5rem;" /></a>
-
+			<img src="<%=basePath%>/js/appWeb/images/xzsp.png" onclick="headOnc();" class="dis_b" style="width:14.5rem;" />
+			<input type="text" id="mediaUrl" style="display:none">
 	</div>
 	
 	<div class="bg_f pad_30 mt_20" id="tupianShow">
+	
+			<div id="imageAdd"></div>
 
-		<a href="#">
-			<div style="float: left; width:30%; position: relative; margin-left: 0.4rem ; margin-top: 0.4rem;">
-				<img src="<%=basePath%>/js/appWeb/images/xztp.png" class="dis_b" style="width:4.2rem; position: relative; top: 0%; left: 0%" />
-				<img src="<%=basePath%>/js/appWeb/images/close2.png" style="position: absolute; top: 0.1rem; right: 0.1rem; width: 0.8rem; opacity: 0.6">
-			</div>
-
-		</a>
-		<a href="#">
 			<div style="float: left;  width:30%; position: relative; margin-left: 0.4rem; margin-top: 0.4rem;">
-				<img src="<%=basePath%>/js/appWeb/images/xztp.png" class="dis_b" style="width:4.2rem; position: relative; top: 0%; left: 0%" />
-
+				<img src="<%=basePath%>/js/appWeb/images/xztp.png"  onclick="headOnc();"  class="dis_b" style="width:4.2rem; position: relative; top: 0%; left: 0%" />
 			</div>
-
-		</a>
-		<a href="#">
-			<div style="float: left;  width:30%; position: relative; margin-left: 0.4rem; margin-top: 0.4rem;">
-				<img src="<%=basePath%>/js/appWeb/images/xztp.png" class="dis_b" style="width:4.2rem; position: relative; top: 0%; left: 0%" />
-
-			</div>
-
-		</a>
-		<a href="#">
-			<div style="float: left;  width:30%; position: relative; margin-left: 0.4rem; margin-top: 0.4rem;">
-				<img src="<%=basePath%>/js/appWeb/images/xztp.png" class="dis_b" style="width:4.2rem; position: relative; top: 0%; left: 0%" />
-
-			</div>
-
-		</a>
 		<div style="clear: both"></div>
 	</div>
 
 	</div>
+	
+	<script id="image_tmpl" type="text/x-jquery-tmpl">
+			<div style="float: left;  width:30%; position: relative; margin-left: 0.4rem; margin-top: 0.4rem;">
+				<img src="{{= imag}}" name="images" class="dis_b" style="width:4.2rem; position: relative; top: 0%; left: 0%" />
+				<img src="<%=basePath%>/js/appWeb/images/close2.png" onclick="removeImg(this);" style="position: absolute; top: 0.1rem; right: 0.1rem; width: 0.8rem; opacity: 0.6">
+			</div>
+	</script>
+	
+	<input type="file" id="filed" name="filed" style="display:none">
+	
 </body>
 
 </html>

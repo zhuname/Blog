@@ -182,7 +182,7 @@ Object data=session.getAttribute("data");
 
 </script>
 
-			<a onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
+			<a onclick="xinzeng();" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 	</div>
 </body>
 

@@ -108,9 +108,14 @@ public class JoinActivityController  extends BaseController {
 		String appuserId=request.getParameter("appuserId");
 		String name = request.getParameter("name");
 		String sort = request.getParameter("sort");
+		String pageSize = request.getParameter("pageSize");
 		String joinOrAward = request.getParameter("joinOrAward");
 		
-		
+		if(StringUtils.isNotBlank(pageSize)){
+			
+			page.setPageSize(Integer.parseInt(pageSize));
+			
+		}
 		
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
 			
@@ -136,14 +141,12 @@ public class JoinActivityController  extends BaseController {
 				
 			}
 			
-			
 			if(StringUtils.isNotBlank(sort)){
 				switch (sort) {
 				case "1":
 					page.setOrder("createTime");
 					page.setSort("desc");
 					break;
-
 				case "2":
 					page.setOrder("topCount");
 					page.setSort("desc");
@@ -155,14 +158,12 @@ public class JoinActivityController  extends BaseController {
 				}
 			}
 			
-			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);
 		
 		if(datas!=null){
 			
 		
 		for (JoinActivity joinActivity2 : datas) {
-			
 				
 				//查询用户信息
 				if(joinActivity2.getUserId()!=null){
@@ -188,7 +189,6 @@ public class JoinActivityController  extends BaseController {
 						
 					}
 					
-					
 				}
 				
 				//获取评论列表
@@ -204,13 +204,12 @@ public class JoinActivityController  extends BaseController {
 							if(appUser!=null){
 								
 								oper.setNickName(appUser.getName());
+								
 							}
 						}
 					}
 					joinActivity2.setOpers(opers);
 				}
-				
-				
 				
 				if(StringUtils.isNotBlank(appuserId)){
 						
@@ -250,7 +249,6 @@ public class JoinActivityController  extends BaseController {
 						}
 						
 				}
-				
 				
 				if(joinActivity2.getActivityId()!=null){
 					

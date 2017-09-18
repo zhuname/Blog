@@ -48,6 +48,7 @@ $.ajax({
 					result.data.image=result.data.image.split(";");
 					
 				}
+				
 				if(result.data.image!=undefined){
 					for (var int = 0; int < result.data.image.length; int++) {
 						$('#detail_image_tmpl').tmpl({'image':result.data.image[int]}).appendTo($('#images'));
@@ -59,7 +60,6 @@ $.ajax({
 				$('#foot_tmpl').tmpl(result.data).appendTo($('#detail'));
 				
 				change(1);
-				
 				
 				
 			}

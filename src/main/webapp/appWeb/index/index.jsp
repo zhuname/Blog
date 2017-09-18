@@ -180,7 +180,7 @@ Object data=session.getAttribute("data");
 				</a>
 			</li>
 			<li class="bg_f">
-			<a href="#" class=" dis_f ali_ct flex_col jus_ct">
+			<a  onclick="window.location.href='/mts/appWeb/activity/activity.jsp?cityId={{= cityId}}';"  class=" dis_f ali_ct flex_col jus_ct">
 			{{if activityCount}}
 			{{if activityCount>0}}
 			<div class="haibao_tips">{{= activityCount}}</div>

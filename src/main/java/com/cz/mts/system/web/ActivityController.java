@@ -229,19 +229,18 @@ public class ActivityController  extends BaseController {
 			  
 			  if(null != activity.getStatus()){
 				  switch (activity.getStatus()) {
-				case 1:
-					activity.setStatusName("待审核");
-					break;
-
-				case 2:
-					activity.setStatusName("审核失败");
-					break;
-				case 3:
-					activity.setStatusName("审核通过");
-					break;
-				case 4:
-					activity.setStatusName("已过期");
-					break;
+					case 1:
+						activity.setStatusName("待审核");
+						break;
+					case 2:
+						activity.setStatusName("审核失败");
+						break;
+					case 3:
+						activity.setStatusName("审核通过");
+						break;
+					case 4:
+						activity.setStatusName("已过期");
+						break;
 				}
 			  }
 			  
@@ -292,9 +291,13 @@ public class ActivityController  extends BaseController {
 		  if(activity.getViewedCount()==null){
 			  activity.setViewedCount(1);
 		  }else {
-			  activity.setViewedCount(activity.getViewedCount()+1);
-			  //每100个人浏览的情况下，发推送
-			  notificationService.notify(27, activity.getId(), activity.getUserId());
+			  if(activity.getStatus()!=3&&activity.getStatus()!=4){
+				  activity.setViewedCount(activity.getViewedCount()+1);
+			  }
+			  if((activity.getViewedCount()%100)==0){
+				  //每100个人浏览的情况下，发推送
+				  notificationService.notify(27, activity.getId(), activity.getUserId());
+			  }
 		  }
 		  
 		  

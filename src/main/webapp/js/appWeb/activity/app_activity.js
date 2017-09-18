@@ -45,38 +45,43 @@ function show(){
 		userId=result.data.id;
 	
 	$.ajax({
-		url : '/mts/system/circle/list/json?web='+"&cityId="+getQueryString("cityId")+"&appuserId="+userId+data,
+		url : '/mts/system/activity/appList/json?web='+"&cityId="+getQueryString("cityId")+"&appuserId="+userId+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){
+			
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				
 				return;
+				
 			}
+			
 			if(result.data!=undefined){
 				
 				for (var int = 0; int < result.data.length; int++){
 					
 					if(result.data[int].createTime){
 						
-						result.data[int].createTime=getDateDiff(result.data[int].createTime);
+						result.data[int].createTime=result.data[int].createTime.substring(0,10);
 						
 					}
 					
-					if(result.data[int].image!=undefined){
-						var images=result.data[int].image.split(";");
-						result.data[int].images=images;
-						
-					}
-					console.log(result.data[int]);
-					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
+					$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#activity'));
 					
 				}
+				
 			}
+			
 		},
+		
 		error:function(XMLHttpRequest, textStatus, errorThrown){
+			
 			console.log(XMLHttpRequest);
+			
 			console.log(textStatus);
+			
 		}
 	});
 	},
@@ -89,11 +94,10 @@ function show(){
 
 
 $.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=6&cityId='+getQueryString("cityId"),
+	url : '/mts/system/lunbopic/list/json?web=&position=5&cityId='+getQueryString("cityId"),
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		
 		if(result.status=="error"){
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
@@ -128,29 +132,6 @@ $.ajax({
 
 function xinzeng(){
 	window.location.href='/mts/appWeb/circle/circleSave.jsp?cityId='+getQueryString("cityId");
-}
-
-
-function zan(id){
-	//加载页面方法
-	$.ajax({
-		url : '/mts/system/oper/update/json?web=&type=7'+"&itemId="+id+"&userId="+userId,
-		type : "post",
-		dataType : "json",
-		success : function(result){
-			if(result.status=="error"){
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-				return;
-			}
-			$('#zan'+id).show();
-			$('#zanShow'+id).hide();
-			$('#topCount'+id).html(parseInt($('#topCount'+id).html())+1);
-		},
-		error:function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(XMLHttpRequest) ;
-			console.log(textStatus) ;
-		}
-	});
 }
 
 

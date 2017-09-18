@@ -215,7 +215,7 @@ color: #cc9d9d;
 .command2x{border-radius: 0.3rem;}
 
 
-.tupian_bg{background: url(../images/tp.jpg) no-repeat;background-size: 100%;width:16rem;height:8rem;}
+.tupian_bg{background-size: 100%;width:16rem;height:8rem;}
 
 .a_btn2{height:2.5rem;line-height: 2.5rem;background: #f95d47;width:100%;}
 

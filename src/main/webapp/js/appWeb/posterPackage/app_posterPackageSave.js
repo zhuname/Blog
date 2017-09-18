@@ -134,21 +134,6 @@ $(document).on("change", "#filed", function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function getQueryString(aaa) { 
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
 	var r = window.location.search.substr(1).match(reg); 
