@@ -1,6 +1,12 @@
 package  com.cz.mts.system.web;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +14,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -529,7 +537,6 @@ public class ActivityController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 		try {
-		
 			String awards= request.getParameter("awards");
 			String cityIds=request.getParameter("cityIds");
 			if(StringUtils.isNotBlank(awards)||StringUtils.isNotBlank(cityIds)){
@@ -764,6 +771,106 @@ public class ActivityController  extends BaseController {
 		return returnObject;
 	
 	}
+	
+	
+	 /**
+     * 向指定 URL 发送POST方法的请求
+     * 
+     * @param url
+     *            发送请求的 URL
+     * @param param
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return 所代表远程资源的响应结果
+     */
+    public static String sendPost(String url, String param) {
+        PrintWriter out = null;
+        BufferedReader in = null;
+        String result = "";
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            URLConnection conn = realUrl.openConnection();
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            // 获取URLConnection对象对应的输出流
+            out = new PrintWriter(conn.getOutputStream());
+            // 发送请求参数
+            out.print(param);
+            // flush输出流的缓冲
+            out.flush();
+            // 定义BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+            System.out.println(result);
+        } catch (Exception e) {
+            System.out.println("发送 POST 请求出现异常！"+e);
+            e.printStackTrace();
+        }
+        //使用finally块来关闭输出流、输入流
+        finally{
+            try{
+                if(out!=null){
+                    out.close();
+                }
+                if(in!=null){
+                    in.close();
+                }
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }
+        }
+        
+        return result;
+    }    
+	
+	/**
+	 * 新增/修改 操作吗,返回json格式数据
+	 * 
+	 */
+	@RequestMapping("/getPoi/json")
+	public @ResponseBody
+	ReturnDatas getPoi(Model model,Activity activity,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
+		try {
+			
+				String lat = request.getParameter("lat");
+			     String lon = request.getParameter("lon");
+			     String url =
+			            "http://api.map.baidu.com/geocoder/v2/?ak=NgMZRcGV4cz2tc9tvQD7M5VkgB7gUT3g&callback=renderReverse&location="
+			                + lat + "," + lon + "&output=json&pois=1";
+			   
+			    //自己定义的http类，post方法大家可以去网上搜
+			            String jsonStr = sendPost(url,null);
+			            System.out.println( new String(jsonStr.getBytes("gbk"), "utf-8"));
+			            
+			//renderReverse&&renderReverse({"status":0,"result":{"location":{"lng":116.322987,"lat":39.983424071404},"formatted_address":"北京市海淀区中关村大街27号1101-08   
+			// 室","business":"人民大学,中关村,苏州街","addressComponent":{"city":"北京市","district":"海淀区","province":"北京市","street":"中关村大街","street_number":"27号1101-08
+			//室"},"cityCode":131}})
+			           returnObject.setData(new String(jsonStr.getBytes("gbk"), "utf-8"));
+			         
+			
+		} catch (Exception e) {
+			String errorMessage = e.getLocalizedMessage();
+			logger.error(errorMessage);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage(MessageUtils.UPDATE_ERROR);
+		}
+		return returnObject;
+	
+	}
+	
+	
 	
 
 }

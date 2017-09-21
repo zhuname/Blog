@@ -10,6 +10,7 @@ $(document).ready(function(){
 
 function init(){
 	if(getCookie("activityCityId")!=null){
+		getCookie("activityCityValue");
 		$('#cityId').val(getCookie("activityCityId"));
 		$('#cityName').html(getCookie("activityCityName"));
 		$($('#cityId').parent()).attr("class","dis_f ali_ct");
@@ -31,8 +32,107 @@ function init(){
 		$('#phone').val(getCookie("activityPhone"));
 	}
 	
+	if(getCookie("activityAwards")!=null){
+		
+		$('#awards').html("");
+		
+		var activityAwards = JSON.parse(getCookie("activityAwards")); 
+
+		for (var int = 0; int < activityAwards.length; int++) {
+
+			$('#award_init_tmpl').tmpl(activityAwards[int]).appendTo($('#awards'));   
+
+		}
+
+	}
+
+
+	if(getCookie("activityImages")!=null){
+		$('#image').html("");
+		var images = getCookie("activityImages").split(";"); 
+		for (var int = 0; int < images.length; int++) {
+			if(images[int]==""){
+				$('#images_update_tmpl').tmpl(null).appendTo($('#image'));
+			}else{
+				$('#images_update_init_tmpl').tmpl({"image":images[int]}).appendTo($('#image'));
+			}
+		}
+	}
+	
+	if(getCookie("activityEndTime")!=null){
+		
+		 $(".datas p:eq(1) span").html(getCookie("activityShowEndTime"));
+		 $($(".datas p:eq(1) span").parent()).attr("class","dis_f ali_ct");
+		 
+	}
+	
+	if(getCookie("activityLongitude")!=null){
+		
+		 $("#map").html("已定位");
+		 $("#map").attr("class","dis_f ali_ct");
+		 
+	}
+
 }
 
+
+function save(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/appuser/look/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		userId=result.data.id;
+		//获取用户信息
+		debugger;
+		var endTime=getCookie("activityEndTime");
+		if(endTime!=undefined){
+			endTime=endTime.replace("月", "");
+		}
+		
+		$.ajax({
+			url : '/mts/system/activity/update/json?web=&osType=html&type='+1+'&content='+getCookie("activityContent")+'&joinExplain='+getCookie("activityJoinExplain")+'&endTime='+endTime+'&longitude='+getCookie("activityLongitude")+'&latitude='+getCookie("activityLatitude")+'&phone='+getCookie("activityPhone")+'&userId='+userId+'&awards='+getCookie("activityAwards")+'&cityIds='+getCookie("activityCityValue")+'&image='+getCookie("activityImages"),
+			type : "post",
+			dataType : "json",
+			success : function(result){
+				if(result.status=="error"){
+					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+					return;
+				}
+				if(result.data!=undefined){
+					if(result.data.balance!=undefined){
+						window.location.href="/mts/appWeb/activity.jsp/myActivity.jsp.jsp";
+					}
+				}
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest);
+			console.log(textStatus);
+		}
+		});
+}
+
+
+
+function changeImages(image){
+	if(getCookie("activityImages")!=null){
+		setCookie("activityImages",getCookie("activityImages")+image);
+	}else {
+		setCookie("activityImages",image);
+	}
+}
 function changeAddress(){
 	setCookie("activityAddress",$("#address").val());
 }
@@ -46,13 +146,56 @@ function changePhone(){
 	setCookie("activityPhone",$("#phone").val());
 }
 
+function changeAwards(awardsStr){
+	setCookie("activityAwards",awardsStr);
+}
+
+function awardsSet(){
+	var awards=$(".awards");
+	var awardsStr="[";
+	for (var int = 0; int < awards.length; int++) {
+		if(int==awards.length-1){
+			awardsStr+=$(awards[int]).attr("value");
+		}else{
+			awardsStr+=$(awards[int]).attr("value")+",";
+		}
+	}
+	awardsStr+="]";
+	changeAwards(awardsStr);
+}
 
 function addAwards(){
 	$('#award_tmpl').tmpl(null).appendTo($('#awards'));
+	awardsSet();
 }
 
 function closeAward(award){
 	$($($($(award).parent()).parent()).parent()).remove();
+	awardsSet();
+}
+
+function changeAwardTitle(title){
+	var awardStr = $($($($(title).parent()).parent()).parent()).attr("value");
+	var award = JSON.parse(awardStr);
+	award.title=$(title).val();
+	$($($($(title).parent()).parent()).parent()).attr("value",JSON.stringify(award));
+	awardsSet();
+}
+
+function changeAwardSumCount(sumCount){
+	var awardStr = $($($($(sumCount).parent()).parent()).parent()).attr("value");
+	var award = JSON.parse(awardStr);
+	award.sumCount=$(sumCount).val();
+	$($($($(sumCount).parent()).parent()).parent()).attr("value",JSON.stringify(award));
+	awardsSet();
+}
+
+function changeAwardContent(content){
+	var awardStr = $($(content).parent()).attr("value");
+	var award = JSON.parse(awardStr);
+	award.content=$(content).val();
+	$($(content).parent()).attr("value",JSON.stringify(award));
+	awardsSet();
 }
 
 function headOnc(){
@@ -71,6 +214,7 @@ $(document).on("change", "#filed", function() {
         success : function(data, status) {
         	$($(".waitCheck")[0]).attr('src',data);
         	$($(".waitCheck")[0]).attr("class","");
+        	changeImages(data+";");
         	$('#images_update_tmpl').tmpl(null).appendTo($('#image'));   
         },
         error : function(data, status, e) {
@@ -82,6 +226,7 @@ $(document).on("change", "#filed", function() {
     return false;
 
 });
+
 
 function getDateDiff(dateTimeStamp){
 	

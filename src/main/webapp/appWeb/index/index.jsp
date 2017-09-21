@@ -67,7 +67,7 @@ Object data=session.getAttribute("data");
 		
 		
 <div class="pad_30"></div>
-<div class="pad_30"></div>
+	<div class="pad_30"></div>
 		<div class="bg_f fixed_nav">
 			<ul class="nav_ul dis_f ali_ct jus_bt" style="width:12rem;margin:0 auto;">
 				<li><a onclick="window.location.href='/mts/appWeb/index/index.jsp';"  class="dis_f ali_ct flex_col clr_r jus_ct">
@@ -77,7 +77,6 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/b2.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">我的</p></a></li>
 			</ul>
 		</div>
-		
 	</div>
 	
 	<!-- 这个是未读消息 -->

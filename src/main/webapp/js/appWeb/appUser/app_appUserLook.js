@@ -30,7 +30,7 @@ $.ajax({
 			}
 			
 			$.ajax({
-				url : '/mts/system/message/staticsunread/json?userId='+result.data.id,
+				url : '/mts/system/message/staticsunread/json?web=&userId='+result.data.id,
 				type : "post",
 				dataType : "json",
 				success : function(result){
@@ -58,7 +58,7 @@ $.ajax({
 			});
 			
 			$.ajax({
-				url : '/mts/system/appuser/statics/json?id='+result.data.id,
+				url : '/mts/system/appuser/statics/json?web=&id='+result.data.id,
 				type : "post",
 				dataType : "json",
 				success : function(result){
@@ -67,7 +67,6 @@ $.ajax({
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
-					
 					$('#appuser_statics_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
 				},

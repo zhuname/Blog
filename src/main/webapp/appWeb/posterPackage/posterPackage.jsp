@@ -120,7 +120,7 @@ Object data=session.getAttribute("data");
 		<script id="category_list_tmpl" type="text/x-jquery-tmpl">
 			<a href="#"><img src="{{= image}}" class="dis_b" style="width:1rem;" /><p class="f_20 clr_3">{{= name}}</p></a>
 		</script>
-		
+
 		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
 			<li><a href="#"><img src="{{= image}}" class="dis_b" /></a></li>
 		</script>

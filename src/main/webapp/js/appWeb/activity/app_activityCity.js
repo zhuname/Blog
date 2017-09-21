@@ -13,6 +13,7 @@ $.ajax({
 		}
 		
 		if(result.data!=undefined){
+			
 			//获取消息记录
 			for (var int = 0; int < result.data.length; int++) {
 				$('#city_list_tmpl').tmpl(result.data[int]).appendTo($('#'+result.data[int].capital+''));
@@ -58,6 +59,25 @@ function check(id,name){
 function checkSucc(){
 	setCookie("activityCityId",cityIds);
 	setCookie("activityCityName",cityNames);
+	
+	var cityIdsStr=getCookie("activityCityId").split(',');
+	var cityValue="[";
+	for (var cityIdsStrInt = 0; cityIdsStrInt < cityIdsStr.length; cityIdsStrInt++) {
+		
+		if(cityIdsStr[cityIdsStrInt]!=""){
+		
+			if(cityIdsStrInt==cityIdsStr.length-1){
+				//保存数据
+				cityValue=cityValue+"{\"cityId\":"+cityIdsStr[cityIdsStrInt]+",\"type\":1}";
+			}else{
+				cityValue=cityValue+"{\"cityId\":"+cityIdsStr[cityIdsStrInt]+",\"type\":1},";
+			}
+		
+		}
+	}
+	
+	cityValue=cityValue+"]";
+	setCookie("activityCityValue",cityValue);
 	window.location.href="/mts/appWeb/activity/activitySave.jsp";
 }
 
