@@ -66,7 +66,7 @@ html,body{height:100%;}
 				</div>
 
 				<div class="dis_f ali_ct jus_bt padt_20" style="border:0;">
-					<a href="#" class="clr_9 f_24">注册</a>
+					<a  onclick="window.location.href='/mts/appWeb/appuser/zhuce.jsp';"  class="clr_9 f_24">注册</a>
 					<a href="#" class="clr_9 f_24">忘记密码</a>
 				</div>
 

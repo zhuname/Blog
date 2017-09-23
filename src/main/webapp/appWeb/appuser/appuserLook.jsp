@@ -136,7 +136,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/appuser/myPush.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdfb.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的发布</p>
@@ -152,7 +152,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/appuser/myCircle.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wddt.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的动态</p>
@@ -171,7 +171,7 @@ Object data=session.getAttribute("data");
 	</div>
 
 <div class="bg_f padl_20 mt_20">
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/appuser/myAppoint.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdyy.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的预约</p>

@@ -6,27 +6,6 @@ var userId;
 //初始化页面
 show();
 
-function select(){
-	var titleString= $('#title').val();
-	nextPage=1;
-	$('#posterPackage').html("");
-	dataString='&title='+titleString;
-	show();
-}
-
-function selectSort(type){
-	nextPage=1;
-	$('#posterPackage').html("");
-	if(type==1){
-		dataString='&selectType=1';
-	}else if(type==2){
-		dataString='&selectType=2';
-	}else if(type==3){
-		dataString='&selectType=3';
-	}
-	show();
-}
-
 //加载页面方法
 function show(){
 	var data='&pageIndex='+nextPage+dataString;
@@ -45,33 +24,34 @@ function show(){
 		userId=result.data.id;
 	
 	$.ajax({
-		url : '/mts/system/activity/appList/json?web='+"&cityId="+getQueryString("cityId")+"&appuserId="+userId+data,
+		url : '/mts/system/circle/list/json?web='+"&userId="+userId+data+"&appuserId="+userId,
 		type : "post",
 		dataType : "json",
 		success : function(result){
 			
 			if(result.status=="error"){
-				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-				
 				return;
-				
 			}
 			
 			if(result.data!=undefined){
-				
 				for (var int = 0; int < result.data.length; int++){
 					
-					if(result.data[int].endTime){
-						
-						result.data[int].endTime=result.data[int].endTime.substring(0,10);
+					if(result.data[int].image!=undefined){
+						var images=result.data[int].image.split(";");
+						result.data[int].images=images;
 						
 					}
 					
-					$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#activity'));
+					if(result.data[int].createTime){
+						result.data[int].m=result.data[int].createTime.substring(5,7);
+						result.data[int].d=result.data[int].createTime.substring(8,10);
+						result.data[int].t=result.data[int].createTime.substring(11,16);
+						
+					}
 					
+					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
 				}
-				
 			}
 			
 		},
@@ -92,48 +72,27 @@ function show(){
 });
 }
 
-
-$.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=5&cityId='+getQueryString("cityId"),
-	type : "post",
-	dataType : "json",
-	success : function(result){
-		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
-		}
-		
-		if(result.data!=undefined){
-			//获取消息记录
-			for (var int = 0; int < result.data.length; int++) {
-				console.log(result.data[int]);
-				$('#lunbo_list_tmpl').tmpl(result.data[int]).appendTo($('#lunbo'));
+function zan(id){
+	//加载页面方法
+	$.ajax({
+		url : '/mts/system/oper/update/json?web=&type=7'+"&itemId="+id+"&userId="+userId,
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
 			}
-			
-			TouchSlide({
-				slideCell:"#bann",
-				titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-				mainCell:".bd ul", 
-				effect:"left",
-				autoPlay:true,//自动播放
-				autoPage:true //自动分页
-			});
-			
-			
+			$('#zan'+id).show();
+			$('#zanShow'+id).hide();
+			$('#topCount'+id).html(parseInt($('#topCount'+id).html())+1);
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
 		}
-		
-	},
-	error:function(XMLHttpRequest, textStatus, errorThrown){
-		console.log(XMLHttpRequest) ;
-		console.log(textStatus) ;
-	}
-});
-
-
-function xinzeng(){
-	window.location.href='/mts/appWeb/circle/circleSave.jsp?cityId='+getQueryString("cityId");
+	});
 }
-
 
 
 function locationHref(id){
@@ -142,12 +101,6 @@ function locationHref(id){
 		return;
 	}
 	window.location.href='/mts/appWeb/circle/circleDetail.jsp?id='+id;
-}
-
-function showCheck(obj){
-	$(obj).siblings('.more_ul').toggle();
-	$(obj).siblings('.arr_up_down').toggle();
-	dianji=1;
 }
 
 function getDateDiff(dateTimeStamp){

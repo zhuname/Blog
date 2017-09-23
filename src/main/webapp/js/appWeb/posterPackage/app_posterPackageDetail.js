@@ -322,7 +322,7 @@ function yuyue(){
 }
 
 
-function lingqu(){
+	function lingqu(){
 		if(encrypt!=undefined&&encrypt==1&&$('#command').val()!=undefined&&$('#command').val()==""){
 			$('.command_mask').show();
 		}else{
@@ -332,7 +332,6 @@ function lingqu(){
 				type : "post",
 				dataType : "json",
 				success : function(result){
-					debugger;
 					if(result.status=="error"){
 						alert(result.message);
 						return;
@@ -341,19 +340,16 @@ function lingqu(){
 					$('.bonus_mask').show();
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
-					console.log(XMLHttpRequest) ;
-					console.log(textStatus) ;
+					console.log(XMLHttpRequest);
+					console.log(textStatus);
 				}
 			});
-			
 		}
-		
-		
-}
+	}
 
-function lingquList(){
-	window.location.href="/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId="+id+"&type=1";
-}
+	function lingquList(){
+		window.location.href="/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId="+id+"&type=1";
+	}
 
 
 function oper(type){
@@ -381,25 +377,23 @@ function oper(type){
 			
 		}
 	}else if(type==1){
-			
 			//加载页面方法
-			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=1'+"&itemId="+id+"&userId="+userId,
-				type : "post",
-				dataType : "json",
-				success : function(result){
-					if(result.status=="error"){
-						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-						return;
-					}
-				    window.location.reload();
-				},
-				error:function(XMLHttpRequest, textStatus, errorThrown){
-					console.log(XMLHttpRequest) ;
-					console.log(textStatus) ;
+		$.ajax({
+			url : '/mts/system/oper/update/json?web=&type=1'+"&itemId="+id+"&userId="+userId,
+			type : "post",
+			dataType : "json",
+			success : function(result){
+				if(result.status=="error"){
+					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+					return;
 				}
-			});
-			
+			    window.location.reload();
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest);
+				console.log(textStatus);
+			}
+		});
 	}
 }
 	

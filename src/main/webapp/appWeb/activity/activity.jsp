@@ -133,7 +133,7 @@ Object data=session.getAttribute("data");
 
 					<div>
 						<img src="<%=basePath%>/js/appWeb/images/lou.png" class="ver_mid" style="height:0.4rem;" />
-						<span class="f_20 clr_6 ver_mid">{{= createTime}}止</span>
+						<span class="f_20 clr_6 ver_mid">{{= endTime}}止</span>
 					</div>
 				</div>
 			</div>

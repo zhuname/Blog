@@ -30,27 +30,17 @@ function show(){
 		success : function(result){
 			
 			if(result.status=="error"){
-				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-				
 				return;
-				
 			}
 			
 			if(result.data!=undefined){
-				
 				for (var int = 0; int < result.data.length; int++){
-					
 					if(result.data[int].expTime){
-						
 						result.data[int].expTime=result.data[int].expTime.substring(0,10);
-						
 					}
-					
 					$('#card_list_tmpl').tmpl(result.data[int]).appendTo($('#card'));
-					
 				}
-				
 			}
 			
 		},
