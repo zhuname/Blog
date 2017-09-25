@@ -61,7 +61,7 @@ Object data=session.getAttribute("data");
 	<script id="appuser_detail_tmpl" type="text/x-jquery-tmpl">
 	<div class="center_bg">
 			<div class="pad_30 dis_f jus_rt ali_ct" id="msg" >
-				<img src="<%=basePath%>/js/appWeb/images/msg4.png" class="dis_b" style="width:0.8rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/msg4.png"  onclick="window.location.href='/mts/appWeb/message/message.jsp';" class="dis_b" style="width:0.8rem;" />
 			</div>
 
 			<div class="pad_30 dis_f ali_end jus_bt">
@@ -299,7 +299,7 @@ Object data=session.getAttribute("data");
 			<ul class="nav_ul dis_f ali_ct jus_bt" style="width:12rem;margin:0 auto;">
 				<li><a  onclick="window.location.href='/mts/appWeb/index/index.jsp';" class="dis_f ali_ct flex_col clr_6 jus_ct">
 				<img src="<%=basePath%>/js/appWeb/images/b1_no.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">美天赏</p></a></li>
-				<li><a href="#"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
+				<li><a onclick="addShow();"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
 				<li><a  onclick="window.location.href='/mts/appWeb/appuser/appuserLook.jsp';" class="dis_f ali_ct flex_col clr_r jus_ct">
 				<img src="<%=basePath%>/js/appWeb/images/b2h.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">我的</p></a></li>
 			</ul>
@@ -327,7 +327,49 @@ Object data=session.getAttribute("data");
 		<img src="<%=basePath%>/js/appWeb/images/weiduxx.png" class="dis_b" style="width:0.8rem;"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"/>
 	</script>
 	
-	
+	<div id="add" class="fabu_mask" style="display:none;">
+				<div><img src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:3.5rem auto 0 auto;" /></div>
+
+				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">城市圈</div>
+					</div>
+
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t2.png"  onclick="window.location.href='/mts/appWeb/activity/activitySave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">同城活动</div>
+					</div>
+				</div>
+
+				<div class="dis_f ali_ct jus_bt" style="width:13.5rem;margin:0 auto;">
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t3.png"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">海报</div>
+					</div>
+
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t4.png"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">视频</div>
+					</div>
+
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t5.png"  onclick="window.location.href='/mts/appWeb/card/cardSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">卡券</div>
+					</div>
+				</div>
+
+				<div><img  onclick="addHide();" src="<%=basePath%>/js/appWeb/images/tclose.png" class="dis_b fabu_click" style="width:1.7rem;height:1.7rem;margin:2rem auto 0 auto;" /></div>
+		</div>
+
+		<script type="text/javascript">
+			function addShow(){
+				$("#add").show();
+			};
+			function addHide(){
+				$("#add").hide();
+			};
+		</script>
 
 </body>
 

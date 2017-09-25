@@ -33,7 +33,7 @@ function show(){
 				//获取收支记录
 				if(result.data.id!=undefined){
 					$.ajax({
-						url : '/mts/system/moneydetail/money/json?userId='+result.data.id+'&pageIndex='+nextPage,
+						url : '/mts/system/moneydetail/money/json?web=&userId='+result.data.id+'&pageIndex='+nextPage,
 						type : "post",
 						dataType : "json",
 						success : function(result){
@@ -44,7 +44,6 @@ function show(){
 							}
 							
 							if(result.data!=undefined){
-								
 								for (var int = 0; int < result.data.length; int++) {
 									
 									//处理月份，

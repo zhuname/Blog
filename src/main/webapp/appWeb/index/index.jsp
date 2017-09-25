@@ -110,7 +110,7 @@ Object data=session.getAttribute("data");
 					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" /> 
 					<div class="f_20 clr_f">&nbsp; <a id="city"></a> <span class="f_16" id="weather">多云转晴 23℃/28℃</span></div>
 				</div>
-				<img src="<%=basePath%>/js/appWeb/images/bell.png" class="dis_b" style="height:0.9rem;" /> 
+				<img src="<%=basePath%>/js/appWeb/images/bell.png"  onclick="window.location.href='/mts/appWeb/message/message.jsp';" class="dis_b" style="height:0.9rem;" /> 
 			</div>
 			<div class="dis_f ali_ct flex_col jus_ct">
 				<img id="header" src="<%=basePath%>/js/appWeb/images/face.jpg" class="dis_b" style="width:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />
@@ -134,10 +134,10 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="f_16 clr_f dis_f ali_ct jus_bt" style="width:12rem;margin:0.75rem auto 0 auto;">
-				<p><img src="<%=basePath%>/js/appWeb/images/eye.png" class="ver_mid " style="height:0.4rem;" /> <span class="ver_mid">6583</span></p>
-				<p><img src="<%=basePath%>/js/appWeb/images/praise.png" class="ver_mid " style="height:0.5rem;" /> <span class="ver_mid">6583</span></p>
-				<p><img src="<%=basePath%>/js/appWeb/images/msg.png" class="ver_mid " style="width:0.55rem;" /> <span class="ver_mid">6583</span></p>
-				<p><img src="<%=basePath%>/js/appWeb/images/fans.png" class="ver_mid " style="width:0.6rem;" /> <span class="ver_mid">6583</span></p>
+				<p><img src="<%=basePath%>/js/appWeb/images/eye.png" class="ver_mid " style="height:0.4rem;" /> <span class="ver_mid">{{= scanNum}}</span></p>
+				<p><img src="<%=basePath%>/js/appWeb/images/praise.png" class="ver_mid " style="height:0.5rem;" /> <span class="ver_mid">{{= topNum}}</span></p>
+				<p><img src="<%=basePath%>/js/appWeb/images/msg.png" class="ver_mid " style="width:0.55rem;" /> <span class="ver_mid">{{= commentNum}}</span></p>
+				<p><img src="<%=basePath%>/js/appWeb/images/fans.png" class="ver_mid " style="width:0.6rem;" /> <span class="ver_mid">{{= attenNum}}</span></p>
 			</div>
 			
 
@@ -206,6 +206,49 @@ Object data=session.getAttribute("data");
 	</div>
 	</script>
 	
+	<div id="add" class="fabu_mask" style="display:none;">
+				<div><img src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:3.5rem auto 0 auto;" /></div>
+
+				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">城市圈</div>
+					</div>
+
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t2.png"  onclick="window.location.href='/mts/appWeb/activity/activitySave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">同城活动</div>
+					</div>
+				</div>
+
+				<div class="dis_f ali_ct jus_bt" style="width:13.5rem;margin:0 auto;">
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t3.png"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">海报</div>
+					</div>
+
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t4.png"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">视频</div>
+					</div>
+
+					<div class="dis_f ali_ct jus_ct flex_col">
+						<img src="<%=basePath%>/js/appWeb/images/t5.png"  onclick="window.location.href='/mts/appWeb/card/cardSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<div class="f_28 clr_f mt_10">卡券</div>
+					</div>
+				</div>
+
+				<div><img  onclick="addHide();" src="<%=basePath%>/js/appWeb/images/tclose.png" class="dis_b fabu_click" style="width:1.7rem;height:1.7rem;margin:2rem auto 0 auto;" /></div>
+		</div>
+
+		<script type="text/javascript">
+			function addShow(){
+				$("#add").show();
+			};
+			function addHide(){
+				$("#add").hide();
+			};
+		</script>
 	
 	
 </body>

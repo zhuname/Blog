@@ -1,5 +1,6 @@
 var This=this;
 var userId;
+var cityId;
 var nextPage=1;
 var id;
 var chageType;
@@ -16,8 +17,13 @@ $.ajax({
 		userId=result.data.id;
 		var user= result.data;
 		
-		change(1);
+		if(getQueryString('cityId')==undefined){
+			cityId=result.data.cityId;
+		}else{
+			cityId=getQueryString('cityId');
+		}
 		
+		change(1);
 		
 	},
 error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -27,7 +33,7 @@ console.log(textStatus) ;
 });
 
 function xinzeng(){
-	var data='userId='+userId+'&cityId='+getQueryString('cityId')+'&type='+chageType+'&content='+$('#content').html();
+	var data='userId='+userId+'&cityId='+cityId+'&type='+chageType+'&content='+$('#content').html();
 	var url="";
 	if($('#content').html()==""||$('#content').html()==null){
 		alert('请完善信息');

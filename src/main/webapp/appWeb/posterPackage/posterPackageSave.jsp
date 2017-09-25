@@ -89,7 +89,7 @@ body{background: #f0f2f5;}
 			<img src="<%=basePath%>/js/appWeb/images/zt.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
 			主题
 			</p>
-			<input class="ipt3 al_rt f_28 ph_red" id="title" type="text" placeholder="请填写视频主题，20字以内" style="width:9rem;" />
+			<input class="ipt3 al_rt f_28 ph_red" id="title" type="text" placeholder="请填写海报主题，20字以内" style="width:9rem;" />
 		</div>
 
 
@@ -154,7 +154,7 @@ body{background: #f0f2f5;}
 <div id="yuyueShow" style="display:none;" class="bg_f pad_2030 clr_he2 borderbot1 yuyue_open f_22">
 
 
-<input class="ipt3 al_rt f_28 ph_red" type="text" id="appointExplain" placeholder="请填写预约说明,例如预约1元抵10元,预约10元送礼物等等" style="width:100%;" />
+<input class="ipt3 al_rt f_28 ph_red" type="text" id="appointExplain" placeholder="请填写预定说明或预定优惠信息，客户将在线支付预定款进行预订购买。" style="width:100%;" />
 </div>
 
 <div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">

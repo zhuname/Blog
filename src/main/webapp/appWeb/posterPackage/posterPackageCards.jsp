@@ -65,7 +65,7 @@ body{background: #f9f9fb;}
 
 	<div class="wraper overh">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">选择卡券</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/qd.png" onclick="checkSuccess();" class="dis_b" style="width:2.2rem;" /></a>
 		</div>
@@ -109,7 +109,7 @@ body{background: #f9f9fb;}
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />
 						2017-02-01止
 					</div>
-					<div class="f_20 clr_r">{{if convertMoney==0}}免费{{else}}{{= convertMoney}}{{/if}}</div>
+					<div class="f_20 clr_r">{{if convertMoney}}{{if convertMoney==1}}{{= convertMoney}}{{else}}免费{{/if}}{{/if}}</div>
 				</div>
 			</div>
 		</div>

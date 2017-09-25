@@ -40,6 +40,11 @@ function show(){
 						$('#card_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
 						
 					}
+					var imagess=document.getElementsByName("image");
+					if(imagess.length>0){
+						$(imagess[0]).click();
+					}
+					
 				}
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){

@@ -31,6 +31,14 @@ function show(){
 					if(result.data!=undefined){
 						//获取消息记录
 							result.data.cityId = user.data.cityId;
+							
+							
+							result.data.todayMoney = parseFloat(result.data.todayMoney).toFixed(2);
+							result.data.sumMoney = parseFloat(result.data.sumMoney).toFixed(2);
+							result.data.posterMoney = parseFloat(result.data.posterMoney).toFixed(2);
+							result.data.mediaMoney = parseFloat(result.data.mediaMoney).toFixed(2);
+							
+							
 							$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 						
 							$('#name').html(user.data.name);
@@ -47,6 +55,7 @@ function show(){
 								
 							}
 							
+							
 							$.ajax({
 								url : '/mts/system/city/detail/json?web=&id='+user.data.cityId,
 								type : "post",
@@ -60,7 +69,8 @@ function show(){
 										//获取用户信息
 										$('#city').html(result.data.name);
 										var weather="";
-										weather+=result.data.weather+result.data.templowdu+"°c/"+result.data.templowdu+"°c";
+										weather+=result.data.weather+result.data.templow+"℃/"+result.data.temphigh+"℃";
+										$('#weather').html(weather);
 										$('#city').html(result.data.name);
 									}
 								},
@@ -69,7 +79,6 @@ function show(){
 									console.log(textStatus) ;
 								}
 							});
-							
 							countTime();
 					}
 					
@@ -140,7 +149,13 @@ function countTime() {
 		if(m==0&&s==0){
 			window.location.reload();
 		}
-		
+		if(s<10){
+			s="0"+s;
+		}
+		if(m<10){
+			m="0"+m;
+		}
+	
 		$('#sj').html(m+":"+s);
 		$('#sjwz').html("后获得"+lqNum+"次机会");
 		

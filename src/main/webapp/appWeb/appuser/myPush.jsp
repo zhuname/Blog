@@ -58,11 +58,8 @@ Object data=session.getAttribute("data");
 html,body{height:100%;}
 </style>
 </head>
-
 <body>
-
 	<div class="wraper" style="background: #f0f2f5;height:100%;">
-
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<ul class="fabu_ul f_24 clr_r dis_f ali_ct jus_bt">
@@ -82,18 +79,22 @@ html,body{height:100%;}
 		</ul>
 
 		<div class="haibao_wrap" style="margin-top:-0.5rem;">
+		
 			<ul class="mask_hb_ul dis_f ali_ct jus_bt flex_w"  id="posterPackage">
+			
 			</ul>
 			
 			<ul class="mask_hb_ul dis_f ali_ct jus_bt flex_w" id="card">
+			
 			</ul>
+			
 		</div>
+		
 		<div id="mediaPackage">
 
 		</div>
 		
 		<div id="activity"></div>
-		
 		
 		<script id="activity_list0_tmpl" type="text/x-jquery-tmpl">
 			<div class="mt_20 pos_rela">
@@ -164,7 +165,7 @@ html,body{height:100%;}
 							<div class="f_20 clr_f dis_f ali_ct flex_col" style="margin-top:2rem;">
 								<div class="dis_f ali_ct jus_bt" style="width:5.8rem;">
 									<div class="clr_f refuse" style="padding:0.1rem 0.3rem;border-radius: 0.2rem;border:1px solid #FFF;">拒绝原因</div>
-									<div class="clr_f" style="padding:0.1rem 0.3rem;border-radius: 0.2rem;border:1px solid #FFF;">重新编辑</div>
+									<div class="clr_f"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';"  style="padding:0.1rem 0.3rem;border-radius: 0.2rem;border:1px solid #FFF;">重新编辑</div>
 								</div>
 								<div class="mt_20">已拒绝</div>
 							</div>
@@ -192,7 +193,7 @@ html,body{height:100%;}
 								<div class="f_28 clr_f pad_30 al_ct">{{= title}}</div>
 
 								<div class="f_20 clr_f dis_f ali_ct flex_col" style="margin-top:2rem;">
-								<div class="bg_f clr_3" style="padding:0.1rem 0.5rem;border-radius: 0.2rem;">再发一次</div>
+								<div class="bg_f clr_3" style="padding:0.1rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">再发一次</div>
 								<div class="mt_10">已结束</div>
 							</div>
 							</a>
@@ -270,7 +271,7 @@ html,body{height:100%;}
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
 						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;margin-right:0.5rem;">拒绝原因</div>
-						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
+						<div class="f_20 clr_3" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
 				</div>
 			</div>
 		</script>
@@ -308,7 +309,7 @@ html,body{height:100%;}
 					</div>
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
-						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;">再发一次</div>
+						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">再发一次</div>
 					</div>
 			</div>
 		</script>
@@ -406,7 +407,7 @@ html,body{height:100%;}
 				</div>
 				<div class="dis_f ali_ct jus_rt pad_20 bg_f" >
 					<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;margin-right:0.5rem;">拒绝原因</div>
-					<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
+					<div class="f_20 clr_3"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
 				</div>
 		</div>
 		</script>
@@ -437,12 +438,11 @@ html,body{height:100%;}
 							<img src="<%=basePath%>/js/appWeb/images/kq2.png" style="width:0.6rem;" class="ver_mid"/>
 							<span class="ver_mid">{{= convertNum}}</span>
 						</div>
-						<div class="f_22 clr_3" style="border:1px solid #333;border-radius: 0.2rem;padding:0.1rem 0.5rem;">
+						<div class="f_22 clr_3" style="border:1px solid #333;border-radius: 0.2rem;padding:0.1rem 0.5rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">
 							再发一次
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;">{{= title}}</div>
@@ -527,7 +527,7 @@ html,body{height:100%;}
 					</div>
 				</div>
 					<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
-						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;">再发一次</div>
+						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">再发一次</div>
 					</div>
 			</div>
 		</script>
@@ -564,7 +564,7 @@ html,body{height:100%;}
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
 						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;margin-right:0.5rem;">拒绝原因</div>
-						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
+						<div class="f_20 clr_3" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
 				</div>
 			</div>
 		</script>

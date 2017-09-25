@@ -5,6 +5,7 @@ var id;
 var userId;
 var packageUserId;
 var encrypt;
+var isFoot=1;
 
 
 	//加载页面方法
@@ -74,6 +75,9 @@ var encrypt;
 						
 					}
 					
+					result.data.balance = parseFloat(result.data.balance).toFixed(2);
+					result.data.sumMoney = parseFloat(result.data.sumMoney).toFixed(2);
+					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
 					var lunbo=result.data.image.split(";");
@@ -88,10 +92,10 @@ var encrypt;
 						
 					}
 					
-					//初始化页面
-					change(2);
 					
 					id=result.data.id;
+					//初始化页面
+					change(2);
 					//获取预约列表
 					$.ajax({
 						url : '/mts/system/appoint/appointList/json?type=1&web=&itemId='+result.data.id,
@@ -119,6 +123,7 @@ var encrypt;
 							console.log(textStatus) ;
 						}
 					});
+					
 					
 					
 					if(result.data.cardId){
@@ -192,6 +197,7 @@ var encrypt;
 		nextPage = 1 ;
 		type=changeType;
 		show(type);
+		isFoot=0;
 	}
 	
 	
@@ -247,6 +253,8 @@ var encrypt;
 								$('#top_tmpl').tmpl(result.data[int]).appendTo($('#content'));
 							}
 						}
+						
+						isFoot = 1 ;
 				}
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -384,7 +392,7 @@ function oper(type){
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
-					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+					alert(result.message);
 					return;
 				}
 			    window.location.reload();
@@ -403,8 +411,11 @@ window.onscroll=function(){
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
 	var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
 	if(a+b==c){
-		nextPage=nextPage+1;
-		show(type);
+		if(isFoot==1){
+			nextPage=nextPage+1;
+			console.log(111);
+			show(type);
+		}
 	}
 }
 

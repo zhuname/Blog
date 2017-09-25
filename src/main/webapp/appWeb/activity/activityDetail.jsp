@@ -148,7 +148,7 @@ Object data=session.getAttribute("data");
 
 				<div class="clr_f padt_20 dis_f ali_ct jus_ct" id="canyuBtn" onclick="change(2);" style="background: #c8c8cc;width:8rem;">
 					<img src="<%=basePath%>/js/appWeb/images/cysm.png" class="ver_mid" style="height:0.65rem;margin-right:0.3rem;" />
-					<span>参与说明</span>
+					<span>活动介绍</span>
 				</div>
 			</div>
 
@@ -158,7 +158,7 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="bg_f pad_20 clr_3 f_22 " id="canyuShow" style="display:none;line-height: 1rem;">
-				{{= joinExplain}}
+				<pre>{{= joinExplain}}</pre>
 			</div>
 
 			<div class="bg_f dis_f ali_ct jus_bt xjq_wrap mt_20">
@@ -169,7 +169,7 @@ Object data=session.getAttribute("data");
 				<div class="dis_f ali_ct jus_bt">
 					<div class="ceng_img" id="zhongjiang" onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=2&id={{= id}}';" >
 					</div>
-					<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+					<img src="<%=basePath%>/js/appWeb/images/right.png"  class="dis_b" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=2&id={{= id}}';" />
 				</div>
 			</div>
 
@@ -187,7 +187,7 @@ Object data=session.getAttribute("data");
 			<div class="bg_f ali_ct padl_20 clr_3 f_30" style="padding-bottom:0.5rem;text-align:right;">
 				<a id="canyu"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" ></a>
 				...
-				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=2&id={{= id}}';" />
 			</div>
 
 			{{if isPart}}
@@ -203,12 +203,16 @@ Object data=session.getAttribute("data");
 		</script>
 
 		<script id="huodong_tmpl" type="text/x-jquery-tmpl">
-			<div class="dis_f ali_ct jus_bt">
-				<div class="dis_f ali_ct">
+			<div class="dis_f ali_ct jus_bt"  style="float:left;">
+				<div class="dis_f ali_ct"  style="float:right;">
 					<span class="f_24 clr_3" class="ver_mid" > {{= title}}:{{= content}}</span>
 				</div>
 			</div>
+			<span class="f_24 clr_3" class="ver_mid" style="float:right;"> {{= sumCount}}人</span>
+			</br>
 		</script>
+		
+		
 		
 		<script id="canyu_tmpl" type="text/x-jquery-tmpl">
 			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />

@@ -96,9 +96,9 @@ Object data=session.getAttribute("data");
 			<div class="dis_f ali_ct flex_col">
 				<div class="clr_r">
 					<span class="f_24 ">+</span>
-					<span class="f_36">0.75</span>
+					<span class="f_36">{{= money}}</span>
 				</div>
-				<img src="images/yqw.png" class="ver_mid" style="width:2rem;" />
+				<!--<img src="<%=basePath%>/js/appWeb/images/yqw.png" class="ver_mid" style="width:2rem;" />-->
 			</div>
 		</div>
 	</script>

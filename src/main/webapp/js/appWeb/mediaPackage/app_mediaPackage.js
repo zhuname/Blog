@@ -7,14 +7,14 @@ show();
 function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
-	$('#posterPackage').html("");
+	$('#mediaPackage').html("");
 	dataString='&title='+titleString;
 	show();
 }
 
 function selectSort(type){
 	nextPage=1;
-	$('#posterPackage').html("");
+	$('#mediaPackage').html("");
 	if(type==1){
 		dataString='&selectType=1';
 	}else if(type==2){

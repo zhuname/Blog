@@ -29,7 +29,7 @@ function pay(){
 	if(getCookie("posterPackageCategoryId")!=null
 			&&getCookie("posterPackageTitle")!=null&&getCookie("posterPackageDescr")!=null
 			&&getCookie("posterPackageTitle")!=""&&getCookie("posterPackageDescr")!=""
-			&&$("#money").val()!=""&&$("#lqNum").val()!=""	){
+			&&$("#money").val()!=""&&$("#lqNum").val()!=""&&getCookie("posterPackageImage")!=null&&getCookie("posterPackageImage")!=""){
 		var data="";
 		if(getCookie("posterPackageCityId")!=null){
 			data+="&cityIds="+getCookie("posterPackageCityId");
@@ -62,7 +62,7 @@ function pay(){
 				}
 				if(result.data!=undefined){
 					if(result.data.balance!=undefined){
-						window.location.href="/mts/appWeb/posterpackage/myPosterpackage.jsp";
+						window.location.href="/mts/appWeb/appuser/myPush.jsp";
 					}
 				}
 			},

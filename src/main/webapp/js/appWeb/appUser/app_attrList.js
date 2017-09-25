@@ -25,7 +25,7 @@ function show(){
 				userId=result.data.id;
 			//获取用户信息
 			$.ajax({
-				url : '/mts/system/attention/list/json?userId='+result.data.id+'&pageIndex='+nextPage,
+				url : '/mts/system/attention/list/json?web=&userId='+result.data.id+'&pageIndex='+nextPage,
 				type : "post",
 				dataType : "json",
 				success : function(result){
@@ -37,8 +37,9 @@ function show(){
 					
 					if(result.data!=undefined){
 						//获取消息记录
-						
-						$('#detail').html("");
+						if(nextPage==1){
+							$('#detail').html("");
+						}
 						for (var int = 0; int < result.data.length; int++) {
 							
 							console.log(result.data[int]);

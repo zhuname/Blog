@@ -180,7 +180,6 @@ Object data=session.getAttribute("data");
 <script type="text/javascript">
 
 </script>
-
 			<a onclick="xinzeng();" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 	</div>
 </body>

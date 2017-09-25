@@ -164,13 +164,14 @@ Object data=session.getAttribute("data");
 				</div>
 			</div>
 		</div>
-		{{if isAppoint}}
+
+		{{if isRelevance}}
 
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap" >
 			<div class="dis_f ali_ct">
 				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col"  onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= cardId}}';">
 					<img src="<%=basePath%>/js/appWeb/images/xjq.png" class="ver_mid" style="width:0.9rem;" />
-					<p >礼物券</p>
+					<p >打折券</p>
 				</div>
 			
 				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}人领取</div>
@@ -182,7 +183,7 @@ Object data=session.getAttribute("data");
 			</div>
 		</div>
 		{{/if}}
-		{{if isRelevance}}
+		{{if isAppoint}}
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap">
 			<div class="dis_f ali_ct">
 				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:$('.kq_mask').show();">
@@ -221,13 +222,13 @@ Object data=session.getAttribute("data");
 
 		<div class="pad_30 bg_f">
 			{{if isLook==1}}
-			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢</a>
+			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢</a>
 			{{else}}
 			{{if status}}	
 			{{if status==3}}
 			<a class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #f95d47;">立即领取</a>
 			{{else status==4}}
-			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢完</a>
+			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢完</a>
 			{{/if}}	
 			{{/if}}
 			{{/if}}
@@ -248,13 +249,9 @@ Object data=session.getAttribute("data");
 				</li>
 			</ul>
 		</div>
-
-
-
 		<div class="kq_mask" id="payTmpl" style="display: none;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
             <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
-
             <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" id="money" type="number" placeholder="￥请填写打赏金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预约电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">

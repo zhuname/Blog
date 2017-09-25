@@ -31,7 +31,7 @@ function show(){
 				
 				//获取用户信息
 				$.ajax({
-					url : '/mts/system/medal/all/json?userId='+result.data.id,
+					url : '/mts/system/medal/all/json?web=&userId='+result.data.id,
 					type : "post",
 					dataType : "json",
 					success : function(result){

@@ -71,10 +71,10 @@ var encrypt;
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
 					
+					id=result.data.id;
 					//初始化页面
 					change(4);
 					
-					id=result.data.id;
 					//获取预约列表
 					$.ajax({
 						url : '/mts/system/appoint/appointList/json?type=2&web=&itemId='+result.data.id,
@@ -359,7 +359,7 @@ function oper(type){
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
-					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=2+itemId="+packageUserId;
+					window.location.reload();
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
 					console.log(XMLHttpRequest) ;
