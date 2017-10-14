@@ -99,6 +99,11 @@ $.ajax({
 			$('#appuser_noLoginDetail_tmpl').tmpl(null).appendTo($('#detail'));
 			$('#appuser_statics_tmpl').tmpl(null).appendTo($('#detail'));
 		}
+//		点击关闭
+		$("#add").click(function(even){
+			$("#add").hide();
+			 event.stopPropagation(); 
+		})
 		
 	},
 	error:function(XMLHttpRequest, textStatus, errorThrown){

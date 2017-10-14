@@ -61,11 +61,12 @@ Object data=session.getAttribute("data");
 					$('.filter_toggle').click(function(){
 						$('.xx_daohang').toggle();
 						$('.xx_pic').toggle();
+						
 					});
-					
 					function showColl(show){
 						$(show).siblings('.more_ul').toggle();
 						$(show).siblings('.arr_up_down').toggle();
+						$(".whte").toggle();
 					};
 				</script>
 
@@ -84,9 +85,10 @@ Object data=session.getAttribute("data");
 					<input class="ipt2 f_22 clr_he" type="text" placeholder="昵称/主题" />
 					<input class="btn2" type="button" />
 				</div>
+				<div class="whte" onclick="showColl(this)"></div>
 				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
-				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
+				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;z-index=15" >
 					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 					<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
 					<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">屏蔽</span></li>

@@ -198,6 +198,7 @@ var isFoot=1;
 					
 					
 			}
+			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(XMLHttpRequest) ;

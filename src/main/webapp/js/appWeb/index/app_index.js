@@ -78,6 +78,10 @@ function show(){
 							});
 							countTime();
 					}
+					$("#add").click(function(even){
+						$("#add").hide();
+						 event.stopPropagation(); 
+					});
 					
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){

@@ -127,10 +127,10 @@ Object data=session.getAttribute("data");
 						<div class="f_22 clr_9">{{= createTime}}</div>
 					</div>
 				</div>
-
+				<div class="whte"  onclick="showColl(this)"></div>
 				<a href="javascript:;" onclick="showColl(this);" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n" />
-				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;">
+				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;z-index=15">
 					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 					<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
 					<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
@@ -296,6 +296,7 @@ Object data=session.getAttribute("data");
 	function showColl(show){
 		$(show).siblings('.more_ul').toggle();
 		$(show).siblings('.arr_up_down').toggle();
+		$(".whte").toggle();
 	};
 	
 	</script>

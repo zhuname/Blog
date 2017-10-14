@@ -207,7 +207,7 @@ Object data=session.getAttribute("data");
 	</script>
 	
 	<div id="add" class="fabu_mask" style="display:none;">
-				<div><img src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:3.5rem auto 0 auto;" /></div>
+				<div><img src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;" /></div>
 
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">

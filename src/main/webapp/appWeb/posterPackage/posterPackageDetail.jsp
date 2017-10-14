@@ -66,6 +66,7 @@ Object data=session.getAttribute("data");
 	<div class="wraper overh ">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+						<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
 			
 			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
@@ -80,7 +81,13 @@ Object data=session.getAttribute("data");
 				$('.more_ul_toggle').click(function(){
 					$('.more_ul').toggle();
 					$('.arr_up_down').toggle();
+					$(".whte").show();
 				});
+				$(".whte").click(function(){
+				$(this).hide();
+					$('.more_ul').toggle();
+					$('.arr_up_down').toggle();
+				})
 			</script>
 		</div>
 
