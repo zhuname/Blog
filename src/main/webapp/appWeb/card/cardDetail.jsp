@@ -112,15 +112,18 @@ html,body{background:#f95d47;}
 				<div class="f_42 clr_3 al_ct mt_30">{{= title}}</div>
 
 				
-				<img src="{{= images}}" class="dis_b mt_30" style="width:14rem;" />
+				<img src="{{= images}}" class="dis_b mt_30" style="width:14rem;height:4rem;" />
 			</div>
-			
-			<div class="dis_f ali_ct jus_rt padt_20">
+			<div class="dis_f ali_ct jus_rt padt_20" style="float:left;">
+				<div  class="f_20 clr_he"  style="margin:0.5 0rem;float:left;color:red;">￥{{= convertMoney}}</div>
+			</div>
+			<div class="dis_f ali_ct jus_rt padt_20" style="float:right;">
+				
 				<img src="<%=basePath%>/js/appWeb/images/kq2.png" class="dis_b" style="width:0.65rem;" />
 				<div class="f_20 clr_he" style="margin:0 0.5rem;">总数:{{= convertNum}}</div>
 				<div class="f_20 clr_he">剩余:{{= num}}</div>
 			</div>
-
+			</br></br></br></br>
 			<div class="f_20 clr_he dis_f ali_ct padt_20 bordertop1">
 				<img src="<%=basePath%>/js/appWeb/images/ld.png" class="dis_b" style="width:0.5rem;margin-right	: 0.3rem;" />
 				{{= endTime}}止(过期作废)
@@ -132,7 +135,8 @@ html,body{background:#f95d47;}
 			<div class="f_26 clr_3 dis_f ali_ct padt_20 bordertop1 mt_30">
 				<img src="<%=basePath%>/js/appWeb/images/wz.png" class="dis_b" style="width:0.65rem;margin-right: 0.3rem;" />
 				<div>
-{{= address}}</div>
+					{{= address}}
+				</div>
 			</div>
 
 			<div class="f_28 clr_he dis_f ali_ct jus_bt padt_20 bordertop1 mt_30">

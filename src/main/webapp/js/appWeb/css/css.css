@@ -191,6 +191,8 @@ color: #cc9d9d;
 .end_img2{position: absolute;top:0.5rem;right:4.5rem;width:3rem;}
 .play_img{position: absolute;top:3.5rem;left:7rem;}
 
+.tc_lock{position: absolute;top:0.5rem;right:0.4rem;}
+
 .public_fixed{position: fixed;right:1rem;bottom:1rem;}
 
 .fabu_ul{width:12.5rem;border:2px solid #f95d47;border-radius: 0.2rem;}
@@ -277,3 +279,4 @@ line-height: 0.5rem; font-size: 0.2rem; border-radius: 50%;top: -0.1rem; right: 
 .bann>.hd li.on{background:#dd2727;}
 
 .yuyue_bg{background: url(../images/yyyl_bg.png) no-repeat;background-size: 100%;width:11.25rem;height:18rem;margin:4rem auto 0 auto;}
+.shang_img{position: absolute;top:10.8rem;left:4.1rem;width:2.85rem};

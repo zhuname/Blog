@@ -27,7 +27,6 @@ function show(){
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
-					
 					if(result.data!=undefined){
 						//获取消息记录
 							result.data.cityId = user.data.cityId;
@@ -54,8 +53,6 @@ function show(){
 								lqNum=user.data.lqNum;
 								
 							}
-							
-							
 							$.ajax({
 								url : '/mts/system/city/detail/json?web=&id='+user.data.cityId,
 								type : "post",

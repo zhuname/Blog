@@ -128,13 +128,13 @@ Object data=session.getAttribute("data");
 					</div>
 				</div>
 
-				<a href="javascript:;" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
+				<a href="javascript:;" onclick="showColl(this);" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n" />
 				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;">
-					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
+					<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
+					<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
+					<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 				</ul>
 			</div>
 			<div class="f_28 clr_3 mt_20">{{= content}}</div>
@@ -235,7 +235,6 @@ Object data=session.getAttribute("data");
 					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
-						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 							{{if appUser.sex}}
 							{{if appUser.sex == '男'}}
 							<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
@@ -258,14 +257,25 @@ Object data=session.getAttribute("data");
 		</script>
 		
 
-	<div class="kq_mask" style="display: none;" id="showDashang">
-		<div class="dashang_bg pos_rela" style="padding-top:5.8rem;">
-			<a href="javascript:;" class="dis_b close_kq_mask"></a>
-			
-			<input class="ipt3 f_26 clr_6 ipt_dashang" id="money" type="text" placeholder="￥请填写打赏金额" />
-			<input class="ipt3 f_26 clr_6 ipt_msg" id="content" type="text" placeholder="留下你的打赏留言吧" />
 
-			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance"">6.00</span> <a href="#" class="clr_b">更换</a></div>
+	<div class="kq_mask" style="display: none;" id="showDashang">
+		<!-- <div class="dashang_bg pos_rela" style="padding-top:5.8rem;">
+			<a href="javascript:;" class="dis_b close_kq_mask"></a>
+			<input class="ipt3 f_26 clr_6 ipt_dashang" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />
+			<input class="ipt3 f_26 clr_6 ipt_msg" id="content" type="text" placeholder="留下你的打赏留言吧" />
+			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance"">0</span> <a href="#" class="clr_b">更换</a></div>
+		</div> -->
+		
+		<div class="dashang_bg pos_rela" style="padding-top:5.8rem;">
+
+			<a href="javascript:;" class="dis_b close_kq_mask"></a>
+			<a ><img src="<%=basePath%>/js/appWeb/images/shaizi.png" class="dis_b" style="position: absolute;top:7.1rem;right:1.5rem;width:0.7rem;" /></a>
+			
+			<input class="ipt3 f_26 clr_6 ipt_dashang" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />
+			<input class="ipt3 f_26 clr_6 ipt_msg" id="contentVal" type="text" placeholder="留下你的打赏留言吧" />
+
+			<a href="javascript:dashang()"><img src="<%=basePath%>/js/appWeb/images/shang.png" class="shang_img" /></a>
+			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance"">0</span> <a href="#" class="clr_b">更换</a></div>
 		</div>
 	</div>
 
@@ -274,15 +284,21 @@ Object data=session.getAttribute("data");
 			$(this).parents('.kq_mask').hide();
 		});
 	</script>
-		
-		
+	
+	
 
-<script type="text/javascript">
-$('.more_ul_toggle').click(function(){
-	$(this).siblings('.more_ul').toggle();
-	$(this).siblings('.arr_up_down').toggle();
-});
-</script>
+	<script type="text/javascript">
+	$('.more_ul_toggle').click(function(){
+		$(this).siblings('.more_ul').toggle();
+		$(this).siblings('.arr_up_down').toggle();
+	});
+	
+	function showColl(show){
+		$(show).siblings('.more_ul').toggle();
+		$(show).siblings('.arr_up_down').toggle();
+	};
+	
+	</script>
 		
 	</div>
 </body>

@@ -111,13 +111,14 @@ function headOnc(){
 $(document).on("change", "#filed", function() {
 //...
 
-  $.ajaxFileUpload({
-        url : '/mts/adminFileUpload',
-        secureuri : false,
-        fileElementId : 'filed',
-        dataType : 'text',
-        data : {},
-        success : function(data, status) {
+	 $.ajaxFileUpload({
+	       url : '/mts/adminFileUpload' ,
+	       secureuri : false,
+	       fileElementId : 'filed' ,
+	       dataType : 'text' ,
+	       data : {} ,
+	       success : function(data, status) {
+	       	console.log(data);
         	$(".header")[0].attr('src',data);
         	$(".header")[0].Attr("class","dis_b");
         	$('#images_update_tmpl').tmpl(null).appendTo($('#image'));      	
@@ -130,6 +131,31 @@ $(document).on("change", "#filed", function() {
 
     return false;
 
+});
+
+
+$.ajax({
+	url : '/mts/system/syssysparam/list/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		if(result.data!=undefined){
+			//获取消息记录
+			$('#publishRule').html(result.data.publishRule);
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
 });
 
 

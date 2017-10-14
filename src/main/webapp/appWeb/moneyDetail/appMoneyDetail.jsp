@@ -72,7 +72,7 @@ Object data=session.getAttribute("data");
 			<div class="f_26 clr_f mt_30">￥<span style="font-size:1.5rem;" id="balance">0.0</span></div>
 
 			<div class="mt_40">
-				<a href="#" class="f_26 clr_r a_btn3" style="margin-right:1rem;">充值</a>
+				<a  onclick="window.location.href='/mts/appWeb/appuser/chongzhi.jsp';"  class="f_26 clr_r a_btn3" style="margin-right:1rem;">充值</a>
 				<a href="#" class="f_26 clr_f a_btn4">提现</a>
 			</div>
 

@@ -232,7 +232,7 @@ html,body{height:100%;}
 		</div>
 		</script>
 	
-		<div id="url"><%=basePath%>/js/appWeb/images/</div>
+		<div id="url" style="display: none;"><%=basePath%>/js/appWeb/images/</div>
 	
 </body>
 

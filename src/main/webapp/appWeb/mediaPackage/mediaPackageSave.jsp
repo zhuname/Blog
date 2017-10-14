@@ -75,7 +75,7 @@ body{background: #f0f2f5;}
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">发布视频红包</p>
-			<a ><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:0.9rem;" /></a>
+			<a onclick="javascript:$('#guize').show();"><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:0.9rem;" /></a>
 		</div>
 
  	<input type="file" id="filed" name="filed" style="display:none">
@@ -92,12 +92,12 @@ body{background: #f0f2f5;}
 			<img src="<%=basePath%>/js/appWeb/images/zt.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
 			主题
 			</p>
-			<input class="ipt3 al_rt f_28 ph_red" id="title" type="text" placeholder="请填写视频主题，20字以内" style="width:9rem;" />
+			<input class="ipt3 al_rt f_28 ph_red" onchange="changeTitle();" id="title" type="text" placeholder="请填写视频主题，20字以内" style="width:9rem;" />
 		</div>
 
 
 <div class="pad_2030 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
-	<textarea placeholder="请填写海报简介" id="descr" class="f_24 clr_9 pad_20" style="width:15rem;height:3rem;border:0;background: #f0f2f5;"></textarea>
+	<textarea placeholder="请填写海报简介"  onchange="changeDescr();"  id="descr" class="f_24 clr_9 pad_20" style="width:15rem;height:3rem;border:0;background: #f0f2f5;"></textarea>
 </div>
 
 <div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
@@ -157,7 +157,7 @@ body{background: #f0f2f5;}
 <div id="yuyueShow" style="display:none;" class="bg_f pad_2030 clr_he2 borderbot1 yuyue_open f_22">
 
 
-<input class="ipt3 al_rt f_28 ph_red" type="text" id="appointExplain" placeholder="请填写预约说明,例如预约1元抵10元,预约10元送礼物等等" style="width:100%;" />
+<input class="ipt3 al_rt f_28 ph_red"  onchange="changeAppointExplain();"  type="text" id="appointExplain" placeholder="请填写预约说明,例如预约1元抵10元,预约10元送礼物等等" style="width:100%;" />
 </div>
 
 <div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
@@ -176,11 +176,11 @@ body{background: #f0f2f5;}
 			<img src="<%=basePath%>/js/appWeb/images/kl.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
 			口令
 			</p>
-			<input  id="command"  class="ipt3 al_rt f_28 ph_red" type="text" placeholder="请填写海报口令" style="width:9rem;" />
+			<input  id="command" onchange="changeCommand();" class="ipt3 al_rt f_28 ph_red" type="text" placeholder="请填写海报口令" style="width:9rem;" />
 		</div>
 
 		<div class="pad_30">
-			<input type="button" onclick="save();" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="下一步" />
+			<input type="button"  onclick="save();" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="下一步" />
 		</div>
 	</div>
 	
@@ -193,6 +193,24 @@ body{background: #f0f2f5;}
 	init();
 	
 	</script>
+	
+	
+				<div class="video_mask" id="guize" style="display: none;">
+					<div class="video_bg">
+						<div class="f_24 clr_3 pad_30" style="padding-top:4rem;line-height: 1rem;">
+							<pre id="publishRule"></pre>
+						</div>
+
+						<input type="button" class="f_26 clr_f dis_b waiting_check_a close_video_mask" 
+						style="background: #f95d47;border:0;width:10rem;height:1.8rem;line-height: 1.8rem;" value="我知道了" />
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					$('.close_video_mask').click(function(){
+						$(this).parents('.video_mask').hide();
+					});
+				</script>
 	
 </body>
 

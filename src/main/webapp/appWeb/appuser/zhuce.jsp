@@ -66,7 +66,7 @@ body{background: #f0f2f5;}
 		}
 
 		.bjt_0{
-			background-image: url("<%=basePath%>/js/appWeb/images/1昵称.png");
+			background-image: url("<%=basePath%>/js/appWeb/images/nicheng.png");
 			background-size:0.8rem;
 			background-repeat: no-repeat;
 			background-position: left;
@@ -74,7 +74,7 @@ body{background: #f0f2f5;}
 		}
 
 		.bjt_1{
-			background-image: url("<%=basePath%>/js/appWeb/images/1锁.png");
+			background-image: url("<%=basePath%>/js/appWeb/images/suo.png");
 			background-size:0.8rem;
 			background-repeat: no-repeat;
 			background-position: left;
@@ -83,7 +83,7 @@ body{background: #f0f2f5;}
 		}
 
 		.bjt_2{
-			background-image: url("<%=basePath%>/js/appWeb/images/1账号.png");
+			background-image: url("<%=basePath%>/js/appWeb/images/zhanghao.png");
 			background-size:0.8rem;
 			background-repeat: no-repeat;
 			background-position: left;
@@ -108,22 +108,21 @@ body{background: #f0f2f5;}
 
 	<div class="wraper overh ">
 		<div class="title_top dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="width:0.4rem;" /></a>
+			<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="width:0.4rem;" /></a>
 			<p class="f_30 ">注册账号</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;visibility: hidden;" /></a>
-	
 		</div>
 		<div class=" pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba ">
 			<input id="user" onkeyup="signOn();" class="bjt_0 ipt3 f_28 clr_9" type="text" placeholder="请输入你的昵称" />
 		</div>
 		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba " style="position: relative">
-			<img src="<%=basePath%>/js/appWeb/images/1眼睛.png" style="width: 0.8rem; position: absolute; right: 1rem">
+			<img src="<%=basePath%>/js/appWeb/images/yanjing.png" style="width: 0.8rem; position: absolute; right: 1rem">
 			<input id="passWord" onkeyup="signOn();" class="bjt_1 ipt3 f_28 clr_9" type="password" placeholder="请输入你的密码" />
 		</div>
 		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba ">
 			<input id="phonenum" onkeyup="signOn();" class="bjt_2 ipt3 f_28 clr_9" type="text" placeholder="请输入你的手机号" />
 		</div>
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba" style="position: relative">
+		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba " style="position: relative">
 			<input onkeyup="signOn();" id="IdenCode" class="ipt3 f_28 clr_9" type="text" placeholder="请输入你的验证码" />
 			<button id="on"  class="yanzhengma f_24"  value="发送验证码" onclick="settime()">发送验证码</button>
 		</div>
@@ -133,5 +132,4 @@ body{background: #f0f2f5;}
 		</div>
 	</div>
 </body>
-
 </html>

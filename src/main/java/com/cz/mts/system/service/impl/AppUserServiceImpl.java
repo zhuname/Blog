@@ -450,7 +450,6 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			
-			
 			//判断用户余额足不足
 			if(appUser.getBalance()<cardSum.doubleValue()){
 				return 5;

@@ -68,12 +68,12 @@ Object data=session.getAttribute("data");
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
 			
-			<img src="images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
+			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
 			<ul class="more_ul pad_20 dis_n">
 				<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-				<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
-				<li><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">收藏</span></li>
-				<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
+				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
+				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
+				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 			</ul>
 
 			<script type="text/javascript">
@@ -226,7 +226,8 @@ Object data=session.getAttribute("data");
 			{{else}}
 			{{if status}}	
 			{{if status==3}}
-			<a class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #f95d47;">立即领取</a>
+			<a class="f_26 clr_f dis_b waiting_check_a" id="ljll"  onclick="lingqu();" style="background: #f95d47;display:none;">立即领取</a>
+			<a class="f_26 clr_f dis_b waiting_check_a" id="lqjs"  style="background: #c8c8cc;">倒计时<span id="miao">10</span>秒抢红包</a>
 			{{else status==4}}
 			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢完</a>
 			{{/if}}	
@@ -335,7 +336,7 @@ Object data=session.getAttribute("data");
 			<div class="honus_bg pos_rela">
 				<div style="position: absolute; height: 2rem;width:7rem; bottom: 0.5rem; left: 3rem"  onclick="lingquList();"></div>
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" class="ver_mid close_hb" style="width:1rem;height:1rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
-				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="money"></span><span class="f_24">元</span></div>
+				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="moneyShow"></span><span class="f_24">元</span></div>
 
 				<div class="al_ct" style="padding-top:4.5rem;">
 					<img class="ver_mid" id="header" style="width:3rem;border-radius: 1.5rem;" />
@@ -351,6 +352,9 @@ Object data=session.getAttribute("data");
 				<input class="btn4 f_30 clr_f mt_30 qd_click" value="确定"  onclick="lingqu();" type="button" />
 			</div>
 		</div>
+		
+		
+		
 	
 </body>
 

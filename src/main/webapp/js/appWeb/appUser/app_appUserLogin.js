@@ -6,34 +6,6 @@ var This=this;
     	var openid=null;
     	This.openid=openid;
     	var code=getQueryString("code");
-    	if(code!=null){
-    		$.ajax({
-    			url : '../admin/data/read_openId.action?code='+code,
-    			type : "get",
-    			success : function(result){
-    				result = JSON.parse(result);
-    				data = JSON.parse(result.data);
-    				data = JSON.parse(data);
-    				openid=data.openid;
-    			},
-    			error:function(XMLHttpRequest, textStatus, errorThrown){
-    				console.log(XMLHttpRequest) ;
-    				console.log(textStatus) ;
-    			}
-    		});
-    	}else{
-    		$.ajax({
-    			url : '/mts/system/appuser/openWx/json',
-    			type : "get",
-    			success : function(result){
-    				window.location.href=result;
-    			},
-    			error:function(XMLHttpRequest, textStatus, errorThrown){
-    				console.log(XMLHttpRequest) ;
-    				console.log(textStatus) ;
-    			}
-    		});
-    	}
     } else {  
     	 //alert('判断：非微信端登录');
     }  
@@ -78,7 +50,62 @@ var This=this;
     	
     	
     }
-
+    
+    
+    var code=getQueryString("code");
+    var openid=null;
+    var unionid = null ;
+    $().ready(function(){
+    if(code!=null&&code!=undefined&&code!="undefined"){
+    	$.ajax({
+    		url : '/mts/system/appuser/openId/json?web=1&code='+code,
+    		type : "get",
+    		success : function(result) {
+    			data = JSON.parse(result.data);
+    			data = JSON.parse(data);
+    			$.ajax({
+    	    		url : '/mts/system/appuser/getWxUser/json?web=1&openId='+data.openid,
+    	    		type : "get",
+    	    		success : function(result) {
+    	    			data = JSON.parse(result.data);
+    	    			var checkSex="";
+    	    			if(data.sex==1){
+    	    				checkSex="男";
+    	    			}else if(data.sex==2){
+    	    				checkSex="女";
+    	    			}
+    	    			$.ajax({
+    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname,
+    	    	    		type : "get",
+    	    	    		success : function(result) {
+    	    	    			window.location.href="/mts/appWeb/appuser/appuserLook.jsp"; 
+    	    	    		},
+    	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    	    	    			console.log(XMLHttpRequest) ;
+    	    	    			console.log(textStatus) ;
+    	    	    		}
+    	    	    	});
+    	    			
+    	    		},
+    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    	    			console.log(XMLHttpRequest) ;
+    	    			console.log(textStatus) ;
+    	    		}
+    	    	});
+    			
+    			
+    		},
+    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    			console.log(XMLHttpRequest) ;
+    			console.log(textStatus) ;
+    		}
+    	});
+    }
+    })
+    
+    function wxCheck() { 
+    	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    }
 
 function getQueryString(aaa) { 
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 

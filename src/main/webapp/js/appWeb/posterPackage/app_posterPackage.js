@@ -4,6 +4,13 @@ var dataString="";
 //初始化页面
 show();
 
+function selectCategory(categoryId){
+	nextPage=1;
+	$('#posterPackage').html("");
+	dataString='&categoryId='+categoryId;
+	show();
+}
+
 function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
@@ -40,6 +47,8 @@ function show(){
 			}
 			if(result.data!=undefined){
 				for (var int = 0; int < result.data.length; int++) {
+					
+					result.data[int].image=result.data[int].image.split(";")[0];
 					
 					$('#posterPackage_list_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
 					

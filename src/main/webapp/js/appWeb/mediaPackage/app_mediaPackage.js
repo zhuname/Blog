@@ -4,6 +4,13 @@ var dataString="";
 //初始化页面
 show();
 
+function selectCategory(categoryId){
+	nextPage=1;
+	$('#mediaPackage').html("");
+	dataString='&categoryId='+categoryId;
+	show();
+}
+
 function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
@@ -30,7 +37,7 @@ function show(){
 	var data='&pageIndex='+nextPage+dataString;
 	
 	$.ajax({
-		url : '/mts/system/mediapackage/list/json?web=&status=3&type=1'+data,
+		url : '/mts/system/mediapackage/list/json?web=&status=3&personType=1'+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -52,7 +59,6 @@ function show(){
 		}
 	});
 }
-
 
 $.ajax({
 	url : '/mts/system/lunbopic/list/json?web=&position=2&cityId='+getQueryString("cityId"),

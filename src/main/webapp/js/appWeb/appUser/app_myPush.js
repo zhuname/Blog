@@ -4,11 +4,14 @@ var dataString="";
 var statusType=1;
 var changeType=1;
 var userId;
+var isChange=0;
 //初始化页面
 show();
 
 //加载页面方法
 function show(){
+	if(isChange==0){
+		isChange=1;
 	var data='&pageIndex='+nextPage;
 	//加载页面方法
 	$.ajax({
@@ -38,6 +41,7 @@ function show(){
 									
 								}
 							}
+							isChange=0;
 						},
 						error:function(XMLHttpRequest, textStatus, errorThrown){
 							console.log(XMLHttpRequest) ;
@@ -50,9 +54,15 @@ function show(){
 				console.log(textStatus) ;
 			}
 		});
+	}
 }
 
+
+
+
 function change(type,isClear,li){
+	if(isChange==0){
+	isChange=1;
 	switch (isClear) {
 	case 1:
 		$("#posterPackage").html("");
@@ -111,9 +121,9 @@ function change(type,isClear,li){
 						}else{
 							$('#posterPackage_list_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
 						}
-						
 					}
 				}
+				isChange=0;
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -143,8 +153,8 @@ function change(type,isClear,li){
 						}
 						
 					}
-					
 				}
+				isChange=0;
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -196,8 +206,8 @@ function change(type,isClear,li){
 						}
 						
 					}
-					
 				}
+				isChange=0;
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -242,6 +252,7 @@ function change(type,isClear,li){
 					}
 					
 				}
+				isChange=0;
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -257,19 +268,22 @@ function change(type,isClear,li){
 	default:
 		break;
 	}
+	}
 	
 }
 
 function changeStatus(status,li){
-	var statuss=$('.status');
-	for (var int = 0; int < statuss.length; int++) {
-		$(statuss[int]).removeAttr("class");
-		$(statuss[int]).attr("class","shenhe_norm padl_20 status");
+	if(isChange==0){
+		var statuss=$('.status');
+		for (var int = 0; int < statuss.length; int++) {
+			$(statuss[int]).removeAttr("class");
+			$(statuss[int]).attr("class","shenhe_norm padl_20 status");
+		}
+		$(li).attr("class","shenhe_cur padl_20 status");
+		statusType = status;
+		nextPage = 1 ;
+		change(changeType,1);
 	}
-	$(li).attr("class","shenhe_cur padl_20 status");
-	statusType = status;
-	nextPage = 1 ;
-	change(changeType,1);
 }
 
 window.onscroll=function(){

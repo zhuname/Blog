@@ -179,32 +179,32 @@ html,body{height:100%;}
 			<span id="Z" ></span>
 
 			<div class="left_dvwz">
-				<a href="A" class="f_22">A</a>
-				<a href="B" class="f_22">B</a>
-				<a href="C" class="f_22">C</a>
-				<a href="D" class="f_22">D</a>
-				<a href="E" class="f_22">E</a>
-				<a href="F" class="f_22">F</a>
-				<a href="G" class="f_22">G</a>
-				<a href="H" class="f_22">H</a>
-				<a href="I" class="f_22">I</a>
-				<a href="J" class="f_22">J</a>
-				<a href="K" class="f_22">K</a>
-				<a href="L" class="f_22">L</a>
-				<a href="M" class="f_22">M</a>
-				<a href="N" class="f_22">N</a>
-				<a href="O" class="f_22">O</a>
-				<a href="P" class="f_22">P</a>
-				<a href="Q" class="f_22">Q</a>
-				<a href="R" class="f_22">R</a>
-				<a href="S" class="f_22">S</a>
-				<a href="T" class="f_22">T</a>
-				<a href="U" class="f_22">U</a>
-				<a href="V" class="f_22">V</a>
-				<a href="W" class="f_22">W</a>
-				<a href="X" class="f_22">X</a>
-				<a href="Y" class="f_22">Y</a>
-				<a href="Z" class="f_22">Z</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('A').scrollIntoView();" class="f_22">A</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('B').scrollIntoView();"  class="f_22">B</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('C').scrollIntoView();" class="f_22">C</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('D').scrollIntoView();" class="f_22">D</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('E').scrollIntoView();" class="f_22">E</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('F').scrollIntoView();" class="f_22">F</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('G').scrollIntoView();" class="f_22">G</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('H').scrollIntoView();" class="f_22">H</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('I').scrollIntoView();" class="f_22">I</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('J').scrollIntoView();" class="f_22">J</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('K').scrollIntoView();" class="f_22">K</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('L').scrollIntoView();" class="f_22">L</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('M').scrollIntoView();" class="f_22">M</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('N').scrollIntoView();" class="f_22">N</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('O').scrollIntoView();" class="f_22">O</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('P').scrollIntoView();" class="f_22">P</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('Q').scrollIntoView();" class="f_22">Q</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('R').scrollIntoView();" class="f_22">R</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('S').scrollIntoView();" class="f_22">S</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('T').scrollIntoView();" class="f_22">T</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('U').scrollIntoView();" class="f_22">U</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('V').scrollIntoView();" class="f_22">V</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('W').scrollIntoView();" class="f_22">W</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('X').scrollIntoView();" class="f_22">X</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('Y').scrollIntoView();" class="f_22">Y</a>
+				<a href="javascript:void(0)" onclick="document.getElementById('Z').scrollIntoView();" class="f_22">Z</a>
 			</div>
 		</div>
 

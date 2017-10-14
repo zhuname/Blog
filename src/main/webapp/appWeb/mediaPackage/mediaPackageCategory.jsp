@@ -65,22 +65,18 @@ html,body{height:100%;}
 
 	<div class="wraper overh " style="background: #f9f9fb;height:100%;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">海报分类</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;visibility: hidden;" /></a>
-	
 		</div>
-
 		<div class="bg_f" style="height:100%;" id="category">
 
 		</div>
-
 		<script id="category_list_tmpl" type="text/x-jquery-tmpl">
 			<div class="f_26 clr_3 dis_f al_ct pad_20 borderbot1"  onclick="check('{{= id}}','{{= name}}');">
 				<img src="{{= image}}" class="dis_b more_ul_toggle" style="width:1rem;height:1rem;margin-right:0.5rem;" />{{= name}}
 			</div>
 		</script>
-
 	</div>
 </body>
 

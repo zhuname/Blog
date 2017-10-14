@@ -190,7 +190,7 @@ body{background: #f0f2f5;}
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">发布同城活动</p>
-			<a ><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:1rem;" /></a>
+			<a onclick="javascript:$('#guize').show();"><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:1rem;" /></a>
 	
 		</div>
 
@@ -603,6 +603,24 @@ body{background: #f0f2f5;}
             document.getElementById("showDate").style.display="none";
         };
     </script>
+    
+    
+    <div class="video_mask" id="guize" style="display: none;">
+					<div class="video_bg">
+						<div class="f_24 clr_3 pad_30" style="padding-top:4rem;line-height: 1rem;">
+							<pre id="publishRule"></pre>
+						</div>
+
+						<input type="button" class="f_26 clr_f dis_b waiting_check_a close_video_mask" 
+						style="background: #f95d47;border:0;width:10rem;height:1.8rem;line-height: 1.8rem;" value="我知道了" />
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					$('.close_video_mask').click(function(){
+						$(this).parents('.video_mask').hide();
+					});
+				</script>
 	
 </body>
 

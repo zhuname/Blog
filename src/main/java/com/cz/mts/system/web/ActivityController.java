@@ -299,7 +299,7 @@ public class ActivityController  extends BaseController {
 		  if(activity.getViewedCount()==null){
 			  activity.setViewedCount(1);
 		  }else {
-			  if(activity.getStatus()!=3&&activity.getStatus()!=4){
+			  if(activity.getStatus().intValue()==3&&activity.getStatus().intValue()!=4){
 				  activity.setViewedCount(activity.getViewedCount()+1);
 			  }
 			  if((activity.getViewedCount()%100)==0){

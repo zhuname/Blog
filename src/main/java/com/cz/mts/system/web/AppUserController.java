@@ -1,5 +1,6 @@
 package  com.cz.mts.system.web;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,12 +55,9 @@ import com.cz.mts.frame.util.SecUtils;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
 import com.cz.mts.system.entity.Attention;
-import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Medal;
-import com.cz.mts.system.entity.Menu;
 import com.cz.mts.system.entity.MoneyDetail;
 import com.cz.mts.system.entity.Password;
-import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Sms;
 import com.cz.mts.system.entity.UserMedal;
 import com.cz.mts.system.entity.WxBean;
@@ -720,6 +717,7 @@ public class AppUserController  extends BaseController {
 				//没有找到的话就是新增接口
 				returnObject.setMessage(MessageUtils.UPDATE_SUCCESS);
 				try {
+					
 					appUser.setCreateTime(new Date());
 					appUser.setIsBlack(0);
 					appUser.setCurrentLqNum(1);
@@ -735,7 +733,33 @@ public class AppUserController  extends BaseController {
 					appUser.setIsPush(1);
 					appUser.setIsAppointFee(0);
 					
+					
+					String web = request.getParameter("web");
+					if(web!=null){
+						StringBuilder result1 = new StringBuilder();//响应正文
+						InputStream instream = new  ByteArrayInputStream(appUser.getName().getBytes()); ;
+						byte[] bytes = new byte[4096];
+						int size = 0;
+						try {
+							while ((size = instream.read(bytes)) > 0) {
+								String str = new String(bytes, 0, size, "utf-8");
+								result1.append(str);
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+						} finally {
+							try {
+								instream.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+						appUser.setName(result1.toString());
+					}
+					
+					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
+					session.setAttribute("appUserSessionId", appuser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
 				} catch (Exception e) {
 					String errorMessage = e.getLocalizedMessage();
@@ -1804,32 +1828,94 @@ public class AppUserController  extends BaseController {
 		return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuser.jsp&response_type=code&scope=snsapi_userinfo";
 	}
 	
+	@RequestMapping(value = "/getWxUser/json")
+	public  @ResponseBody
+	ReturnDatas getWxUser(HttpServletRequest request,AppUser appUser) throws  Exception{
+		logger.info("appUser--->getWxUser");
+		String openId = request.getParameter("openId");
+		ReturnDatas returnDatas = new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.SELECT_SUCCESS) ;
+		if(StringUtils.isNotBlank(openId)){
+			CloseableHttpClient httpclient = HttpClients.createDefault();  
+			try {
+				// 创建httpget.
+				String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+getAccessToken()+"&openid="+openId+"&lang=zh_CN" ;
+				HttpGet httpget = new HttpGet(url);
+				System.out.println("executing request " + httpget.getURI());  
+				// 执行get请求.
+				CloseableHttpResponse httpResponse = httpclient.execute(httpget);  
+				HttpEntity entity = httpResponse.getEntity();  
+				try {  
+					
+					String wx=EntityUtils.toString(entity);
+					System.out.println(wx);
+                	new JSONObject();
+					//解析出来获取Unionid的json
+                	JSONObject obj = JSONObject.fromObject(wx);//将json字符串转换为json对象
+                	WxBean wxBean = (WxBean)JSONObject.toBean(obj,WxBean.class);//将建json对象转换为Person对象
+                	
+					// 获取响应实体    
+					System.out.println("--------------------------------------");  
+					// 打印响应状态    
+					System.out.println(httpResponse.getStatusLine());  
+					if (entity != null) { 
+						//String string=EntityUtils.toString(entity);
+						//System.out.println("微信返回----------->"+string);
+						returnDatas.setData(Common.toJson(wxBean));
+						// 打印响应内容长度    
+						//System.out.println("Response content length: " + entity.getContentLength());  
+						// 打印响应内容
+						//System.out.println("Response content: " + EntityUtils.toString(entity));
+						httpResponse.close();  
+					}
+					System.out.println("------------------------------------");  
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			} catch (ClientProtocolException e) {  
+				e.printStackTrace();  
+			} catch (ParseException e) {  
+				e.printStackTrace();  
+			} catch (IOException e) {  
+				e.printStackTrace();  
+			} finally {  
+				// 关闭连接,释放资源    
+				try {  
+					httpclient.close();  
+				} catch (IOException e) {  
+					e.printStackTrace();  
+				}
+			}  
+		}
+  		return returnDatas;
+	}
 	
 	
 	@RequestMapping(value = "/openId/json")
 	public  @ResponseBody
 	ReturnDatas openIdJson(HttpServletRequest request,AppUser appUser) throws  Exception{
 		logger.info("appUser--->openId");
+		ReturnDatas returnDatas = new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.SELECT_SUCCESS) ;
 		String code = request.getParameter("code");
 		if(StringUtils.isNotBlank(code)){
 			CloseableHttpClient httpclient = HttpClients.createDefault();  
-			ReturnDatas returnDatas = new ReturnDatas(ReturnDatas.SUCCESS,MessageUtils.SELECT_SUCCESS) ;
 			try {
 				// 创建httpget.    
 				String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx8653ea068146c48c&secret=14392f71468a99159688155f5aa98e38&code="+code+"&grant_type=authorization_code" ;
 				HttpGet httpget = new HttpGet(url);
 				System.out.println("executing request " + httpget.getURI());  
-				// 执行get请求.    
+				// 执行get请求.
 				CloseableHttpResponse httpResponse = httpclient.execute(httpget);  
 				HttpEntity entity = httpResponse.getEntity();  
 				try {  
+                	//getWxUser(request, appUser, wxBean.getOpenid());
+                	
 					// 获取响应实体    
 					System.out.println("--------------------------------------");  
 					// 打印响应状态    
 					System.out.println(httpResponse.getStatusLine());  
 					if (entity != null) { 
 						String string=EntityUtils.toString(entity);
-						System.out.println("微信返回----------->"+string);
+						//System.out.println("微信返回----------->"+string);
 						returnDatas.setData(Common.toJson(string));
 						// 打印响应内容长度    
 						//System.out.println("Response content length: " + entity.getContentLength());  
@@ -1856,7 +1942,7 @@ public class AppUserController  extends BaseController {
 				}
 			}  
 		}
-  		return null;
+  		return returnDatas;
 	}
 	
 	
@@ -1945,6 +2031,7 @@ public class AppUserController  extends BaseController {
 	 * @author wml
 	 * @throws Exception 
 	 */
+	@RequestMapping(value = "/openGetUnionid/json")
 	public String openGetUnionid(String openId) throws Exception{
 		logger.info("admin--read--->openGetUnionid");
 		
@@ -2023,6 +2110,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 * @author wml
 	 */
+	@RequestMapping(value = "/getUnionid/json")
 	public String getUnionid(String accessToken,String openId) throws Exception{
 		logger.info("admin--read--->getUnionid");
 		  CloseableHttpClient httpclient = HttpClients.createDefault(); 
@@ -2078,6 +2166,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 * @author wml
 	 */
+	@RequestMapping(value = "/createZidong/json")
 	public void createZidong(String openId,String menu) throws Exception{
 		logger.info("admin--read--->createMenu");
 		
@@ -2121,6 +2210,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 * @author wml
 	 */
+	@RequestMapping(value = "/getAccessToken/json")
 	public String getAccessToken() throws Exception{
 		logger.info("admin--read--->access_token");
 		
@@ -2179,6 +2269,7 @@ public class AppUserController  extends BaseController {
 	 * @throws Exception
 	 * @author wml
 	 */
+	@RequestMapping(value = "/createMenu/json")
 	public void createMenu() throws Exception{
 		logger.info("appuser--->createMenu");
 		
@@ -2232,7 +2323,7 @@ public class AppUserController  extends BaseController {
 	        String action = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token="+access_token;
 	        try {
 	           URL url = new URL(action);
-	           HttpURLConnection http =   (HttpURLConnection) url.openConnection();    
+	           HttpURLConnection http = (HttpURLConnection) url.openConnection();    
 
 	           http.setRequestMethod("POST");
 	           http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");

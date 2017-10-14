@@ -50,7 +50,14 @@ public class ConfigBean implements Serializable{
 	private String cardDetail;
 	private String activityDetail;
 	private String circleDetail;
+	private String appVersionNumberIos;
 	
+	public String getAppVersionNumberIos() {
+		return appVersionNumberIos;
+	}
+	public void setAppVersionNumberIos(String appVersionNumberIos) {
+		this.appVersionNumberIos = appVersionNumberIos;
+	}
 	
 	
 	

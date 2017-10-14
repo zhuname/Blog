@@ -72,7 +72,7 @@ Object data=session.getAttribute("data");
 			<ul class="nav_ul dis_f ali_ct jus_bt" style="width:12rem;margin:0 auto;">
 				<li><a onclick="window.location.href='/mts/appWeb/index/index.jsp';"  class="dis_f ali_ct flex_col clr_r jus_ct">
 				<img src="<%=basePath%>/js/appWeb/images/b1.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">美天赏</p></a></li>
-				<li><a href="#"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
+				<li><a  onclick="addShow();"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
 				<li><a  onclick="window.location.href='/mts/appWeb/appuser/appuserLook.jsp';" class="dis_f ali_ct flex_col clr_6 jus_ct">
 				<img src="<%=basePath%>/js/appWeb/images/b2.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">我的</p></a></li>
 			</ul>
@@ -211,7 +211,7 @@ Object data=session.getAttribute("data");
 
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">
-						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
 						<div class="f_28 clr_f mt_10">城市圈</div>
 					</div>
 

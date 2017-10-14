@@ -73,7 +73,7 @@ body{background: #f0f2f5;}
 		</div>
 
 
-	<div class="bg_f dis_f ali_ct jus_bt" style="padding:0.75rem 2.5rem;">
+	<%-- <div class="bg_f dis_f ali_ct jus_bt" style="padding:0.75rem 2.5rem;">
 		<div class="dis_f ali_ct f_24 clr_3 baba">
 			<img src="<%=basePath%>/js/appWeb/images/image.png" class="dis_b" style="width:1rem;" /> 
 			<div style="margin:0 0.5rem;">图片</div>
@@ -96,7 +96,7 @@ body{background: #f0f2f5;}
 				}
 			});
 		</script>
-	</div>
+	</div> --%>
 
 	<div class="bg_f pad_20 bordertop1">
 		<textarea placeholder="说点什么吧..." id="content" class="f_20 clr_9" style="width:15rem;height:4rem;border:0;"></textarea>

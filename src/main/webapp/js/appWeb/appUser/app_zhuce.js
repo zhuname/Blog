@@ -53,7 +53,7 @@ function sendCode(){
     var result = isPhoneNum();
     if(result){
     	sendMessage();
-        //doPostBack('http://192.168.1.110/mts/system/sms/content/json',backFunc1,{"phone":phonenum,"web":"","type":1});
+        //doPostBack('/mts/system/sms/content/json',backFunc1,{"phone":phonenum,"web":"","type":1});
         addCookie("secondsremained",60,60);//添加cookie记录,有效时间60s
         settime();//开始倒计时
     }
@@ -115,12 +115,12 @@ function isPhoneNum(){
 //发送短信接口
 function sendMessage(){
 $.ajax({
-			url : 'http://192.168.1.110/mts/system/sms/content/json?type=1&web=&phone='+$('#phonenum').val(),
+			url : '/mts/system/sms/content/json?type=1&web=&phone='+$('#phonenum').val(),
 			type : "post",
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
-					window.location.href="http://192.168.1.110/mts/appWeb/appuser/appuserLogin.jsp";
+					alert(result.message);;
 					return;
 				}
 				if(result.data!=undefined){
@@ -128,6 +128,7 @@ $.ajax({
 				}
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
+				alert(result.message);
 				console.log(XMLHttpRequest) ;
 				console.log(textStatus) ;
 			}
@@ -136,18 +137,18 @@ $.ajax({
 //注册接口
 function checkSignOn(){
 	$.ajax({
-			url : 'http://192.168.1.110/mts/system/appuser/update/json?web=&phone='+$("#phonenum").val()+'&name='+$("#user").val()+'&password='+$("#passWord").val()+'&content='+$("#IdenCode").val(),
+			url : '/mts/system/appuser/update/json?web=&phone='+$("#phonenum").val()+'&name='+$("#user").val()+'&password='+$("#passWord").val()+'&content='+$("#IdenCode").val(),
 			type : "post",
 			dataType : "json",
 			success : function(result){
 				debugger;
 				if(result.status=="error"){
-					window.location.href="http://192.168.1.110/mts/appWeb/appuser/appuserLogin.jsp";
+					alert(result.message);;
 					return;
 				}
 				if(result.data!=undefined){
 					console.log(result.data);
-					window.location.href="http://192.168.1.110/mts/appWeb/appuser/appuserLogin.jsp";
+					alert(result.message);;
 					return;
 				}
 			},

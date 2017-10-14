@@ -33,9 +33,10 @@ console.log(textStatus) ;
 });
 
 function xinzeng(){
-	var data='userId='+userId+'&cityId='+cityId+'&type='+chageType+'&content='+$('#content').html();
+	debugger;
+	var data='userId='+userId+'&cityId='+cityId+'&type='+chageType+'&content='+$('#content').val();
 	var url="";
-	if($('#content').html()==""||$('#content').html()==null){
+	if($('#content').val()==""||$('#content').val()==null){
 		alert('请完善信息');
 		return;
 	}
@@ -45,16 +46,18 @@ function xinzeng(){
 		var images = document.getElementsByName("images");
 		
 		for (var int = 0; int < images.length; int++) {
-			data+=$(images[int]).attr("src")+";";
+			if($(images[int]).attr("src")!=""&&$(images[int]).attr("src")!=undefined){
+				data+=$(images[int]).attr("src")+";";
+			}
 		}
+		
 	}else if (chageType==2) {
 		data+="&osType=html&mediaUrl="+$("#mediaUrl").val();
 	}
-	
-	if(getQueryString('activityId')!=undefined){
-		url='/mts/system/circle/update/json?';
+	if(getQueryString('activityId')!=""&&getQueryString('activityId')!=undefined&&getQueryString('activityId')!="undefined"){
+		url='/mts/system/joinactivity/update/json?activityId='+getQueryString("activityId")+'&';
 	}else{
-		url='/mts/system/joinactivity/update/json?';
+		url='/mts/system/circle/update/json?';
 	}
 	
 	url=url+data;
@@ -124,7 +127,20 @@ $(document).on("change", "#filed", function() {
         		$("#shipinShow").html("<video src=\""+data+"\"  style=\"width:100%;\"  controls=\"controls\">您的浏览器不支持 video 标签。</video>");
         		$("#mediaUrl").val(data);
         	}else if(chageType==1){
-        		$('#image_tmpl').tmpl({'imag':data}).appendTo($('#imageAdd'));
+        		
+        		var imageNum=0;
+            	var images = document.getElementsByName("images"); 
+            	
+        		for (var int = 0; int < images.length; int++) {
+        			if(images[int]==""){
+        				imageNum+1;
+        			}
+        		}
+            	
+            	if(imageNum!=9){
+            		$('#image_tmpl').tmpl({'imag':data}).appendTo($('#imageAdd'));
+            	}
+        		
         	}
         },
         error : function(data, status, e) {

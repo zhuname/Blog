@@ -85,6 +85,7 @@ Object data=session.getAttribute("data");
 		.wraper{
 			position:absolute;
 			z-index: -2;
+			width: 100%;
 		}
 
 

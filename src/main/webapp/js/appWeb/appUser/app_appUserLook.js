@@ -14,6 +14,11 @@ $.ajax({
 			return;
 		}
 		
+		if(result.data.cityId==undefined){
+			window.location.href="/mts/appWeb/appuser/myCity.jsp?id="+result.data.id;
+			return;
+		}
+		
 		if(result.data!=undefined){
 			$('#appuser_detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 			

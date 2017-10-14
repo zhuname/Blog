@@ -87,10 +87,10 @@ Object data=session.getAttribute("data");
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n"/>
 				<ul class="more_ul pad_20 dis_n" style="top:1.9rem;" >
-					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png" onclick="selectSort(1);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png" onclick="selectSort(2);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" onclick="selectSort(3);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_money.png" onclick="selectSort(4);" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">金额最多</span></li>
+					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/package_new.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
+					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
+					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/package_card.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
+					<li onclick="selectSort(4);"><img src="<%=basePath%>/js/appWeb/images/package_money.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">金额最多</span></li>
 				</ul>
 
 				<script type="text/javascript">
@@ -105,7 +105,7 @@ Object data=session.getAttribute("data");
 <div  class="overh" style="height:2.8rem;">
 	<div style="overflow-x: auto;padding-bottom:0.5rem;">
 		<div class="bg_f pad_2030 dis_f ali_ct jus_bt hbhb_nav" style="width:32rem;" id="category">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/c1.png" class="dis_b" style="width:1rem;" /><p class="f_20 clr_r">全部</p></a>
+			<a  onclick="javascript:selectCategory();"><img src="<%=basePath%>/js/appWeb/images/c1.png" class="dis_b" style="width:1rem;" /><p class="f_20 clr_r">全部</p></a>
 		</div>
 	</div>
 </div>
@@ -118,11 +118,11 @@ Object data=session.getAttribute("data");
 		</div>
 		
 		<script id="category_list_tmpl" type="text/x-jquery-tmpl">
-			<a href="#"><img src="{{= image}}" class="dis_b" style="width:1rem;" /><p class="f_20 clr_3">{{= name}}</p></a>
+			<a onclick="javascript:selectCategory({{= id}});"><img src="{{= image}}" class="dis_b" style="width:1rem;" /><p class="f_20 clr_3">{{= name}}</p></a>
 		</script>
 
 		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
-			<li><a href="#"><img src="{{= image}}" class="dis_b" /></a></li>
+			<li><a href="{{if type==1}}{{= url}}{{else type==2}}/mts/appWeb/posterPackage/posterPackageDetail.jsp?id={{= itemId}}{{else type==3}}/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= itemId}}{{else type==4}}/mts/appWeb/card/cardDetail.jsp?id={{= itemId}}{{else type==5}}/mts/appWeb/activity/activityDetail.jsp?id={{= itemId}}{{else type==6}}/mts/appWeb/circle/circleDetail.jsp?id={{= itemId}}{{/if}}"><img src="{{= image}}" class="dis_b" /></a></li>
 		</script>
 
 		<script id="posterPackage_list_tmpl" type="text/x-jquery-tmpl">

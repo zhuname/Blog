@@ -149,7 +149,7 @@ html,body{height:100%;}
 		
 				<li>
 					<img src="{{= image}}" class="dis_b" style="width:7.15rem;height:10rem;" />
-					<a  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageDetail.jsp?id={{= id}}';" class="dis_b mask_hb">
+					<a  class="dis_b mask_hb">
 						<div class="pad_20 dis_f ali_ct jus_bt">
 							<p class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/eye_lock.png" class="dis_b" style="width:0.6rem;" />
 							&nbsp;<span class="f_18 clr_f">{{= lookNum}}</span></p>
@@ -179,7 +179,7 @@ html,body{height:100%;}
 		
 				<li>
 						<img src="{{= image}}" class="dis_b" style="width:7.15rem;height:10rem;" />
-						<a href="#" class="dis_b mask_hb">
+						<a  class="dis_b mask_hb">
 							<div class="pad_20 dis_f ali_ct jus_bt">
 								<p class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/eye_lock.png" class="dis_b" style="width:0.6rem;" />
 									&nbsp;<span class="f_18 clr_f">{{= lookNum}}</span></p>
@@ -209,6 +209,11 @@ html,body{height:100%;}
 					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
 					<p >{{= title}}</p>
 				</div>
+				{{if encrypt==1}}
+				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
+					<img src="<%=basePath%>/js/appWeb/images/lock.png" class="dis_b" style="height:0.6rem;" />
+				</div>
+				{{/if}}
 
 				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
 					<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';" ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
@@ -239,14 +244,18 @@ html,body{height:100%;}
 		
 		<script id="media_list2_tmpl" type="text/x-jquery-tmpl">
 		<div class="mt_10 pos_rela ">
-				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';"  />
-				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
+				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"   />
+				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" >
 					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
 					<p >{{= title}}</p>
 				</div>
-
-				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
-					<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';" ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
+				{{if encrypt==1}}
+				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
+					<img src="<%=basePath%>/js/appWeb/images/lock.png" class="dis_b" style="height:0.6rem;" />
+				</div>
+				{{/if}}
+				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120" >
+					<a  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';"  ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
 					<div class="f_24 clr_f mt_40">{{if status}}{{if status==4}} 已抢完 {{else status==1}}正在审核 {{else status==2}}已拒绝{{else}}还有<span class="clr_ora">{{= balance}}元</span>待抢{{/if}}{{/if}}</div>
 				</div>
 				<div class="bg_f pad_20 dis_f ali_ct jus_bt">
@@ -271,20 +280,24 @@ html,body{height:100%;}
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
 						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;margin-right:0.5rem;">拒绝原因</div>
-						<div class="f_20 clr_3" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
+						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
 				</div>
 			</div>
 		</script>
 		
 		<script id="media_list4_tmpl" type="text/x-jquery-tmpl">
 		<div class="mt_10 pos_rela ">
-				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';"  />
-				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
+				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"  />
+				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" >
 					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
 					<p >{{= title}}</p>
 				</div>
-
-				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
+				{{if encrypt==1}}
+				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
+					<img src="<%=basePath%>/js/appWeb/images/lock.png" class="dis_b" style="height:0.6rem;" />
+				</div>
+				{{/if}}
+				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120">
 					<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';" ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
 					<div class="f_24 clr_f mt_40">{{if status}}{{if status==4}} 已抢完 {{else status==1}}正在审核 {{else status==2}}已拒绝{{else}}还有<span class="clr_ora">{{= balance}}元</span>待抢{{/if}}{{/if}}</div>
 				</div>
@@ -316,7 +329,7 @@ html,body{height:100%;}
 		
 		
 			<script id="card_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela" onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= id}}'">
+				<div class="pad_3020 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
@@ -363,7 +376,7 @@ html,body{height:100%;}
 		
 		
 		<script id="card_list3_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela" onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= id}}'">
+				<div class="pad_3020 pos_rela">
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
@@ -412,9 +425,9 @@ html,body{height:100%;}
 		</div>
 		</script>
 		
-		
 		<script id="card_list4_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela" onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= id}}'">
+				<div class="pad_3020 pos_rela" >
+			<img src="<%=basePath%>/js/appWeb/images/card_guoqi.png" class="dis_b end_img2"/>
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
@@ -428,9 +441,9 @@ html,body{height:100%;}
 						{{/if}}
 					{{/if}}
 					{{if appUser.userMedals}}
-					{{each appUser.userMedals}}
+						{{each appUser.userMedals}}
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
-   					 {{/each}}
+   					 	{{/each}}
 					{{/if}}
 					</div>
 					<div class="dis_f ali_ct">
@@ -463,7 +476,7 @@ html,body{height:100%;}
 		
 		
 		<script id="activity_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="mt_10 pos_rela"  onclick="window.location.href='/mts/appWeb/activity/activityDetail.jsp?id={{= id}}'";>
+				<div class="mt_10 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
 				{{if type==1}}
 				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{else}}
@@ -497,7 +510,7 @@ html,body{height:100%;}
 		
 		
 		<script id="activity_list4_tmpl" type="text/x-jquery-tmpl">
-				<div class="mt_10 pos_rela"  onclick="window.location.href='/mts/appWeb/activity/activityDetail.jsp?id={{= id}}'";>
+				<div class="mt_10 pos_rela" >
 				{{if type==1}}
 				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{else}}
@@ -533,7 +546,7 @@ html,body{height:100%;}
 		</script>
 		
 		<script id="activity_list2_tmpl" type="text/x-jquery-tmpl">
-				<div class="mt_10 pos_rela"  onclick="window.location.href='/mts/appWeb/activity/activityDetail.jsp?id={{= id}}'";>
+				<div class="mt_10 pos_rela" >
 				{{if type==1}}
 				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{else}}

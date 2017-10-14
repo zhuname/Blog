@@ -37,6 +37,12 @@ $.ajax({
 					
 				}
 				
+				if(result.data.convertMoney==undefined){
+					result.data.convertMoney="免费";
+				}else{
+					result.data.convertMoney = parseFloat(result.data.convertMoney).toFixed(2);
+				}
+				
 				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 				
 				convertMoney=result.data.convertMoney;

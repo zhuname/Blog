@@ -103,10 +103,9 @@ $(document).on("change", "#filed", function() {
 
 
 	<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a href="#"><img src="<%=basePath%>/js/appWeb/images/back.png"   onclick="javascript:window.history.back();" class="dis_b" style="width:1rem;" /></a>
+			<a onclick="window.location.href='/mts/appWeb/appuser/appuserLook.jsp';"><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">个人资料</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;visibility: hidden;" /></a>
-	
 		</div>
 
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1" onclick="headOnc();" >
@@ -142,7 +141,7 @@ $(document).on("change", "#filed", function() {
 			</div>
 		</div>
 
-		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1">
+		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1" onclick="window.location.href='/mts/appWeb/appuser/myCity.jsp?id={{= id}}';" >
 			<img src="<%=basePath%>/js/appWeb/images/dz.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
 				<p>{{= cityName}}</p>

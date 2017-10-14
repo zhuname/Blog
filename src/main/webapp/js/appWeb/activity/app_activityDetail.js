@@ -3,6 +3,7 @@ var userId;
 var id;
 var type;
 var cityId;
+var itemUserId;
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -37,6 +38,12 @@ $.ajax({
 					result.data.endTime=result.data.endTime.substring(0,10);
 					
 				}
+				
+				id=result.data.id;
+				
+				//右上角
+				itemUserId=result.data.userId;
+				initColl();
 				
 				var image=null;
 				
@@ -98,6 +105,100 @@ function change(changeType){
 		$('#huodongBtn').attr("style","background: #c8c8cc;width:8rem;");
 		$('#canyuBtn').attr("style","background: #539df2;width:8rem;");
 	}
+}
+
+function initColl(){
+	
+	if(userId!=itemUserId){
+	
+		//加载页面方法
+		$.ajax({
+		url : '/mts/system/attention/atten/json?web=&userId='+userId+'&itemId='+itemUserId,
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+			if(result.data==0){
+				$("#attr").html("关注");
+			}else{
+				$("#attr").html("已关注");
+			}
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
+		//加载页面方法
+		$.ajax({
+		url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+			if(result.data==0){
+				$("#collect").html("收藏");
+			}else{
+				$("#collect").html("已收藏");
+			}
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
+	
+	}else{
+		$($("#attr").parent()).remove();
+		$($("#collect").parent()).remove();
+	}
+}
+
+function collect(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/update/json?web=&type=1&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function attr(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 }
 
 

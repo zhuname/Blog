@@ -3,6 +3,7 @@ var nextPage=1;
 var type=1;
 var id;
 var userId;
+var itemUserId;
 var packageUserId;
 var encrypt;
 
@@ -72,6 +73,12 @@ var encrypt;
 					
 					
 					id=result.data.id;
+					
+					
+					//右上角
+					itemUserId=result.data.userId;
+					initColl();
+					
 					//初始化页面
 					change(4);
 					
@@ -95,6 +102,8 @@ var encrypt;
 										}
 										
 									}
+							}else{
+								$($('#yuyue')).parent().remove();
 							}
 						},
 						error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -377,7 +386,7 @@ function oper(type){
 				dataType : "json",
 				success : function(result){
 					if(result.status=="error"){
-						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+						alert(result.message);;
 						return;
 					}
 				    window.location.reload();
@@ -391,6 +400,98 @@ function oper(type){
 	}
 }
 	
+
+
+function initColl(){
+	if(userId!=itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/atten/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#attr").html("关注");
+		}else{
+			$("#attr").html("已关注");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#collect").html("收藏");
+		}else{
+			$("#collect").html("已收藏");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	}else{
+		$($("#attr").parent()).remove();
+		$($("#collect").parent()).remove();
+	}
+}
+
+function collect(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/update/json?web=&type=2&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function attr(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
 	
 window.onscroll=function(){
 	var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;

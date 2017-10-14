@@ -3,6 +3,7 @@ var nextPage=1;
 var type=1;
 var id;
 var userId;
+var itemUserId;
 var packageUserId;
 var encrypt;
 var isFoot=1;
@@ -80,6 +81,7 @@ var isFoot=1;
 					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
+					
 					var lunbo=result.data.image.split(";");
 					
 					for (var int = 0; int < lunbo.length; int++) {
@@ -91,9 +93,19 @@ var isFoot=1;
 						}
 						
 					}
+					jishi();
+					
+					
 					
 					
 					id=result.data.id;
+					
+					//右上角
+					itemUserId=result.data.userId;
+					initColl();
+					
+					
+					
 					//初始化页面
 					change(2);
 					//获取预约列表
@@ -183,6 +195,8 @@ var isFoot=1;
 						}
 					});
 					
+					
+					
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -190,6 +204,22 @@ var isFoot=1;
 			console.log(textStatus) ;
 		}
 	});
+	
+	function jishi(){
+		
+		var miao=$("#miao").html();
+		
+		if(miao==0){
+			$("#lqjs").hide();
+			$("#ljll").show();
+		}
+		
+		$("#miao").html(miao-1);
+		
+		setTimeout(jishi,1000);  
+		
+	}
+	
 	
 	
 	function change(changeType){
@@ -344,7 +374,7 @@ function yuyue(){
 						alert(result.message);
 						return;
 					}
-					$('#money').html(result.data.money);
+					$('#moneyShow').html(result.data.money);
 					$('.bonus_mask').show();
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -358,9 +388,11 @@ function yuyue(){
 	function lingquList(){
 		window.location.href="/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId="+id+"&type=1";
 	}
-
+var isOpers=0;
 
 function oper(type){
+	if(isOpers==0){
+	
 	if(type==2){
 		
 		if($("#comment").val()!=null&&$("#comment").val()!=""){
@@ -375,6 +407,7 @@ function oper(type){
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
+					$("#comment").val("");
 					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -403,8 +436,104 @@ function oper(type){
 			}
 		});
 	}
+	
+	}
 }
 	
+
+function initColl(){
+	if(userId!=itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/atten/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#attr").html("关注");
+		}else{
+			$("#attr").html("已关注");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#collect").html("收藏");
+		}else{
+			$("#collect").html("已收藏");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	}else{
+		$($("#attr").parent()).remove();
+		$($("#collect").parent()).remove();
+	}
+}
+
+function collect(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/update/json?web=&type=1&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function attr(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		debugger;
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
 	
 window.onscroll=function(){
 	var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;

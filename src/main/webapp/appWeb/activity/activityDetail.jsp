@@ -62,6 +62,11 @@ Object data=session.getAttribute("data");
 						$('.xx_daohang').toggle();
 						$('.xx_pic').toggle();
 					});
+					
+					function showColl(show){
+						$(show).siblings('.more_ul').toggle();
+						$(show).siblings('.arr_up_down').toggle();
+					};
 				</script>
 
 <body>
@@ -79,13 +84,13 @@ Object data=session.getAttribute("data");
 					<input class="ipt2 f_22 clr_he" type="text" placeholder="昵称/主题" />
 					<input class="btn2" type="button" />
 				</div>
-				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
+				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
 					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
+					<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
+					<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">屏蔽</span></li>
+					<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 				</ul>
 				
 			</div>
@@ -154,10 +159,10 @@ Object data=session.getAttribute("data");
 
 
 			<div class="bg_f pad_20 clr_3 f_22 " id="huodongShow" style="line-height: 1rem;">
-				
+
 			</div>
 
-			<div class="bg_f pad_20 clr_3 f_22 " id="canyuShow" style="display:none;line-height: 1rem;">
+			<div class="bg_f pad_20 clr_3 f_22 " id="canyuShow" style="display:none;line-height: 1rem;width:93%;word-break:   break-all;   word-wrap:break-word;border:0px   solid  #555">
 				<pre>{{= joinExplain}}</pre>
 			</div>
 
@@ -212,8 +217,6 @@ Object data=session.getAttribute("data");
 			</br>
 		</script>
 		
-		
-		
 		<script id="canyu_tmpl" type="text/x-jquery-tmpl">
 			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 		</script>
@@ -221,7 +224,6 @@ Object data=session.getAttribute("data");
 		<script id="zhongjiang_tmpl" type="text/x-jquery-tmpl">
 			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 		</script>
-
 
 	</div>
 </body>

@@ -25,7 +25,7 @@ function show(){
 				userId=result.data.id;
 			//获取用户信息
 			$.ajax({
-				url : '/mts/system/attention/fensiList/json?itemId='+result.data.id+'&pageIndex='+nextPage,
+				url : '/mts/system/attention/fensiList/json?web=&itemId='+result.data.id+'&pageIndex='+nextPage,
 				type : "post",
 				dataType : "json",
 				success : function(result){

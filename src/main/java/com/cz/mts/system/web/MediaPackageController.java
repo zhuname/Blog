@@ -564,7 +564,7 @@ public class MediaPackageController  extends BaseController {
 					
 						String[] cityId=cityIds.split(",");
 					
-							for (String string : cityId) {
+							for (String string : cityId){
 								RedCity redCity=new RedCity();
 								redCity.setCityId(Integer.parseInt(string));
 								redCity.setPackageId(Integer.parseInt(id.toString()));

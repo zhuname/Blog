@@ -138,7 +138,7 @@ Object data=session.getAttribute("data");
 			</div>
 			<div class="f_28 clr_3 mt_20">{{= content}}</div>
 			
-			<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
+			<div class="dis_f ali_ct flex_w quan_img mt_20">
 				{{if images}}
 					{{each images}}
 						<img src="{{= $value}}" class="ver_mid" style="width:4.75rem;height:4.75rem;"/>
@@ -174,7 +174,7 @@ Object data=session.getAttribute("data");
 		</script>
 		
 		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
-			<li><a href="#"><img src="{{= image}}" class="dis_b" /></a></li>
+			<li><a href="{{if type==1}}{{= url}}{{else type==2}}/mts/appWeb/posterPackage/posterPackageDetail.jsp?id={{= itemId}}{{else type==3}}/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= itemId}}{{else type==4}}/mts/appWeb/card/cardDetail.jsp?id={{= itemId}}{{else type==5}}/mts/appWeb/activity/activityDetail.jsp?id={{= itemId}}{{else type==6}}/mts/appWeb/circle/circleDetail.jsp?id={{= itemId}}{{/if}}"><img src="{{= image}}" class="dis_b" /></a></li>
 		</script>
 
 <script type="text/javascript">

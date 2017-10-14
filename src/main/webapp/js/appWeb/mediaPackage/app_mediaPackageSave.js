@@ -2,17 +2,38 @@ var This=this;
 
 function save(){
 	if(getCookie("mediaPackageCategoryId")!=null
-			&&$('#title').val()!=null&&$('#descr').val()!=null&&$('#appointExplain').val()!=null&&$('#command').val()!=null
-			&&$('#title').val()!=""&&$('#descr').val()!=""&&$('#appointExplain').val()!=""&&$('#command').val()!=""){
-		setCookie("mediaPackageTitle",$('#title').val());
-		setCookie("mediaPackageAppointExplain",$('#appointExplain').val());
-		setCookie("mediaPackageDescr",$('#descr').val());
-		setCookie("mediaPackageCommand",$('#command').val());
+			&&$('#title').val()!=null&&$('#descr').val()!=null
+			&&$('#title').val()!=""&&$('#descr').val()!=""){
 		window.location.href="/mts/appWeb/mediaPackage/mediaPackagePay.jsp";
 	}else {
 		alert("请完善资料!");
 	}
 }
+
+function changeCommand(){
+	
+	setCookie("mediaPackageCommand",$('#command').val());
+	
+}
+
+function changeAppointExplain(){
+	
+	setCookie("mediaPackageAppointExplain",$('#appointExplain').val());
+	
+}
+
+function changeTitle(){
+	
+	setCookie("mediaPackageTitle",$('#title').val());
+	
+}
+
+function changeDescr(){
+	
+	setCookie("mediaPackageDescr",$('#descr').val());
+	
+}
+
 
 function init(){
 
@@ -64,6 +85,11 @@ function init(){
 		$('#encryptShow').show();
 	}
 	
+	if(getCookie("mediaPackageMediaUrl")!=null){
+		$('#mediaUrl').html('<video src="'+data+'" controls="controls">您的浏览器不支持 video 标签。</video>');  
+	}
+	
+	
 }
 function onCard(){
 	if($('#cardImg').attr('src').indexOf('guan')>-1){
@@ -103,6 +129,30 @@ function onEncrypt(){
 
 }
 
+$.ajax({
+	url : '/mts/system/syssysparam/list/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		if(result.data!=undefined){
+			//获取消息记录
+			$('#publishRule').html(result.data.publishRule);
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
+
 
 function headOnc(){
 	jQuery("#filed").click();
@@ -118,7 +168,8 @@ $(document).on("change", "#filed", function() {
         dataType : 'text',
         data : {},
         success : function(data, status) {
-        	$('#mediaUrl').html('<video src="'+data+'" controls="controls">您的浏览器不支持 video 标签。</video>');      	
+        	$('#mediaUrl').html('<video src="'+data+'" controls="controls">您的浏览器不支持 video 标签。</video>');   
+        	setCookie("mediaPackageMediaUrl",data);
         },
         error : function(data, status, e) {
        		console.log(data);

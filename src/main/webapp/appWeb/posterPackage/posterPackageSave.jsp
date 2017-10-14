@@ -75,7 +75,7 @@ body{background: #f0f2f5;}
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">发布海报红包</p>
-			<a ><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:0.9rem;" /></a>
+			<a onclick="javascript:$('#guize').show();"><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:0.9rem;" /></a>
 		</div>
 
  	<input type="file" id="filed" name="filed" style="display:none">
@@ -144,7 +144,7 @@ body{background: #f0f2f5;}
 <div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt">
 	<p class="dis_f ali_ct">
 		<img src="<%=basePath%>/js/appWeb/images/yy.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
-		预约
+		预订
 	</p>
 
 	<img id="yuyueImg" src="<%=basePath%>/js/appWeb/images/guan.png" class="dis_b switcher_toggle" onclick="onYuyue();" style="height:1rem;" />
@@ -190,6 +190,23 @@ body{background: #f0f2f5;}
 	init();
 	
 	</script>
+	
+	<div class="video_mask" id="guize" style="display: none;">
+					<div class="video_bg">
+						<div class="f_24 clr_3 pad_30" style="padding-top:4rem;line-height: 1rem;">
+							<pre id="publishRule"></pre>
+						</div>
+
+						<input type="button" class="f_26 clr_f dis_b waiting_check_a close_video_mask" 
+						style="background: #f95d47;border:0;width:10rem;height:1.8rem;line-height: 1.8rem;" value="我知道了" />
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					$('.close_video_mask').click(function(){
+						$(this).parents('.video_mask').hide();
+					});
+				</script>
 	
 </body>
 

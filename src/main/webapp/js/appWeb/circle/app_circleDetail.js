@@ -5,6 +5,7 @@ var limitNumber;
 var userId;
 var nextPage=1;
 var id;
+var itemUserId;
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -57,6 +58,10 @@ $.ajax({
 				
 				id=result.data.id;
 				
+				//右上角
+				itemUserId=result.data.userId;
+				initColl();
+				
 				$('#foot_tmpl').tmpl(result.data).appendTo($('#detail'));
 				
 				change(1);
@@ -76,17 +81,113 @@ console.log(XMLHttpRequest) ;
 console.log(textStatus) ;
 }
 });
-
+var isChange=0;
 function change(changeType){
 	$('#content').html("");
 	nextPage = 1 ;
 	type=changeType;
-	show(type);
+	if(isChange==0){
+		show(type);
+	}
 }
 
 
-function show(type){
+function initColl(){
+	if(userId!=itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/atten/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#attr").html("关注");
+		}else{
+			$("#attr").html("已关注");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#collect").html("收藏");
+		}else{
+			$("#collect").html("已收藏");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 	
+}else{
+	$($("#attr").parent()).remove();
+	$($("#collect").parent()).remove();
+}
+}
+
+function collect(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/update/json?web=&type=4&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function attr(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+function show(type){
+	isChange=1;
 	var url="";
 	
 	if(type==1){
@@ -158,6 +259,7 @@ function show(type){
 						}
 						
 					}
+					isChange=0;
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -196,7 +298,8 @@ function dianzan(){
 
 function dashang(){
 	
-	var content = $('#content').val();
+	var content = $('#contentVal').val();
+	
 	var money = $('#money').val();
 	
 	if(userId!=null&&userId!=""&&id!=null&&id!=""&&content!=null&&content!=""&&money!=null&&money!=""){
@@ -210,7 +313,29 @@ function dashang(){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
+			
+			//加载页面方法
+			$.ajax({
+			url : '/mts/system/appuser/pay/json?web=&code='+result.data.code+"&userId="+userId+"&type="+5+"&money="+money,
+			type : "post",
+			dataType : "json",
+			success : function(result){
+				if(result.status=="error"){
+					alert(result.message);
+					return;
+				}
+				
+				window.location.reload();
+				
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
+			
 		},
+		
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
 				console.log(textStatus) ;
@@ -220,6 +345,7 @@ function dashang(){
 	}else{
 		alert("请完善打赏信息");
 	}
+	
 }
 
 window.onscroll=function(){

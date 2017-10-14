@@ -4,15 +4,15 @@ var dataString="";
 var userId=null;
 var changeType=1;	
 	//初始化页面
-	change(changeType);
+change(changeType);
 
 function change(type,change){
 	var data='&pageIndex='+nextPage+dataString;
-	$("#list").html("");
 	changeType = type;
 	
 	if(change==0){
 		nextPage=1;
+		$("#list").html("");
 	}
 	
 		//加载页面方法
@@ -64,7 +64,6 @@ function change(type,change){
 						if(result.data!=undefined){
 							for (var int = 0; int < result.data.length; int++) {
 								$('#posterPackage_list_tmpl').tmpl($(result.data[int].posterPackage)[0]).appendTo($('#list'));
-								
 							}
 						}
 					},

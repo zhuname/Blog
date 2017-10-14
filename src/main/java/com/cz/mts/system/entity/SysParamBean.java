@@ -31,9 +31,6 @@ public class SysParamBean implements Serializable {
 	private String publishRule;
 	private String appointCharge;
 	
-	
-	
-	
 	public String getAppointCharge() {
 		return appointCharge;
 	}

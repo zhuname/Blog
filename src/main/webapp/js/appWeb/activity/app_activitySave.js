@@ -4,9 +4,53 @@ var id;
 var type;
 var cityId;
 
+
+$.ajax({
+	url : '/mts/system/appuser/look/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		userId=result.data.id;
+		cityId=result.data.cityId;
+		},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+	console.log(XMLHttpRequest) ;
+	console.log(textStatus) ;
+	}
+});
+
 $(document).ready(function(){ 
 	init();
 }); 
+
+$.ajax({
+	url : '/mts/system/syssysparam/list/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		if(result.data!=undefined){
+			//获取消息记录
+			$('#publishRule').html(result.data.publishRule);
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
 
 function init(){
 	if(getCookie("activityCityId")!=null){
@@ -90,7 +134,6 @@ function save(){
 		}
 		userId=result.data.id;
 		//获取用户信息
-		debugger;
 		var endTime=getCookie("activityEndTime");
 		if(endTime!=undefined){
 			endTime=endTime.replace("月", "");
@@ -105,11 +148,7 @@ function save(){
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
-				if(result.data!=undefined){
-					if(result.data.balance!=undefined){
-						window.location.href="/mts/appWeb/activity.jsp/myActivity.jsp.jsp";
-					}
-				}
+				window.location.href="/mts/appWeb/activity/activity.jsp?cityId="+cityId;
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -215,7 +254,19 @@ $(document).on("change", "#filed", function() {
         	$($(".waitCheck")[0]).attr('src',data);
         	$($(".waitCheck")[0]).attr("class","");
         	changeImages(data+";");
-        	$('#images_update_tmpl').tmpl(null).appendTo($('#image'));   
+        	
+        	var imageNum=0;
+        	var images = getCookie("activityImages").split(";"); 
+        	
+    		for (var int = 0; int < images.length; int++) {
+    			if(images[int]==""){
+    				imageNum+1;
+    			}
+    		}
+        	
+        	if(imageNum!=9){
+        		$('#images_update_tmpl').tmpl(null).appendTo($('#image'));   
+        	}
         },
         error : function(data, status, e) {
        		console.log(data);
