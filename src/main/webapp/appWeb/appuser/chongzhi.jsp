@@ -72,8 +72,7 @@ body{background: #f0f2f5;}
 			</div>
 			<input class="ipt3 f_28 clr_he al_rt" id="money" placeholder="请填写您充值的金额" type="number" />
 		</div>
-
-
+		
 		<div class="bg_f pad_30 f_28 clr_3 mt_20 borderbot1">支付方式</div>
 <div>
 		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba">

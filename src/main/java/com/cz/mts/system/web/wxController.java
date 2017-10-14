@@ -21,7 +21,9 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.xml.XMLSerializer;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
@@ -155,23 +157,23 @@ public class wxController extends BaseController {
 	
 	
 	@RequestMapping("/getDingdan/json")
-	public @ResponseBody String getDingdan(HttpServletRequest request) throws IOException, DocumentException {
+	public @ResponseBody ReturnDatas getDingdan(HttpServletRequest request) throws IOException, DocumentException {
 		log.info("------------->微信提交订单！");
 		
 		ReturnDatas returnDatas=ReturnDatas.getSuccessReturnDatas();
 		
-		String result = "";  
-        
         String appid = wxAppId;
-        String mch_id = wxMch_id;  
+        String mch_id = wxMch_id;
         String nonce_str = random();//生成随机数，可直接用系统提供的方法  
         String body = "每天赏-商品订单";  
-        String out_trade_no = "R"+session.getAttribute("appUserSessionId").toString();  
+        String out_trade_no = "R"+session.getAttribute("appUserSessionId").toString()+new Date().getTime();  
         String total_fee = request.getParameter("total_fee1");
-        String spbill_create_ip = "xxx.xxx.38.47";//用户端ip,这里随意输入的  
+        String spbill_create_ip = "47.92.129.76";//用户端ip,这里随意输入的  
         String notify_url = "http://app.mtianw.com/mts/system/appuser/pay/json";//支付回调地址  
         String trade_type = "JSAPI";
         String openid = request.getParameter("openid1");
+        //String openid = "o_5VotxlVkUaP7_ktlBWarSmnUWg";
+        
         
         HashMap<String, String> map = new HashMap<String, String>();  
         map.put("appid", appid);  
@@ -205,20 +207,58 @@ public class wxController extends BaseController {
         	httpost.addHeader("Cache-Control", "max-age=0");
         	httpost.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
     		httpost.setEntity(new StringEntity(content.toString(), "UTF-8"));
-    		System.out.println(content.toString());
     		CloseableHttpResponse response = httpclient.execute(httpost);
             try {
                 HttpEntity entity = response.getEntity();
                 String jsonStr = EntityUtils.toString(response.getEntity(), "UTF-8");
                 EntityUtils.consume(entity);
-                System.out.println(jsonStr);
-                returnDatas.setData(jsonStr);
-               
-              /* JSONObject jsonObject=XmlUtil.XmlToJson(jsonStr);//返回的的结果  
-               if(jsonObject.getString("return_code").equals("SUCCESS")&&jsonObject.getString("result_code").equals("SUCCESS")){  
-                   result=jsonObject.get("prepay_id")+"";//这就是预支付id  
-               }*/
-               
+                
+                JSONObject obj = new JSONObject();  
+                try {  
+                    InputStream is = new ByteArrayInputStream(jsonStr.getBytes("utf-8"));  
+                    SAXBuilder sb = new SAXBuilder();  
+                    org.jdom.Document doc = sb.build(is);  
+                    org.jdom.Element root = doc.getRootElement();  
+                    obj.put(root.getName(), iterateElement(root));  
+                    
+                    System.out.println("----------微信支付-------------");  
+                    //1、通过网页授权接口，获取到的openid  
+                    //处理价格单位为：分(请自行处理)
+                    
+                    JSONObject jsonObject=JSONObject.fromObject(obj.get("xml").toString());
+                    String preid=jsonObject.get("prepay_id").toString().substring(2, jsonObject.get("prepay_id").toString().length()-2);
+                    System.out.println("预支付标示：----------------"+preid);  
+                    //APPID  
+                    String appId=appid;  
+                    request.setAttribute("appId", appId);  
+                    //时间戳  
+                    String timeStamp=(System.currentTimeMillis()/1000)+"";  
+                    request.setAttribute("timeStamp", timeStamp);  
+                    //随机字符串  
+                    String nonceStr=random();  
+                    request.setAttribute("nonceStr", nonceStr);  
+                    //预支付标识  
+                    request.setAttribute("prepay_id", "prepay_id="+preid);  
+                    //加密方式  
+                    request.setAttribute("signType", "MD5");  
+                      
+                    //组装map用于生成sign  
+                    Map<String, String> mapTijiao=new HashMap<String, String>();  
+                    mapTijiao.put("appId", appId);  
+                    mapTijiao.put("timeStamp", timeStamp);  
+                    mapTijiao.put("nonceStr", nonceStr);
+                    mapTijiao.put("package", "prepay_id="+preid);  
+                    mapTijiao.put("signType", "MD5");
+                    
+                    mapTijiao.put("paySign", sign(mapTijiao, MchSecret));
+                    mapTijiao.put("package1", "prepay_id="+preid);  
+                    mapTijiao.put("out_trade_no", out_trade_no);  
+                    
+                    returnDatas.setData(mapTijiao);
+                } catch (Exception e) {  
+                    e.printStackTrace();  
+                }  
+                
                
             } finally {
                 response.close();
@@ -229,7 +269,91 @@ public class wxController extends BaseController {
         
         
         
-        return result;  
+        return returnDatas;  
+		
+	}
+	
+	
+	
+	@RequestMapping("/htmlRetrun/json")
+	public @ResponseBody ReturnDatas htmlRetrun(HttpServletRequest request) throws IOException, DocumentException {
+		log.info("------------->微信订单回调！");
+		ReturnDatas returnDatas=ReturnDatas.getSuccessReturnDatas();
+		
+        String appid = wxAppId;
+        String mch_id = wxMch_id;
+        String nonce_str = random();//生成随机数，可直接用系统提供的方法  
+        String out_trade_no = request.getParameter("out_trade_no");  
+        
+        //String openid = "o_5VotxlVkUaP7_ktlBWarSmnUWg";
+        HashMap<String, String> map = new HashMap<String, String>();  
+        map.put("appid", appid);  
+        map.put("mch_id", mch_id);  
+        map.put("nonce_str", nonce_str);  
+        map.put("out_trade_no", out_trade_no);  
+        String sign = sign(map, MchSecret);//参数加密  
+        System.out.println("sign秘钥:-----------"+sign);  
+        map.put("sign", sign);
+        //组装xml(wx就这么变态，非得加点xml在里面)  
+        String content=MapToXml(map);  
+        //System.out.println(content);  
+        
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        
+        try {
+        	HttpPost httpost = new HttpPost("https://api.mch.weixin.qq.com/pay/orderquery"); // 设置响应头信息
+        	httpost.addHeader("Connection", "keep-alive");
+        	httpost.addHeader("Accept", "*/*");
+        	httpost.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        	httpost.addHeader("Host", "api.mch.weixin.qq.com");
+        	httpost.addHeader("X-Requested-With", "XMLHttpRequest");
+        	httpost.addHeader("Cache-Control", "max-age=0");
+        	httpost.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
+    		httpost.setEntity(new StringEntity(content.toString(), "UTF-8"));
+    		CloseableHttpResponse response = httpclient.execute(httpost);
+            try {
+                HttpEntity entity = response.getEntity();
+                String jsonStr = EntityUtils.toString(response.getEntity(), "UTF-8");
+                EntityUtils.consume(entity);
+                
+                
+                
+                JSONObject obj = new JSONObject();  
+                try {
+                    InputStream is = new ByteArrayInputStream(jsonStr.getBytes("utf-8"));  
+                    SAXBuilder sb = new SAXBuilder();  
+                    org.jdom.Document doc = sb.build(is);  
+                    org.jdom.Element root = doc.getRootElement();  
+                    obj.put(root.getName(), iterateElement(root)); 
+                    
+                    
+                    
+                    JSONObject jsonObject=JSONObject.fromObject(obj.get("xml").toString());
+                    
+                    String result_code=jsonObject.get("result_code").toString().substring(2, jsonObject.get("result_code").toString().length()-2);
+                    if(result_code.equals("SUCCESS")){
+                    	String total_fee=jsonObject.get("total_fee").toString().substring(2, jsonObject.get("total_fee").toString().length()-2);
+                    	String transaction_id=jsonObject.get("transaction_id").toString().substring(2, jsonObject.get("transaction_id").toString().length()-2);
+                    	out_trade_no = out_trade_no.substring(1);
+                    	appUserService.alipay(out_trade_no, 4, Double.parseDouble(total_fee)/100, transaction_id, 2);
+                    }
+                    
+                    
+                    
+                    returnDatas.setData(obj);
+                } catch (Exception e) {  
+                    e.printStackTrace();  
+                }  
+                
+               
+            } finally {
+                response.close();
+            }
+        } finally {
+            httpclient.close();
+        }
+        
+        return returnDatas;  
 		
 	}
 	
