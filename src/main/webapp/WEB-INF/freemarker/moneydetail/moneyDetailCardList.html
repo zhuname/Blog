@@ -131,17 +131,22 @@ $(document).on("click", ".selectBtn", function() {
                     <tr>
                         <!--first_start_no_export-->
                         <!--first_end_no_export-->
+                        <th id="th_itemId" style="width: 5%;">分类</th>
                         <th id="th_userName" style="width: 10%;">购买人</th>
+                        <th id="th_itemId" style="width: 12.5%;">卡券主题</th>
+                        <th id="th_balance" style="width: 10%;">购买金额</th>
+                        <th id="th_itemId" style="width: 5%;">支付方式</th>
 						<th id="th_createTime" style="width: 10%;">购买时间</th>
-						<th id="th_money" style="width: 10%;">卡券状态</th>
-						<th id="th_balance" style="width: 10%;">购买金额</th>
-						<th id="th_itemId" style="width: 10%;">兑换时间</th>
-						<th id="th_itemId" style="width: 10%;">发布人</th>
-						<th id="th_itemId" style="width: 12.5%;">卡券主题</th>
-						<th id="th_itemId" style="width: 12.5%;">卡券过期时间</th>
-						<th id="th_itemId" style="width: 5%;">分类</th>
-						<th id="th_itemId" style="width: 5%;">支付方式</th>
 						<th id="th_itemId" style="width: 5%;">兑换码</th>
+						<th id="th_money" style="width: 10%;">状态</th>
+						<th id="th_itemId" style="width: 10%;">兑换时间</th>
+						<th id="th_itemId" style="width: 12.5%;">卡券过期时间</th>
+						<th id="th_itemId" style="width: 10%;">发布人</th>
+						
+						
+						
+						
+						
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -153,41 +158,47 @@ $(document).on("click", ".selectBtn", function() {
 					 <#list returnDatas.data as _data>
                             <!--start_no_export-->
                             <tr class="">
+                            <td>
+								${(_data.categoryName)!''}
+							</td>
 							<td>
 								${(_data.userName)!''}
+							</td>
+							<td>
+								${(_data.cardName)!''}
+							</td>
+							<td>
+								${(_data.payMoney)!0}
+							</td>
+							<td >
+								${(_data.payName)!''}
 							</td>
 							<td>
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td>
-								${(_data.statusName)!''}
+								${(_data.cardCode)!''}
 							</td>
 							<td>
-								${(_data.payMoney)!0}
+								${(_data.statusName)!''}
 							</td>
+							
 							
 							<td>
 								${((_data.changeTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td>
-								${(_data.publishUserName)!''}
-							</td>
-							<td>
-								${(_data.cardName)!''}
-							</td>
-							<td>
 								${((_data.gqTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td>
-								${(_data.categoryName)!''}
+								${(_data.publishUserName)!''}
 							</td>
-							<td >
-								${(_data.payName)!''}
-							</td>
-							<td>
-								${(_data.cardCode)!''}
-							</td>
+							
+							
+							
+							
+							
 						</tr>
 					</#list>
 					 </#if>

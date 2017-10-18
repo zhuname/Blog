@@ -421,16 +421,40 @@ public class NotificationServiceImpl implements NotificationService {
 			break;
 			
 			case 42:
-				JPushUtil.sendJPushNotification("您发布的预约已被人兑换，请及时关注预约动态。", type+"", id, userId, "");
-				message=new Message(null, 42, userId, new Date(), "您发布的预约已被人兑换，请及时关注预约动态。", id, "", 0, "海报预约卡券兑换", 2);
+				JPushUtil.sendJPushNotification("您发布的预订已被人兑换，请及时关注预订动态。", type+"", id, userId, "");
+				message=new Message(null, 42, userId, new Date(), "您发布的预订已被人兑换，请及时关注预订动态。", id, "", 0, "海报预订卡券兑换", 2);
 				messageService.save(message);
 			break;
 			case 43:
-				JPushUtil.sendJPushNotification("您发布的预约已被人兑换，请及时关注预约动态。", type+"", id, userId, "");
-				message=new Message(null, 42, userId, new Date(), "您发布的预约已被人兑换，请及时关注预约动态。", id, "", 0, "视频预约卡券兑换", 2);
+				JPushUtil.sendJPushNotification("您发布的预订已被人兑换，请及时关注预订动态。", type+"", id, userId, "");
+				message=new Message(null, 42, userId, new Date(), "您发布的预订已被人兑换，请及时关注预订动态。", id, "", 0, "视频预订卡券兑换", 2);
 				messageService.save(message);
 			break;
-			
+			case 44:
+				JPushUtil.sendJPushNotification("您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”同城活动，赶快去参与吧", type+"", id, userId, "");
+				message=new Message(null, 44, userId, new Date(), "您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”同城活动，赶快去参与吧", id, null, 0, "关注人发布同城活动", 2);
+				messageService.save(message);
+			break;
+			case 45:
+				JPushUtil.sendJPushNotification("您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”城事圈，赶快去参与吧", type+"", id, userId, "");
+				message=new Message(null, 45, userId, new Date(), "您关注的“"+extend[0]+"”发布了一个“"+extend[1]+"”城事圈，赶快去参与吧", id, null, 0, "关注人发布城事圈", 2);
+				messageService.save(message);
+			break;
+			case 46:
+				JPushUtil.sendJPushNotification("您发布的内容被收藏了，赶快点击查看吧", type+"", id, userId, "");
+				message=new Message(null, 46, userId, new Date(), "您发布的内容被收藏了，赶快点击查看吧", id, null, 0, "被收藏", 2);
+				messageService.save(message);
+			break;
+			case 47:
+				JPushUtil.sendJPushNotification("您有新的留言，赶快点击查看吧", type+"", id, userId, "");
+				message=new Message(null, 47, userId, new Date(), "您有新的留言，赶快点击查看吧", id, null, 0, "被留言", 2);
+				messageService.save(message);
+			break;
+			case 48:
+				JPushUtil.sendJPushNotification("您有新的粉丝了，赶快点击查看吧", type+"", id, userId, "");
+				message=new Message(null, 48, userId, new Date(), "您有新的粉丝了，赶快点击查看吧", id, null, 0, "被关注", 2);
+				messageService.save(message);
+			break;
 			
 			}
 		} catch (Exception e) {

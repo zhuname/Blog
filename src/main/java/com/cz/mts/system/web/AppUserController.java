@@ -178,7 +178,7 @@ public class AppUserController  extends BaseController {
 		if(datas != null && datas.size() > 0){
 			for (AppUser au : datas) {
 				if(StringUtils.isBlank(au.getHeader())){
-					au.setHeader("http://106.15.60.65:22222/images/mts/share/header.png");
+					au.setHeader("http://47.92.129.76:22222/images/mts/share/header.png");
 				}
 			}
 		}
@@ -1201,7 +1201,7 @@ public class AppUserController  extends BaseController {
 					}else{
 						
 						//判断是否存在该用户的该勋章记录
-						Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId and medalId=:medalId");
+						Finder finder = new Finder("SELECT * FROM t_user_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=0");
 						finder.setParam("userId", Integer.parseInt(userId));
 						finder.setParam("medalId", Integer.parseInt(s));
 						List<UserMedal> userMedals = userMedalService.queryForList(finder, UserMedal.class);
@@ -1210,34 +1210,62 @@ public class AppUserController  extends BaseController {
 							returnObject.setStatus(ReturnDatas.ERROR);
 							return returnObject;
 						}else{
-							Medal medal = medalService.findMedalById(Integer.parseInt(s));
-							userMedal.setMedalId(Integer.parseInt(s));
-							if(StringUtils.isNotBlank(userId)){
-								userMedal.setUserId(Integer.parseInt(userId));
-								userMedal.setCreateTime(new Date());
-								userMedal.setIsEndStatus(0);
-								userMedal.setEndMedalTime(userMedal.getEndMedalTime());
-								userMedalService.save(userMedal);
-							
-								//向t_apply_medal表中插入数据
-								ApplyMedal applyMedal = new ApplyMedal();
-								applyMedal.setUserId(Integer.parseInt(userId));
-								applyMedal.setMedalId(Integer.parseInt(s));
-								applyMedal.setStatus(2);
-								applyMedal.setOperTime(new Date());
-								applyMedal.setType(medal.getType());
-								applyMedal.setIntroduction("后台赋予");
-								applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
-								applyMedal.setIsEndStatus(0);
-								applyMedalService.save(applyMedal);
-								
-								AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
-								if(null != appUser && 1 == appUser.getIsPush()){
-									//给该用户发推送
-									notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+							//判断是否存在该用户申请中的勋章
+							Finder applyfinder = new Finder("SELECT * FROM t_apply_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=0 and status=1");
+							applyfinder.setParam("userId", Integer.parseInt(userId));
+							applyfinder.setParam("medalId", Integer.parseInt(s));
+							List<ApplyMedal> applyMedals = applyMedalService.queryForList(applyfinder, ApplyMedal.class);
+							if(null != applyMedals && applyMedals.size() > 0){
+								returnObject.setMessage("该勋章正在申请中，暂不能授予！");
+								returnObject.setStatus(ReturnDatas.ERROR);
+								return returnObject;
+							}else{
+								synchronized (this) {
+									//先删除过期的勋章
+									Finder deleteUserFinder = new Finder("delete from t_user_medal WHERE userId=:userId and medalId=:medalId and isEndStatus=1");
+									deleteUserFinder.setParam("userId", Integer.parseInt(userId));
+									deleteUserFinder.setParam("medalId", Integer.parseInt(s));
+									userMedalService.update(deleteUserFinder);
+									
+									Finder deleteApplyFinder = new Finder("DELETE FROM t_apply_medal WHERE userId=:userId and medalId=:medalId AND ((status=2 and isEndStatus=1) or (status=3 and isEndStatus=0))");
+									deleteApplyFinder.setParam("userId", Integer.parseInt(userId));
+									deleteApplyFinder.setParam("medalId", Integer.parseInt(s));
+									applyMedalService.update(deleteApplyFinder);
+									
+									
+									Medal medal = medalService.findMedalById(Integer.parseInt(s));
+									userMedal.setMedalId(Integer.parseInt(s));
+									if(StringUtils.isNotBlank(userId)){
+										userMedal.setUserId(Integer.parseInt(userId));
+										userMedal.setCreateTime(new Date());
+										userMedal.setIsEndStatus(0);
+										userMedal.setEndMedalTime(userMedal.getEndMedalTime());
+										userMedalService.save(userMedal);
+									
+										//向t_apply_medal表中插入数据
+										ApplyMedal applyMedal = new ApplyMedal();
+										applyMedal.setUserId(Integer.parseInt(userId));
+										applyMedal.setMedalId(Integer.parseInt(s));
+										applyMedal.setStatus(2);
+										applyMedal.setOperTime(new Date());
+										applyMedal.setType(medal.getType());
+										applyMedal.setIntroduction("后台赋予");
+										applyMedal.setEndMedalTime(userMedal.getEndMedalTime());
+										applyMedal.setIsEndStatus(0);
+										applyMedalService.save(applyMedal);
+										
+										AppUser appUser = appUserService.findAppUserById(Integer.parseInt(userId));
+										if(null != appUser && 1 == appUser.getIsPush()){
+											//给该用户发推送
+											notificationService.notify(7, Integer.parseInt(s), Integer.parseInt(userId), medal.getName());
+										}
+										returnObject.setMessage("勋章授予成功！");
+									}
 								}
-								returnObject.setMessage("勋章授予成功！");
+								
 							}
+							
+						
 						}
 					}
 				}
@@ -1542,39 +1570,137 @@ public class AppUserController  extends BaseController {
 				Integer commentNum = 0;//评论个数
 				Integer attenNum = 0;//关注个数
 				
+				Integer posterScanNum = 0;
+				Integer mediaScanNum = 0;
+				Integer activityScanNum = 0;
+				
+				Integer posterTopNum = 0;
+				Integer mediaTopNum = 0;
+				Integer joinActivityTopNum = 0;
+				Integer circleTopNum = 0;
+				
+				Integer posterCommentNum = 0;
+				Integer mediaCommentNum = 0;
+				Integer joinActivityCommentNum = 0;
+				Integer circleCommentNum = 0;
+				
 				//统计别人浏览我的次数
-				Finder scanFinder = new Finder("SELECT SUM(a.scanNum) AS scanNum FROM(SELECT SUM(lookNum) AS scanNum FROM t_poster_package pp WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 UNION"
-                                        +"( SELECT SUM(scanNum) AS scanNum FROM t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2) UNION "
-                                        + "(SELECT SUM(viewedCount) AS scanNum FROM t_activity WHERE userId=:userId AND isDel=0 AND `status` != 2))a");
-				scanFinder.setParam("userId", appUser.getId());
-				scanNum = moneyDetailService.queryForObject(scanFinder, Integer.class); 
-				if(null == scanNum ){
-					scanNum = 0;
+//				Finder scanFinder = new Finder("SELECT SUM(a.scanNum) AS scanNum FROM(SELECT SUM(lookNum) AS scanNum FROM t_poster_package pp WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 UNION"
+//                                        +"( SELECT SUM(scanNum) AS scanNum FROM t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2) UNION "
+//                                        + "(SELECT SUM(viewedCount) AS scanNum FROM t_activity WHERE userId=:userId AND isDel=0 AND `status` != 2))a");
+//				scanFinder.setParam("userId", appUser.getId());
+//				scanNum = moneyDetailService.queryForObject(scanFinder, Integer.class); 
+//				if(null == scanNum ){
+//					scanNum = 0;
+//				}
+				Finder posterScanFinder = new Finder("SELECT SUM(lookNum) AS scanNum FROM t_poster_package pp WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2");
+				posterScanFinder.setParam("userId", appUser.getId());
+				posterScanNum = moneyDetailService.queryForObject(posterScanFinder, Integer.class); 
+				if(null == posterScanNum ){
+					posterScanNum = 0;
 				}
+				
+				Finder mediaScanFinder = new Finder("SELECT SUM(scanNum) AS scanNum FROM t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2");
+				mediaScanFinder.setParam("userId", appUser.getId());
+				mediaScanNum = moneyDetailService.queryForObject(mediaScanFinder, Integer.class); 
+				if(null == mediaScanNum ){
+					mediaScanNum = 0;
+				}
+				
+				Finder activityScanFinder = new Finder("SELECT SUM(viewedCount) AS scanNum FROM t_activity WHERE userId=:userId AND isDel=0 AND `status` != 2");
+				activityScanFinder.setParam("userId", appUser.getId());
+				activityScanNum = moneyDetailService.queryForObject(activityScanFinder, Integer.class); 
+				if(null == activityScanNum ){
+					activityScanNum = 0;
+				}
+				
+				scanNum = posterScanNum + mediaScanNum + activityScanNum;
+				
+				
 				
 				//统计别人点赞我的个数
-				Finder topFinder = new Finder("SELECT SUM(a.topCount) AS topNum FROM (SELECT SUM(topCount)as topCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 "
-						+ " UNION (SELECT SUM(topCount) as topCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2)"
-                        +"UNION (SELECT SUM(topCount)as topCount from t_join_activity WHERE userId=:userId ) "
-                        + "UNION (SELECT SUM(topCount)as topCount FROM t_circle WHERE userId=:userId))a");
-				
-				topFinder.setParam("userId", appUser.getId());
-				topNum = moneyDetailService.queryForObject(topFinder, Integer.class); 
-				if(null == topNum ){
-					topNum = 0;
+//				Finder topFinder = new Finder("SELECT SUM(a.topCount) AS topNum FROM (SELECT SUM(topCount)as topCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 "
+//						+ " UNION (SELECT SUM(topCount) as topCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2)"
+//                        +"UNION (SELECT SUM(topCount)as topCount from t_join_activity WHERE userId=:userId ) "
+//                        + "UNION (SELECT SUM(topCount)as topCount FROM t_circle WHERE userId=:userId))a");
+//				
+//				topFinder.setParam("userId", appUser.getId());
+//				topNum = moneyDetailService.queryForObject(topFinder, Integer.class); 
+//				if(null == topNum ){
+//					topNum = 0;
+//				}
+				Finder posterTopFinder = new Finder("SELECT SUM(topCount)as topCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2");
+				posterTopFinder.setParam("userId", appUser.getId());
+				posterTopNum = moneyDetailService.queryForObject(posterTopFinder, Integer.class); 
+				if(null == posterTopNum ){
+					posterTopNum = 0;
 				}
+				
+				Finder mediaTopFinder = new Finder("SELECT SUM(topCount) as topCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2");
+				mediaTopFinder.setParam("userId", appUser.getId());
+				mediaTopNum = moneyDetailService.queryForObject(mediaTopFinder, Integer.class); 
+				if(null == mediaTopNum ){
+					mediaTopNum = 0;
+				}
+				
+				Finder joinActivityTopFinder = new Finder("SELECT SUM(topCount)as topCount from t_join_activity WHERE userId=:userId");
+				joinActivityTopFinder.setParam("userId", appUser.getId());
+				joinActivityTopNum = moneyDetailService.queryForObject(joinActivityTopFinder, Integer.class); 
+				if(null == joinActivityTopNum ){
+					joinActivityTopNum = 0;
+				}
+				
+				Finder circleTopFinder = new Finder("SELECT SUM(topCount)as topCount FROM t_circle WHERE userId=:userId");
+				circleTopFinder.setParam("userId", appUser.getId());
+				circleTopNum = moneyDetailService.queryForObject(circleTopFinder, Integer.class); 
+				if(null == circleTopNum ){
+					circleTopNum = 0;
+				}
+				topNum = posterTopNum + mediaTopNum + joinActivityTopNum + circleTopNum;
+				
 				
 				//统计别人给我评论的个数
-				Finder commentFinder = new Finder("SELECT SUM(a.commentCount) AS commentNum FROM (SELECT SUM(commentCount)as commentCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 "
-						+ " UNION (SELECT SUM(commentCount) as commentCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2)"
-                        +"UNION (SELECT SUM(commentCount)as commentCount from t_join_activity WHERE userId=:userId ) "
-                        + "UNION (SELECT SUM(commentCount)as commentCount FROM t_circle WHERE userId=:userId))a");
+//				Finder commentFinder = new Finder("SELECT SUM(a.commentCount) AS commentNum FROM (SELECT SUM(commentCount)as commentCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2 "
+//						+ " UNION (SELECT SUM(commentCount) as commentCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2)"
+//                        +"UNION (SELECT SUM(commentCount)as commentCount from t_join_activity WHERE userId=:userId ) "
+//                        + "UNION (SELECT SUM(commentCount)as commentCount FROM t_circle WHERE userId=:userId))a");
+//				
+//				commentFinder.setParam("userId", appUser.getId());
+//				commentNum = moneyDetailService.queryForObject(commentFinder, Integer.class); 
+//				if(null == commentNum ){
+//					commentNum = 0;
+//				}
 				
-				commentFinder.setParam("userId", appUser.getId());
-				commentNum = moneyDetailService.queryForObject(commentFinder, Integer.class); 
-				if(null == commentNum ){
-					commentNum = 0;
+				
+				Finder posterCommentFinder = new Finder("SELECT SUM(commentCount)as commentCount FROM t_poster_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2");
+				posterCommentFinder.setParam("userId", appUser.getId());
+				posterCommentNum = moneyDetailService.queryForObject(posterCommentFinder, Integer.class); 
+				if(null == posterCommentNum ){
+					posterCommentNum = 0;
 				}
+				
+				Finder mediaCommentFinder = new Finder("SELECT SUM(commentCount) as commentCount from t_media_package WHERE userId = :userId AND isDel = 0 AND `status` != 0 AND `status` != 2");
+				mediaCommentFinder.setParam("userId", appUser.getId());
+				mediaCommentNum = moneyDetailService.queryForObject(mediaCommentFinder, Integer.class); 
+				if(null == mediaCommentNum ){
+					mediaCommentNum = 0;
+				}
+				
+				Finder joinActivityCommentFinder = new Finder("SELECT SUM(commentCount)as commentCount from t_join_activity WHERE userId=:userId");
+				joinActivityCommentFinder.setParam("userId", appUser.getId());
+				joinActivityCommentNum = moneyDetailService.queryForObject(joinActivityCommentFinder, Integer.class); 
+				if(null == joinActivityCommentNum ){
+					joinActivityCommentNum = 0;
+				}
+				
+				Finder circleCommentFinder = new Finder("SELECT SUM(commentCount)as commentCount FROM t_circle WHERE userId=:userId");
+				circleCommentFinder.setParam("userId", appUser.getId());
+				circleCommentNum = moneyDetailService.queryForObject(circleCommentFinder, Integer.class); 
+				if(null == circleCommentNum ){
+					circleCommentNum = 0;
+				}
+				commentNum = posterCommentNum + mediaCommentNum + joinActivityCommentNum + circleCommentNum;
+				
 				
 				//统计别人关注我的个数
 				Finder atteFinder = new Finder("SELECT COUNT(*) as attenNum FROM t_attention WHERE itemId=:userId");

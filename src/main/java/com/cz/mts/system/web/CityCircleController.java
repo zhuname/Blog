@@ -100,6 +100,10 @@ public class CityCircleController  extends BaseController {
 			finder.append(" and itemId in (select id from t_circle where content like '%"+cityCircle.getTitle()+"%')");
 		}
 		
+		if(StringUtils.isNotBlank(cityCircle.getPublishName())){
+			finder.append(" and itemId in(SELECT id FROM t_circle WHERE userId in (SELECT id FROM t_app_user where name LIKE '%"+cityCircle.getPublishName()+"%'))");
+		}
+		
 		
 		List<CityCircle> datas=cityCircleService.findListDataByFinder(finder,page,CityCircle.class,cityCircle);
 		
@@ -116,7 +120,15 @@ public class CityCircleController  extends BaseController {
 			if(cityCircle2.getItemId()!=null){
 				Circle circle=circleService.findCircleById(cityCircle2.getItemId());
 				if(circle!=null){
-					cityCircle2.setTitle(circle.getContent());
+					if(StringUtils.isNotBlank(circle.getContent())){
+						cityCircle2.setTitle(circle.getContent());
+					}
+					if(null != circle.getUserId()){
+						AppUser appUser = appUserService.findAppUserById(circle.getUserId());
+						if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+							cityCircle2.setPublishName(appUser.getName());
+						}
+					}
 				}
 			}
 		}
@@ -185,8 +197,9 @@ public class CityCircleController  extends BaseController {
 				Circle circle=circleService.findCircleById(cityCircle2.getItemId());
 				
 				if(circle!=null){
-					
-					cityCircle2.setTitle(circle.getContent());
+					if(StringUtils.isNotBlank(circle.getContent())){
+						cityCircle2.setTitle(circle.getContent());
+					}
 					
 				}
 				

@@ -736,7 +736,7 @@ public class MoneyDetailController  extends BaseController {
 				for (AppUser appUser : appUsers) {
 					Page pageM=new Page();
 					pageM.setPageSize(1000);
-					Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId)");
+					Finder finderM=new Finder("select * FROM t_medal WHERE id in (SELECT medalId FROM t_user_medal WHERE userId= :userId and isEndStatus = 0)");
 					finderM.setParam("userId", appUser.getId());
 					List<Medal> medals=medalService.findListDataByFinder(finderM, pageM, Medal.class, null);
 					appUser.setMedals(medals);

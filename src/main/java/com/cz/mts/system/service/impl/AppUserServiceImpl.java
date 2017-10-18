@@ -201,7 +201,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//判断用户余额足不足
-			if(appUser.getBalance()<posterPackage.getSumMoney()){
+			if(appUser.getBalance().doubleValue()<posterPackage.getSumMoney().doubleValue()){
 				return 5;
 			}
 			
@@ -235,7 +235,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				finderSelect.setParam("itemId", posterPackage.getUserId());
 				List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 				for (Attention attention : attentions) {
-					AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null, notificationService, appUser);
+					AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null,null,null, notificationService, appUser);
 					attenThreadController.run();
 				}
 				
@@ -322,7 +322,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			}
 			
 			//判断用户余额足不足
-			if(appUser.getBalance()<mediaPackage.getSumMoney()){
+			if(appUser.getBalance().doubleValue()<mediaPackage.getSumMoney().doubleValue()){
 				return 5;
 			}
 			
@@ -356,7 +356,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				finderSelect.setParam("itemId", mediaPackage.getUserId());
 				List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 				for (Attention attention : attentions) {
-					AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, notificationService, appUser);
+					AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, null,null,notificationService, appUser);
 					attenThreadController.run();
 				}
 				
@@ -644,7 +644,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				cityCircle.setPayTime(new Date());
 				
 				//更新circle表的打赏总金额字段
-				Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney WHERE id=:id");
+				Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney,count=count+1 WHERE id=:id");
 				circleFinder.setParam("sumMoney", cityCircle.getMoney());
 				circleFinder.setParam("id", cityCircle.getItemId());
 				super.update(circleFinder);
@@ -765,7 +765,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						finderSelect.setParam("itemId", posterPackage.getUserId());
 						List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 						for (Attention attention : attentions) {
-							AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null, notificationService, appUser);
+							AttenThreadController attenThreadController = new AttenThreadController(posterPackage, null, attention, null, null,null,notificationService, appUser);
 							attenThreadController.run();
 						}
 						
@@ -837,7 +837,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//记录用户的余额记录
 					MoneyDetail moneyDetail=new MoneyDetail();
-					moneyDetail.setBalance(appUser.getBalance());
+					moneyDetail.setBalance(-appUser.getBalance());
 					moneyDetail.setCreateTime(new Date());
 					moneyDetail.setItemId(itemId);
 					moneyDetail.setMoney(-posterPackage.getSumMoney());
@@ -893,7 +893,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 						finderSelect.setParam("itemId", mediaPackage.getUserId());
 						List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 						for (Attention attention : attentions) {
-							AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, notificationService, appUserM);
+							AttenThreadController attenThreadController = new AttenThreadController(null, mediaPackage, attention, null, null,null,notificationService, appUserM);
 							attenThreadController.run();
 						}
 						
@@ -1220,10 +1220,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					
 					//看是不是第一次进来
 					MoneyDetail moneyDetailC=new MoneyDetail();
-					moneyDetailC.setCode(code);
-					moneyDetailC.setType(14);
+					moneyDetailC.setType(16);
 					moneyDetailC.setAliTrade(wxCode);
-					moneyDetailC.setUserId(cityCircle.getUserId());
 					
 					Page pageD=new Page();
 					List<MoneyDetail> moneyDetailcs=super.findListDataByFinder(null, pageD, MoneyDetail.class, moneyDetailC);
@@ -1244,7 +1242,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					cityCircle.setPayTime(new Date());
 					
 					//更新circle表的打赏总金额字段
-					Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney WHERE id=:id");
+					Finder circleFinder = new Finder("UPDATE t_circle SET sumMoney=sumMoney + :sumMoney,count=count+1 WHERE id=:id");
 					circleFinder.setParam("sumMoney", cityCircle.getMoney());
 					circleFinder.setParam("id", cityCircle.getItemId());
 					super.update(circleFinder);
@@ -1284,6 +1282,8 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 							moneyDetailB.setMoney(+cityCircle.getMoney());
 							moneyDetailB.setType(16);
 							moneyDetailB.setUserId(circleAppUser.getId());
+							moneyDetailB.setCode(code);
+							moneyDetailB.setAliTrade(wxCode);
 							super.save(moneyDetailB);
 							
 							notificationService.notify(34, circle.getId(), circle.getUserId());
@@ -1306,7 +1306,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			returnObject.setMessage("参数缺失");
 		}else{
 			//查询海报数量
-			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId and (status = 3 or status=4) AND isDel=0");
+			Finder posterFinder = new Finder("SELECT id FROM t_poster_package WHERE userId=:userId and (status = 3 or status=4) AND isDel=0 ");
 			posterFinder.setParam("userId", appUser.getId());
 			List posterList = queryForList(posterFinder);
 			if(null != posterList && posterList.size() > 0){
@@ -1315,7 +1315,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				appUser.setPosterCount(0);
 			}
 			//查询视频数量
-			Finder mediaFinder = new Finder("SELECT id FROM t_media_package WHERE userId=:userId AND isDel=0 and (status = 3 or status=4) ");
+			Finder mediaFinder = new Finder("SELECT id FROM t_media_package WHERE userId=:userId AND isDel=0 and (status = 3 or status=4) and id in( SELECT packageId FROM t_red_city WHERE  type=2 group by packageId)");
 			mediaFinder.setParam("userId", appUser.getId());
 			List mediaList = queryForList(mediaFinder);
 			if(null != mediaList && mediaList.size() > 0){

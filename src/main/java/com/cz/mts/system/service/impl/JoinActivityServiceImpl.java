@@ -43,7 +43,7 @@ public class JoinActivityServiceImpl extends BaseSpringrainServiceImpl implement
 	public String  saveorupdate(Object entity ) throws Exception{
 	      JoinActivity joinActivity=(JoinActivity) entity;
 	      
-	      if(joinActivity.getType()==null||joinActivity.getContent()==null||joinActivity.getUserId()==null||joinActivity.getActivityId()==null){
+	      if(joinActivity.getType()==null||joinActivity.getUserId()==null||joinActivity.getActivityId()==null){
 	    	  throw new ParameterErrorException();
 	      }
 	      

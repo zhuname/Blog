@@ -118,6 +118,24 @@ public class Circle  extends BaseEntity {
 	
 	private Integer cityCirclePerson;
 	
+	private Integer shareNum;
+	
+	private String cityName;
+	
+	
+	
+	
+	
+	//concstructor
+
+	@Transient
+	 public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
 	
 	@Transient
 	public Integer getCityCirclePerson() {
@@ -146,7 +164,15 @@ public class Circle  extends BaseEntity {
 	public void setHeight(Integer height) {
 		this.height = height;
 	}
+	@WhereSQL(sql="shareNum=:Circle_shareNum")
+	public Integer getShareNum() {
+		return shareNum;
+	}
 
+
+	public void setShareNum(Integer shareNum) {
+		this.shareNum = shareNum;
+	}
 	
 	@WhereSQL(sql="osType=:Circle_osType")
 	public String getOsType() {
@@ -371,6 +397,7 @@ public class Circle  extends BaseEntity {
 			.append("单张图片的宽[").append(getWidth()).append("],")
 			.append("单张图片的高[").append(getHeight()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
+			.append("分享次数[").append(getShareNum()).append("],")
 			.toString();
 	}
 	

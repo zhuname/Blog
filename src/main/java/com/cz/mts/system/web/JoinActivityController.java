@@ -195,7 +195,7 @@ public class JoinActivityController  extends BaseController {
 				}
 				
 				//获取评论列表
-				Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId");
+				Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId order by createTime desc");
 				
 				finderOper.setParam("itemId", joinActivity2.getId());
 				
@@ -208,6 +208,12 @@ public class JoinActivityController  extends BaseController {
 								
 								oper.setNickName(appUser.getName());
 								
+							}
+						}
+						if(null != oper.getToUserId()){
+							AppUser appUser = appUserService.findAppUserById(oper.getToUserId());
+							if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+								oper.setToUserName(appUser.getName());
 							}
 						}
 					}
@@ -387,17 +393,87 @@ public class JoinActivityController  extends BaseController {
 	 * 查看的Json格式数据,为APP端提供数据
 	 */
 	@RequestMapping(value = "/look/json")
+	@SecurityApi
 	public @ResponseBody
 	ReturnDatas lookjson(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		  String  strId=request.getParameter("id");
+		  String appUserId = request.getParameter("appUserId");
 		  java.lang.Integer id=null;
 		  if(StringUtils.isNotBlank(strId)){
 			 id= java.lang.Integer.valueOf(strId.trim());
-		  JoinActivity joinActivity = joinActivityService.findJoinActivityById(id);
-		   returnObject.setData(joinActivity);
+			 JoinActivity joinActivity = joinActivityService.findJoinActivityById(id);
+			 
+			//查询用户信息
+			if(joinActivity.getUserId()!=null){
+				AppUser appUser=appUserService.findAppUserById(joinActivity.getUserId());
+				if(appUser!=null){
+					joinActivity.setAppUser(appUser);
+				}
+			}
+			
+			//如果颁奖的话查询颁奖信息
+			if(joinActivity.getAwardId()!=null){
+				Awards awards=awardsService.findAwardsById(joinActivity.getAwardId());
+				if(awards!=null){
+					joinActivity.setAwards(awards);
+				}
+			}
+			
+			
+			//获取评论列表
+			Finder finderOper = Finder.getSelectFinder(Oper.class).append(" where 1=1 and type=5 and itemId=:itemId order by createTime desc");
+			finderOper.setParam("itemId", joinActivity.getId());
+			List<Oper> opers = operService.queryForList(finderOper,Oper.class);
+			if(null != opers && opers.size() > 0){
+				for (Oper oper : opers) {
+					if(oper.getUserId()!=null){
+						AppUser appUser = appUserService.findAppUserById(oper.getUserId());
+						if(appUser!=null){
+							oper.setNickName(appUser.getName());
+						}
+					}
+					if(null != oper.getToUserId()){
+						AppUser appUser = appUserService.findAppUserById(oper.getToUserId());
+						if(null != appUser && StringUtils.isNotBlank(appUser.getName())){
+							oper.setToUserName(appUser.getName());
+						}
+					}
+				}
+				joinActivity.setOpers(opers);
+			}
+			
+			if(StringUtils.isNotBlank(appUserId)){
+				
+				//查询是否关注
+				Page newPage = new Page();
+				Finder attenFinder=Finder.getSelectFinder(Attention.class).append(" where userId=:userId and itemId=:itemId ");
+				attenFinder.setParam("userId", Integer.parseInt(appUserId));
+				attenFinder.setParam("itemId", joinActivity.getUserId());
+				List<Attention> attens = attentionService.findListDataByFinder(attenFinder, newPage, Attention.class, null);
+				if(attens!=null&&attens.size()>0){
+					joinActivity.setIsAttr(1);
+				}else {
+					joinActivity.setIsAttr(0);
+				}
+				
+				
+				//查询是否点赞
+				Finder operFinder=Finder.getSelectFinder(Oper.class).append(" where userId=:userId and itemId=:itemId and type=6");
+				operFinder.setParam("userId", Integer.parseInt(appUserId));
+				operFinder.setParam("itemId", joinActivity.getId());
+				List<Oper> isOpers = operService.findListDataByFinder(operFinder, newPage, Oper.class, null);
+				if(isOpers!=null&&isOpers.size()>0){
+					joinActivity.setIsOper(1);
+				}else {
+					joinActivity.setIsOper(0);
+				}
+			}
+			 
+			 returnObject.setData(joinActivity);
 		}else{
-		returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setStatus(ReturnDatas.ERROR);
+			returnObject.setMessage("参数缺失");
 		}
 		return returnObject;
 		

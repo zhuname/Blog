@@ -172,18 +172,23 @@ $(document).on("click", ".selectBtn", function() {
                         <th   style="width: 2%" >操作</th>
                         <!--first_end_no_export-->
 						<th   style="width: 5%"  id="th_userId" >用户名称</th>
-						<th  style="width: 3%"  id="th_createTime" >申请时间</th>
-						<th  style="width: 3%"  id="th_operTime" >审核时间</th>
-						<th  style="width: 3%"  id="th_status" >审核状态</th>
-						<th  style="width: 5%"  id="th_reason" >失败原因</th>
 						<th  style="width: 3%"  id="th_money" >提现金额</th>
 						<th  style="width: 3%"  id="th_factorage" >手续费</th>
 						<th  style="width: 3%"  id="th_realMoney" >实际到账金额</th>
-						<th  style="width: 5%"  id="th_branchBank" >开户行</th>
-						<th  style="width: 3%"  id="th_ownerName" >户主名称/真实姓名/微信昵称</th>
-						<th  style="width: 3%"  id="th_ownerPhone" >户主手机号/微信绑定手机号</th>
-						<th  style="width: 3%"  id="th_cardNum" >卡号/支付宝账号/微信账号</th>
+						<th  style="width: 3%"  id="th_createTime" >申请时间</th>
+						<th  style="width: 3%"  id="th_status" >审核状态</th>
+						<th  style="width: 3%"  id="th_operTime" >审核时间</th>
+						
+						<th  style="width: 5%"  id="th_reason" >失败原因</th>
+						
 						<th  style="width: 3%"  id="th_withdrawType" >提现方式</th>
+						
+						<th  style="width: 5%"  id="th_branchBank" >开户行</th>
+						<th  style="width: 3%"  id="th_cardNum" >卡号/支付宝账号/微信账号</th>
+						<th  style="width: 3%"  id="th_ownerName" >户主名称/真实姓名/微信昵称</th>
+						<!-- <th  style="width: 3%"  id="th_ownerPhone" >户主手机号/微信绑定手机号</th> -->
+						
+						
 						<th  style="width: 3%"  id="th_withdrawType" >手机号</th>
                     </tr>
                     </thead>
@@ -261,12 +266,17 @@ $(document).on("click", ".selectBtn", function() {
 								${(_data.userName)!0}
 							</td>
 							<td >
-								<!--日期型-->
-							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+								${(_data.money)!0}
+							</td>
+							<td >
+								${(_data.factorage)!0}
+							</td>
+							<td >
+								${(_data.realMoney)!0}
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.operTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
 								<#if (_data.status) == 1>
@@ -280,32 +290,16 @@ $(document).on("click", ".selectBtn", function() {
 								</#if>
 							</td>
 							<td >
+								<!--日期型-->
+							${((_data.operTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							
+							<td >
 								${(_data.reason)!''}
 							</td>
 							<td >
-								${(_data.money)!0}
-							</td>
-							<td >
-								${(_data.factorage)!0}
-							</td>
-							<td >
-								${(_data.realMoney)!0}
-							</td>
-							<td >
-								${(_data.branchBank)!''}
-							</td>
-							<td >
-								${(_data.ownerName)!''}
-							</td>
-							<td >
-								${(_data.ownerPhone)!''}
-							</td>
-							<td >
-								${(_data.cardNum)!''}
-							</td>
-							<td >
 								<#if (_data.withdrawType) == 1>
-									银行
+									银行卡
 								</#if>
 								<#if (_data.withdrawType) == 2>
 									支付宝
@@ -314,6 +308,20 @@ $(document).on("click", ".selectBtn", function() {
 									微信
 								</#if>
 							</td>
+							<td >
+								${(_data.branchBank)!''}
+							</td>
+							<td >
+								${(_data.cardNum)!''}
+							</td>
+							<td >
+								${(_data.ownerName)!''}
+							</td>
+							<!-- <td >
+								${(_data.ownerPhone)!''}
+							</td> -->
+							
+							
 							<td >
 								${(_data.userPhone)!''}
 							</td>

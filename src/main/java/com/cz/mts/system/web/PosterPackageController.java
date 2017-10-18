@@ -680,6 +680,12 @@ public class PosterPackageController  extends BaseController {
 				posterPackage.setBalance(posterPackage.getSumMoney());
 				
 				posterPackage.setIsValid(0);
+				if(null == posterPackage.getIsAppoint()){
+					posterPackage.setIsAppoint(0);
+				}
+				if(null == posterPackage.getIsRelevance()){
+					posterPackage.setIsRelevance(0);
+				}
 				
 				//生成验证码
 				Long code=new Date().getTime();
@@ -830,8 +836,7 @@ public class PosterPackageController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
-		posterPackage.setIsDel(0);
-		Finder finder = Finder.getSelectFinder(PosterPackage.class).append(" where 1=1");
+		Finder finder = Finder.getSelectFinder(PosterPackage.class).append(" where 1=1 and isDel=0");
 		if(StringUtils.isNotBlank(posterPackage.getCategoryName())){
 			finder.append(" and categoryId in(select id from t_category where type=1 and INSTR(`name`,:categoryName)>0 )");
 			finder.setParam("categoryName", posterPackage.getCategoryName());
@@ -857,11 +862,24 @@ public class PosterPackageController  extends BaseController {
 		if(StringUtils.isNotBlank(posterPackage.getTitle())){
 			finder.append(" and title like '%"+posterPackage.getTitle()+"%'");
 		}
+		if(null != posterPackage.getStatus()){
+			finder.append(" and status = :status");
+			finder.setParam("status", posterPackage.getStatus());
+		}
+		if(null != posterPackage.getEncrypt()){
+			finder.append(" and encrypt = :encrypt");
+			finder.setParam("encrypt", posterPackage.getEncrypt());
+		}
+		
+		if(null != posterPackage.getPayType()){
+			finder.append(" and payType=:payType");
+			finder.setParam("payType", posterPackage.getPayType());
+		}
 		finder.append(" and status!=0");
 		
 		Double sumPayMoney = 0.0;
 		Double sumBalance = 0.0;
-		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,posterPackage);
+		List<PosterPackage> datas = posterPackageService.findListDataByFinder(finder,page,PosterPackage.class,null);
 		if(null != datas && datas.size() > 0){
 			for (PosterPackage pc : datas) {
 				if(StringUtils.isNotBlank(pc.getImage())){

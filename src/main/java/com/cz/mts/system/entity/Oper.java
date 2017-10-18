@@ -76,11 +76,23 @@ public class Oper  extends BaseEntity {
 	
 	private String itemName;
 	
+	private Integer toUserId;
+	
+	private String toUserName;
+	
 	
 
 	
 	
-	
+	@Transient
+	public String getToUserName() {
+		return toUserName;
+	}
+
+	public void setToUserName(String toUserName) {
+		this.toUserName = toUserName;
+	}
+
 	@Transient
 	public String getItemName() {
 		return itemName;
@@ -132,7 +144,15 @@ public class Oper  extends BaseEntity {
 	}
 	
 	
-	
+	@WhereSQL(sql="toUserId=:Oper_toUserId")
+	public Integer getToUserId() {
+		return toUserId;
+	}
+
+	public void setToUserId(Integer toUserId) {
+		this.toUserId = toUserId;
+	}
+
 	@WhereSQL(sql="osType=:Oper_osType")
      public String getOsType() {
 		return osType;
@@ -200,6 +220,7 @@ public class Oper  extends BaseEntity {
 			.append(" 1海报点赞  2海报评论 3视频点赞  4视频评论 5同城活动参与评论 6同城活动参与点赞 7城事圈点赞 8城事圈评论[").append(getType()).append("],")
 			.append("评论内容[").append(getContent()).append("],")
 			.append("操作系统[").append(getOsType()).append("],")
+			.append("被艾特人的userId[").append(getToUserId()).append("],")
 			.toString();
 	}
 	

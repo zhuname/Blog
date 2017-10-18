@@ -33,6 +33,7 @@ import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.ApplyMedal;
+import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Awards;
 import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.JoinActivity;
@@ -299,7 +300,7 @@ public class ActivityController  extends BaseController {
 		  if(activity.getViewedCount()==null){
 			  activity.setViewedCount(1);
 		  }else {
-			  if(activity.getStatus().intValue()==3||activity.getStatus().intValue()==4){
+			  if(null != activity.getStatus() && (3 == activity.getStatus() || 4 == activity.getStatus())){
 				  activity.setViewedCount(activity.getViewedCount()+1);
 			  }
 			  if((activity.getViewedCount()%100)==0){
@@ -654,11 +655,32 @@ public class ActivityController  extends BaseController {
 				activity.setAduitSuccessTime(new Date());
 				activityService.update(activity,true);
 				Activity at = activityService.findActivityById(activity.getId());
+				AppUser appUser =new AppUser();
 				if(null != at && null != at.getUserId()){
-					AppUser appUser = appUserService.findAppUserById(at.getUserId());
+					appUser = appUserService.findAppUserById(at.getUserId());
 					if(null != appUser && null != appUser.getIsPush() && 1 == appUser.getIsPush()){
 						notificationService.notify(22, at.getId(), at.getUserId());
 					}
+				}
+				
+				
+				//更新attention表中的isUpdate字段
+				Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+				finderAtte.setParam("itemId", at.getUserId());
+				attentionService.update(finderAtte);
+				//更新appUser表中的isUpdate字段
+				Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
+				finderAppUser.setParam("itemId",  at.getUserId());
+				appUserService.update(finderAppUser);
+				
+				
+				//查询接收推送的用户
+				Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+				finderSelect.setParam("itemId", at.getUserId());
+				List<Attention> attentions = attentionService.queryForList(finderSelect,Attention.class);
+				for (Attention attention : attentions) {
+					AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, null, at, null, notificationService, appUser);
+					attenThreadController.run();
 				}
 				
 			}

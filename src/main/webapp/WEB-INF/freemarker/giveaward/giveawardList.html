@@ -94,8 +94,8 @@ $(document).on("click", ".selectBtn", function() {
                         <!--first_end_no_export-->
 						<th id="th_userId" >发布人</th>
 						<th id="th_activityId" >活动主题</th>
-						<th id="th_joinUserId" >获奖者</th>
 						<th id="th_createTime" >颁奖时间</th>
+						<th id="th_joinUserId" >获奖者</th>
 						<th id="th_awardId" >奖项标题</th>
 						<th id="th_awardId" >奖项内容</th>
                     </tr>
@@ -165,12 +165,13 @@ $(document).on("click", ".selectBtn", function() {
 								${(_data.activityName)!''}
 							</td>
 							<td >
-								${(_data.joinUserName)!''}
-							</td>
-							<td >
 								<!--日期型-->
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
+							<td >
+								${(_data.joinUserName)!''}
+							</td>
+							
 							<td >
 								${(_data.awardName)!''}
 							</td>

@@ -32,6 +32,7 @@ import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Attention;
 import com.cz.mts.system.entity.Circle;
+import com.cz.mts.system.entity.City;
 import com.cz.mts.system.entity.Collect;
 import com.cz.mts.system.entity.Oper;
 import com.cz.mts.system.entity.Shield;
@@ -40,9 +41,11 @@ import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.IAttentionService;
 import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.ICityCircleService;
+import com.cz.mts.system.service.ICityService;
 import com.cz.mts.system.service.ICollectService;
 import com.cz.mts.system.service.IOperService;
 import com.cz.mts.system.service.IShieldService;
+import com.cz.mts.system.service.NotificationService;
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
 import com.cz.mts.frame.util.Finder;
@@ -76,6 +79,10 @@ public class CircleController  extends BaseController {
 	private IOperService operService;
 	@Resource
 	private ICityCircleService cityCircleService;
+	@Resource
+	private NotificationService notificationService;
+	@Resource
+	private ICityService cityService;
 	
 	
 	private String listurl="/circle/circleList";
@@ -123,6 +130,11 @@ public class CircleController  extends BaseController {
 			finder.setParam("type", circle.getType());
 		}
 		
+		if(null != circle.getCityId()){
+			finder.append(" and cityId = :cityId");
+			finder.setParam("cityId", circle.getCityId());
+		}
+		
 		
 		List<Circle> datas=circleService.queryForList(finder, Circle.class, page);
 		
@@ -149,30 +161,16 @@ public class CircleController  extends BaseController {
 			        {  
 			        	int height = image.getHeight();
 			        	int width = image.getWidth();
-		        		Double percent = 0.0;
-		        		Toolkit kit = Toolkit.getDefaultToolkit(); //定义工具包
-			        	Dimension screenSize = kit.getScreenSize(); //获取屏幕的尺寸  
-			        	int screenWidth = screenSize.width; //获取屏幕的宽  
-			        	int screenHeight = screenSize.height; //获取屏幕的高  
-			        	if(height > screenHeight){
-			        		percent = 500 / (double) width;
-			        		height = (int) (height * percent);
-			        		circle2.setHeight(height);
-				        	circle2.setWidth(500);
-			        	}else{
-			        		circle2.setHeight(height);
-				        	circle2.setWidth(width);
-			        	}
-			        	
-//			        	circle2.setHeight(height);
-//			        	circle2.setWidth(width);
-			        	
-//			        	Image smallImg =image.getScaledInstance( height, width/2,Image.SCALE_REPLICATE );
-			        	
-			        	
-//			            System.out.println("图片高度:"+image.getHeight());  
-//			            System.out.println("图片宽度:"+image.getWidth());  
+			        	circle2.setHeight(height);
+			        	circle2.setWidth(width);
 			        }  
+				}
+				
+				if(null != circle2.getCityId()){
+					City city = cityService.findCityById(circle2.getCityId());
+					if(null != city && StringUtils.isNotBlank(city.getName())){
+						circle2.setCityName(city.getName());
+					}
 				}
 			}
 		}
@@ -268,7 +266,7 @@ public class CircleController  extends BaseController {
 		List<Circle> datas=circleService.findListDataByFinder(finder, page, Circle.class, circle);
 		
 		//刷新城事圈儿事件
-		if(StringUtils.isNotBlank(appuserId)){
+		if(StringUtils.isNotBlank(appuserId) && null == circle.getUserId()){
 			
 			AppUser appUser = appUserService.findAppUserById(Integer.parseInt(appuserId));
 			if(appUser!=null){
@@ -454,6 +452,29 @@ public class CircleController  extends BaseController {
 		try {
 		
 			Object id = circleService.saveorupdate(circle);
+			Circle cir = circleService.findCircleById(id);
+			if(null != cir && null != cir.getUserId()){
+				AppUser appUser = appUserService.findAppUserById(cir.getUserId());
+				//更新attention表中的isUpdate字段
+				Finder finderAtte = new Finder("UPDATE t_attention SET isUpdate = 1 WHERE itemId = :itemId");
+				finderAtte.setParam("itemId", cir.getUserId());
+				attentionService.update(finderAtte);
+				//更新appUser表中的isUpdate字段
+				Finder finderAppUser = new Finder("UPDATE t_app_user SET isUpdate = 1 WHERE id in (SELECT DISTINCT userId FROM t_attention WHERE itemId = :itemId)");
+				finderAppUser.setParam("itemId",  cir.getUserId());
+				appUserService.update(finderAppUser);
+				
+				
+				//查询接收推送的用户
+				Finder finderSelect = new Finder("SELECT * FROM t_attention WHERE itemId = :itemId");
+				finderSelect.setParam("itemId", cir.getUserId());
+				List<Attention> attentions = attentionService.queryForList(finderSelect,Attention.class);
+				for (Attention attention : attentions) {
+					AttenThreadController attenThreadController = new AttenThreadController(null, null, attention, null, null, cir, notificationService, appUser);
+					attenThreadController.run();
+				}
+			}
+			
 			returnObject.setData(id);
 		} catch (ParameterErrorException e) {
 			String errorMessage = e.getLocalizedMessage();
@@ -527,6 +548,13 @@ public class CircleController  extends BaseController {
 			 if(null != circle && null != circle.getUserId()){
 				 if(userId.intValue() == circle.getUserId().intValue()){
 					 circleService.deleteById(id,Circle.class);
+					 
+					 //更新评论次数
+					 Finder finder = new Finder("UPDATE t_circle SET commentCount=commentCount-1 WHERE id=:id");
+					 finder.setParam("id", id);
+					 circleService.update(finder);
+					 
+					 
 						return new ReturnDatas(ReturnDatas.SUCCESS,
 								MessageUtils.DELETE_SUCCESS);
 				 }else{

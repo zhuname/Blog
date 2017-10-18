@@ -109,10 +109,23 @@ public class CityCircle  extends BaseEntity {
 	
 	private String userName;
 	
+	private String publishName;
+	
+	
+	
 	
 	
 	
 	//concstructor
+
+	@Transient
+	public String getPublishName() {
+		return publishName;
+	}
+
+	public void setPublishName(String publishName) {
+		this.publishName = publishName;
+	}
 
 	@Transient
 	public String getUserName() {

@@ -58,10 +58,6 @@ public class ConfigBean implements Serializable{
 	public void setAppVersionNumberIos(String appVersionNumberIos) {
 		this.appVersionNumberIos = appVersionNumberIos;
 	}
-	
-	
-	
-	
 	public String getPosterPackageDetail() {
 		return posterPackageDetail;
 	}
