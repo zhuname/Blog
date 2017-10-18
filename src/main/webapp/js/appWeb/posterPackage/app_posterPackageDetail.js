@@ -391,6 +391,14 @@ function yuyue(){
 	}
 var isOpers=0;
 
+var toUserIdString="";
+
+function toUser(toUserId,toUserName){
+	
+	toUserIdString="&toUserId="+toUserId;
+	$("#comment").attr("placeholder","回复  "+toUserName+"：");
+}
+
 function oper(type){
 	if(isOpers==0){
 	
@@ -400,7 +408,7 @@ function oper(type){
 			
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=2&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
+				url : '/mts/system/oper/update/json?web=&type=2&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId+toUserIdString,
 				type : "post",
 				dataType : "json",
 				success : function(result){
@@ -409,7 +417,7 @@ function oper(type){
 						return;
 					}
 					$("#comment").val("");
-					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+					window.location.reload();
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
 					console.log(XMLHttpRequest) ;

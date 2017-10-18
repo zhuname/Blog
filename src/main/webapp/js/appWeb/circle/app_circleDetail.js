@@ -309,11 +309,21 @@ function showInput(id){
 	
 }
 
+
+var toUserIdString="";
+
+function toUser(toUserId,toUserName){
+	
+	toUserIdString="&toUserId="+toUserId;
+	$("#comment").attr("placeholder","回复  "+toUserName+"：");
+}
+
+
 function fasong(){
 	console.log($("#content").val());
 	//加载页面方法
 	$.ajax({
-		url : '/mts/system/oper/update/json?web=&type=8'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#content").val(),
+		url : '/mts/system/oper/update/json?web=&type=8'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#content").val()+toUserIdString,
 		type : "post",
 		dataType : "json",
 		success : function(result){

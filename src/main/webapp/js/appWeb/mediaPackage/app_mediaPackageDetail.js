@@ -352,14 +352,20 @@ function lingquList(){
 	window.location.href="/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId="+id+"&type=1";
 }
 
+var toUserIdString="";
 
+function toUser(toUserId,toUserName){
+	
+	toUserIdString="&toUserId="+toUserId;
+	$("#comment").attr("placeholder","回复  "+toUserName+"：");
+}
 function oper(type){
 	if(type==4){
 		if($("#comment").val()!=null&&$("#comment").val()!=""){
 			
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=4&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
+				url : '/mts/system/oper/update/json?web=&type=4&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId+toUserIdString,
 				type : "post",
 				dataType : "json",
 				success : function(result){

@@ -45,7 +45,7 @@ Object data=session.getAttribute("data");
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
-	src="<%=basePath%>/js/appWeb/appUser/app_appUserShezhi.js"></script>
+	src="<%=basePath%>/js/appWeb/appUser/app_updatePass.js"></script>
 	
 <script src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js" type="text/javascript"></script>
 
@@ -61,46 +61,30 @@ body{background: #f0f2f5;}
 
 <body>
 
-	<div class="wraper">
+	<div class="wraper overh ">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a onclick="window.location.href='/mts/appWeb/appuser/appuserLook.jsp';"><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
-			<p class="f_30 clr_3">设置</p>
-			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;visibility: hidden;" /></a>
-		</div>
-		
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba mt_20" onclick="window.location.href='/mts/appWeb/appuser/updatePass.jsp';">
-			<div class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/g1.png" class="dis_b" style="height:0.8rem;margin-right: 0.3rem;" />修改密码</div>
-			<img src="<%=basePath%>/js/appWeb/images/arr_he2.png" class="dis_b" style="height:0.6rem;" />
+			<a  onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<p class="f_30 clr_3">修改密码</p>
+			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;visibility: hidden;" /></a>
+	
 		</div>
 
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba mt_20">
-		<div class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/g3.png" class="dis_b" style="height:0.8rem;margin-right: 0.3rem;" />关于我们</div>
-			<img src="<%=basePath%>/js/appWeb/images/arr_he2.png" class="dis_b" style="height:0.6rem;" />
+		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba ">
+			<input id="oldPwd" class="ipt3 f_28 clr_9" type="text" placeholder="请输入你的原密码" />
+		</div>
+		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba ">
+			<input id="newPwd" class="ipt3 f_28 clr_9" type="text" placeholder="请输入你的新密码" />
+		</div>
+		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba ">
+			<input id="newPwd2" class="ipt3 f_28 clr_9" type="text" placeholder="请确认你的新密码" />
 		</div>
 
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba" onclick="window.location.href='/mts/appWeb/appuser/yijian.jsp';">
-		<div class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/g4.png" class="dis_b" style="height:0.8rem;margin-right: 0.3rem;" />意见反馈</div>
-			<img src="<%=basePath%>/js/appWeb/images/arr_he2.png" class="dis_b" style="height:0.6rem;" />
-		</div>
-		
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba mt_20">
-		<div class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/g6.png" class="dis_b" style="height:0.8rem;margin-right: 0.3rem;" />当前版本</div>
-			<p class="clr_he">V.1.10</p>
-		</div>
+
 
 				<div class="pad_30">
-			<input onclick="logOff();" type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="退出登录" />
+			<input onclick="updatePass();" type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="确认" />
 		</div>
 
-		<script>
-			$('.switcher_toggle').click(function(){
-				if($(this).attr('src').indexOf('kai')>-1){
-					$(this).attr('src', '<%=basePath%>/js/appWeb/images/guan.png');
-				}else{
-					$(this).attr('src', '<%=basePath%>/js/appWeb/images/kai.png');
-				}
-			});
-		</script>
 
 
 	</div>
