@@ -68,7 +68,7 @@ Object data=session.getAttribute("data");
 
 			<div class="pad_30 dis_f ali_end jus_bt">
 				<div class="dis_f ali_ct">
-					<img src="{{= header}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
+					<img src="{{= header}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;height:1.5rem;" />
 					<div class="clr_f">
 						<span class="f_28">{{= name}}</span>
 						{{if sex}}
