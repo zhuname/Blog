@@ -75,7 +75,7 @@ Object data=session.getAttribute("data");
 
 			<div class="pad_30 dis_f ali_end jus_bt">
 				<div class="dis_f ali_ct">
-					<img src="{{= header}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
+					<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
 					<div class="clr_f">
 						<span class="f_28">{{= name}}</span>
 						{{if sex}}
@@ -88,7 +88,7 @@ Object data=session.getAttribute("data");
 						<span class="f_28" id="xzmb"></span>
 						
 						<br />
-						<p class="f_20 clr_f">{{= sign}}</p>
+						<p class="f_20 clr_f">{{if sign}}{{= sign}}{{else}}美天给生活一点惊喜{{/if}}</p>
 					</div>
 				</div>
 
@@ -99,7 +99,7 @@ Object data=session.getAttribute("data");
 			</div>
 
 
-			<div style="background: url({{= header}}) no-repeat;width:16rem;height:7rem; position: absolute; top: 0;z-index: -1"></div>
+			<div style="background: url({{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}) no-repeat;width:16rem;height:7rem; position: absolute; top: 0;z-index: -1"></div>
 
 
 		</div>
@@ -111,7 +111,7 @@ Object data=session.getAttribute("data");
 				<img src="{{= image}}" class="dis_b" style="width:0.6rem;margin-right:0.5rem;" />
 				<div class="f_28 clr_he">{{= name}}<p class="f_20">{{= descr}}</p></div>
 			</div>
-			<div class="f_24 clr_r" style="border:1px solid #f9634e;border-radius: 0.1rem;padding:0.1rem; ">{{if applyStatus}}{{if applyStatus==1}}申请中{{/if}}{{if applyStatus == 2}}申请成功{{/if}}{{if applyStatus == 3}}申请失败{{/if}}{{else}}申请中{{/if}}</div>
+			<div class="f_24 clr_r" style="border:1px solid #f9634e;border-radius: 0.1rem;padding:0.1rem; ">{{if applyStatus}}{{if applyStatus==1}}申请认证{{/if}}{{if applyStatus == 2}}申请成功{{/if}}{{if applyStatus == 3}}申请失败{{/if}}{{else}}申请中{{/if}}</div>
 		</div>
 		</script>
 		

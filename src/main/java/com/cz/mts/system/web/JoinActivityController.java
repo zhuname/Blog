@@ -156,6 +156,9 @@ public class JoinActivityController  extends BaseController {
 					page.setSort("desc");
 					break;
 				}
+			}else{
+				page.setOrder("createTime");
+				page.setSort("desc");
 			}
 			
 		List<JoinActivity> datas=joinActivityService.queryForList(finder, JoinActivity.class, page);

@@ -94,9 +94,7 @@ function save(){
 					return;
 				}
 				if(result.data!=undefined){
-					if(result.data.balance!=undefined){
-						window.location.href="/mts/appWeb/card.jsp/myCard.jsp.jsp";
-					}
+					window.location.href="/mts/appWeb/appuser/myCard.jsp";
 				}
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){

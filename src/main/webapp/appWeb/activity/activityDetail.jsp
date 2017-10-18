@@ -16,7 +16,7 @@ Object data=session.getAttribute("data");
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<!--
+	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -102,7 +102,7 @@ Object data=session.getAttribute("data");
 		<div class="pad_30 bg_f mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -117,7 +117,7 @@ Object data=session.getAttribute("data");
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
    					 {{/each}}
 					{{/if}}
-					<div class="f_22 clr_9">{{if appUser}}{{= appUser.sign}}{{/if}}</div>
+					<div class="f_22 clr_9">{{if appUser}}{{if appUser.sign}}{{= appUser.sign}}{{else}}美天给生活一点惊喜{{/if}}{{else}}美天给生活一点惊喜{{/if}}</div>
 					</div>
 				</div>
 			</div>
@@ -194,7 +194,7 @@ Object data=session.getAttribute("data");
 			<div class="bg_f ali_ct padl_20 clr_3 f_30" style="padding-bottom:0.5rem;text-align:right;">
 				<a id="canyu"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" ></a>
 				...
-				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=2&id={{= id}}';" />
+				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" />
 			</div>
 
 			{{if isPart}}
@@ -220,11 +220,11 @@ Object data=session.getAttribute("data");
 		</script>
 		
 		<script id="canyu_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 		</script>
 		
 		<script id="zhongjiang_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 		</script>
 
 	</div>

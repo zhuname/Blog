@@ -9,16 +9,15 @@ show();
 function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
-	$('#posterPackage').html("");
-	dataString='&title='+titleString;
+	$('#activity').html("");
+	dataString='&selectTitle='+titleString;
 	show();
 }
 
 
-
 function selectSort(type){
 	nextPage=1;
-	$('#posterPackage').html("");
+	$('#activity').html("");
 	if(type==1){
 		dataString='&selectType=1';
 	}else if(type==2){
@@ -96,7 +95,7 @@ function show(){
 
 
 $.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=5&cityId='+getQueryString("cityId"),
+	url : '/mts/system/lunbopic/list/json?web=&position=5&cityIds='+getQueryString("cityId"),
 	type : "post",
 	dataType : "json",
 	success : function(result){

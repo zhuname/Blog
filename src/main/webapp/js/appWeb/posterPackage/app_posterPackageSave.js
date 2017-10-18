@@ -1,4 +1,8 @@
 var This=this;
+var userId;
+var id;
+var type;
+var cityId;
 
 function save(){
 	if(getCookie("posterPackageCardId")!=null&&getCookie("posterPackageCategoryId")!=null&&getCookie("posterPackageCityId")
@@ -14,7 +18,43 @@ function save(){
 	}
 }
 
+function changeImages(image){
+	if(getCookie("posterPackageImages")!=null){
+		setCookie("posterPackageImages",getCookie("posterPackageImages")+image);
+	}else {
+		setCookie("posterPackageImages",image);
+	}
+}
+
+function changeTitle(){
+	setCookie("posterPackageTitle",$('#title').val());
+}
+
+function changeAppointExplain(){
+	setCookie("posterPackageAppointExplain",$('#appointExplain').val());
+}
+
+function changeDescr(){
+	setCookie("posterPackageDescr",$('#descr').val());
+}
+
+function changeCommand(){
+	setCookie("posterPackageCommand",$('#command').val());
+}
+
 function init(){
+	
+	if(getCookie("posterPackageImages")!=null){
+		$('#image').html("");
+		var images = getCookie("posterPackageImages").split(";"); 
+		for (var int = 0; int < images.length; int++) {
+			if(images[int]==""){
+				$('#images_update_tmpl').tmpl(null).appendTo($('#image'));
+			}else{
+				$('#images_update_init_tmpl').tmpl({"image":images[int]}).appendTo($('#image'));
+			}
+		}
+	}
 
 	if(getCookie("posterPackageTitle")!=null){
 		$('#title').val(getCookie("posterPackageTitle"));
@@ -118,15 +158,27 @@ $(document).on("change", "#filed", function() {
 	       dataType : 'text' ,
 	       data : {} ,
 	       success : function(data, status) {
-	       	console.log(data);
-        	$(".header")[0].attr('src',data);
-        	$(".header")[0].Attr("class","dis_b");
-        	$('#images_update_tmpl').tmpl(null).appendTo($('#image'));      	
-        },
-        error : function(data, status, e) {
-       		console.log(data);
-            alert('上传出错');
-        }
+	    	   $($(".waitCheck")[0]).attr('src',data);
+		       	$($(".waitCheck")[0]).attr("class","");
+		    	changeImages(data+";");
+		    	
+		    	var imageNum=0;
+		    	var images = getCookie("posterPackageImages").split(";"); 
+		    	
+				for (var int = 0; int < images.length; int++) {
+					if(images[int]==""){
+						imageNum+1;
+					}
+				}
+		    	if(imageNum!=9){
+		    		$('#images_update_tmpl').tmpl(null).appendTo($('#image'));   
+		    	}
+    	},
+	        error : function(data, status, e) {
+	       		console.log(data);
+	       		console.log(e);
+	            alert('上传出错');
+	        }
     })
 
     return false;

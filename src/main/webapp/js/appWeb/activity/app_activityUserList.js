@@ -5,6 +5,29 @@ var type;
 var nextPage=1;
 var cityId;
 var itemId;
+var dataString="";
+
+function select(){
+	var titleString= $('#title').val();
+	nextPage=1;
+	$('#userList').html("");
+	dataString='&name='+titleString;
+	joinList(getQueryString("type"));
+}
+
+function selectSort(type){
+	nextPage=1;
+	$('#userList').html("");
+	if(type==1){
+		dataString='&sort=1';
+	}else if(type==2){
+		dataString='&sort=2';
+	}else if(type==3){
+		dataString='&sort=3';
+	}
+	joinList(getQueryString("type"));
+}
+
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -25,7 +48,7 @@ $.ajax({
 		type : "post",
 		dataType : "json",
 		success : function(result){
-			
+
 			if(result.status=="error"){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
@@ -62,7 +85,7 @@ function canyu(){
 function joinList(joinOrAward){
 	var data='&pageIndex='+nextPage;
 	$.ajax({
-		url : '/mts/system/joinactivity/list/json?web=&activityId='+getQueryString("id")+"&sort=1&joinOrAward="+joinOrAward+data+"&appuserId="+userId,
+		url : '/mts/system/joinactivity/list/json?web=&activityId='+getQueryString("id")+"&joinOrAward="+joinOrAward+data+"&appuserId="+userId+dataString,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -105,13 +128,20 @@ function joinList(joinOrAward){
 						
 					}
 					
-					
-					
 					$('#user_list_tmpl').tmpl(result.data[int]).appendTo($('#userList'));
 					
 				}
 				
 				showPinglun();
+				
+				var bj=$(".bj");
+				for (var int = 0; int < bj.length; int++) {
+					if($(bj[int]).attr("itemId")==userId){
+						$(bj[int]).html("");
+						$(bj[int]).attr("style","width:3.5rem;");
+					}
+				}
+				
 			}
 			
 		},

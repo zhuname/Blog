@@ -70,7 +70,7 @@ html,body{height:100%;}
 
 
 		<script id="card_list_tmpl" type="text/x-jquery-tmpl">
-		<div class="pad_3020 pos_rela" style="margin-top:-0.5rem;">
+		<div class="pad_3020 pos_rela" style="margin-top:-0.5rem;"  onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= cardId}}';">
 			{{if status}}
 			{{if status==1}}
 			{{else}}
@@ -78,7 +78,7 @@ html,body{height:100%;}
 			{{/if}}
 			{{/if}}
 			<div class="pad_20 dis_f ali_top bg_f">
-				<img src="{{= card.appUser.header}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
+				<img src="{{if card.appUser.header}}{{= card.appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
 					<div>
 						<span class="ver_mid f_24 clr_3">{{= card.appUser.name}}</span>
@@ -101,24 +101,18 @@ html,body{height:100%;}
 
 			</div>
 
-			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;">{{= card.title}}</div>
+			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;text-align:center;">{{= card.title}}</div>
 			<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem;" /></div>
 			<div class="dis_f ali_ct jus_bt pad_20 bg_f" >
 					<div class="f_18 clr_he dis_f ali_ct">
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />
 						{{= expTime}}止
 					</div>
-					
-							{{if status}}
-							{{if status==1}}
-							{{else}}
 								{{if sumMoney}}
 								<div class="f_20 clr_r">￥{{= sumMoney}} </div>
 								{{else}}
 								<div class="f_20 clr_r">免费</div>
 								{{/if}}
-							{{/if}}
-							{{/if}}
 				</div>
 		</div>
 		</script>
@@ -127,7 +121,7 @@ html,body{height:100%;}
 
 		<div class="yydh_box bg_f dis_f ali_ct jus_bt">
 			<input class="ipt1 f_28 clr_9" id="cardCode" type="text" placeholder="请填写兑换码进行兑换" style="margin-left:0.5rem;">
-			<input class="f_28 clr_f bg_r" type="button" onclick="duihuan();" value="预约兑换" style="height:2.5rem;border:0;width:5rem;" />
+			<input class="f_28 clr_f bg_r" type="button" onclick="duihuan();" value="卡券兑换" style="height:2.5rem;border:0;width:5rem;" />
 		</div>
 
 	</div>

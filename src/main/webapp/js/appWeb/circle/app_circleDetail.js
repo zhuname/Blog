@@ -118,7 +118,7 @@ function initColl(){
 	});
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+	url : '/mts/system/collect/coll/json?web=&type=3&userId='+userId+'&itemId='+id,
 	type : "post",
 	dataType : "json",
 	success : function(result){
@@ -162,6 +162,11 @@ function collect(){
 			console.log(textStatus) ;
 		}
 	});
+}
+
+
+function shaizi(){
+	$("#money").val(Math.round(Math.random()*9+1)+"."+Math.round(Math.random()*9)+Math.round(Math.random()*9));
 }
 
 function attr(){
@@ -296,6 +301,44 @@ function dianzan(){
 	}
 }
 
+function showInput(id){
+	
+	$("#inputBtn").show();
+	$("#srk_box").show();
+	itemId = id ;
+	
+}
+
+function fasong(){
+	console.log($("#content").val());
+	//加载页面方法
+	$.ajax({
+		url : '/mts/system/oper/update/json?web=&type=8'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#content").val(),
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+		    window.location.reload();
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function hideInput(){
+	
+	$("#inputBtn").hide();
+	$("#srk_box").hide();
+	$("#content").val("");
+	
+}
+
+
 function dashang(){
 	
 	var content = $('#contentVal').val();
@@ -305,7 +348,7 @@ function dashang(){
 	if(userId!=null&&userId!=""&&id!=null&&id!=""&&content!=null&&content!=""&&money!=null&&money!=""){
 		//加载页面方法
 		$.ajax({
-		url : '/mts/system/citycircle/update/json?web=&itemId='+getQueryString("id")+"&userId="+userId+"&content="+content+"&money="+money,
+		url : '/mts/system/citycircle/update/json?web=&itemId='+id+"&userId="+userId+"&content="+content+"&money="+money,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -316,7 +359,7 @@ function dashang(){
 			
 			//加载页面方法
 			$.ajax({
-			url : '/mts/system/appuser/pay/json?web=&code='+result.data.code+"&userId="+userId+"&type="+5+"&money="+money,
+			url : '/mts/system/appuser/pay/json?web=&itemId='+id+'&code='+result.data.code+"&userId="+userId+"&type="+5+"&money="+money,
 			type : "post",
 			dataType : "json",
 			success : function(result){

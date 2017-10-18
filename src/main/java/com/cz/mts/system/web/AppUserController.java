@@ -685,6 +685,26 @@ public class AppUserController  extends BaseController {
 		return returnObject;
 	}
 	
+	/**
+	 * 登录接口
+	 * 
+	 * @param request
+	 * @param model
+	 * @param appUser
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/logOff/json")
+	@SecurityApi
+	public @ResponseBody
+	ReturnDatas logOffjson(HttpServletRequest request, Model model,AppUser appUser) throws Exception{
+		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+		
+		session.removeAttribute("appUserSessionId");
+		
+		return returnObject;
+	}
+	
 	
 	/**
 	 * 第三方登录接口json数据,为APP提供数据
@@ -1041,6 +1061,8 @@ public class AppUserController  extends BaseController {
 		}
 		try {
 			//支付 ，并且返回状态
+			
+			
 			Integer result=appUserService.pay(userId, type, itemId,code,osType);
 			if(result==1){
 				returnObject.setMessage("支付成功");

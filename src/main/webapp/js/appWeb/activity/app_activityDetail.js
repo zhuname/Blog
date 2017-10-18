@@ -135,7 +135,7 @@ function initColl(){
 		});
 		//加载页面方法
 		$.ajax({
-		url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+		url : '/mts/system/collect/coll/json?web=&type=4&userId='+userId+'&itemId='+id,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -164,7 +164,7 @@ function initColl(){
 function collect(){
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/collect/update/json?web=&type=1&userId='+userId+'&itemId='+id,
+	url : '/mts/system/collect/update/json?web=&type=4&userId='+userId+'&itemId='+id,
 	type : "post",
 	dataType : "json",
 	success : function(result){

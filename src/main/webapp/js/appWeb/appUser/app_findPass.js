@@ -58,28 +58,6 @@ function sendCode(){
         settime();//开始倒计时
     }
 }
-////将手机利用ajax提交到后台的发短信接口
-//function doPostBack(url,backFunc,queryParam) {
-//  $.ajax({
-//      async : false,
-//      cache : false,
-//      type : 'POST',
-//      url : url,// 请求的action路径
-//      data:queryParam,
-//      error : function() {// 请求失败处理函数
-//      },
-//      success : backFunc
-//  });
-//}
-//function backFunc1(data){
-//  var d = $.parseJSON(data);
-//  if(!d.success){
-//      alert(d.msg);
-//  }else{//返回验证码
-//      alert("模拟验证码:"+d.msg);
-//      $("#code").val(d.msg);
-//  }
-//}
 //开始倒计时
 var countdown;
 function settime() { 
@@ -115,13 +93,12 @@ function isPhoneNum(){
 //发送短信接口
 function sendMessage(){
 $.ajax({
-			url : '/mts/system/sms/content/json?type=1&web=&phone='+$('#phonenum').val(),
+			url : '/mts/system/sms/content/json?type=4&web=&phone='+$('#phonenum').val(),
 			type : "post",
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
 					alert(result.message);;
-					addCookie("secondsremained",0,0);//添加cookie记录,有效时间60s
 					return;
 				}
 				if(result.data!=undefined){
@@ -138,7 +115,7 @@ $.ajax({
 //注册接口
 function checkSignOn(){
 	$.ajax({
-			url : '/mts/system/appuser/update/json?web=&phone='+$("#phonenum").val()+'&name='+$("#user").val()+'&password='+$("#passWord").val()+'&content='+$("#IdenCode").val(),
+			url : '/mts/system/appuser/forget/json?web=&phone='+$("#phonenum").val()+'&password='+$("#passWord").val()+'&content='+$("#IdenCode").val(),
 			type : "post",
 			dataType : "json",
 			success : function(result){

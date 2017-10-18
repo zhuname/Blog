@@ -149,7 +149,7 @@ function countTime() {
 		
 		$('#lqjh').html(lqHtml);
 	}else{
-		var lqHtml="还剩余<span class=\"f_30\">"+currentLqNum+"</span>次领取机会";
+		var lqHtml="您有<span class=\"f_30\">"+currentLqNum+"</span>次领取机会";
 		$('#lqjh').html(lqHtml);
 	}
 	

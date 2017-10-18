@@ -117,7 +117,7 @@ Object data=session.getAttribute("data");
 	
 	<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_f dis_f ali_ct pad_30" >
-			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:2rem;border-radius: 1rem;margin-right:0.5rem;" />
+			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border-radius: 1rem;margin-right:0.5rem;" />
 			<div>
 				
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}} </span>
@@ -133,7 +133,7 @@ Object data=session.getAttribute("data");
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
    					 {{/each}}
 					{{/if}}
-					<div class="f_18 clr_6 mt_10">{{if appUser}}{{= appUser.sign}}{{/if}}</div>
+					<div class="f_18 clr_6 mt_10">{{if appUser}}{{if appUser.sign}}{{= appUser.sign}}{{else}}美天给生活一点惊喜{{/if}}{{else}}美天给生活一点惊喜{{/if}}</div>
 				
 			</div>
 		</div>
@@ -149,8 +149,8 @@ Object data=session.getAttribute("data");
 				<span class="ver_mid">{{= title}}</span>
 			</div>
 
-			<div class="f_28 clr_6 mt_20 clr_he" style="line-height:1.2rem;text-indent: 1.4rem;">
-				{{= descr}}
+			<div class="f_28 clr_6 mt_20 clr_he" style="width:97%;word-break:   break-all;   word-wrap:break-word;line-height:1.2rem;text-indent: 1.4rem;">
+				<pre>{{= descr}}</pre>
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">
@@ -212,9 +212,9 @@ Object data=session.getAttribute("data");
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt" style="border-top:1px solid #f2f4f7;">
 			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';">
 			</div>
-			<div class="clr_3 f_30">…</div>
+			<div class="clr_3 f_30"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';">…</div>
 
-			<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+			<img src="<%=basePath%>/js/appWeb/images/right.png"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
 		</div>
 
 		<div class="bg_f dis_f ali_ct jus_ct">
@@ -288,19 +288,19 @@ Object data=session.getAttribute("data");
 	
 	
 	<script id="yuyue_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+		<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 	</script>
 	
 	<script id="lingquan_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if header}}{{= header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+		<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 	</script>
 	<script id="lingqu_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+		<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 	</script>
 	<script id="content_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f borderbot1">
 			<div class="dis_f ali_ct" >
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 					{{if appUser.sex}}
@@ -321,7 +321,7 @@ Object data=session.getAttribute("data");
 	<script id="top_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f borderbot1">
 			<div class="dis_f ali_ct" >
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -335,7 +335,7 @@ Object data=session.getAttribute("data");
 					<div class="f_22 clr_9">{{= createTime}}</div>
 				</div>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{if appUser}}{{= appUser.sign}}{{/if}}</div>
+			<div class="f_28 clr_3 mt_20">{{if appUser}}{{if appUser.sign}}{{= appUser.sign}}{{else}}美天给生活一点惊喜{{/if}}{{else}}美天给生活一点惊喜{{/if}}</div>
 		</div>
 	</script>
 	<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
@@ -347,7 +347,7 @@ Object data=session.getAttribute("data");
 			<div class="honus_bg pos_rela">
 				<div style="position: absolute; height: 2rem;width:7rem; bottom: 0.5rem; left: 3rem"  onclick="lingquList();"></div>
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" class="ver_mid close_hb" style="width:1rem;height:1rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
-				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="money"></span><span class="f_24">元</span></div>
+				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="moneyN"></span><span class="f_24">元</span></div>
 
 				<div class="al_ct" style="padding-top:4.5rem;">
 					<img class="ver_mid" id="header" style="width:3rem;border-radius: 1.5rem;" />

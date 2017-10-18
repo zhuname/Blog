@@ -33,7 +33,6 @@ console.log(textStatus) ;
 });
 
 function xinzeng(){
-	debugger;
 	var data='userId='+userId+'&cityId='+cityId+'&type='+chageType+'&content='+$('#content').val();
 	var url="";
 	if($('#content').val()==""||$('#content').val()==null){
@@ -47,7 +46,9 @@ function xinzeng(){
 		
 		for (var int = 0; int < images.length; int++) {
 			if($(images[int]).attr("src")!=""&&$(images[int]).attr("src")!=undefined){
-				data+=$(images[int]).attr("src")+";";
+				if($(images[int]).attr("src")!=""){
+					data+=$(images[int]).attr("src")+";";
+				}
 			}
 		}
 		

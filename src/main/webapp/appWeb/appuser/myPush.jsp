@@ -331,7 +331,7 @@ html,body{height:100%;}
 			<script id="card_list_tmpl" type="text/x-jquery-tmpl">
 				<div class="pad_3020 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
 			<div class="pad_20 dis_f ali_top bg_f">
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
 					<div>
 						<span class="ver_mid f_24 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
@@ -378,7 +378,7 @@ html,body{height:100%;}
 		<script id="card_list3_tmpl" type="text/x-jquery-tmpl">
 				<div class="pad_3020 pos_rela">
 			<div class="pad_20 dis_f ali_top bg_f">
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
 					<div>
 						<span class="ver_mid f_24 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
@@ -429,7 +429,7 @@ html,body{height:100%;}
 				<div class="pad_3020 pos_rela" >
 			<img src="<%=basePath%>/js/appWeb/images/card_guoqi.png" class="dis_b end_img2"/>
 			<div class="pad_20 dis_f ali_top bg_f">
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
 					<div>
 						<span class="ver_mid f_24 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>

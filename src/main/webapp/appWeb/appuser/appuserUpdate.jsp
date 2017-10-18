@@ -111,7 +111,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1" onclick="headOnc();" >
 			<img src="<%=basePath%>/js/appWeb/images/thumbs.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct">
-			<img src="{{= header}}" class="dis_b" style="width:1.5rem;border-radius: 0.8rem;" />
+			<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.5rem;border-radius: 0.8rem;" />
 			<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>

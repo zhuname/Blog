@@ -56,14 +56,71 @@ Object data=session.getAttribute("data");
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
 <title>首页</title>
+
+
 </head>
 
-<body>
+<body  class="body">
 
-	<div class="wraper overh ">
+<style>
+		.srk_box{
+			height: 100%;
+			width: 100%;
+			background-color: rgba(0,0,0,0.5);
+			position: fixed;
+			top: 0rem;
+
+		}
+		
+		.body{
+			height: 1px;
+			width: 1px;
+		}
+
+		.bottom_srk{
+			position: fixed;
+			bottom: 0rem;
+			width: 100%;
+			background-color: #f2f2f2;
+			box-sizing: border-box;
+		}
+
+		.wraper{
+			position:absolute;
+			z-index: -2;
+			width: 100%;
+		}
+
+
+		.inpt2{
+			border: 2px solid #e1e1e1;
+			border-radius: 0.1rem;
+			width: 11rem;
+			float: left;
+			height: 2.0rem;
+			line-height: 2.0rem;
+			padding-left: 0.5rem;
+			display: block;
+			z-index: 1;
+		}
+
+		.fs{
+			background-color: #0a7cd4;
+			float: right;
+			height: 2.0rem;
+			line-height: 2.0rem;
+			width: 3rem;
+			border-radius: 0.2rem;
+			color: #ffffff;
+			text-align: center;
+		}
+
+	</style>
+
+	<div class="wraper ">
 	<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
-			<p class="f_30 clr_3">同城圈详情</p>
+			<p class="f_30 clr_3">城市圈详情</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;visibility: hidden;" /></a>
 		</div>
 		
@@ -81,7 +138,7 @@ Object data=session.getAttribute("data");
 					<img src="<%=basePath%>/js/appWeb/images/ds.png" class="ver_mid" style="width:0.8rem;" />
 					<span class="f_26 clr_6 ver_mid">打赏</span>
 				</div>
-				<div class="pad_20">
+				<div class="pad_20" onclick="showInput({{= id}});">
 					<img src="<%=basePath%>/js/appWeb/images/xx.png" class="ver_mid" style="height:0.7rem;" />
 					<span class="f_26 clr_6 ver_mid">评论</span>
 				</div>
@@ -104,12 +161,13 @@ Object data=session.getAttribute("data");
 		</script>
 		
 		<div id="content"></div>
+		</br></br></br>
 
 		<script id="detail_tmpl" type="text/x-jquery-tmpl">
 				<div class="pad_30 bg_f borderbot1">
 			<div class="dis_f ali_top jus_bt pos_rela">
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -148,7 +206,7 @@ Object data=session.getAttribute("data");
 			<div class="dis_f ali_ct jus_bt bg_f borderbot1" style="padding:0 1.5rem;" >
 				<div class="pad_20" id="ds" onclick="change(1);" style="border-bottom:1px solid #f95d47;">
 					<img id="dsImg" src="<%=basePath%>/js/appWeb/images/dsh.png" class="ver_mid" style="width:0.8rem;" />
-					<span id="dsSpan" class="f_20 clr_r ver_mid">{{= count}}</span>
+					<span id="dsSpan" class="f_20 clr_r ver_mid">{{= cityCirclePerson}}</span>
 				</div>
 				<div class="pad_20" id="xx" onclick="change(8);" >
 					<img id="xxImg" src="<%=basePath%>/js/appWeb/images/xx.png" class="ver_mid" style="height:0.7rem;" />
@@ -172,7 +230,7 @@ Object data=session.getAttribute("data");
 			<div class="pad_30 bg_f borderbot1" >
 				<div class="dis_f ali_ct jus_bt">
 					<div class="dis_f ali_ct" >
-						<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+						<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 						<div>
 							<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 							{{if appUser.sex}}
@@ -201,9 +259,8 @@ Object data=session.getAttribute("data");
 			<div class="pad_30 bg_f borderbot1" >
 			<div class="dis_f ali_ct jus_bt">
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
-						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						<div>
 							<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 							{{if appUser.sex}}
@@ -232,7 +289,7 @@ Object data=session.getAttribute("data");
 		<div class="pad_30 bg_f bordertop1">
 			<div class="dis_f ali_ct jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 							{{if appUser.sex}}
@@ -247,7 +304,7 @@ Object data=session.getAttribute("data");
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
    					 		{{/each}}
 							{{/if}}
-						<div class="f_22 clr_9 mt_10">{{= sign}}</div>
+						<div class="f_22 clr_9 mt_10">{{if sign}}{{= sign}}{{else}}美天给生活一点惊喜{{/if}}</div>
 					</div>
 				</div>
 
@@ -269,9 +326,9 @@ Object data=session.getAttribute("data");
 		<div class="dashang_bg pos_rela" style="padding-top:5.8rem;">
 
 			<a href="javascript:;" class="dis_b close_kq_mask"></a>
-			<a ><img src="<%=basePath%>/js/appWeb/images/shaizi.png" class="dis_b" style="position: absolute;top:7.1rem;right:1.5rem;width:0.7rem;" /></a>
+			<a onclick="shaizi();"><img src="<%=basePath%>/js/appWeb/images/shaizi.png" class="dis_b" style="position: absolute;top:7.1rem;right:1.5rem;width:0.7rem;" /></a>
 			
-			<input class="ipt3 f_26 clr_6 ipt_dashang" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />
+			<input class="ipt3 f_26 clr_6 ipt_dashang" style="width: 58%" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />
 			<input class="ipt3 f_26 clr_6 ipt_msg" id="contentVal" type="text" placeholder="留下你的打赏留言吧" />
 
 			<a href="javascript:dashang()"><img src="<%=basePath%>/js/appWeb/images/shang.png" class="shang_img" /></a>
@@ -285,6 +342,15 @@ Object data=session.getAttribute("data");
 		});
 	</script>
 	
+	<div id="srk_box" style="display:none;" onclick="hideInput();"  class="srk_box">
+	</div>
+	<div  id="inputBtn"  style="display:none;">
+			<div class="pad_20 bottom_srk">
+				<input id="content" class="inpt2 f_28 clr_9" type="text" placeholder="回复：说点儿什么吧...">
+				<div class="fs" onclick="fasong();">发送</div>
+				<div style="clear: both"></div>
+			</div>
+		</div>
 	
 
 	<script type="text/javascript">

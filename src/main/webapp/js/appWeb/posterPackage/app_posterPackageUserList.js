@@ -5,7 +5,7 @@ var dataString;
 
 if(getQueryString('itemId')!=undefined&&getQueryString('itemId')!=null){
 	$.ajax({
-		url : '/mts/system/moneydetail/statics/json?type=1&web=&itemId='+getQueryString("itemId"),
+		url : '/mts/system/moneydetail/statics/json?type='+getQueryString("type")+'&web=&itemId='+getQueryString("itemId"),
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -29,7 +29,7 @@ if(getQueryString('itemId')!=undefined&&getQueryString('itemId')!=null){
 function show(){
 	if(getQueryString('itemId')!=undefined&&getQueryString('itemId')!=null){
 				$.ajax({
-					url : '/mts/system/moneydetail/list/json?type=1&web=&itemId='+getQueryString("itemId")+"&nextPage="+nextPage,
+					url : '/mts/system/moneydetail/list/json?type='+getQueryString("type")+'&web=&itemId='+getQueryString("itemId")+"&pageIndex="+nextPage,
 					type : "post",
 					dataType : "json",
 					success : function(result){

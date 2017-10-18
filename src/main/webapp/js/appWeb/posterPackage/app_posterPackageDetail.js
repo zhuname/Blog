@@ -349,7 +349,7 @@ function yuyue(){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
-			window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+			window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -520,7 +520,6 @@ function attr(){
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		debugger;
 		if(result.status=="error"){
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;

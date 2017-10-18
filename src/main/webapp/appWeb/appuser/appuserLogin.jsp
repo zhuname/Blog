@@ -123,6 +123,7 @@ html,body{height:100%;}
 	<div class="wraper overh" style="height:100%;">
 		<div class="login_bg">
 			<div class="login_bg_mid" style="padding-top:6.1rem;">
+				
 				<div class="dis_f ali_ct padt_20 ">
 					<img src="<%=basePath%>/js/appWeb/images/mobile.png" class="dis_b" style="height:0.9rem;margin-right:0.5rem;" />
 					<input class="ipt3 f_24 clr_9" id="phone" placeholder="手机号" type="text" />
@@ -139,9 +140,8 @@ html,body{height:100%;}
 
 				<div class="dis_f ali_ct jus_bt padt_20" style="border:0;">
 					<a  onclick="window.location.href='/mts/appWeb/appuser/zhuce.jsp';"  class="clr_9 f_24">注册</a>
-					<a  class="clr_9 f_24">忘记密码</a>
+					<a  onclick="window.location.href='/mts/appWeb/appuser/findPass.jsp';"  class="clr_9 f_24">忘记密码</a>
 				</div>
-
 
 				<input class="btn3 f_28 clr_r bg_f mt_20"  onclick="login();" type="button" value="登录" />
 			</div>
@@ -154,8 +154,7 @@ html,body{height:100%;}
 
 			<div class="dis_f ali_ct jus_bt" style="width:8.5rem;margin:1rem auto 0 auto;">
 				<img onclick="wxCheck();" src="<%=basePath%>/js/appWeb/images/d1.png" class="dis_b" style="width:2rem;" />
-				<img src="<%=basePath%>/js/appWeb/images/d2.png" class="dis_b" style="width:2rem;" />
-				<img  onclick="qqLogin()" src="<%=basePath%>/js/appWeb/images/d3.png" class="dis_b" style="width:2rem;" />
+				<img onclick="qqLogin()" src="<%=basePath%>/js/appWeb/images/d3.png" class="dis_b" style="width:2rem;" />
 			</div>
 
 
