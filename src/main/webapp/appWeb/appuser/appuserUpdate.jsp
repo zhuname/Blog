@@ -120,7 +120,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1 " onclick="javascript:$('.nameShow').show();">
 			<img src="<%=basePath%>/js/appWeb/images/wdnc.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>{{= name}}</p>
+				<p style="white-space:nowrap">{{= name}}</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
@@ -128,7 +128,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1"  onclick="javascript:$('.sexShow').show();">
 			<img src="<%=basePath%>/js/appWeb/images/xb.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>{{= sex}}</p>
+				<p style="white-space:nowrap">{{= sex}}</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
@@ -136,7 +136,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1"  onclick="javascript:$('.signShow').show();">
 			<img src="<%=basePath%>/js/appWeb/images/kyyhbjj.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>{{= signVal}}</p>
+				<p style="white-space:nowrap">{{= signVal}}</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
@@ -144,7 +144,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1" onclick="window.location.href='/mts/appWeb/appuser/myCity.jsp?id={{= id}}';" >
 			<img src="<%=basePath%>/js/appWeb/images/dz.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>{{= cityName}}</p>
+				<p style="white-space:nowrap">{{= cityName}}</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
@@ -152,7 +152,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1">
 			<img src="<%=basePath%>/js/appWeb/images/sj.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>{{= phone}}</p>
+				<p style="white-space:nowrap">{{= phone}}</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
@@ -160,7 +160,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1">
 			<img src="<%=basePath%>/js/appWeb/images/wx.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>未绑定</p>
+				<p style="white-space:nowrap">未绑定</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
@@ -168,7 +168,7 @@ $(document).on("change", "#filed", function() {
 		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1">
 			<img src="<%=basePath%>/js/appWeb/images/qq.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
-				<p>未绑定</p>
+				<p style="white-space:nowrap">未绑定</p>
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
