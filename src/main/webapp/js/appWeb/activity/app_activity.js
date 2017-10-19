@@ -3,6 +3,7 @@ var nextPage=1;
 var dataString="";
 var dianji=0;
 var userId;
+var userData="";
 //初始化页面
 show();
 
@@ -38,15 +39,15 @@ function show(){
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
 	
 	$.ajax({
-		url : '/mts/system/activity/appList/json?web='+"&cityId="+getQueryString("cityId")+"&appuserId="+userId+data,
+		url : '/mts/system/activity/appList/json?web='+"&cityId="+getQueryString("cityId")+userData+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){

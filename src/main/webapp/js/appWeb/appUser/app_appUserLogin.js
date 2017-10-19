@@ -1,15 +1,17 @@
 var This=this;
 
-
+	$(document).ready(function(){ 
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
     	var openid=null;
     	This.openid=openid;
     	var code=getQueryString("code");
-    } else {  
+    	$("#qqShow").remove();
+    } else {
     	 //alert('判断：非微信端登录');
+    	$("#wxShow").remove();
     }  
-
+	}); 
     
     function login(){
     	
@@ -92,7 +94,6 @@ var This=this;
     	    			console.log(textStatus) ;
     	    		}
     	    	});
-    			
     			
     		},
     		error:function(XMLHttpRequest, textStatus, errorThrown){

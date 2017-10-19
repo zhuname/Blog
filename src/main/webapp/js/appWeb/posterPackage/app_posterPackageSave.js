@@ -5,9 +5,9 @@ var type;
 var cityId;
 
 function save(){
-	if(getCookie("posterPackageCardId")!=null&&getCookie("posterPackageCategoryId")!=null&&getCookie("posterPackageCityId")
-			&&$('#title').val()!=null&&$('#descr').val()!=null&&$('#appointExplain').val()!=null&&$('#command').val()!=null
-			&&$('#title').val()!=""&&$('#descr').val()!=""&&$('#appointExplain').val()!=""&&$('#command').val()!=""){
+	if(getCookie("posterPackageCategoryId")!=null&&getCookie("posterPackageCityId")
+			&&$('#title').val()!=null&&$('#descr').val()!=null
+			&&$('#title').val()!=""&&$('#descr').val()!=""){
 		setCookie("posterPackageTitle",$('#title').val());
 		setCookie("posterPackageAppointExplain",$('#appointExplain').val());
 		setCookie("posterPackageDescr",$('#descr').val());

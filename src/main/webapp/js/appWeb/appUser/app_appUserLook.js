@@ -10,7 +10,7 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			$('#weidenglu').tmpl(result.data).appendTo($('#detail'));
 			return;
 		}
 		

@@ -6,6 +6,7 @@ var nextPage=1;
 var cityId;
 var itemId;
 var dataString="";
+var userData="";
 
 function select(){
 	var titleString= $('#title').val();
@@ -36,15 +37,14 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
-		cityId=result.data.cityId;
-		var user= result.data;
 		//获取同城活动详情
 	$.ajax({
-		url : '/mts/system/activity/look/json?web=&id='+getQueryString("id")+"&appuserId="+userId,
+		url : '/mts/system/activity/look/json?web=&id='+getQueryString("id")+userData,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -85,7 +85,7 @@ function canyu(){
 function joinList(joinOrAward){
 	var data='&pageIndex='+nextPage;
 	$.ajax({
-		url : '/mts/system/joinactivity/list/json?web=&activityId='+getQueryString("id")+"&joinOrAward="+joinOrAward+data+"&appuserId="+userId+dataString,
+		url : '/mts/system/joinactivity/list/json?web=&activityId='+getQueryString("id")+"&joinOrAward="+joinOrAward+data+userData+userId+dataString,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -199,6 +199,7 @@ function showPinglun(){
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
+					
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
@@ -239,6 +240,7 @@ function showPinglun(){
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
+					
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}

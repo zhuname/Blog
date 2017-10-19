@@ -223,7 +223,7 @@ body{background: #f0f2f5;}
 		分类
 	</p>
 	<p class="dis_f ali_ct clr_ph_red"  onclick="window.location.href='/mts/appWeb/card/cardCategory.jsp';">
-		<span id="categoryId">请选择海报分类</span>
+		<span id="categoryId">卡券分类</span>
 		<img src="<%=basePath%>/js/appWeb/images/arr_he2.png" class="dis_b" style="height:0.6rem;margin-left: 0.5rem;" />
 	</p>
 </div>

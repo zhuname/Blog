@@ -99,7 +99,7 @@ function show(){
 					type : "post",
 					dataType : "json",
 					success : function(result){
-						debugger;
+						
 						console.log(result);
 						if(result.status=="error"){
 							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";

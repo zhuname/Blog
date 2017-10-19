@@ -6,6 +6,7 @@ var userId;
 var nextPage=1;
 var id;
 var itemUserId;
+var userData="";
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -14,18 +15,20 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
 		var user= result.data;
 	$.ajax({
-		url : '/mts/system/circle/look/json?web=&id='+getQueryString("id")+"&appuserId="+userId,
+		url : '/mts/system/circle/look/json?web=&id='+getQueryString("id")+userData,
 		type : "post",
 		dataType : "json",
 		success : function(result){
 			
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -62,7 +65,13 @@ $.ajax({
 				itemUserId=result.data.userId;
 				initColl();
 				
-				$('#foot_tmpl').tmpl(result.data).appendTo($('#detail'));
+				
+				if(userId!=null){
+					$('#foot_tmpl').tmpl(result.data).appendTo($('#detail'));
+				}else{
+					$('#footNo_tmpl').tmpl(result.data).appendTo($('#detail'));
+				}
+				
 				
 				change(1);
 				
@@ -93,6 +102,7 @@ function change(changeType){
 
 
 function initColl(){
+	if(userId!=undefined&&userId!=null){
 	if(userId!=itemUserId){
 	//加载页面方法
 	$.ajax({
@@ -102,6 +112,7 @@ function initColl(){
 	success : function(result){
 		
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -123,6 +134,7 @@ function initColl(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -142,6 +154,7 @@ function initColl(){
 	$($("#attr").parent()).remove();
 	$($("#collect").parent()).remove();
 }
+	}
 }
 
 function collect(){
@@ -152,6 +165,7 @@ function collect(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -177,6 +191,7 @@ function attr(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -245,6 +260,7 @@ function show(type){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -288,6 +304,7 @@ function dianzan(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -328,6 +345,7 @@ function fasong(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -363,6 +381,7 @@ function dashang(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}

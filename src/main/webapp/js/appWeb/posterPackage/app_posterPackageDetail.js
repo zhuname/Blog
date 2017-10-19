@@ -8,7 +8,6 @@ var packageUserId;
 var encrypt;
 var isFoot=1;
 
-
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -17,10 +16,10 @@ var isFoot=1;
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
 		}
-		userId=result.data.id;
 	},
 	error:function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(XMLHttpRequest) ;
@@ -32,8 +31,8 @@ var isFoot=1;
 		type : "post",
 		dataType : "json",
 		success : function(result){
-			
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -115,6 +114,7 @@ var isFoot=1;
 						dataType : "json",
 						success : function(result){
 							if(result.status=="error"){
+								
 								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 								return;
 							}
@@ -146,6 +146,7 @@ var isFoot=1;
 							dataType : "json",
 							success : function(result){
 								if(result.status=="error"){
+									
 									window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 									return;
 								}
@@ -175,6 +176,7 @@ var isFoot=1;
 						dataType : "json",
 						success : function(result){
 							if(result.status=="error"){
+								
 								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 								return;
 							}
@@ -268,6 +270,7 @@ var isFoot=1;
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
+					
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
@@ -346,6 +349,7 @@ function yuyue(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -413,6 +417,7 @@ function oper(type){
 				dataType : "json",
 				success : function(result){
 					if(result.status=="error"){
+						
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
@@ -451,6 +456,8 @@ function oper(type){
 	
 
 function initColl(){
+	if(userId!=undefined&&userId!=null){
+	
 	if(userId!=itemUserId){
 	//加载页面方法
 	$.ajax({
@@ -460,6 +467,7 @@ function initColl(){
 	success : function(result){
 		
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -481,6 +489,7 @@ function initColl(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -499,6 +508,8 @@ function initColl(){
 		$($("#attr").parent()).remove();
 		$($("#collect").parent()).remove();
 	}
+	
+	}
 }
 
 function collect(){
@@ -509,6 +520,7 @@ function collect(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -529,6 +541,7 @@ function attr(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}

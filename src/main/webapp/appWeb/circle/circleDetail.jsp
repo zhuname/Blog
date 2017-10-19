@@ -155,6 +155,27 @@ Object data=session.getAttribute("data");
 		</div>
 		</script>
 		
+		
+		<script id="footNo_tmpl" type="text/x-jquery-tmpl">
+		<div class="fixed_dashang">
+			<div class="dis_f ali_ct jus_bt bg_f bordertop1" style="padding:0 1.5rem;" >
+				<div class="pad_20" onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'" >
+					<img src="<%=basePath%>/js/appWeb/images/ds.png" class="ver_mid" style="width:0.8rem;" />
+					<span class="f_26 clr_6 ver_mid">打赏</span>
+				</div>
+				<div class="pad_20" onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'">
+					<img src="<%=basePath%>/js/appWeb/images/xx.png" class="ver_mid" style="height:0.7rem;" />
+					<span class="f_26 clr_6 ver_mid">评论</span>
+				</div>
+				<div class="pad_20">
+					<img src="<%=basePath%>/js/appWeb/images/praise3.png" onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'" class="ver_mid" style="height:0.75rem;" />
+					<span class="f_26 clr_6 ver_mid"  onclick="dianzan();" >点赞</span>
+				</div>
+			</div>
+		</div>
+		</script>
+		
+		
 		<script id="zan_image_tmpl" type="text/x-jquery-tmpl">
 			<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="ver_mid" style="height:0.75rem;" />
 			<span class="f_26 clr_r ver_mid">点赞</span>

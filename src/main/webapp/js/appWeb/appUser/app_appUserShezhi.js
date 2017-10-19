@@ -4,7 +4,7 @@ var This=this;
 function logOff(){
 	//获取用户信息
 	$.ajax({
-		url : '/mts/system/appuser/look/json?web=',
+		url : '/mts/system/appuser/logOff/json?web=',
 		type : "post",
 		dataType : "json",
 		success : function(result){

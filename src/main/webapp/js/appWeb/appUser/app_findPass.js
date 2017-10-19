@@ -123,11 +123,7 @@ function checkSignOn(){
 					alert(result.message);;
 					return;
 				}
-				if(result.data!=undefined){
-					console.log(result.data);
-					alert(result.message);;
-					return;
-				}
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;

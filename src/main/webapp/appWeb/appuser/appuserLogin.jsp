@@ -153,8 +153,8 @@ html,body{height:100%;}
 			</div>
 
 			<div class="dis_f ali_ct jus_bt" style="width:8.5rem;margin:1rem auto 0 auto;">
-				<img onclick="wxCheck();" src="<%=basePath%>/js/appWeb/images/d1.png" class="dis_b" style="width:2rem;" />
-				<img onclick="qqLogin()" src="<%=basePath%>/js/appWeb/images/d3.png" class="dis_b" style="width:2rem;" />
+				<img id="wxShow" onclick="wxCheck();" src="<%=basePath%>/js/appWeb/images/d3.png" class="dis_b" style="width:2rem;" />
+				<img id="qqShow" onclick="qqLogin()" src="<%=basePath%>/js/appWeb/images/d1.png" class="dis_b" style="width:2rem;" />
 			</div>
 
 

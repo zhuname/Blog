@@ -3,8 +3,11 @@ var nextPage=1;
 var dataString="";
 var dianji=0;
 var userId;
+var userData="";
 //初始化页面
 show();
+
+
 
 function select(){
 	var titleString= $('#title').val();
@@ -39,17 +42,19 @@ function show(){
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
 	
 	$.ajax({
-		url : '/mts/system/circle/list/json?web='+"&cityId="+getQueryString("cityId")+"&appuserId="+userId+data,
+		url : '/mts/system/circle/list/json?web='+"&cityId="+getQueryString("cityId")+userData+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -139,6 +144,7 @@ function zan(id){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}

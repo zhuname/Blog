@@ -72,7 +72,7 @@ Object data=session.getAttribute("data");
 			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
 			<ul class="more_ul pad_20 dis_n">
 				<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
+				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
 				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
 				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 			</ul>
@@ -228,7 +228,7 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="pad_30 bg_f">
-
+		{{if isLook}}
 			{{if isLook==1}}
 				<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢</a>
 			{{else}}
@@ -240,6 +240,9 @@ Object data=session.getAttribute("data");
 			{{/if}}
 			{{/if}}
 			{{/if}}
+		{{else}}
+		<a class="f_26 clr_f dis_b waiting_check_a" onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'" style="background: #f95d47;">立即领取</a>
+		{{/if}}
 		</div>
 
 		<div class="mt_20 bg_f borderbot1">

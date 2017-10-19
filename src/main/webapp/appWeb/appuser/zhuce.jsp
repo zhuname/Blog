@@ -104,6 +104,20 @@ body{background: #f0f2f5;}
 		}
 
 	</style>
+	
+	<script type="text/javascript">
+		var show=1;
+		function showPass() {
+			if(show==1){
+				$("#password").attr("type","text");
+				show=2;
+			}else{
+				$("#password").attr("type","password");
+				show=1;
+			}
+			
+		}
+		</script>
 
 
 	<div class="wraper overh ">
@@ -116,7 +130,7 @@ body{background: #f0f2f5;}
 			<input id="user" onkeyup="signOn();" class="bjt_0 ipt3 f_28 clr_9" type="text" placeholder="请输入你的昵称" />
 		</div>
 		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba " style="position: relative">
-			<img src="<%=basePath%>/js/appWeb/images/yanjing.png" style="width: 0.8rem; position: absolute; right: 1rem">
+			<img src="<%=basePath%>/js/appWeb/images/yanjing.png" onclick="showPass();" style="width: 0.8rem; position: absolute; right: 1rem">
 			<input id="passWord" onkeyup="signOn();" class="bjt_1 ipt3 f_28 clr_9" type="password" placeholder="请输入你的密码" />
 		</div>
 		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba ">
