@@ -220,7 +220,7 @@ $('.more_ul_toggle').click(function(){
 		<div class="bg_f padl_30">
 			<div class="dis_f ali_ct jus_bt padt_20">
 				
-				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj">
+				<span class="bj">
 				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
 				</span>
 

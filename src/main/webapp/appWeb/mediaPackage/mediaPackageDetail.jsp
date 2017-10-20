@@ -66,6 +66,7 @@ Object data=session.getAttribute("data");
 	<div class="wraper overh ">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<p class="f_30 clr_3">视频详情</p>
 			<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
 			
@@ -178,7 +179,7 @@ Object data=session.getAttribute("data");
 			<div class="dis_f ali_ct">
 				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col"  onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= cardId}}';">
 					<img src="<%=basePath%>/js/appWeb/images/xjq.png" class="ver_mid" style="width:0.9rem;" />
-					<p >礼物券</p>
+					<p >{{= cardCategoryName}}</p>
 				</div>
 			
 				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}人领取</div>
@@ -270,11 +271,7 @@ Object data=session.getAttribute("data");
             <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" id="money" type="number" placeholder="￥请填写打赏金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预约电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
-                ● 处为商家填写的预约支付说写的预约支付
-                约支付说预约支付说写的<br/>
-                ● 处为商家填写的预约支付说明的预约支预
-                家填写的预约支付说明的预约支预约支付
-                说明的预约支预约支
+                  {{if appUser}}{{= appUser.appointExplain}}{{/if}} 
             </div>
             <div class="f_20 clr_3 al_ct pad_20">使用账户余额付款 ¥6.00 <a href="javascript:;" class="clr_b">更换</a></div>
 

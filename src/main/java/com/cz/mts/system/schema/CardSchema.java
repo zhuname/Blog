@@ -326,8 +326,8 @@ public class CardSchema extends BaseLogger{
 	 * 自动更新天气
 	 * 
 	 */
-	@Scheduled(cron="0 0 0/3 * * ?")
-	/*@Scheduled(cron="0 0/3 * * * ?")*/
+	/*@Scheduled(cron="0 0 0/3 * * ?")*/
+	@Scheduled(cron="0 0/3 * * * ?")
 	public void tianqi() throws Exception{
 		logger.info("获取天气");
 		
@@ -336,8 +336,7 @@ public class CardSchema extends BaseLogger{
 		List<City> citys=cityService.queryForList(finder, City.class);
 		
 		for (City city : citys) {
-		
-		String host = "http://jisutqybmf.market.alicloudapi.com";
+				String host = "http://jisutqybmf.market.alicloudapi.com";
 	    String path = "/weather/query";
 	    String method = "GET";
 	    String appcode = "3cfec02bee26451fa2743d25adc4a5f2";
@@ -362,9 +361,9 @@ public class CardSchema extends BaseLogger{
 	    	* https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/pom.xml
 	    	*/
 	    	HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
-	    	//System.out.println(response.toString());
+	    	/*System.out.println(response.toString());*/
 	    	//获取response的body
-	    	//System.out.println(EntityUtils.toString(response.getEntity()));
+	    	/*System.out.println(EntityUtils.toString(response.getEntity()));*/
 	    	JSONArray jsonArray = JSONArray.fromObject("["+EntityUtils.toString(response.getEntity())+"]");
 	    	for (int i = 0; i < jsonArray.size(); i++) {
 				

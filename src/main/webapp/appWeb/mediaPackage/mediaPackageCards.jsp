@@ -107,7 +107,7 @@ body{background: #f9f9fb;}
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />
 						2017-02-01止
 					</div>
-					<div class="f_20 clr_r">{{if convertMoney}}{{if convertMoney==1}}{{= convertMoney}}{{else}}免费{{/if}}{{/if}}</div>
+					<div class="f_20 clr_r">{{if convertMoney}}{{= convertMoney}}{{else}}免费{{/if}}</div>
 				</div>
 			</div>
 		</div>

@@ -92,7 +92,6 @@ $.ajax({
 				
 			}
 			
-			
 			countTime();
 			
 		}else{
@@ -113,18 +112,65 @@ $.ajax({
 });
 
 
+var dataLunbo="";
+if(getQueryString("cityId")!=undefined){
+	dataLunbo='&cityIds='+getQueryString("cityId");
+}
+
+$.ajax({
+	url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		if(result.data!=undefined){
+			//获取消息记录
+			for (var int = 0; int < result.data.length; int++) {
+				console.log($('#lunbo').attr("src"));
+				$('#lunbo').attr("src",result.data[0].image);
+			}
+			
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
+
+
+function getTime() {  
+	
+			console.log(result.data);
+			return result.data;
+		
+}
 
 
 function countTime() {  
 	
+	//获取用户信息
+	$.ajax({
+		url : '/mts/system/appuser/getTime/json?web=',
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				return ;
+			}
 	if(currentLqNum==0){
-		
-		//获取当前时间  
-		var date = new Date();  
+		var date = new Date(Date.parse(result.data.replace(/-/g, "/")));;  
 		var now = date.getTime();  
 		
-		var x = date; // 取得的TextBox中的时间
-		var time = new Date(x);
+		var time = date;
 		
 		time.setHours(time.getHours()+1, 0, 0, 0);
 		
@@ -153,6 +199,12 @@ function countTime() {
 		$('#lqjh').html(lqHtml);
 	}
 	
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 	setTimeout(countTime,1000);  
 }
 

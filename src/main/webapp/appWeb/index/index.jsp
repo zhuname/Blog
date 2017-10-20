@@ -110,7 +110,7 @@ Object data=session.getAttribute("data");
 					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" /> 
 					<div class="f_20 clr_f">&nbsp; <a id="city"></a> <span class="f_16" id="weather">多云转晴 23℃/28℃</span></div>
 				</div>
-				<img src="<%=basePath%>/js/appWeb/images/bell.png"  onclick="window.location.href='/mts/appWeb/message/message.jsp';" class="dis_b" style="height:0.9rem;" /> 
+				<img src="<%=basePath%>/js/appWeb/images/bell.png" onclick="window.location.href='/mts/appWeb/message/message.jsp';" class="dis_b" style="height:0.9rem;" /> 
 			</div>
 			<div class="dis_f ali_ct flex_col jus_ct">
 				<img id="header" src="<%=basePath%>/js/appWeb/images/default_header.png" class="dis_b" style="width:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />
@@ -286,7 +286,7 @@ Object data=session.getAttribute("data");
 	</script>
 	
 	<div id="add" class="fabu_mask" style="display:none;">
-				<div><img src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;" /></div>
+				<div><img id="lunbo" src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;" /></div>
 
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">

@@ -66,6 +66,7 @@ Object data=session.getAttribute("data");
 	<div class="wraper overh ">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<p class="f_30 clr_3">海报详情</p>
 						<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
 			
@@ -178,15 +179,15 @@ Object data=session.getAttribute("data");
 			<div class="dis_f ali_ct">
 				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col"  onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= cardId}}';">
 					<img src="<%=basePath%>/js/appWeb/images/xjq.png" class="ver_mid" style="width:0.9rem;" />
-					<p >打折券</p>
+					<p>{{= cardCategoryName}}</p>
 				</div>
 			
-				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}人领取</div>
+				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}次预定</div>
 			</div>
 			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/card/cardUserList.jsp?id={{= cardId}}';">
 				<div class="ceng_img" id="lingquan" >
 				</div>
-				<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/right.png" onclick="window.location.href='/mts/appWeb/card/cardUserList.jsp?id={{= cardId}}';" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
 			</div>
 		</div>
 		{{/if}}
@@ -212,9 +213,9 @@ Object data=session.getAttribute("data");
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt" style="border-top:1px solid #f2f4f7;">
 			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';">
 			</div>
-			<div class="clr_3 f_30">…</div>
+			<div class="clr_3 f_30" onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';">…</div>
 
-			<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+			<img onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';" src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
 		</div>
 
 		<div class="bg_f dis_f ali_ct jus_ct">
@@ -268,13 +269,9 @@ Object data=session.getAttribute("data");
             <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" id="money" type="number" placeholder="￥请填写打赏金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预约电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
-                ● 处为商家填写的预约支付说写的预约支付
-                约支付说预约支付说写的<br/>
-                ● 处为商家填写的预约支付说明的预约支预
-                家填写的预约支付说明的预约支预约支付
-                说明的预约支预约支
+               {{if appUser}}{{= appUser.appointExplain}}{{/if}} 
             </div>
-            <div class="f_20 clr_3 al_ct pad_20">使用账户余额付款 ¥6.00 <a href="javascript:;" class="clr_b">更换</a></div>
+            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">6.00</span> <a href="javascript:;" class="clr_b">更换</a></div>
 
             <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预约"/>
         </div>

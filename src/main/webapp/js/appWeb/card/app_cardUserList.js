@@ -20,7 +20,9 @@ function show(){
 					
 					if(result.data!=undefined){
 						//获取消息记录
-						$('#card_top_tmpl').tmpl(result).appendTo($('#detail'));
+						if(nextPage==1){
+							$('#card_top_tmpl').tmpl(result).appendTo($('#detail'));
+						}
 						
 						for (var int = 0; int < result.data.length; int++) {
 							

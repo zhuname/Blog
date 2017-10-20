@@ -69,7 +69,7 @@ function check(id,name){
 			$(images[int]).attr('src', './js/appWeb/images/no.png');
 		}
 		$('#'+id+'').attr('src', './js/appWeb/images/yes.png');
-		$('#'+id+'').parents('.baba').siblings('.baba').find('.switcher_click').attr('src', 'images/no.png');
+		$('#'+id+'').parents('.baba').siblings('.baba').find('.switcher_click').attr('src', './js/appWeb/images/no.png');
 		cardId=id;
 		cardName=name;
 	}else{

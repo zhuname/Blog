@@ -41,9 +41,11 @@ function xinzeng(){
 	}
 	
 	if(chageType==1){
-		data+="&osType=html&image=";
+		data+="&osType=html";
 		var images = document.getElementsByName("images");
-		
+		if(images.length!=0){
+			data+="&image=";
+		}
 		for (var int = 0; int < images.length; int++) {
 			if($(images[int]).attr("src")!=""&&$(images[int]).attr("src")!=undefined){
 				if($(images[int]).attr("src")!=""){
