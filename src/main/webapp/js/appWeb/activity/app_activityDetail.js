@@ -4,6 +4,7 @@ var id;
 var type;
 var cityId;
 var itemUserId;
+var userData="";
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -11,16 +12,17 @@ $.ajax({
 	dataType : "json",
 	success : function(result){
 		
+		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
-		cityId=result.data.cityId;
-		var user= result.data;
+	
 		//获取同城活动详情
 	$.ajax({
-		url : '/mts/system/activity/look/json?web=&id='+getQueryString("id")+"&appuserId="+userId,
+		url : '/mts/system/activity/look/json?web=&id='+getQueryString("id")+userData,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -108,7 +110,7 @@ function change(changeType){
 }
 
 function initColl(){
-	
+	if(userId!=undefined&&userId!=null){
 	if(userId!=itemUserId){
 	
 		//加载页面方法
@@ -135,7 +137,7 @@ function initColl(){
 		});
 		//加载页面方法
 		$.ajax({
-		url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+		url : '/mts/system/collect/coll/json?web=&type=4&userId='+userId+'&itemId='+id,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -159,12 +161,13 @@ function initColl(){
 		$($("#attr").parent()).remove();
 		$($("#collect").parent()).remove();
 	}
+	}
 }
 
 function collect(){
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/collect/update/json?web=&type=1&userId='+userId+'&itemId='+id,
+	url : '/mts/system/collect/update/json?web=&type=4&userId='+userId+'&itemId='+id,
 	type : "post",
 	dataType : "json",
 	success : function(result){

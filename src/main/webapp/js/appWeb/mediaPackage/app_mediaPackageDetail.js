@@ -6,6 +6,7 @@ var userId;
 var itemUserId;
 var packageUserId;
 var encrypt;
+var userData="";
 
 
 	//加载页面方法
@@ -16,18 +17,21 @@ var encrypt;
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
 	
+		
 	$.ajax({
-		url : '/mts/system/mediapackage/look/json?web=&id='+getQueryString("id")+"&appUserId="+userId,
+		url : '/mts/system/mediapackage/look/json?web=&id='+getQueryString("id")+userData,
 		type : "post",
 		dataType : "json",
 		success : function(result){
 			
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -89,6 +93,7 @@ var encrypt;
 						dataType : "json",
 						success : function(result){
 							if(result.status=="error"){
+								
 								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 								return;
 							}
@@ -121,6 +126,7 @@ var encrypt;
 							dataType : "json",
 							success : function(result){
 								if(result.status=="error"){
+									
 									window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 									return;
 								}
@@ -150,6 +156,7 @@ var encrypt;
 						dataType : "json",
 						success : function(result){
 							if(result.status=="error"){
+								
 								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 								return;
 							}
@@ -229,6 +236,7 @@ var encrypt;
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
+					
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
@@ -305,10 +313,11 @@ function yuyue(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
-			window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+			window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -330,12 +339,11 @@ function lingqu(){
 				type : "post",
 				dataType : "json",
 				success : function(result){
-					debugger;
 					if(result.status=="error"){
 						alert(result.message);
 						return;
 					}
-					$('#money').html(result.data.money);
+					$('#moneyN').html(result.data.money);
 					$('.bonus_mask').show();
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -353,18 +361,25 @@ function lingquList(){
 	window.location.href="/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId="+id+"&type=1";
 }
 
+var toUserIdString="";
 
+function toUser(toUserId,toUserName){
+	
+	toUserIdString="&toUserId="+toUserId;
+	$("#comment").attr("placeholder","回复  "+toUserName+"：");
+}
 function oper(type){
 	if(type==4){
 		if($("#comment").val()!=null&&$("#comment").val()!=""){
 			
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=4&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
+				url : '/mts/system/oper/update/json?web=&type=4&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId+toUserIdString,
 				type : "post",
 				dataType : "json",
 				success : function(result){
 					if(result.status=="error"){
+						
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
@@ -403,6 +418,7 @@ function oper(type){
 
 
 function initColl(){
+	if(userId!=undefined&&userId!=null){
 	if(userId!=itemUserId){
 	//加载页面方法
 	$.ajax({
@@ -412,6 +428,7 @@ function initColl(){
 	success : function(result){
 		
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -428,11 +445,12 @@ function initColl(){
 	});
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/collect/coll/json?web=&type=1&userId='+userId+'&itemId='+id,
+	url : '/mts/system/collect/coll/json?web=&type=2&userId='+userId+'&itemId='+id,
 	type : "post",
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -451,6 +469,7 @@ function initColl(){
 		$($("#attr").parent()).remove();
 		$($("#collect").parent()).remove();
 	}
+	}
 }
 
 function collect(){
@@ -461,6 +480,7 @@ function collect(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -481,6 +501,7 @@ function attr(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}

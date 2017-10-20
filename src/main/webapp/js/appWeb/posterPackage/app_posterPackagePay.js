@@ -29,7 +29,7 @@ function pay(){
 	if(getCookie("posterPackageCategoryId")!=null
 			&&getCookie("posterPackageTitle")!=null&&getCookie("posterPackageDescr")!=null
 			&&getCookie("posterPackageTitle")!=""&&getCookie("posterPackageDescr")!=""
-			&&$("#money").val()!=""&&$("#lqNum").val()!=""&&getCookie("posterPackageImage")!=null&&getCookie("posterPackageImage")!=""){
+			&&$("#money").val()!=""&&$("#lqNum").val()!=""&&getCookie("posterPackageImages")!=null&&getCookie("posterPackageImages")!=""){
 		var data="";
 		if(getCookie("posterPackageCityId")!=null){
 			data+="&cityIds="+getCookie("posterPackageCityId");

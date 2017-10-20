@@ -72,7 +72,7 @@ Object data=session.getAttribute("data");
 			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
 			<ul class="more_ul pad_20 dis_n">
 				<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
+				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
 				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
 				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 			</ul>
@@ -117,7 +117,7 @@ Object data=session.getAttribute("data");
 	
 	<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_f dis_f ali_ct pad_30" >
-			<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:2rem;border-radius: 1rem;margin-right:0.5rem;" />
+			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border-radius: 1rem;margin-right:0.5rem;" />
 			<div>
 				
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}} </span>
@@ -133,7 +133,7 @@ Object data=session.getAttribute("data");
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
    					 {{/each}}
 					{{/if}}
-					<div class="f_18 clr_6 mt_10">{{if appUser}}{{= appUser.sign}}{{/if}}</div>
+					<div class="f_18 clr_6 mt_10">{{if appUser}}{{if appUser.sign}}{{= appUser.sign}}{{else}}美天给生活一点惊喜{{/if}}{{else}}美天给生活一点惊喜{{/if}}</div>
 				
 			</div>
 		</div>
@@ -228,6 +228,7 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="pad_30 bg_f">
+			{{if isLook}}
 			{{if isLook==1}}
 			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢</a>
 			{{else}}
@@ -239,6 +240,10 @@ Object data=session.getAttribute("data");
 			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢完</a>
 			{{/if}}	
 			{{/if}}
+			{{/if}}
+			{{else}}
+			<a class="f_26 clr_f dis_b waiting_check_a" id="ljll"  onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'" style="background: #f95d47;display:none;">立即领取</a>
+			<a class="f_26 clr_f dis_b waiting_check_a" id="lqjs"  style="background: #c8c8cc;">倒计时<span id="miao">10</span>秒抢红包</a>
 			{{/if}}
 		</div>
 
@@ -284,21 +289,22 @@ Object data=session.getAttribute("data");
 	
 	
 	<script id="yuyue_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+		<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 	</script>
 	
 	<script id="lingquan_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if header}}{{= header}}{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+		<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 	</script>
 	<script id="lingqu_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+		<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 	</script>
 	<script id="content_tmpl" type="text/x-jquery-tmpl">
-		<div class="pad_30 bg_f borderbot1">
+		<div class="pad_30 bg_f borderbot1" onclick="toUser({{if appUser}}{{= appUser.id}}{{/if}},'{{if appUser}}{{= appUser.name}}{{/if}}');">
 			<div class="dis_f ali_ct" >
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
+					{{if appUser}}
 					{{if appUser.sex}}
 							{{if appUser.sex == '男'}}
 							<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
@@ -306,18 +312,19 @@ Object data=session.getAttribute("data");
 							<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 							{{/if}}
 						{{/if}}
+					{{/if}}
 					<img src="<%=basePath%>/js/appWeb/images/badge.png" class="ver_mid" style="width:0.5rem;" />
 					<div class="f_22 clr_9">{{= createTime}}</div>
 				</div>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{= content}}</div>
+			<div class="f_28 clr_3 mt_20">{{if toUserName}}回复  <font color="#003D79">{{= toUserName}}</font>：{{/if}}{{= content}}</div>
 		</div>
 	</script>
 	
 	<script id="top_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f borderbot1">
 			<div class="dis_f ali_ct" >
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -331,7 +338,7 @@ Object data=session.getAttribute("data");
 					<div class="f_22 clr_9">{{= createTime}}</div>
 				</div>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{if appUser}}{{= appUser.sign}}{{/if}}</div>
+			<div class="f_28 clr_3 mt_20">{{if appUser}}{{if appUser.sign}}{{= appUser.sign}}{{else}}美天给生活一点惊喜{{/if}}{{else}}美天给生活一点惊喜{{/if}}</div>
 		</div>
 	</script>
 	<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">

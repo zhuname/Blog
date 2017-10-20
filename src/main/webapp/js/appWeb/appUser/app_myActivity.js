@@ -41,9 +41,9 @@ function show(){
 				
 				for (var int = 0; int < result.data.length; int++){
 					
-					if(result.data[int].createTime){
+					if(result.data[int].endTime){
 						
-						result.data[int].createTime=result.data[int].createTime.substring(0,10);
+						result.data[int].endTime=result.data[int].endTime.substring(0,10);
 						
 					}
 					

@@ -405,11 +405,11 @@ body{background: #f0f2f5;}
 					</script>
 					
 	<script id="images_update_tmpl" type="text/x-jquery-tmpl">
-		<img onclick="headOnc();" src="<%=basePath%>/js/appWeb/images/xztp.png" class=" waitCheck" style="width:4.75rem;" />
+		<img onclick="headOnc();" src="<%=basePath%>/js/appWeb/images/xztp.png" class="waitCheck" style="height:4.75rem;width:4.75rem;" />
 	</script>
 	
 	<script id="images_update_init_tmpl" type="text/x-jquery-tmpl">
-		<img onclick="headOnc();" src="{{= image}}" class=" waitCheck" style="width:4.75rem;" />
+		<img onclick="headOnc();" src="{{= image}}" class=" waitCheck" style="height:4.75rem;width:4.75rem;" />
 	</script>
 
 	</div>

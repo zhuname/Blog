@@ -68,7 +68,7 @@ Object data=session.getAttribute("data");
 
 			<div class="pad_30 dis_f ali_end jus_bt">
 				<div class="dis_f ali_ct">
-					<img src="{{= header}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;height:1.5rem;" />
+					<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
 					<div class="clr_f">
 						<span class="f_28">{{= name}}</span>
 						{{if sex}}
@@ -81,7 +81,7 @@ Object data=session.getAttribute("data");
 						<span class="f_28" id="xzmb"></span>
 						
 						<br />
-						<p class="f_20 clr_f">{{= sign}}</p>
+						<p class="f_20 clr_f">{{if sign}}{{= sign}}{{else}}美天给生活一点惊喜{{/if}}</p>
 					</div>
 				</div>
 
@@ -101,7 +101,7 @@ Object data=session.getAttribute("data");
 				</span>
 			</div>
 
-			<div style="background: url({{= header}}) no-repeat;width:16rem;height:7rem; position: absolute; top: 0;z-index: -1"></div>
+			<div style="background: url({{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}) no-repeat;width:16rem;height:7rem; position: absolute; top: 0;z-index: -1"></div>
 
 
 		</div>
@@ -176,7 +176,7 @@ Object data=session.getAttribute("data");
 		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/appuser/myAppoint.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdyy.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
-				<p>我的预约</p>
+				<p>我的预订</p>
 			</div>
 			<div class="f_18 clr_he dis_f ali_ct">
 				<p>
@@ -282,7 +282,7 @@ Object data=session.getAttribute("data");
 
 
 	<div class="bg_f padl_20 mt_20">
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt " onclick="window.location.href='/mts/appWeb/appuser/shezhi.jsp';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/sz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>设置</p>
@@ -372,6 +372,170 @@ Object data=session.getAttribute("data");
 				$("#add").hide();
 			};
 		</script>
+
+
+
+
+
+	<!-- 这个是领取机会的问号 -->
+	<script id="weidenglu" type="text/x-jquery-tmpl">
+		<div class="center_bg" style="background-color:#f95d47;" >
+
+			<div class="q1" onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'">
+				登录
+
+			</div>
+
+
+
+		</div>
+
+
+
+	<div class="bg_f padl_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdqb.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的钱包</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdfb.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的发布</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wddt.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的动态</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+	</div>
+
+<div class="bg_f padl_20 mt_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdyy.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的预约</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdkq.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的卡券</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdcy.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的参与</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+
+
+	</div>
+
+
+	<div class="bg_f padl_20 mt_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdsc.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的收藏</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdgz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的关注</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/wdxz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>我的勋章</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<p>0</p>
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+	<div class="bg_f padl_20 mt_20">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt ">
+			<div class="dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/sz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
+				<p>设置</p>
+			</div>
+			<div class="f_18 clr_he dis_f ali_ct">
+				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
+			</div>
+		</div>
+	</div>
+
+
+
+		<div class="pad_30"></div>
+		<div class="pad_30"></div>
+
+		<div class="bg_f fixed_nav">
+			<ul class="nav_ul dis_f ali_ct jus_bt" style="width:12rem;margin:0 auto;">
+				<li><a  onclick="window.location.href='/mts/appWeb/index/index.jsp';" class="dis_f ali_ct flex_col clr_6 jus_ct">
+				<img src="<%=basePath%>/js/appWeb/images/b1_no.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">美天赏</p></a></li>
+				<li><a onclick="addShow();"><img src="<%=basePath%>/js/appWeb/images/fabu.png" class="dis_b" style="width:2.25rem;margin-top:-0.2rem;" /></a></li>
+				<li><a  onclick="window.location.href='/mts/appWeb/appuser/appuserLook.jsp';" class="dis_f ali_ct flex_col clr_r jus_ct">
+				<img src="<%=basePath%>/js/appWeb/images/b2h.png" class="dis_b" style="width:1rem;" /><p class="f_18 ">我的</p></a></li>
+			</ul>
+		</div>
+	
+	</script>
+
+
+
+
+
+
+
+
+
+
 
 </body>
 

@@ -143,6 +143,8 @@ public class ReportController  extends BaseController {
 							JoinActivity joinActivity = joinActivityService.findJoinActivityById(rp.getItemId());
 							if(null != joinActivity && StringUtils.isNotBlank(joinActivity.getContent())){
 								rp.setItemContent(joinActivity.getContent());
+							}else{
+								rp.setItemContent("暂无链接目标");
 							}
 						}
 						
@@ -150,12 +152,16 @@ public class ReportController  extends BaseController {
 							Circle circle = circleService.findCircleById(rp.getItemId());
 							if(null != circle && StringUtils.isNotBlank(circle.getContent())){
 								rp.setItemContent(circle.getContent());
+							}else{
+								rp.setItemContent("暂无链接目标");
 							}
 						}
 						if(3 == rp.getType()){
 							PosterPackage posterPackage = posterPackageService.findPosterPackageById(rp.getItemId());
 							if(null != posterPackage && StringUtils.isNotBlank(posterPackage.getTitle())){
 								rp.setItemContent(posterPackage.getTitle());
+							}else{
+								rp.setItemContent("暂无链接目标");
 							}
 						}
 						
@@ -163,6 +169,8 @@ public class ReportController  extends BaseController {
 							MediaPackage mediaPackage = mediaPackageService.findMediaPackageById(rp.getItemId());
 							if(null != mediaPackage && StringUtils.isNotBlank(mediaPackage.getTitle())){
 								rp.setItemContent(mediaPackage.getTitle());
+							}else{
+								rp.setItemContent("暂无链接目标");
 							}
 						}
 						
@@ -170,6 +178,8 @@ public class ReportController  extends BaseController {
 							Card card = cardService.findCardById(rp.getItemId());
 							if(null != card && StringUtils.isNotBlank(card.getTitle())){
 								rp.setItemContent(card.getTitle());
+							}else{
+								rp.setItemContent("暂无链接目标");
 							}
 						}
 					}

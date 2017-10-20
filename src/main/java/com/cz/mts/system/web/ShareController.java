@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
+import com.cz.mts.system.entity.Circle;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Share;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
+import com.cz.mts.system.service.ICircleService;
 import com.cz.mts.system.service.IMediaPackageService;
 import com.cz.mts.system.service.IPosterPackageService;
 import com.cz.mts.system.service.IShareService;
@@ -55,6 +59,10 @@ public class ShareController  extends BaseController {
 	private IMediaPackageService mediaPackageService;
 	@Resource
 	private ICardService cardService;
+	@Resource
+	private IActivityService activityService;
+	@Resource
+	private ICircleService circleService;
 	
 	private String listurl="/share/shareList";
 	
@@ -229,6 +237,41 @@ public class ShareController  extends BaseController {
 						returnObject.setMessage("该卡券不存在");
 					}
 				}
+				
+				
+				//4同城活动
+				if(4 == share.getType()){
+					Activity activity = activityService.findActivityById(share.getId());
+					if(null != activity){
+						if(null == activity.getShareNum()){
+							activity.setShareNum(0);
+						}
+						activity.setShareNum(activity.getShareNum() + 1);
+						cardService.update(activity,true);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该内容不存在");
+					}
+				}
+				
+				
+				//5城事圈
+				if(5 == share.getType()){
+					Circle circle = circleService.findCircleById(share.getId());
+					if(null != circle){
+						if(null == circle.getShareNum()){
+							circle.setShareNum(0);
+						}
+						circle.setShareNum(circle.getShareNum() + 1);
+						circleService.update(circle,true);
+					}else{
+						returnObject.setStatus(ReturnDatas.ERROR);
+						returnObject.setMessage("该内容不存在");
+					}
+				}
+				
+				
+				
 				
 //			}
 			

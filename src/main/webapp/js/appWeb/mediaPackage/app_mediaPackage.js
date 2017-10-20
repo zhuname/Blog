@@ -61,7 +61,7 @@ function show(){
 }
 
 $.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=2&cityId='+getQueryString("cityId"),
+	url : '/mts/system/lunbopic/list/json?web=&position=2&cityIds='+getQueryString("cityId"),
 	type : "post",
 	dataType : "json",
 	success : function(result){

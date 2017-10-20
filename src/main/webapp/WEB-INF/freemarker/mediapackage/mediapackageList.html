@@ -235,32 +235,32 @@ function deleteMediaPackage(){
                     <tr>
                         <th>操作</th>
                         <!--first_end_no_export-->
-						<th id="th_userId" >发布人</th>
 						<th id="th_categoryId" >分类名称</th>
+						<th id="th_userId" >发布人</th>
 						<th id="th_title" >主题</th>
+						<th id="th_mediaUrl" >视频</th>
 						<th id="th_encrypt" >是否加密</th>
-						<th id="th_command" >加密口令</th>
-						<th id="th_isAppoint" >是否预约</th>
-						<th id="th_appointExplain" >预约说明</th>
+						<!-- <th id="th_command" >加密口令</th> -->
 						<th id="th_isRelevance" >是否关联卡券</th>
-						<th id="th_cardId" >卡券主题</th>
+						<th id="th_isAppoint" >是否预约</th>
+						<!-- <th id="th_appointExplain" >预约说明</th> -->
+						<!-- <th id="th_cardId" >卡券主题</th> -->
 						<th id="th_sumMoney" >红包金额</th>
 						<th id="th_sumMoney" >总红包数</th>
-						<th id="th_status" >状态</th>
 						<th id="th_payType" >支付类型</th>
 						<th id="th_payTime" >支付时间</th>
-						<th id="th_failTime" >失败时间</th>
-						<th id="th_succTime" >审核通过时间</th>
-						<th id="th_endTime" >抢完时间</th>
-						<th id="th_failReason" >失败原因</th>
 						<th id="th_balance" >剩余金额</th>
 						<th id="th_num" >剩余红包数</th>
-						<!-- <th id="th_code" >订单编号</th> -->
-						<th id="th_mediaUrl" >视频</th>
-						<!-- <th id="th_mediaImage" >视频图片</th> -->
-						<th id="th_mediaImage" >分享次数</th>
+						<th id="th_endTime" >抢完时间</th>
 						<th id="th_mediaImage" >点赞次数</th>
 						<th id="th_mediaImage" >评论次数</th>
+						<th id="th_mediaImage" >分享次数</th>
+						<th id="th_status" >状态</th>
+						<th id="th_succTime" >审核通过时间</th>
+						<th id="th_failTime" >失败时间</th>
+						<th id="th_failReason" >失败原因</th>
+						<!-- <th id="th_code" >订单编号</th> -->
+						<!-- <th id="th_mediaImage" >视频图片</th> -->
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -333,15 +333,19 @@ function deleteMediaPackage(){
                                     </div>
                                 </td>
                                 <!--end_no_export-->
-
-							<td >
-								${(_data.name)!''}
-							</td>
 							<td >
 								${(_data.categoryName)!''}
 							</td>
 							<td >
+								${(_data.name)!''}
+							</td>
+							
+							<td >
 								${(_data.title)!''}
+							</td>
+							<td >
+								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
+								
 							</td>
 							<td >
 								<#if (_data.encrypt) == 0 >
@@ -351,22 +355,9 @@ function deleteMediaPackage(){
 									加密
 								</#if>
 							</td>
-							<td >
+							<!-- <td >
 								${(_data.command)!''}
-							</td>
-							<td >
-								<#if (_data.isAppoint) == 0 >
-									不预约
-								</#if>
-								<#if (_data.isAppoint) == 1 >
-									预约
-								</#if>
-								
-							</td>
-							<td >
-								${(_data.appointExplain)!''}
-							</td>
-							
+							</td> -->
 							<td >
 								<#if (_data.isRelevance) == 0 >
 									不关联
@@ -377,13 +368,53 @@ function deleteMediaPackage(){
 								
 							</td>
 							<td >
-								${(_data.cardTitle)!''}
+								<#if (_data.isAppoint) == 0 >
+									不预约
+								</#if>
+								<#if (_data.isAppoint) == 1 >
+									预约
+								</#if>
+								
 							</td>
+							<!-- <td >
+								${(_data.appointExplain)!''}
+							</td> -->
+							
+							
+							<!-- <td >
+								${(_data.cardTitle)!''}
+							</td> -->
 							<td >
 								${(_data.sumMoney)!0}
 							</td>
 							<td >
 								${(_data.lqNum)!0}
+							</td>
+							<td >
+								${(_data.payName)!''}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.payTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.balance)!0}
+							</td>
+							<td >
+								${(_data.num)!0}
+							</td>
+							<td >
+								<!--日期型-->
+							${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							</td>
+							<td >
+								${(_data.topCount)!''}
+							</td>
+							<td >
+								${(_data.commentCount)!''}
+							</td>
+							<td >
+								${(_data.shareNum)!''}
 							</td>
 							<td >
 								<#if (_data.status) == 0 >
@@ -403,52 +434,29 @@ function deleteMediaPackage(){
 								</#if>
 							</td>
 							<td >
-								${(_data.payName)!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.payTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
-							<td >
-								<!--日期型-->
-							${((_data.failTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
-							</td>
-							<td >
 								<!--日期型-->
 							${((_data.succTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
 							<td >
 								<!--日期型-->
-							${((_data.endTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
+							${((_data.failTime)?string('yyyy-MM-dd HH:mm:ss'))!''}
 							</td>
+							
+							
 							<td >
 								${(_data.failReason)!''}
 							</td>
-							<td >
-								${(_data.balance)!0}
-							</td>
-							<td >
-								${(_data.num)!0}
-							</td>
+							
+							
 							<!-- <td >
 								${(_data.code)!''}
 							</td> -->
-							<td >
-								<video class="vid" poster="" width='200px' height="100px;" src="${(_data.mediaUrl)!''}" id='mediaUrl' controls='controls' onclick="checkVideo('${(_data.mediaUrl)!''}');"></video>
-								
-							</td>
+							
 							<!-- <td >
 								<img  class="sim" src="${(_data.mediaImage)!''}" height="100px;" width="200px;" id="mdImage" onclick="checkImg('${(_data.mediaImage)!''}','600px','300px');"/>
 							</td> -->
-							<td >
-								${(_data.shareNum)!''}
-							</td>
-							<td >
-								${(_data.topCount)!''}
-							</td>
-							<td >
-								${(_data.commentCount)!''}
-							</td>
+							
+							
 						</tr>
 					</#list>
 					 </#if>

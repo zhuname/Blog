@@ -33,7 +33,6 @@ function show(){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
-			
 			if(result.data!=undefined){
 				for (var int = 0; int < result.data.length; int++){
 					if(result.data[int].expTime){

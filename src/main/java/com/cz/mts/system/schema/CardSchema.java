@@ -138,7 +138,7 @@ public class CardSchema extends BaseLogger{
 	/**
 	 *领取次数更新提醒
 	 */
-	@Scheduled(cron="0 0 */1 * * ?")
+	@Scheduled(cron="55 59 0/1 * * ?")
 	public void updateLqNum() throws Exception{
 		logger.info("*****************领取次数更新提醒******************");
 		Finder finder = new Finder("SELECT * FROM t_app_user WHERE currentLqNum != lqNum");
@@ -238,7 +238,7 @@ public class CardSchema extends BaseLogger{
 	 * 勋章有效期前三天发推送
 	 * 
 	 */
-	@Scheduled(cron="0 0/15 * * * ?")
+	@Scheduled(cron="0 0 12 * * ?")
 	public void beEndMedal() throws Exception{
 		logger.info("勋章有效期前三天发推送");
 		Finder finder = Finder.getSelectFinder(UserMedal.class).append(" WHERE endMedalTime IS NOT NULL AND DATE(DATE_SUB(endMedalTime,INTERVAL 3 DAY)) = DATE(NOW())");
@@ -327,10 +327,11 @@ public class CardSchema extends BaseLogger{
 	 * 
 	 */
 	@Scheduled(cron="0 0 0/3 * * ?")
+	/*@Scheduled(cron="0 0/3 * * * ?")*/
 	public void tianqi() throws Exception{
 		logger.info("获取天气");
 		
-		Finder finder=Finder.getSelectFinder(City.class).append(" where open=1 ");
+		Finder finder=Finder.getSelectFinder(City.class).append(" where open=1 order by date asc");
 		
 		List<City> citys=cityService.queryForList(finder, City.class);
 		

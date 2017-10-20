@@ -122,15 +122,15 @@ Object data=session.getAttribute("data");
 			<div class="bg_f pad_2030  dis_f ali_ct jus_bt pos_rela">
 				<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="height:1rem;" /></a>
 				<div class="search_bg2 pos_rela">
-					<input class="ipt2 f_22 clr_he" type="text" placeholder="昵称/主题" />
-					<input class="btn2" type="button" />
+					<input class="ipt2 f_22 clr_he" id="title"  type="text" placeholder="昵称/主题" />
+					<input onclick="select();" class="btn2"/>
 				</div>
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter2.png" class="dis_b filter_toggle" style="height:0.9rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
-					<li><img src="<%=basePath%>/js/appWeb/images/f1.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/dzzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">点赞最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/plzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">评论最多</span></li>
+					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/f1.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
+					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/dzzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">点赞最多</span></li>
+					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/plzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">评论最多</span></li>
 				</ul>
 
 				<script type="text/javascript">
@@ -166,8 +166,8 @@ $('.more_ul_toggle').click(function(){
 
 		<div class="pad_30 bg_f borderbot1 mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
-				<div class="dis_f ali_ct">
-					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<div class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'">
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -200,7 +200,11 @@ $('.more_ul_toggle').click(function(){
 
 
 					{{= content}}
+<<<<<<< HEAD
 <br>
+=======
+					</br>
+>>>>>>> d9c929e62c08008a4998ea09fa4511d02d29c224
 						{{if type==2}}
 
 						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
@@ -218,8 +222,10 @@ $('.more_ul_toggle').click(function(){
 
 		<div class="bg_f padl_30">
 			<div class="dis_f ali_ct jus_bt padt_20">
-
-					<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid" style="width:3.5rem;" />
+				
+				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj">
+				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
+				</span>
 
 				<div class="dis_f ali_ct jus_bt">
 					<div style="margin-right:1rem;">

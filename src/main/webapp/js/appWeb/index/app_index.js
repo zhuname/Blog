@@ -10,10 +10,6 @@ function show(){
 		type : "post",
 		dataType : "json",
 		success : function(result){
-			if(result.status=="error"){
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-				return;
-			}
 			var user=result;
 			if(result.data!=undefined){
 		//获取用户信息
@@ -78,6 +74,7 @@ function show(){
 							});
 							countTime();
 					}
+					
 					$("#add").click(function(even){
 						$("#add").hide();
 						 event.stopPropagation(); 
@@ -90,10 +87,62 @@ function show(){
 				}
 			});
 		
+			}else{
+
+				
+				
+				
+				
+				//获取用户信息
+				$.ajax({
+					url : '/mts/system/appuser/indexStatics/json?web=&id='+0+'&cityId='+410100,
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						
+						console.log(result);
+						if(result.status=="error"){
+							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+							return;
+						}
+						if(result.data!=undefined){
+							//获取消息记录
+								
+								
+								result.data.todayMoney = parseFloat(result.data.todayMoney).toFixed(2);
+								result.data.sumMoney = parseFloat(result.data.sumMoney).toFixed(2);
+								result.data.posterMoney = parseFloat(result.data.posterMoney).toFixed(2);
+								result.data.mediaMoney = parseFloat(result.data.mediaMoney).toFixed(2);
+								
+								
+								$('#nouser_detail_tmpl').tmpl(result.data).appendTo($('#detail'));
+							
+								countTime();
+						}
+						
+						
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(XMLHttpRequest) ;
+						console.log(textStatus) ;
+					}
+				});
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			}
-			
-			
-			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(XMLHttpRequest) ;
@@ -158,7 +207,7 @@ function countTime() {
 		}
 	
 		$('#sj').html(m+":"+s);
-		$('#sjwz').html("后获得"+lqNum+"次机会");
+		$('#sjwz').html("后获得"+lqNum+"次领取机会");
 		
 	}else{
 		var lqHtml="还剩余"+currentLqNum+"次领取机会";

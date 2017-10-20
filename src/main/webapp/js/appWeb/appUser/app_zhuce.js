@@ -121,6 +121,7 @@ $.ajax({
 			success : function(result){
 				if(result.status=="error"){
 					alert(result.message);;
+					addCookie("secondsremained",0,0);//添加cookie记录,有效时间60s
 					return;
 				}
 				if(result.data!=undefined){
@@ -141,7 +142,6 @@ function checkSignOn(){
 			type : "post",
 			dataType : "json",
 			success : function(result){
-				debugger;
 				if(result.status=="error"){
 					alert(result.message);;
 					return;

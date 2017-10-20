@@ -88,10 +88,9 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
-					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png"  onclick="selectSort(1);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  onclick="selectSort(2);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" onclick="selectSort(3);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_money.png" onclick="selectSort(4);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">金额最多</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png"  onclick="selectSort(1);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新的</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  onclick="selectSort(2);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">关注的</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" onclick="selectSort(3);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽的</span></li>
 				</ul>
 				
 
@@ -104,21 +103,21 @@ Object data=session.getAttribute("data");
 				<div class="pad_30 bg_f borderbot1 mt_20"  onclick="locationHref({{= id}});" >
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 						<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
-						{{if appUser.sex}}
+						{{if appUser}}{{if appUser.sex}}
 						{{if appUser.sex == '男'}}
 							<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
 						{{else appUser.sex == '女'}}
 							<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 						{{/if}}
-						{{/if}}
-						{{if appUser.userMedals}}
+						{{/if}}{{/if}}
+						{{if appUser}}{{if appUser.userMedals}}
 						{{each appUser.userMedals}}
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
    						{{/each}}
-						{{/if}}
+						{{/if}}{{/if}}
 						<div class="f_22 clr_9">{{= createTime}}</div>
 					</div>
 				</div>

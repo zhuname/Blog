@@ -85,7 +85,7 @@ function save(){
 		}
 		
 		$.ajax({
-			url : '/mts/system/card/update/json?web=&osType=html&userId='+userId+"&catergoryId="+getCookie("cardCategoryId")+"&title="+getCookie("cardTitle")+"&images="+getCookie("cardImage")+"&descr="+getCookie("cardDescr")+"&convertMoney="+getCookie("cardConvertMoney")+"&convertNum="+getCookie("cardConvertNum")+"&address="+getCookie("cardAddress")+"&lat="+getCookie("cardLatitude")+"&lot="+getCookie("cardLongitude")+"&phone="+getCookie("cardPhone")+"&limitNumber="+getCookie("cardLimitNumber"),
+			url : '/mts/system/card/update/json?web=&osType=html&userId='+userId+"&catergoryId="+getCookie("cardCategoryId")+"&title="+getCookie("cardTitle")+"&images="+getCookie("cardImage")+"&descr="+getCookie("cardDescr")+"&convertMoney="+getCookie("cardConvertMoney")+"&convertNum="+getCookie("cardConvertNum")+"&address="+getCookie("cardAddress")+"&lat="+getCookie("cardLatitude")+"&lot="+getCookie("cardLongitude")+"&phone="+getCookie("cardPhone")+"&limitNumber="+getCookie("cardLimitNumber")+"&endTime="+getCookie("cardEndTime"),
 			type : "post",
 			dataType : "json",
 			success : function(result){
@@ -94,9 +94,7 @@ function save(){
 					return;
 				}
 				if(result.data!=undefined){
-					if(result.data.balance!=undefined){
-						window.location.href="/mts/appWeb/card.jsp/myCard.jsp.jsp";
-					}
+					window.location.href="/mts/appWeb/appuser/myCard.jsp";
 				}
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){

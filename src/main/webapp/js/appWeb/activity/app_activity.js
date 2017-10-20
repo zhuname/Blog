@@ -3,22 +3,22 @@ var nextPage=1;
 var dataString="";
 var dianji=0;
 var userId;
+var userData="";
 //初始化页面
 show();
 
 function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
-	$('#posterPackage').html("");
-	dataString='&title='+titleString;
+	$('#activity').html("");
+	dataString='&selectTitle='+titleString;
 	show();
 }
 
 
-
 function selectSort(type){
 	nextPage=1;
-	$('#posterPackage').html("");
+	$('#activity').html("");
 	if(type==1){
 		dataString='&selectType=1';
 	}else if(type==2){
@@ -39,15 +39,15 @@ function show(){
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
 		}
-		userId=result.data.id;
 	
 	$.ajax({
-		url : '/mts/system/activity/appList/json?web='+"&cityId="+getQueryString("cityId")+"&appuserId="+userId+data,
+		url : '/mts/system/activity/appList/json?web='+"&cityId="+getQueryString("cityId")+userData+data,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -96,7 +96,7 @@ function show(){
 
 
 $.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=5&cityId='+getQueryString("cityId"),
+	url : '/mts/system/lunbopic/list/json?web=&position=5&cityIds='+getQueryString("cityId"),
 	type : "post",
 	dataType : "json",
 	success : function(result){

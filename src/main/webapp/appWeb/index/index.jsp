@@ -113,7 +113,7 @@ Object data=session.getAttribute("data");
 				<div style="position:relative"><img src="<%=basePath%>/js/appWeb/images/bell.png"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"  style="height:0.9rem;" /><span style="position:absolute;font-size: 0.2rem;color:#fff;top:-0.2rem;right:-.2rem;text-align: center;line-height:.6rem;width:.6rem;height:.6rem;border-radius:50%;background:red;">10<span></div>  
 			</div>
 			<div class="dis_f ali_ct flex_col jus_ct">
-				<img id="header" src="<%=basePath%>/js/appWeb/images/face.jpg" class="dis_b" style="width:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />
+				<img id="header" src="<%=basePath%>/js/appWeb/images/default_header.png" class="dis_b" style="width:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />
 				<div class="f_24 clr_f mt_10" id="name"></div>
 			</div>
 			
@@ -149,6 +149,85 @@ Object data=session.getAttribute("data");
 			<img src="<%=basePath%>/js/appWeb/images/rmb.png" class="ver_mid " style="width:0.75rem;" />&nbsp;
 			<span class="f_38 ver_mid" id="sj">09:20</span>&nbsp;
 			<span class="f_26 ver_mid" id="sjwz">后获得1次机会</span>
+		</div>
+	</div>
+
+	<div class="pad_20 mt_20">
+		<ul class="haibao_ul dis_f ali_ct jus_bt flex_w">
+			<li class="bg_f" >
+			<a  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackage.jsp?cityId={{= cityId}}';"  class=" dis_f ali_ct flex_col jus_ct">
+				{{if posterCount}}
+				{{if posterCount>0}}
+				<div class="haibao_tips">{{= posterCount}}</div>
+				{{/if}}
+				{{/if}}
+				<img src="<%=basePath%>/js/appWeb/images/haibao.png" class="dis_b" />
+				<p class="f_26 clr_3 mt_10">海报红包</p>
+				<p class="f_20 clr_r">还有<span class="f_28">{{= posterMoney}}元</span>待领</p>
+			</a>
+			</li>
+			<li class="bg_f">
+			<a onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackage.jsp?cityId={{= cityId}}';" class=" dis_f ali_ct flex_col jus_ct" >
+			{{if mediaCount}}
+			{{if mediaCount>0}}
+			<div class="haibao_tips">{{= mediaCount}}</div>
+			{{/if}}
+			{{/if}}
+				<img src="<%=basePath%>/js/appWeb/images/shipin.png" class="dis_b" />
+				<p class="f_26 clr_3 mt_10">视频红包</p>
+				<p class="f_20 clr_r">还有<span class="f_28">{{= mediaMoney}}元</span>待领</p>
+				</a>
+			</li>
+			<li class="bg_f">
+			<a  onclick="window.location.href='/mts/appWeb/activity/activity.jsp?cityId={{= cityId}}';"  class=" dis_f ali_ct flex_col jus_ct">
+			{{if activityCount}}
+			{{if activityCount>0}}
+			<div class="haibao_tips">{{= activityCount}}</div>
+			{{/if}}
+			{{/if}}
+				<img src="<%=basePath%>/js/appWeb/images/huodong.png" class="dis_b" />
+				<p class="f_26 clr_3 mt_10">同城活动</p>
+				<p class="f_20 clr_r">已有<span class="f_28">{{= joinCount}}</span>人参与</p>
+				</a>
+			</li>
+			<li class="bg_f">
+			<a  onclick="window.location.href='/mts/appWeb/circle/circle.jsp?cityId={{= cityId}}';"  class=" dis_f ali_ct flex_col jus_ct">
+			{{if circleCount}}
+			{{if circleCount>0}}
+			<div class="haibao_tips">{{= circleCount}}</div>
+			{{/if}}
+			{{/if}}
+				<img src="<%=basePath%>/js/appWeb/images/xinxi.png" class="dis_b" />
+				<p class="f_26 clr_3 mt_10">趣闻趣事</p>
+				<p class="f_20 clr_r">还有<span class="f_28">{{= cityCircleCount}}</span>条</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	</script>
+	
+	<!-- 这个是未读消息 -->
+	<script id="nouser_detail_tmpl" type="text/x-jquery-tmpl">
+		<div class="bg_r">
+			<div class="dis_f ali_ct jus_bt pad_30">
+				<div class="dis_f ali_ct">
+					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" /> 
+					<div class="f_20 clr_f">&nbsp;  <span class="f_16"></span></div>
+				</div>
+				<img src="<%=basePath%>/js/appWeb/images/bell.png" class="dis_b" style="height:0.9rem;" /> 
+			</div>
+
+			<div class="dis_f ali_ct jus_ct flex_col" style="height:8.05rem;">
+				<a onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp';" class="login_btn_a dis_b al_ct f_26 clr_f">登录/注册</a>
+			</div>
+
+				<img src="<%=basePath%>/js/appWeb/images/lang.png" class="dis_b " style="width:16rem;" />
+
+		</div>
+	<div class="pos_rela">
+		<div class="clr_r jihui_btn dis_f ali_ct jus_ct">
+			<img src="<%=basePath%>/js/appWeb/images/rmb.png" class="ver_mid " style="width:0.75rem;" />&nbsp;
+			<span class="f_26 ver_mid">看广告领红包</span>
 		</div>
 	</div>
 

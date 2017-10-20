@@ -45,9 +45,9 @@ $(document).on("click", ".selectBtn", function() {
 			 <label for="search_title"><b>城事圈主题:</b></label> 
 			 <input type="text" id="search_title"  name="title" placeholder="请填写主题"  value="${(returnDatas.queryBean.title)!''}">
 			  <label for="search_userName"><b>打赏用户:</b></label> 
-			 <input type="text" id="search_userName"  name="userName" placeholder="请填写发布人"  value="${(returnDatas.queryBean.userName)!''}">
-			  <label for="search_code"><b>订单编号:</b></label> 
-			 <input type="text" id="search_code"  name="code" placeholder="请填写订单编号"  value="${(returnDatas.queryBean.code)!''}">
+			 <input type="text" id="search_userName"  name="userName" placeholder="请填写打赏用户名称"  value="${(returnDatas.queryBean.userName)!''}">
+			  <label for="search_publishName"><b>发布者:</b></label> 
+			 <input type="text" id="search_publishName"  name="publishName" placeholder="请填写发布者名称"  value="${(returnDatas.queryBean.publishName)!''}">
 			 <label for="search_payType"><b>支付类型:</b></label>
 			 <select id="search_payType" name="payType" class="col-10">
 			 	<option value="">请选择</option>
@@ -120,7 +120,7 @@ $(document).on("click", ".selectBtn", function() {
 						<th id="th_payMoney" width="10%">支付金额</th>
 						<th id="th_status" width="5%">状态</th>
 						<th id="th_createTime" width="10%">创建时间</th>
-						<th id="th_code" width="10%">订单编号</th>
+						<th id="th_code" width="10%">发布者</th>
                     </tr>
                     </thead>
                     <!--first_end_export-->
@@ -237,7 +237,7 @@ $(document).on("click", ".selectBtn", function() {
 							${((_data.createTime)?string('yyyy-MM-dd HH:mm:dd'))!''}
 							</td>
 							<td >
-								${(_data.code)!''}
+								${(_data.publishName)!''}
 							</td>
 						</tr>
 					</#list>

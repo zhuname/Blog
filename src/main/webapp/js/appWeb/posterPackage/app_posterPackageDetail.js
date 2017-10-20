@@ -8,7 +8,6 @@ var packageUserId;
 var encrypt;
 var isFoot=1;
 
-
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -17,10 +16,10 @@ var isFoot=1;
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
+			userId=undefined;
+		}else{
+			userId=result.data.id;
 		}
-		userId=result.data.id;
 	},
 	error:function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(XMLHttpRequest) ;
@@ -32,8 +31,8 @@ var isFoot=1;
 		type : "post",
 		dataType : "json",
 		success : function(result){
-			
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
@@ -115,6 +114,7 @@ var isFoot=1;
 						dataType : "json",
 						success : function(result){
 							if(result.status=="error"){
+								
 								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 								return;
 							}
@@ -146,6 +146,7 @@ var isFoot=1;
 							dataType : "json",
 							success : function(result){
 								if(result.status=="error"){
+									
 									window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 									return;
 								}
@@ -175,6 +176,7 @@ var isFoot=1;
 						dataType : "json",
 						success : function(result){
 							if(result.status=="error"){
+								
 								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 								return;
 							}
@@ -268,6 +270,7 @@ var isFoot=1;
 			dataType : "json",
 			success : function(result){
 				if(result.status=="error"){
+					
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
@@ -346,10 +349,11 @@ function yuyue(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
+				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
-			window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+			window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -391,6 +395,14 @@ function yuyue(){
 	}
 var isOpers=0;
 
+var toUserIdString="";
+
+function toUser(toUserId,toUserName){
+	
+	toUserIdString="&toUserId="+toUserId;
+	$("#comment").attr("placeholder","回复  "+toUserName+"：");
+}
+
 function oper(type){
 	if(isOpers==0){
 	
@@ -400,16 +412,17 @@ function oper(type){
 			
 			//加载页面方法
 			$.ajax({
-				url : '/mts/system/oper/update/json?web=&type=2&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId,
+				url : '/mts/system/oper/update/json?web=&type=2&content='+$("#comment").val()+"&itemId="+id+"&userId="+userId+toUserIdString,
 				type : "post",
 				dataType : "json",
 				success : function(result){
 					if(result.status=="error"){
+						
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
 					$("#comment").val("");
-					window.location.href="/mts/appWeb/appoint/appointUserList.jsp?type=1+itemId="+packageUserId;
+					window.location.reload();
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown){
 					console.log(XMLHttpRequest) ;
@@ -443,6 +456,8 @@ function oper(type){
 	
 
 function initColl(){
+	if(userId!=undefined&&userId!=null){
+	
 	if(userId!=itemUserId){
 	//加载页面方法
 	$.ajax({
@@ -452,6 +467,7 @@ function initColl(){
 	success : function(result){
 		
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -473,6 +489,7 @@ function initColl(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -491,6 +508,8 @@ function initColl(){
 		$($("#attr").parent()).remove();
 		$($("#collect").parent()).remove();
 	}
+	
+	}
 }
 
 function collect(){
@@ -501,6 +520,7 @@ function collect(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
@@ -520,8 +540,8 @@ function attr(){
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		debugger;
 		if(result.status=="error"){
+			
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}

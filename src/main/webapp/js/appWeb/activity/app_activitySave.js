@@ -148,6 +148,55 @@ function save(){
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
+				
+				
+				
+				
+				
+				if(getCookie("activityCityId")!=null){
+					delCookie("activityCityId");
+					delCookie("activityCityName");
+				}
+				
+				if(getCookie("activityAddress")!=null){
+					delCookie("activityAddress");
+				}
+				
+				if(getCookie("activityContent")!=null){
+					delCookie("activityContent");
+				}
+				
+				if(getCookie("activityJoinExplain")!=null){
+					delCookie("activityJoinExplain");
+				}
+				
+				if(getCookie("activityPhone")!=null){
+					delCookie("activityPhone");
+				}
+				
+				if(getCookie("activityAwards")!=null){
+					
+					delCookie("activityAwards"); 
+
+				}
+
+
+				if(getCookie("activityImages")!=null){
+					delCookie("activityImages"); 
+				}
+				
+				if(getCookie("activityEndTime")!=null){
+					delCookie("activityEndTime")
+					delCookie("activityShowEndTime");
+					 
+				}
+				if(getCookie("activityLongitude")!=null){
+					 
+					 delCookie("activityLongitude");
+					 delCookie("activityLatitude");
+				}
+				
+				
 				window.location.href="/mts/appWeb/activity/activity.jsp?cityId="+cityId;
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){

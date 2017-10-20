@@ -70,12 +70,8 @@ public class City  extends BaseEntity {
 	private String templow;
 	
 	
-	
-	
-	
-	//concstructor
 
-	 @WhereSQL(sql="date=:City_date")
+	@WhereSQL(sql="date=:City_date")
 	public String getDate() {
 		return date;
 	}

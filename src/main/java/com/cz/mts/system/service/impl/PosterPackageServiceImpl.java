@@ -334,7 +334,7 @@ public class PosterPackageServiceImpl extends BaseSpringrainServiceImpl implemen
 			finderSelect.setParam("itemId", pp.getUserId());
 			List<Attention> attentions = super.queryForList(finderSelect,Attention.class);
 			for (Attention attention : attentions) {
-				AttenThreadController attenThreadController = new AttenThreadController(pp, null, attention, null, notificationService, appUser);
+				AttenThreadController attenThreadController = new AttenThreadController(pp, null, attention, null,null,null, notificationService, appUser);
 				attenThreadController.run();
 			}
 			

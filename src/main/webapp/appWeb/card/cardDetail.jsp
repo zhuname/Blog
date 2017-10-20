@@ -99,7 +99,7 @@ html,body{background:#f95d47;}
 		<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_f pad_20" style="padding-bottom:0;">
 			<div class="dis_f ali_ct flex_col">
-				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b" style="width:2rem;border: 2px solid #FFF;border-radius: 1.1rem;margin-top:-1.5rem;" />
+				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border: 2px solid #FFF;border-radius: 1.1rem;margin-top:-1.5rem;" />
 				<div class="dis_f ali_ct f_28 clr_3 mt_20">{{if appUser}}{{= appUser.name}}{{/if}}
 						{{if appUser.sex}}
 							{{if appUser.sex == '男'}}
@@ -216,7 +216,7 @@ html,body{background:#f95d47;}
 		</script>
 		
 		<script id="lingquan_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{= header}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+			<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 		</script>
 		
 		<script id="lingquanFoot_tmpl" type="text/x-jquery-tmpl">

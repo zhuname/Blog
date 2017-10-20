@@ -10,7 +10,7 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			$('#weidenglu').tmpl(result.data).appendTo($('#detail'));
 			return;
 		}
 		
@@ -149,7 +149,7 @@ function countTime() {
 		
 		$('#lqjh').html(lqHtml);
 	}else{
-		var lqHtml="还剩余<span class=\"f_30\">"+currentLqNum+"</span>次领取机会";
+		var lqHtml="您有<span class=\"f_30\">"+currentLqNum+"</span>次领取机会";
 		$('#lqjh').html(lqHtml);
 	}
 	
