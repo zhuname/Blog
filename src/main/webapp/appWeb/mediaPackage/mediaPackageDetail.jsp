@@ -149,8 +149,8 @@ Object data=session.getAttribute("data");
 				<span class="ver_mid">{{= title}}</span>
 			</div>
 
-			<div class="f_28 clr_6 mt_20 clr_he" style="line-height:1.2rem;text-indent: 1.4rem;">
-				{{= descr}}
+			<div class="f_28 clr_6 mt_20 clr_he" style="width:97%;word-break:   break-all;   word-wrap:break-word;line-height:1.2rem;text-indent: 1.4rem;">
+				<pre style="white-space: pre-wrap">{{= descr}}</pre>
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">

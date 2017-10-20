@@ -93,7 +93,7 @@ Object data=session.getAttribute("data");
 					</p>
 				</div>
 			</div>
-			<div class="f_22 clr_r" onclick="attr({{= appUser.id}});" style="border:1px solid #f9634e;padding:0.1rem 0.5rem;border-radius: 0.2rem;">{{if isAttr}}
+			<div class="f_22 clr_r" onclick="attr({{= appUser.id}});" style="border:1px solid #f9634e;padding:0.1rem 0.5rem;border-radius: 0.2rem;white-space:nowrap;">{{if isAttr}}
 																													{{if isAttr == 1 }}
 																														已关注
 																													{{else}}

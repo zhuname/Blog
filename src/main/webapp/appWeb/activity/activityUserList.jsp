@@ -177,7 +177,13 @@ $('.more_ul_toggle').click(function(){
 						<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 						{{/if}}
 						{{/if}}
+				{{if appUser.userMedals}}
+						{{each appUser.userMedals}}
+							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
+   					 	{{/each}}
+				{{/if}}
 						<div class="f_22 clr_9">{{= createTime}}</div>
+
 					</div>
 				</div>
 
@@ -194,7 +200,7 @@ $('.more_ul_toggle').click(function(){
 
 
 					{{= content}}
-
+<br>
 						{{if type==2}}
 
 						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
@@ -208,13 +214,6 @@ $('.more_ul_toggle').click(function(){
 						{{/if}}
 						{{/if}}
 						</div>
-			<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
-				{{if appUser.userMedals}}
-						{{each appUser.userMedals}}
-							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
-   					 	{{/each}}
-				{{/if}}
-			</div>
 		</div>
 
 		<div class="bg_f padl_30">

@@ -329,7 +329,8 @@ html,body{height:100%;}
 		
 		
 			<script id="card_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
+				<div class="pad_3020 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="width: 100%;
+    box-sizing: border-box" >
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
@@ -359,7 +360,7 @@ html,body{height:100%;}
 			</div>
 
 			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;">{{= title}}</div>
-<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem;" /></div>
+<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem; width:100%" /></div>
 			<div class="dis_f ali_ct jus_bt pad_20 bg_f" >
 					<div class="f_18 clr_he dis_f ali_ct">
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />
@@ -376,7 +377,8 @@ html,body{height:100%;}
 		
 		
 		<script id="card_list3_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela">
+				<div class="pad_3020 pos_rela" style="width: 100%;
+    box-sizing: border-box">
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
@@ -406,7 +408,7 @@ html,body{height:100%;}
 			</div>
 
 			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;">{{= title}}</div>
-<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem;" /></div>
+<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem; width:100%" /></div>
 			<div class="dis_f ali_ct jus_bt pad_20 bg_f" >
 					<div class="f_18 clr_he dis_f ali_ct">
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />
@@ -426,7 +428,8 @@ html,body{height:100%;}
 		</script>
 		
 		<script id="card_list4_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela" >
+				<div class="pad_3020 pos_rela" style="width: 100%;
+    box-sizing: border-box" >
 			<img src="<%=basePath%>/js/appWeb/images/card_guoqi.png" class="dis_b end_img2"/>
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{= appUser.header}}{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
@@ -459,7 +462,7 @@ html,body{height:100%;}
 			</div>
 
 			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;">{{= title}}</div>
-<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem;" /></div>
+<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem; width:100%" /></div>
 			<div class="dis_f ali_ct jus_bt pad_20 bg_f" >
 					<div class="f_18 clr_he dis_f ali_ct">
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />

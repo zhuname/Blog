@@ -149,7 +149,7 @@ color: #cc9d9d;
 .btn1{background: #0a7cd4;height:2rem;border-radius: 0.2rem;border:0;width:3rem;}
 .ipt1{width:9rem;padding:0.55rem;border:0;border-radius: 0.2rem;}
 
-.more_ul{background: rgba(0,0,0,0.7);border-radius: 0.1rem;position:absolute; top:1.65rem;right:0.5rem;z-index:9;}
+.more_ul{background: rgba(0,0,0,0.7);border-radius: 0.1rem;position:absolute; top:1.65rem;right:0.5rem;z-index:109;}
 .more_ul li{height:1.75rem;line-height: 1.75rem;border-bottom:1px solid #6a6d75;width:5.5rem;}
 .arr_up_down{position: absolute;top:1.4rem;right:1rem;}
 
@@ -292,4 +292,7 @@ line-height: 0.5rem; font-size: 0.2rem; border-radius: 50%;top: -0.1rem; right: 
 ul,li,ol li{
 	list-style:none;
 }
+.active-f{
+	border-bottom:.2rem solid red;
 
+}

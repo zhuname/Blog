@@ -78,7 +78,7 @@ Object data=session.getAttribute("data");
 			<div class="mt_10" style="width:90%;">
 				<div class="f_22 clr_6">{{= t}} 发布动态</div>
 				<div class="clr_3 f_28 mt_10" >{{= content}}</div>
-				<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
+				<div class="dis_f ali_ct  flex_w quan_img mt_20">
 					{{if images}}
 						{{each images}}
 								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:4rem;" />
