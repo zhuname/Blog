@@ -173,6 +173,9 @@ function showCheck(obj){
 	$(obj).siblings('.more_ul').toggle();
 	$(obj).siblings('.arr_up_down').toggle();
 	dianji=1;
+	$("#black-box").toggle()
+	console.log("dsfs");
+	console.log($("#black-box"))
 }
 
 function getDateDiff(dateTimeStamp){

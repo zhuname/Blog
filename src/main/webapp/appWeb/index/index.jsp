@@ -107,10 +107,11 @@ Object data=session.getAttribute("data");
 		<div class="bg_r">
 			<div class="dis_f ali_ct jus_bt pad_30">
 				<div class="dis_f ali_ct">
-					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" /> 
+					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" />
 					<div class="f_20 clr_f">&nbsp; <a id="city"></a> <span class="f_16" id="weather">多云转晴 23℃/28℃</span></div>
 				</div>
 				<img src="<%=basePath%>/js/appWeb/images/bell.png" onclick="window.location.href='/mts/appWeb/message/message.jsp';" class="dis_b" style="height:0.9rem;" /> 
+				<div style="position:relative"><img src="<%=basePath%>/js/appWeb/images/bell.png"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"  style="height:0.9rem;" /><span style="position:absolute;font-size: 0.2rem;color:#fff;top:-0.2rem;right:-.2rem;text-align: center;line-height:.6rem;width:.6rem;height:.6rem;border-radius:50%;background:red;">10<span></div>  
 			</div>
 			<div class="dis_f ali_ct flex_col jus_ct">
 				<img id="header" src="<%=basePath%>/js/appWeb/images/default_header.png" class="dis_b" style="width:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />

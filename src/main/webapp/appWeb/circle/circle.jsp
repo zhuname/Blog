@@ -59,7 +59,7 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
-
+		<div id="black-box" style="position:fixed;left:0;top:0;width:100%;height:100%;z-index:100;display:none;"></div>
 	<div class="wraper">
 
 		<div class="haibao_bg pos_rela">
@@ -75,6 +75,7 @@ Object data=session.getAttribute("data");
 			</div>
 			<script type="text/javascript">
 		</script>
+
 			<div class="pad_30  dis_f ali_ct jus_bt " style="position:absolute;top:0;left:0;width:14.5rem;">
 				<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b" style="width:1rem;" /></a>
 				
@@ -92,12 +93,7 @@ Object data=session.getAttribute("data");
 					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/package_card.png"   class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽的</span></li>
 				</ul>
 				
-				<script type="text/javascript">
-					$('.filter_toggle').click(function(){
-						$('.xx_pic').toggle();
-						$('.xx_daohang').toggle();
-					});
-				</script>
+
 			</div>
 		</div>
 		<div id="circle"></div>
@@ -175,6 +171,19 @@ Object data=session.getAttribute("data");
 		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
 			<li><a href="{{if type==1}}{{= url}}{{else type==2}}/mts/appWeb/posterPackage/posterPackageDetail.jsp?id={{= itemId}}{{else type==3}}/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= itemId}}{{else type==4}}/mts/appWeb/card/cardDetail.jsp?id={{= itemId}}{{else type==5}}/mts/appWeb/activity/activityDetail.jsp?id={{= itemId}}{{else type==6}}/mts/appWeb/circle/circleDetail.jsp?id={{= itemId}}{{/if}}"><img src="{{= image}}" class="dis_b" /></a></li>
 		</script>
+						<script type="text/javascript">
+					$('.filter_toggle').click(function(){
+						$('.xx_pic').toggle();
+						$('.xx_daohang').toggle();
+						$('#black-box').toggle();
+						console.log($('#black-box'))
+					});
+					$('#black-box').click(function(){
+						$(this).toggle();
+						$('.more_ul_toggle').siblings("ul").hide()
+						$('.more_ul_toggle').siblings("img").hide()
+					})
+				</script>
 
 <script type="text/javascript">
 

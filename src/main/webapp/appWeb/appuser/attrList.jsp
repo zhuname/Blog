@@ -95,7 +95,7 @@ Object data=session.getAttribute("data");
 					</p>
 				</div>
 			</div>
-			<div class="f_22 clr_r"  onclick="attr({{= itemId}});"  style="border:1px solid #f9634e;padding:0.1rem 0.5rem;border-radius: 0.2rem;">取消关注</div>
+			<div class="f_22 clr_r"  onclick="attr({{= itemId}});"  style="border:1px solid #f9634e;padding:0.1rem 0.5rem;border-radius: 0.2rem;white-space:nowrap;">取消关注</div>
 		</div>
 		</script>
 	

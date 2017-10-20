@@ -151,7 +151,11 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="f_28 clr_6 mt_20 clr_he" style="width:97%;word-break:   break-all;   word-wrap:break-word;line-height:1.2rem;text-indent: 1.4rem;">
+<<<<<<< HEAD
+				<pre style="white-space: pre-wrap">{{= descr}}</pre>
+=======
 				<pre>{{= descr}}</pre>
+>>>>>>> d9c929e62c08008a4998ea09fa4511d02d29c224
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">
