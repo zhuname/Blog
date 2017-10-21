@@ -118,41 +118,42 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="f_28 clr_3 dis_f flex_col jus_bt" style="width:6rem;">
-				{{if payType}}
 
-					{{if payType==1}}
+				{{if type}}
+
+					{{if type==1}}
 					海报红包
-					{{else payType==2}}
+					{{else type==2}}
 					视频红包
-					{{else payType==3}}
+					{{else type==3}}
 					购买卡券
-					{{else payType==4}}
+					{{else type==4}}
 					充值
-					{{else payType==5}}
+					{{else type==5}}
 					发布视频
-					{{else payType==6}}
+					{{else type==6}}
 					发布海报 
-					{{else payType==7}}
+					{{else type==7}}
 					提现成功
-					{{else payType==8}}
+					{{else type==8}}
 					发布卡券人收益
-					{{else payType==9}}
+					{{else type==9}}
 					提现失败
-					{{else payType==10}}
+					{{else type==10}}
 					提现申请中
-					{{else payType==11}}
+					{{else type==11}}
 					图片红包审核失败
-					{{else payType==12}}
+					{{else type==12}}
 					视频红包审核失败
-					{{else payType==13}}
+					{{else type==13}}
 					预约支付
-					{{else payType==14}}
+					{{else type==14}}
 					打赏
-					{{else payType==15}}
+					{{else type==15}}
 					发布红包人收益
-					{{else payType==16}}
+					{{else type==16}}
 					打赏
-					{{else payType==17}}
+					{{else type==17}}
 					后台余额变动
 					{{/if}}
 				{{/if}}<p class="f_24 clr_he">{{= content}}</p>

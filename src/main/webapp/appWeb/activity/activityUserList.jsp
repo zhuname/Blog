@@ -200,11 +200,7 @@ $('.more_ul_toggle').click(function(){
 
 
 					{{= content}}
-<<<<<<< HEAD
-<br>
-=======
 					</br>
->>>>>>> d9c929e62c08008a4998ea09fa4511d02d29c224
 						{{if type==2}}
 
 						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
@@ -259,7 +255,6 @@ $('.more_ul_toggle').click(function(){
 				<a href="javascript:all({{= id}});" id="{{= id}}" style="display:none;" all="0" class="clr_b">展开</a>
 			</div>
 		</div>
-
 	</script>
 
 	<script id="canyu_tmpl" type="text/x-jquery-tmpl">

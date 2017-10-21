@@ -70,6 +70,16 @@ function show(){
 						
 					}
 					
+					if(result.data[int].image){
+						
+						var images=result.data[int].image;
+						
+						var imagess=images.split(";");
+						
+						result.data[int].image=imagess[0];
+						
+					}
+					
 					$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#activity'));
 					
 				}

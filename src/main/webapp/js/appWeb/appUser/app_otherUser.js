@@ -17,7 +17,7 @@ function show(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				
 				return;
 			}
 			if(result.data!=undefined){
@@ -81,6 +81,7 @@ function show(){
 			}
 		}
 				userId=result.data.id;
+				if(appUserId!=undefined){
 				$.ajax({
 					url : '/mts/system/circle/list/json?web='+"&userId="+userId+data+"&appuserId="+appUserId,
 					type : "post",
@@ -122,6 +123,7 @@ function show(){
 						
 					}
 				});
+	}
 					},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;

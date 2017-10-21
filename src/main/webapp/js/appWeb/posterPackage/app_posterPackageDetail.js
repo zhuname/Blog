@@ -88,13 +88,22 @@ var balance;
 					
 					for (var int = 0; int < lunbo.length; int++) {
 						
-						if(int==0){
-							
-							$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
-							
-						}
+							if(lunbo[int]!=""){
+								$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
+								
+							}
 						
 					}
+					
+					TouchSlide({
+						slideCell:"#bann",
+						titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+						mainCell:".bd ul", 
+						effect:"left",
+						autoPlay:true,//自动播放
+						autoPage:true //自动分页
+					});
+					
 					jishi();
 					
 					

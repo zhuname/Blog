@@ -140,8 +140,14 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="bg_f padl_20">
-			
-			<div id="lunbo">
+			<div class="bannD pos_rela" id="bann">
+				<div class="hd">
+					<ul></ul>
+				</div>
+				<div class="bd">
+					<ul id="lunbo">
+					</ul>
+				</div>
 			</div>
 
 			<div class="f_40 clr_3 mt_20">

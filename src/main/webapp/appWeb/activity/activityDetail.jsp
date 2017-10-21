@@ -74,24 +74,30 @@ Object data=session.getAttribute("data");
 
 	<div class="wraper">
 
-
-		<div id="detail"></div>
-
-		<script id="detail_tmpl" type="text/x-jquery-tmpl">
-				<div class="tupian_bg" style="background: url('{{= image}}') no-repeat;">
-			<div class="pad_30  dis_f ali_ct jus_bt pos_rela">
-				<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back3.png" class="dis_b" style="width:1rem;" /></a>
-				<div class="search_bg pos_rela dis_n">
-					<input class="ipt2 f_22 clr_he" type="text" placeholder="昵称/主题" />
-					<input class="btn2" type="button" />
+<div class="haibao_bg pos_rela">
+		
+			<div class="bann pos_rela" id="bann">
+				<div class="hd">
+					<ul></ul>
 				</div>
+				<div class="bd">
+					<ul id="lunbo">
+					</ul>
+				</div>
+			</div>
+			<script type="text/javascript">
+		</script>
+
+		<div class="tupian_bg" no-repeat;" style="position:absolute;top:0;left:0;width:14.5rem;">
+			<div class="pad_30  dis_f ali_ct jus_bt pos_rela" >
+				<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back3.png" class="dis_b" style="width:1rem;" /></a>
 				<div class="whte" onclick="showColl(this)"></div>
-				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
+				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;margin-left: 130%;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;z-index=15" >
 					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-					<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
-					<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">屏蔽</span></li>
+					<li id="guanzhu" onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
+					<li id="pingbi" onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">屏蔽</span></li>
 					<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 				</ul>
 				
@@ -99,6 +105,18 @@ Object data=session.getAttribute("data");
 		</div>
 
 
+
+
+
+
+
+<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
+				<li><a><img src="{{= image}}" class="dis_b" /></a></li>
+			</script>
+
+
+		<div id="detail"></div>
+		<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >

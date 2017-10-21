@@ -49,22 +49,37 @@ $.ajax({
 				
 				var image=null;
 				
-				if(result.data.image!=undefined){
+				
+				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
+				
+				
+				var lunbo=result.data.image.split(";");
+				
+				for (var int = 0; int < lunbo.length; int++) {
 					
-					image=result.data.image.split(";");
-					
-				}
-				if(image!=null){
-					
-					for (var int = 0; int < image.length; int++) {
-						
-						result.data.image=image[int];
-						
-					}
+						if(lunbo[int]!=""){
+							$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
+							
+						}
 					
 				}
 				
-				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
+				TouchSlide({
+					slideCell:"#bann",
+					titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+					mainCell:".bd ul", 
+					effect:"left",
+					autoPlay:true,//自动播放
+					autoPage:true //自动分页
+				});
+				
+				
+				
+				if(userId==itemUserId){
+					$("#guanzhu").remove();
+					$("#pingbi").remove();
+				}
+				
 				for (var int2 = 0; int2 < result.data.awardss.length; int2++) {
 					$('#huodong_tmpl').tmpl(result.data.awardss[int2]).appendTo($('#huodongShow'));
 				}
