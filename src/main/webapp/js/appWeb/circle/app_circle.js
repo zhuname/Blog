@@ -168,16 +168,19 @@ function locationHref(id){
 	}
 	window.location.href='/mts/appWeb/circle/circleDetail.jsp?id='+id;
 }
-
 function showCheck(obj){
 	$(obj).siblings('.more_ul').toggle();
 	$(obj).siblings('.arr_up_down').toggle();
 	dianji=1;
 	$("#black-box").toggle()
-	console.log("dsfs");
-	console.log($("#black-box"))
 }
-
+function dou(){
+	  event.stopPropagation();
+	console.log(656456465)
+}
+function report(){
+	$(".alert-box").css("top","0")
+}
 function getDateDiff(dateTimeStamp){
 	
 	var stringTime = dateTimeStamp;
