@@ -7,6 +7,7 @@ var itemUserId;
 var packageUserId;
 var encrypt;
 var isFoot=1;
+var balance;
 
 	//加载页面方法
 	$.ajax({
@@ -19,6 +20,7 @@ var isFoot=1;
 			userId=undefined;
 		}else{
 			userId=result.data.id;
+			balance=result.data.balance;
 		}
 	},
 	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -37,7 +39,6 @@ var isFoot=1;
 				return;
 			}
 			if(result.data!=undefined){
-				
 				if(result.data.appUser.name!=undefined){
 					
 					$('#name').html(result.data.appUser.name+"的红包");
@@ -80,18 +81,29 @@ var isFoot=1;
 					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
+					$("#userBalance").html(balance);
+					
 					
 					var lunbo=result.data.image.split(";");
 					
 					for (var int = 0; int < lunbo.length; int++) {
 						
-						if(int==0){
-							
-							$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
-							
-						}
+							if(lunbo[int]!=""){
+								$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
+								
+							}
 						
 					}
+					
+					TouchSlide({
+						slideCell:"#bann",
+						titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+						mainCell:".bd ul", 
+						effect:"left",
+						autoPlay:true,//自动播放
+						autoPage:true //自动分页
+					});
+					
 					jishi();
 					
 					
@@ -353,7 +365,32 @@ function yuyue(){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
-			window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
+			
+			
+			if(result.data!=undefined){
+				$.ajax({
+					url : '/mts/system/appuser/pay/json?web=&type=4&userId='+userId+'&code='+result.data.code,
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						if(result.status=="error"){
+							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+							return;
+						}
+						window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(XMLHttpRequest) ;
+						console.log(textStatus) ;
+					}
+				});
+				
+				
+				
+			}
+			
+			
+			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -398,7 +435,11 @@ var isOpers=0;
 var toUserIdString="";
 
 function toUser(toUserId,toUserName){
-	
+	if(toUserId!=null){
+		if(toUserId==userId){
+			alert("不能回复自己！");
+		}
+	}
 	toUserIdString="&toUserId="+toUserId;
 	$("#comment").attr("placeholder","回复  "+toUserName+"：");
 }

@@ -39,7 +39,7 @@ var This=this;
 				
 				console.log(result);
 				if(result.data!=undefined){
-					window.location.href="/mts/appWeb/appuser/appuserLook.jsp"; 
+					window.location.href="/mts/appWeb/appuser/appuserLook.jsp?isCity=1"; 
 				}
 				
 			},

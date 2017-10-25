@@ -3,6 +3,9 @@ var convertMoney;
 var num;
 var limitNumber;
 var userId;
+var id;
+var itemUserId;
+var lqNum=0;
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -17,7 +20,7 @@ $.ajax({
 		userId=result.data.id;
 		var user= result.data;
 	$.ajax({
-		url : '/mts/system/card/look/json?web=&id='+getQueryString("id"),
+		url : '/mts/system/card/look/json?web=&id='+getQueryString("id")+'&appUserId='+userId,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -29,11 +32,13 @@ $.ajax({
 			
 			if(result.data!=undefined){
 				//获取消息记录
-				
+				id=result.data.id;
+				itemUserId=result.data.userId;
+				lqNum=result.data.lqNum;
 				if(result.data.endTime!=undefined){
 					//获取消息记录
 					
-					result.data.endTime=result.data.endTime.substring(0,7);
+					result.data.endTime=result.data.endTime.substring(0,10);
 					
 				}
 				
@@ -41,6 +46,10 @@ $.ajax({
 					result.data.convertMoney="免费";
 				}else{
 					result.data.convertMoney = parseFloat(result.data.convertMoney).toFixed(2);
+				}
+				
+				if(result.data.num==0){
+					result.data.status=5;
 				}
 				
 				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
@@ -114,7 +123,7 @@ function change(type){
 		$('#balance').html(parseInt($('#num').val())*parseInt(convertMoney));
 		$('#convertMoney').html(parseInt($('#num').val())*parseInt(convertMoney));
 	}else if(type ==2){
-		if(parseInt($('#num').val())==parseInt(num)||parseInt($('#num').val())==parseInt(limitNumber)){
+		if(parseInt($('#num').val())==parseInt(num-lqNum)||parseInt($('#num').val())==parseInt(limitNumber-lqNum)){
 			return;
 		}
 		$('#num').val(parseInt($('#num').val())+1);
@@ -124,6 +133,11 @@ function change(type){
 }
 
 function pay(){
+	
+	if(itemUserId==userId){
+		alert("不能领取自己的卡券哦~");
+		return;
+	}
 	
 	$.ajax({
 		url : '/mts/system/card/payCard/json?web=&cardId='+getQueryString("id")+'&userId='+userId+'&num='+$('#num').val(),
@@ -135,7 +149,27 @@ function pay(){
 				return;
 			}
 			if(result.data!=undefined){
-				window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+				$.ajax({
+					url : '/mts/system/appuser/pay/json?web=&type=3&userId='+userId+'&code='+result.data.userCards[0].code,
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						if(result.status=="error"){
+							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+							return;
+						}
+						if(result.data!=undefined){
+							window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+						}
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(XMLHttpRequest) ;
+						console.log(textStatus) ;
+					}
+				});
+				
+				
+				
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -145,6 +179,138 @@ function pay(){
 	});
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+function initColl(){
+	if(userId!=undefined&&userId!=null){
+	
+	if(userId!=itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/atten/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#attr").html("关注");
+		}else{
+			$("#attr").html("已关注");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/coll/json?web=&type=3&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data==0){
+			$("#collect").html("收藏");
+		}else{
+			$("#collect").html("已收藏");
+		}
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+	}else{
+		$($("#attr").parent()).remove();
+		$($("#collect").parent()).remove();
+	}
+	
+	}
+}
+
+function collect(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/collect/update/json?web=&type=3&userId='+userId+'&itemId='+id,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function attr(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function getQueryString(aaa) { 
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 

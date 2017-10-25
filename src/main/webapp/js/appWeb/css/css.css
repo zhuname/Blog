@@ -278,6 +278,14 @@ line-height: 0.5rem; font-size: 0.2rem; border-radius: 50%;top: -0.1rem; right: 
 .bann>.hd li{background:#fff;float:left;width:0.4rem;font-size:0;margin-left:0.25rem;height:0.4rem;border-radius:0.2rem;}
 .bann>.hd li.on{background:#dd2727;}
 
+.bannD{width:100%;}
+.bannD>.bd ul li{width:100%;}
+.bannD>.bd img{width:100%;}
+.bannD>.hd{position:absolute;left:0;bottom:0.25rem;width:100%;z-index:99;width:100%;height:0.5rem;}
+.bannD>.hd>ul{width:100%;margin:0 auto;height:0.5rem;}
+.bannD>.hd li{background:#fff;float:left;width:0.4rem;font-size:0;margin-left:0.25rem;height:0.4rem;border-radius:0.2rem;}
+.bannD>.hd li.on{background:#dd2727;}
+
 .yuyue_bg{background: url(../images/yyyl_bg.png) no-repeat;background-size: 100%;width:11.25rem;height:18rem;margin:4rem auto 0 auto;}
 .shang_img{position: absolute;top:10.8rem;left:4.1rem;width:2.85rem}
 .whte{

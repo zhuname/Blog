@@ -82,6 +82,16 @@ function check(id,name){
 	
 }
 
+
+function checkIndex(id,name){
+	
+	setCookie("htmlCityId", id);
+			
+	window.location.href="/mts/appWeb/index/index.jsp";
+			
+	
+}
+
 function checkSucc(){
 	setCookie("mediaPackageCityId",cityIds);
 	setCookie("mediaPackageCityName",cityNames);

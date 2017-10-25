@@ -364,7 +364,11 @@ function lingquList(){
 var toUserIdString="";
 
 function toUser(toUserId,toUserName){
-	
+	if(toUserId!=null){
+		if(toUserId==userId){
+			alert("不能回复自己！");
+		}
+	}
 	toUserIdString="&toUserId="+toUserId;
 	$("#comment").attr("placeholder","回复  "+toUserName+"：");
 }

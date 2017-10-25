@@ -89,7 +89,32 @@ html,body{background:#f95d47;}
 	<div class="wraper" style="background: #f95d47;height:100%;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f bg_r">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="height:1rem;" /></a>
-			<a><img src="<%=basePath%>/js/appWeb/images/more3.png" class="dis_b" style="width:1rem;" /></a>
+			
+				<div class="whte"></div>
+			<a><img src="<%=basePath%>/js/appWeb/images/more3.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
+			
+			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
+			<ul class="more_ul pad_20 dis_n">
+				<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
+				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
+				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
+				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
+			</ul>
+
+			<script type="text/javascript">
+				$('.more_ul_toggle').click(function(){
+					$('.more_ul').toggle();
+					$('.arr_up_down').toggle();
+					$(".whte").show();
+				});
+				$(".whte").click(function(){
+				$(this).hide();
+					$('.more_ul').toggle();
+					$('.arr_up_down').toggle();
+				})
+			</script>
+			
+			
 		</div>
 
 
@@ -160,6 +185,8 @@ html,body{background:#f95d47;}
 			<input type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #e3e3e6;border:0;" value="审核失败" />
 			{{else status==4 }}
 			<input type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #e3e3e6;border:0;" value="已过期" />
+			{{else status==5 }}
+			<input type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #e3e3e6;border:0;" value="已领完" />
 			{{/if}}
 			{{/if}}
 		</div>

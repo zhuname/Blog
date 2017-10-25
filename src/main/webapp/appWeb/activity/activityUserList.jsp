@@ -277,11 +277,7 @@ $("#price").click(function(){
 
 
 					{{= content}}
-<<<<<<< HEAD
-<br>
-=======
 					</br>
->>>>>>> d9c929e62c08008a4998ea09fa4511d02d29c224
 						{{if type==2}}
 
 						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
@@ -300,7 +296,11 @@ $("#price").click(function(){
 		<div class="bg_f padl_30">
 			<div class="dis_f ali_ct jus_bt padt_20">
 				
+<<<<<<< HEAD
 				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice()">
+=======
+				<span class="bj">
+>>>>>>> 7a8df94b308a078eb4d908e88c5cf5150be1ed14
 				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
 				</span>
 
@@ -336,7 +336,6 @@ $("#price").click(function(){
 				<a href="javascript:all({{= id}});" id="{{= id}}" style="display:none;" all="0" class="clr_b">Õ¹¿ª</a>
 			</div>
 		</div>
-
 	</script>
 
 	<script id="canyu_tmpl" type="text/x-jquery-tmpl">

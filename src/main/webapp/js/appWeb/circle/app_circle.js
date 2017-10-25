@@ -176,10 +176,11 @@ function showCheck(obj){
 }
 function dou(){
 	  event.stopPropagation();
-	console.log(656456465)
 }
-function report(){
-	$(".alert-box").css("top","0")
+function report(obj){
+	$(".alert-box").css("top","0");
+	$(obj).parents('.more_ul').toggle();
+	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
 }
 function getDateDiff(dateTimeStamp){
 	

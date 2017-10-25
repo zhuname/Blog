@@ -94,9 +94,9 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
-					<li><img src="<%=basePath%>/js/appWeb/images/package_new.png"  onclick="selectSort(1);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新的</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  onclick="selectSort(2);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">关注的</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/package_card.png" onclick="selectSort(3);"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽的</span></li>
+					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/package_new.png"    class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新的</span></li>
+					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"    class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">关注的</span></li>
+					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/package_card.png"   class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽的</span></li>
 				</ul>
 				
 
@@ -134,7 +134,7 @@ Object data=session.getAttribute("data");
 					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
-					<li onclick="report()"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
+					<li onclick="report(this)"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
 			</div>
 			<div class="f_28 clr_3 mt_20">{{= content}}</div>

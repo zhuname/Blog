@@ -19,6 +19,10 @@ $.ajax({
 			return;
 		}
 		
+		if(getQueryString("isCity")!=undefined){
+			setCookie("htmlCityId", result.data.cityId);
+		}
+		
 		if(result.data!=undefined){
 			$('#appuser_detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 			
@@ -92,7 +96,6 @@ $.ajax({
 				
 			}
 			
-			
 			countTime();
 			
 		}else{
@@ -113,18 +116,65 @@ $.ajax({
 });
 
 
+var dataLunbo="";
+if(getQueryString("cityId")!=undefined){
+	dataLunbo='&cityIds='+getQueryString("cityId");
+}
+
+$.ajax({
+	url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		if(result.data!=undefined){
+			//获取消息记录
+			for (var int = 0; int < result.data.length; int++) {
+				console.log($('#lunbo').attr("src"));
+				$('#lunbo').attr("src",result.data[0].image);
+			}
+			
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
+
+
+function getTime() {  
+	
+			console.log(result.data);
+			return result.data;
+		
+}
 
 
 function countTime() {  
 	
+	//获取用户信息
+	$.ajax({
+		url : '/mts/system/appuser/getTime/json?web=',
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				return ;
+			}
 	if(currentLqNum==0){
-		
-		//获取当前时间  
-		var date = new Date();  
+		var date = new Date(Date.parse(result.data.replace(/-/g, "/")));;  
 		var now = date.getTime();  
 		
-		var x = date; // 取得的TextBox中的时间
-		var time = new Date(x);
+		var time = date;
 		
 		time.setHours(time.getHours()+1, 0, 0, 0);
 		
@@ -153,9 +203,42 @@ function countTime() {
 		$('#lqjh').html(lqHtml);
 	}
 	
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 	setTimeout(countTime,1000);  
 }
 
+function setCookie(name,value) 
+{
+    var Days = 30; 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
+} 
+
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
+} 
+
+function delCookie(name) 
+{ 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() - 1); 
+    var cval=getCookie(name); 
+    if(cval!=null) 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+}
 
 function getQueryString(aaa) { 
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 

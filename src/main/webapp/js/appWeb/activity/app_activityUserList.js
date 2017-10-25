@@ -1,5 +1,6 @@
 var This=this;
 var userId;
+var auserId;
 var id;
 var type;
 var nextPage=1;
@@ -57,6 +58,8 @@ $.ajax({
 				//获取消息记录
 				
 				id=result.data.id;
+				
+				auserId=result.data.userId;
 				
 				joinList(getQueryString("type"));
 				
@@ -135,7 +138,7 @@ function joinList(joinOrAward){
 				
 				var bj=$(".bj");
 				for (var int = 0; int < bj.length; int++) {
-					if($(bj[int]).attr("itemId")==userId){
+					if(auserId!=userId){
 						$(bj[int]).html("");
 						$(bj[int]).attr("style","width:3.5rem;");
 					}

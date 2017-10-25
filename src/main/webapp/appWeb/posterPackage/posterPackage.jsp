@@ -105,7 +105,7 @@ Object data=session.getAttribute("data");
 <div  class="overh" style="height:2.8rem;">
 	<div style="overflow-x: auto;padding-bottom:0.5rem;">
 		<div class="bg_f pad_2030 dis_f ali_ct jus_bt hbhb_nav" style="width:32rem;" id="category">
-			<a  onclick="javascript:selectCategory();" class="pos_rela active-f"><img src="<%=basePath%>/js/appWeb/images/c1.png" class="dis_b" style="width:1rem;" /><p class="f_20 clr_r">全部</p></a>
+			<a id="caAll" onclick="javascript:selectCategory();" class="pos_rela active-f clr_r"><img src="<%=basePath%>/js/appWeb/images/c1.png" class="dis_b" style="width:1rem;" /><p class="f_20">全部</p></a>
 		</div>
 	</div>
 </div>
@@ -118,7 +118,7 @@ Object data=session.getAttribute("data");
 		</div>
 		
 		<script id="category_list_tmpl" type="text/x-jquery-tmpl">
-			<a onclick="javascript:selectCategory({{= id}});"><img src="{{= image}}" class="dis_b" style="width:1rem;" /><p class="f_20 clr_3">{{= name}}</p></a>
+			<a id="ca{{= id}}" onclick="javascript:selectCategory({{= id}});"><img src="{{= image}}" class="dis_b" style="width:1rem;" /><p class="f_20 ">{{= name}}</p></a>
 		</script>
 
 		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">

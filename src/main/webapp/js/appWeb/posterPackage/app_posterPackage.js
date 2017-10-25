@@ -7,6 +7,17 @@ show();
 function selectCategory(categoryId){
 	nextPage=1;
 	$('#posterPackage').html("");
+	
+	var active=$(".active-f");
+	for (var int = 0; int < active.length; int++) {
+		$(active[int]).attr("class","");
+	}
+	if(categoryId==null){
+		$("#caAll").attr("class","pos_rela active-f clr_r");
+	}else{
+		$("#ca"+categoryId).attr("class","pos_rela active-f clr_r");
+	}
+	
 	dataString='&categoryId='+categoryId;
 	show();
 }

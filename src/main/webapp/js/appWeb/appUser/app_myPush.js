@@ -195,8 +195,15 @@ function change(type,isClear,li){
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
+				
 				if(result.data!=undefined){
 					for (var int = 0; int < result.data.length; int++) {
+						if(result.data[int].endTime!=undefined){
+							//获取消息记录
+							
+							result.data[int].endTime=result.data[int].endTime.substring(0,10);
+							
+						}
 						if(cardStatus==3){
 							$('#card_list3_tmpl').tmpl(result.data[int]).appendTo($('#card'));
 						}else if(cardStatus==4){
