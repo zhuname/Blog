@@ -7,6 +7,7 @@ var itemUserId;
 var packageUserId;
 var encrypt;
 var userData="";
+var balance;
 
 
 	//加载页面方法
@@ -17,10 +18,11 @@ var userData="";
 	success : function(result){
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appUserId="+userId;
+			balance=result.data.balance;
 		}
 	
 		
@@ -72,6 +74,24 @@ var userData="";
 						result.data.isTop=0;
 						
 					}
+					if(result.data.isLook==undefined){
+						result.data.isLook=0;
+					}
+					
+					if(userId==""&&result.data.status==3){
+						result.data.isLook=3;
+					}
+					
+					if(result.data.isTop==undefined){
+						$("#zanImg").attr("src",$("#showZan").html());
+					}else{
+						if(result.data.isTop==1){
+							$("#zanImg").attr("src",$("#showYiZan").html());
+						}else{
+							$("#zanImg").attr("src",$("#showZan").html());
+						}
+					}
+					
 					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
@@ -299,10 +319,20 @@ var userData="";
 		}
 		return result;
 	}
+	
+	function changeBalance(){
+		$("#userBalance").html($("#money").val());
+	}
 
 function yuyue(){
 	
+	if(userId==itemUserId){
+		alert("不能预订自己的哦");
+	}
 	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	
 	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
 		
@@ -330,6 +360,9 @@ function yuyue(){
 
 
 function lingqu(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 		if(encrypt!=undefined&&encrypt==1&&$('#command').val()!=undefined&&$('#command').val()==""){
 			$('.command_mask').show();
 		}else{
@@ -364,6 +397,9 @@ function lingquList(){
 var toUserIdString="";
 
 function toUser(toUserId,toUserName){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	if(toUserId!=null){
 		if(toUserId==userId){
 			alert("不能回复自己！");
@@ -373,6 +409,9 @@ function toUser(toUserId,toUserName){
 	$("#comment").attr("placeholder","回复  "+toUserName+"：");
 }
 function oper(type){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	if(type==4){
 		if($("#comment").val()!=null&&$("#comment").val()!=""){
 			
@@ -477,6 +516,9 @@ function initColl(){
 }
 
 function collect(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/collect/update/json?web=&type=2&userId='+userId+'&itemId='+id,
@@ -498,6 +540,9 @@ function collect(){
 }
 
 function attr(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,

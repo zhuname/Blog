@@ -63,6 +63,13 @@ function change(type,change){
 						}
 						if(result.data!=undefined){
 							for (var int = 0; int < result.data.length; int++) {
+								if(result.data[int].posterPackage!=undefined){
+								if(result.data[int].posterPackage.image!=undefined){
+									var image= result.data[int].posterPackage.image.split(";");
+									result.data[int].posterPackage.image=image[0];
+									
+								}
+								}
 								$('#posterPackage_list_tmpl').tmpl($(result.data[int].posterPackage)[0]).appendTo($('#list'));
 							}
 						}
@@ -194,6 +201,13 @@ function change(type,change){
 						}
 						if(result.data!=undefined){
 							for (var int = 0; int < result.data.length; int++) {
+								if(result.data[int].activity!=undefined){
+									if(result.data[int].activity.image!=undefined){
+										var image= result.data[int].activity.image.split(";");
+										result.data[int].activity.image=image[0];
+										
+									}
+									}
 								$('#activity_list_tmpl').tmpl($(result.data[int].activity)[0]).appendTo($('#list'));
 							}
 						}

@@ -17,7 +17,7 @@ var balance;
 	success : function(result){
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			balance=result.data.balance;
@@ -76,12 +76,27 @@ var balance;
 						
 					}
 					
-					result.data.balance = parseFloat(result.data.balance).toFixed(2);
 					result.data.sumMoney = parseFloat(result.data.sumMoney).toFixed(2);
 					
-					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
+					if(result.data.isLook==undefined){
+						result.data.isLook=0;
+					}
 					
-					$("#userBalance").html(balance);
+					if(userId==""&&result.data.status==3){
+						result.data.isLook=3;
+					}
+					
+					if(result.data.isTop==undefined){
+						$("#zanImg").attr("src",$("#showZan").html());
+					}else{
+						if(result.data.isTop==1){
+							$("#zanImg").attr("src",$("#showYiZan").html());
+						}else{
+							$("#zanImg").attr("src",$("#showZan").html());
+						}
+					}
+					
+					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
 					
 					var lunbo=result.data.image.split(";");
@@ -350,7 +365,13 @@ var balance;
 
 function yuyue(){
 	
+	if(userId==itemUserId){
+		alert("不能预订自己的哦");
+	}
 	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	
 	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
 		
@@ -403,6 +424,9 @@ function yuyue(){
 
 
 	function lingqu(){
+		if(userId==""){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		}
 		if(encrypt!=undefined&&encrypt==1&&$('#command').val()!=undefined&&$('#command').val()==""){
 			$('.command_mask').show();
 		}else{
@@ -435,6 +459,7 @@ var isOpers=0;
 var toUserIdString="";
 
 function toUser(toUserId,toUserName){
+	
 	if(toUserId!=null){
 		if(toUserId==userId){
 			alert("不能回复自己！");
@@ -445,6 +470,9 @@ function toUser(toUserId,toUserName){
 }
 
 function oper(type){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	if(isOpers==0){
 	
 	if(type==2){
@@ -554,6 +582,10 @@ function initColl(){
 }
 
 function collect(){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/collect/update/json?web=&type=1&userId='+userId+'&itemId='+id,
@@ -574,7 +606,14 @@ function collect(){
 	});
 }
 
+function changeBalance(){
+	$("#userBalance").html($("#money").val());
+}
+
 function attr(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,

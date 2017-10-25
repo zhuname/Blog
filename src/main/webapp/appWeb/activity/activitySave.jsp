@@ -608,7 +608,7 @@ body{background: #f0f2f5;}
     <div class="video_mask" id="guize" style="display: none;">
 					<div class="video_bg">
 						<div class="f_24 clr_3 pad_30" style="padding-top:4rem;line-height: 1rem;">
-							<pre id="publishRule"></pre>
+							<pre  style="white-space: pre-wrap" id="publishRule"></pre>
 						</div>
 
 						<input type="button" class="f_26 clr_f dis_b waiting_check_a close_video_mask" 

@@ -75,7 +75,7 @@ Object data=session.getAttribute("data");
 	<script id="attr_list_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f dis_f ali_ct jus_bt borderbot1">
 			<div class="dis_f ali_ct">
-				<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.7rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'" src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.7rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div class="f_28 clr_he">
 					<span class="ver_mid clr_3">{{= name}}</span>
 					{{if sex}}

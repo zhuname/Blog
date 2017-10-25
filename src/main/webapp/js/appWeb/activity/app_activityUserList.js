@@ -37,7 +37,7 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appUserId="+userId;
@@ -108,7 +108,14 @@ function joinList(joinOrAward){
 							
 							var images=result.data[int].image.split(";");
 							
-							result.data[int].images=images;
+							var imagess=new Array();
+							for (var int2 = 0; int2 < images.length; int2++) {
+								if(images[int2]!=""){
+									imagess[int2]=images[int2];
+								}
+							}
+							
+							result.data[int].images=imagess;
 							
 						}
 					
@@ -232,12 +239,26 @@ function showPinglun(){
 		
 	}
 	
+
+	var toUserIdString="";
+
+	function toUser(id,toUserId,toUserName){
+		
+		if(userId==""){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		}
+		
+		showInput(id);
+		
+		toUserIdString="&toUserId="+toUserId;
+		$("#content").attr("placeholder","回复  "+toUserName+"：");
+	}
 	
 	function fasong(){
 		console.log($("#content").val());
 		//加载页面方法
 		$.ajax({
-			url : '/mts/system/oper/update/json?web=&type=5'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#content").val(),
+			url : '/mts/system/oper/update/json?web=&type=5'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#content").val()+toUserIdString,
 			type : "post",
 			dataType : "json",
 			success : function(result){

@@ -470,6 +470,22 @@
 		    <version>${lucene.version}</version>
        </dependency>
        
+       <!-- 支付宝支付依赖 -->  
+        <!-- https://mvnrepository.com/artifact/com.pentahohub.nexus/alipay-sdk-java -->  
+        <dependency>  
+            <groupId>com.pentahohub.nexus</groupId>  
+            <artifactId>alipay-sdk-java</artifactId>  
+            <version>20170307171631</version>  
+            <scope>system</scope>  
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170307171631.jar</systemPath>  
+        </dependency>  
+        <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->  
+        <dependency>  
+            <groupId>commons-logging</groupId>  
+            <artifactId>commons-logging</artifactId>  
+            <version>1.1.1</version>  
+        </dependency>  
+       
        	<dependency>
 		    <groupId>org.apache.lucene</groupId>
 		    <artifactId>lucene-analyzers-smartcn</artifactId>

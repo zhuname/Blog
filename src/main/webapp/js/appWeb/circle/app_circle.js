@@ -21,11 +21,11 @@ function selectSort(type){
 	nextPage=1;
 	$('#circle').html("");
 	if(type==1){
-		dataString='&selectType=1';
+		dataString='&sort=1';
 	}else if(type==2){
-		dataString='&selectType=2';
+		dataString='&sort=2';
 	}else if(type==3){
-		dataString='&selectType=3';
+		dataString='&sort=3';
 	}
 	show();
 }
@@ -45,7 +45,7 @@ function show(){
 			userId=undefined;
 		}else{
 			userId=result.data.id;
-			userData="&appUserId="+userId;
+			userData="&appuserId="+userId;
 		}
 	
 	$.ajax({
@@ -70,9 +70,16 @@ function show(){
 					
 					if(result.data[int].image!=undefined){
 						var images=result.data[int].image.split(";");
-						result.data[int].images=images;
+						var imagess=new Array();
+						for (var int2 = 0; int2 < images.length; int2++) {
+							if(images[int2]!=""){
+								imagess[int2]=images[int2];
+							}
+						}
 						
+						result.data[int].images=imagess;
 					}
+					
 					console.log(result.data[int]);
 					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
 					
@@ -90,6 +97,49 @@ function show(){
 		console.log(textStatus);
 	}
 });
+}
+
+
+function attr(itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function pingbi(itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/shield/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
 }
 
 
@@ -177,11 +227,50 @@ function showCheck(obj){
 function dou(){
 	  event.stopPropagation();
 }
-function report(obj){
+
+
+
+
+var jubaoItemId="";
+var reportedUserId="";
+
+function report(obj,reportedUserIdV,jubaoItemIdV){
 	$(".alert-box").css("top","0");
 	$(obj).parents('.more_ul').toggle();
 	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
+	
+	reportedUserId=reportedUserIdV;
+	jubaoItemId=jubaoItemIdV;
 }
+
+function jubao(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+
+
+
+
+
 function getDateDiff(dateTimeStamp){
 	
 	var stringTime = dateTimeStamp;

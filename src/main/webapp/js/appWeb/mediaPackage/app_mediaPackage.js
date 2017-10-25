@@ -47,7 +47,7 @@ function selectSort(type){
 
 //加载页面方法
 function show(){
-	var data='&pageIndex='+nextPage+dataString;
+	var data='&pageIndex='+nextPage+dataString+'&cityId='+getQueryString("cityId");;
 	
 	$.ajax({
 		url : '/mts/system/mediapackage/list/json?web=&status=3&personType=1'+data,

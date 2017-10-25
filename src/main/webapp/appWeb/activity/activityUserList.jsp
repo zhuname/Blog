@@ -54,7 +54,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>Ê×Ò³</title>
+<title>é¦–é¡µ</title>
 </head>
 
 
@@ -152,39 +152,39 @@ font-size:0.6rem;
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:0;z-index:1000;display:none;">
 	<div  style="width:100%;background:#fff;" id="price">
 		<div style="height:1.5rem;border-bottom:.02rem solid #ddd;position:relative;"class="dis_f jus_ct ali_ct">
-			<span style="display:inline-block;margin:0 auto;vertical-align:middle;font-size:0.55rem;color:#999;width:5rem;background:#fff;text-align:center;position:relative;z-index:100;">ÇëÑ¡ÔñÖĞ½±µÈ¼¶</span>
+			<span style="display:inline-block;margin:0 auto;vertical-align:middle;font-size:0.55rem;color:#999;width:5rem;background:#fff;text-align:center;position:relative;z-index:100;">è¯·é€‰æ‹©ä¸­å¥–ç­‰çº§</span>
 			<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:8rem;height:.05rem;background:#ddd;"></div>
 		</div>
 		<div class="prize-box">
 			<div class="prize-list">
 				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
-				<b>ÌØµÈ½±</b>
-				<span>Ê£Óà<em>1</em>Ãû¶î</span>
+				<b>ç‰¹ç­‰å¥–</b>
+				<span>å‰©ä½™<em>1</em>åé¢</span>
 			</div>
 			<div class="prize-list">
 				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
-				<b>ÌØµÈ½±</b>
-				<span>Ê£Óà<em>1</em>Ãû¶î</span>
+				<b>ç‰¹ç­‰å¥–</b>
+				<span>å‰©ä½™<em>1</em>åé¢</span>
 			</div>
 			<div class="prize-list">
 				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
-				<b>ÌØµÈ½±</b>
-				<span>Ê£Óà<em>1</em>Ãû¶î</span>
+				<b>ç‰¹ç­‰å¥–</b>
+				<span>å‰©ä½™<em>1</em>åé¢</span>
 			</div>	
 			<div class="prize-list">
 				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
-				<b>ÌØµÈ½±</b>
-				<span>Ê£Óà<em>1</em>Ãû¶î</span>
+				<b>ç‰¹ç­‰å¥–</b>
+				<span>å‰©ä½™<em>1</em>åé¢</span>
 			</div>	
 			<div class="prize-list">
 				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
-				<b>ÌØµÈ½±</b>
-				<span>Ê£Óà<em>1</em>Ãû¶î</span>
+				<b>ç‰¹ç­‰å¥–</b>
+				<span>å‰©ä½™<em>1</em>åé¢</span>
 			</div>	
 			<div class="prize-list">
 				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
-				<b>ÌØµÈ½±</b>
-				<span>Ê£Óà<em>1</em>Ãû¶î</span>
+				<b>ç‰¹ç­‰å¥–</b>
+				<span>å‰©ä½™<em>1</em>åé¢</span>
 			</div>	
 		</div>
 	</div>
@@ -193,15 +193,15 @@ font-size:0.6rem;
 			<div class="bg_f pad_2030  dis_f ali_ct jus_bt pos_rela">
 				<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="height:1rem;" /></a>
 				<div class="search_bg2 pos_rela">
-					<input class="ipt2 f_22 clr_he" id="title"  type="text" placeholder="êÇ³Æ/Ö÷Ìâ" />
-					<input onclick="select();" class="btn2"/>
+					<input class="ipt2 f_22 clr_he" id="title"  type="text" placeholder="æ˜µç§°/ä¸»é¢˜" />
+					<img onclick="select();" class="btn2"/>
 				</div>
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter2.png" class="dis_b filter_toggle" style="height:0.9rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
-					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/f1.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">×îĞÂ·¢²¼</span></li>
-					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/dzzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">µãÔŞ×î¶à</span></li>
-					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/plzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">ÆÀÂÛ×î¶à</span></li>
+					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/f1.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">æœ€æ–°å‘å¸ƒ</span></li>
+					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/dzzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">ç‚¹èµæœ€å¤š</span></li>
+					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/plzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">è¯„è®ºæœ€å¤š</span></li>
 				</ul>
 
 				<script type="text/javascript">
@@ -243,14 +243,14 @@ $("#price").click(function(){
 
 		<div class="pad_30 bg_f borderbot1 mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
-				<div class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'">
+				<div class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'">
 					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
-						{{if appUser.sex == 'ÄĞ'}}
+						{{if appUser.sex == 'ç”·'}}
 						<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
-						{{else appUser.sex == 'Å®'}}
+						{{else appUser.sex == 'å¥³'}}
 						<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 						{{/if}}
 						{{/if}}
@@ -267,10 +267,9 @@ $("#price").click(function(){
 				<a href="javascript:;" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n" />
 				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;">
-					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">·ÖÏí</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">ÒÑ¹Ø×¢</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">ÆÁ±Î</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">¾Ù±¨</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">å·²å…³æ³¨</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">å±è”½</span></li>
+					<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">ä¸¾æŠ¥</span></li>
 				</ul>
 			</div>
 			<div class="f_28 clr_3 mt_20">
@@ -281,7 +280,7 @@ $("#price").click(function(){
 						{{if type==2}}
 
 						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
-						ÄúµÄä¯ÀÀÆ÷²»Ö§³Ö video ±êÇ©¡£
+						æ‚¨çš„æµè§ˆå™¨ä¸æ”¯æŒ video æ ‡ç­¾ã€‚
 						</video>
 						{{else}}
 						{{if images}}
@@ -296,11 +295,7 @@ $("#price").click(function(){
 		<div class="bg_f padl_30">
 			<div class="dis_f ali_ct jus_bt padt_20">
 				
-<<<<<<< HEAD
 				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice()">
-=======
-				<span class="bj">
->>>>>>> 7a8df94b308a078eb4d908e88c5cf5150be1ed14
 				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
 				</span>
 
@@ -327,26 +322,27 @@ $("#price").click(function(){
 			<div class="f_22 clr_3 padt_20 pinglun ">
 				{{if opers}}
 						{{each opers}}
-						<div>
-							<span class="clr_b">{{if $value.nickName}}{{= $value.nickName}}{{/if}}£º</span>{{if $value.content}}{{= $value.content}}{{/if}}
+						<div onclick="toUser({{= itemId}},{{if $value.userId}}{{= $value.userId}}{{/if}},'{{if $value.nickName}}{{= $value.nickName}}{{/if}}');">
+							<span class="clr_b">{{if $value.nickName}}{{= $value.nickName}}{{/if}}</span>  {{if $value.toUserName}}å›å¤  <font color="#003D79">{{= $value.toUserName}}</font>:{{else}}:{{/if}}  {{if $value.content}}{{= $value.content}}{{/if}}
 							<p class="f_18 clr_9">{{if $value.createTime}}{{= $value.createTime}}{{/if}}</p>
 						</div>
    					 	{{/each}}
 				{{/if}}
-				<a href="javascript:all({{= id}});" id="{{= id}}" style="display:none;" all="0" class="clr_b">Õ¹¿ª</a>
+				<a href="javascript:all({{= id}});" id="{{= id}}" style="display:none;" all="0" class="clr_b">å±•å¼€</a>
 			</div>
 		</div>
+
 	</script>
 
 	<script id="canyu_tmpl" type="text/x-jquery-tmpl">
 			{{if isPart}}
 				{{if isPart == 1}}
-				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">ÒÑ²ÎÓë</a>
+				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">å·²å‚ä¸</a>
 				{{else}}
-				<a  onclick="canyu();"  class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">Á¢¼´²ÎÓë</a>
+				<a  onclick="canyu();"  class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">ç«‹å³å‚ä¸</a>
 				{{/if}}
 			{{else}}
-				<a onclick="canyu();" class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">Á¢¼´²ÎÓë</a>
+				<a onclick="canyu();" class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">ç«‹å³å‚ä¸</a>
 			{{/if}}
 	</script>
 	
@@ -361,8 +357,8 @@ $("#price").click(function(){
 	</div>
 	<div  id="inputBtn"  style="display:none;">
 			<div class="pad_20 bottom_srk">
-				<input id="content" class="inpt2 f_28 clr_9" type="text" placeholder="»Ø¸´£ºËµµã¶ùÊ²Ã´°É...">
-				<div class="fs" onclick="fasong();">·¢ËÍ</div>
+				<input id="content" class="inpt2 f_28 clr_9" type="text" placeholder="å›å¤ï¼šè¯´ç‚¹å„¿ä»€ä¹ˆå§...">
+				<div class="fs" onclick="fasong();">å‘é€</div>
 				<div style="clear: both"></div>
 			</div>
 		</div>

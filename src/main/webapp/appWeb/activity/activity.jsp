@@ -141,7 +141,7 @@ Object data=session.getAttribute("data");
 		
 
 
-			<a  onclick="window.location.href='/mts/appWeb/activity/activitySave.jsp';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
+			<a   onclick="window.location.href='/mts/shareApp/down.html';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 	</div>
 </body>
 

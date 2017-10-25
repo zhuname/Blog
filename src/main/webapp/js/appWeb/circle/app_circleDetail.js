@@ -18,7 +18,7 @@ $.ajax({
 			userId=undefined;
 		}else{
 			userId=result.data.id;
-			userData="&appUserId="+userId;
+			userData="&appuserId="+userId;
 		}
 		var user= result.data;
 	$.ajax({
@@ -55,7 +55,9 @@ $.ajax({
 				
 				if(result.data.image!=undefined){
 					for (var int = 0; int < result.data.image.length; int++) {
-						$('#detail_image_tmpl').tmpl({'image':result.data.image[int]}).appendTo($('#images'));
+						if(result.data.image[int]!=""){
+							$('#detail_image_tmpl').tmpl({'image':result.data.image[int]}).appendTo($('#images'));
+						}
 					}
 				}
 				
@@ -65,11 +67,10 @@ $.ajax({
 				itemUserId=result.data.userId;
 				initColl();
 				
-				
-				if(userId!=null){
+				if(userId!=undefined){
 					$('#foot_tmpl').tmpl(result.data).appendTo($('#detail'));
 				}else{
-					$('#footNo_tmpl').tmpl(result.data).appendTo($('#detail'));
+					$('#footNo_tmpl').tmpl(null).appendTo($('#detail'));
 				}
 				
 				

@@ -95,7 +95,6 @@ Object data=session.getAttribute("data");
 				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;margin-left: 130%;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;z-index=15" >
-					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 					<li id="guanzhu" onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
 					<li id="pingbi" onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">屏蔽</span></li>
 					<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
@@ -120,7 +119,7 @@ Object data=session.getAttribute("data");
 		<div class="pad_30 bg_f mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -183,7 +182,7 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="bg_f pad_20 clr_3 f_22 " id="canyuShow" style="display:none;line-height: 1rem;width:93%;word-break:   break-all;   word-wrap:break-word;border:0px   solid  #555">
-				<pre>{{= joinExplain}}</pre>
+				<pre  style="white-space: pre-wrap">{{= joinExplain}}</pre>
 			</div>
 
 			<div class="bg_f dis_f ali_ct jus_bt xjq_wrap mt_20">
@@ -215,6 +214,9 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" />
 			</div>
 
+			{{if status==4}}
+				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">已结束</a>
+			{{else}}
 			{{if isPart}}
 				{{if isPart == 1}}
 				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">已参与</a>
@@ -223,6 +225,7 @@ Object data=session.getAttribute("data");
 				{{/if}}
 			{{else}}
 				<a onclick="canyu();" class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">立即参与</a>
+			{{/if}}
 			{{/if}}
 
 		</script>
@@ -238,11 +241,11 @@ Object data=session.getAttribute("data");
 		</script>
 		
 		<script id="canyu_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 		</script>
 		
 		<script id="zhongjiang_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 		</script>
 
 	</div>

@@ -1,48 +1,30 @@
 
-//发送验证码时添加cookie
-function addCookie(name,value,expiresHours){ 
-    var cookieString=name+"="+escape(value); 
-    //判断是否设置过期时间,0代表关闭浏览器时失效
-    if(expiresHours>0){ 
-        var date=new Date(); 
-        date.setTime(date.getTime()+expiresHours*1000); 
-        cookieString=cookieString+";expires=" + date.toUTCString(); 
-    } 
-        document.cookie=cookieString; 
+function setCookie(name,value) 
+{
+    var Days = 30; 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
 } 
-//修改cookie的值
-function editCookie(name,value,expiresHours){ 
-    var cookieString=name+"="+escape(value); 
-    if(expiresHours>0){ 
-      var date=new Date(); 
-      date.setTime(date.getTime()+expiresHours*1000); //单位是毫秒
-      cookieString=cookieString+";expires=" + date.toGMTString(); 
-    } 
-      document.cookie=cookieString; 
+
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
 } 
-//根据名字获取cookie的值
-function getCookieValue(name){ 
-      var strCookie=document.cookie; 
-      var arrCookie=strCookie.split("; "); 
-      for(var i=0;i<arrCookie.length;i++){ 
-        var arr=arrCookie[i].split("="); 
-        if(arr[0]==name){
-          return unescape(arr[1]);
-          break;
-        }else{
-             return ""; 
-             break;
-         } 
-      } 
-       
-}
+
 //
 //
 $(function(){
     $("#on").click(function (){
         sendCode($("#on"));
     });
-    v = getCookieValue("secondsremained");//获取cookie值
+    v = getCookie("sendt");//获取cookie值
     if(v>0){
         settime($("#on"));//开始倒计时
     }
@@ -54,14 +36,16 @@ function sendCode(){
     if(result){
     	sendMessage();
         //doPostBack('/mts/system/sms/content/json',backFunc1,{"phone":phonenum,"web":"","type":1});
-        addCookie("secondsremained",60,60);//添加cookie记录,有效时间60s
+    	debugger;
+    	setCookie("sendt",60);//添加cookie记录,有效时间60s
+        console.log(getCookie("sendt"));
         settime();//开始倒计时
     }
 }
 //开始倒计时
 var countdown;
 function settime() { 
-    countdown=getCookieValue("secondsremained");
+    countdown=getCookie("sendt");
     if (countdown == 0) { 
         $('#on').removeAttr("disabled");    
         $('#on').html("发送验证码");
@@ -70,10 +54,10 @@ function settime() {
         $('#on').prop("disabled", true);
         $('#on').html("重新发送(" + countdown + ")"); 
         countdown--;
-        editCookie("secondsremained",countdown,countdown+1);
+        setCookie("sendt",countdown);
     } 
     setTimeout(function() { settime() },1000) //每1000毫秒执行一次
-} 
+}
 
 
 

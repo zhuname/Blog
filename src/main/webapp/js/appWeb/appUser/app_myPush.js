@@ -37,6 +37,8 @@ function show(){
 							if(result.data!=undefined){
 								for (var int = 0; int < result.data.length; int++) {
 									
+									result.data[int].image=result.data[int].image.split(";")[0];
+									
 									$('#posterPackage_list_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
 									
 								}
@@ -114,6 +116,8 @@ function change(type,isClear,li){
 				}
 				if(result.data!=undefined){
 					for (var int = 0; int < result.data.length; int++) {
+						result.data[int].image=result.data[int].image.split(";")[0];
+						
 						if(statusType==2){
 							$('#posterPackage_list2_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
 						}else if(statusType==4){
@@ -241,7 +245,7 @@ function change(type,isClear,li){
 				}
 				if(result.data!=undefined){
 					for (var int = 0; int < result.data.length; int++) {
-						
+						result.data[int].image=result.data[int].image.split(";")[0];
 						if(result.data[int].endTime){
 							
 							result.data[int].endTime=result.data[int].endTime.substring(0,10);
