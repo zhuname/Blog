@@ -111,19 +111,90 @@ Object data=session.getAttribute("data");
 			color: #ffffff;
 			text-align: center;
 		}
-
+.prize-box{
+	width:100%;
+	max-height:6rem;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.prize-list{
+	width:100%;
+	height:2rem;
+	border-bottom:.05rem solid #ddd;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.prize-list img{
+width:1rem;
+height:auto;
+}
+.prize-list b,.prize-list em{
+	font-style: normal
+}
+.prize-list b{
+padding:0 .3rem;
+font-size:0.6rem;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    height: 1px;
+}::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+} 
 	</style>
 
 <body class="body">
 
 	<div class="wraper">
-
+<div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:0;z-index:1000;display:none;">
+	<div  style="width:100%;background:#fff;" id="price">
+		<div style="height:1.5rem;border-bottom:.02rem solid #ddd;position:relative;"class="dis_f jus_ct ali_ct">
+			<span style="display:inline-block;margin:0 auto;vertical-align:middle;font-size:0.55rem;color:#999;width:5rem;background:#fff;text-align:center;position:relative;z-index:100;">请选择中奖等级</span>
+			<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:8rem;height:.05rem;background:#ddd;"></div>
+		</div>
+		<div class="prize-box">
+			<div class="prize-list">
+				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
+				<b>特等奖</b>
+				<span>剩余<em>1</em>名额</span>
+			</div>
+			<div class="prize-list">
+				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
+				<b>特等奖</b>
+				<span>剩余<em>1</em>名额</span>
+			</div>
+			<div class="prize-list">
+				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
+				<b>特等奖</b>
+				<span>剩余<em>1</em>名额</span>
+			</div>	
+			<div class="prize-list">
+				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
+				<b>特等奖</b>
+				<span>剩余<em>1</em>名额</span>
+			</div>	
+			<div class="prize-list">
+				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
+				<b>特等奖</b>
+				<span>剩余<em>1</em>名额</span>
+			</div>	
+			<div class="prize-list">
+				<img src="<%=basePath%>/js/appWeb/images/onePrice.png">
+				<b>特等奖</b>
+				<span>剩余<em>1</em>名额</span>
+			</div>	
+		</div>
+	</div>
+</div>
 
 			<div class="bg_f pad_2030  dis_f ali_ct jus_bt pos_rela">
 				<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="height:1rem;" /></a>
 				<div class="search_bg2 pos_rela">
 					<input class="ipt2 f_22 clr_he" id="title"  type="text" placeholder="昵称/主题" />
-					<input onclick="select();" class="btn2"/>
+					<img onclick="select();" class="btn2"/>
 				</div>
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter2.png" class="dis_b filter_toggle" style="height:0.9rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
@@ -156,6 +227,12 @@ $('.more_ul_toggle').click(function(){
 	$(this).siblings('.more_ul').toggle();
 	$(this).siblings('.arr_up_down').toggle();
 });
+$(".alert-box").click(function(){
+	$(this).hide()
+});
+$("#price").click(function(){
+	event.stopPropagation();
+})
 </script>
 
 
@@ -166,7 +243,7 @@ $('.more_ul_toggle').click(function(){
 
 		<div class="pad_30 bg_f borderbot1 mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
-				<div class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'">
+				<div class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'">
 					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
@@ -190,7 +267,6 @@ $('.more_ul_toggle').click(function(){
 				<a href="javascript:;" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n" />
 				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;">
-					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
 					<li><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
@@ -219,7 +295,7 @@ $('.more_ul_toggle').click(function(){
 		<div class="bg_f padl_30">
 			<div class="dis_f ali_ct jus_bt padt_20">
 				
-				<span class="bj">
+				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice()">
 				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
 				</span>
 
@@ -246,8 +322,8 @@ $('.more_ul_toggle').click(function(){
 			<div class="f_22 clr_3 padt_20 pinglun ">
 				{{if opers}}
 						{{each opers}}
-						<div>
-							<span class="clr_b">{{if $value.nickName}}{{= $value.nickName}}{{/if}}：</span>{{if $value.content}}{{= $value.content}}{{/if}}
+						<div onclick="toUser({{= itemId}},{{if $value.userId}}{{= $value.userId}}{{/if}},'{{if $value.nickName}}{{= $value.nickName}}{{/if}}');">
+							<span class="clr_b">{{if $value.nickName}}{{= $value.nickName}}{{/if}}</span>  {{if $value.toUserName}}回复  <font color="#003D79">{{= $value.toUserName}}</font>:{{else}}:{{/if}}  {{if $value.content}}{{= $value.content}}{{/if}}
 							<p class="f_18 clr_9">{{if $value.createTime}}{{= $value.createTime}}{{/if}}</p>
 						</div>
    					 	{{/each}}
@@ -255,6 +331,7 @@ $('.more_ul_toggle').click(function(){
 				<a href="javascript:all({{= id}});" id="{{= id}}" style="display:none;" all="0" class="clr_b">展开</a>
 			</div>
 		</div>
+
 	</script>
 
 	<script id="canyu_tmpl" type="text/x-jquery-tmpl">

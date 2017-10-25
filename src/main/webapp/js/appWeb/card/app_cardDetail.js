@@ -12,19 +12,19 @@ $.ajax({
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		
-		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
-		}
-		userId=result.data.id;
 		var user= result.data;
+		if(result.status=="error"){
+			userId="";
+		}else{
+			userId=result.data.id;
+			userData="&appUserId="+userId;
+			balance=result.data.balance;
+		}
 	$.ajax({
 		url : '/mts/system/card/look/json?web=&id='+getQueryString("id")+'&appUserId='+userId,
 		type : "post",
 		dataType : "json",
 		success : function(result){
-			
 			if(result.status=="error"){
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
@@ -52,13 +52,21 @@ $.ajax({
 					result.data.status=5;
 				}
 				
+				if(result.data.status==2&&userId==""){
+					result.data.status=6;
+				}
+				
 				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 				
 				convertMoney=result.data.convertMoney;
 				num=result.data.num;
 				limitNumber=result.data.num;
 				
-				$('#lingqu_tmpl').tmpl({'balance':user.balance,'convertMoney':result.data.convertMoney}).appendTo($('#detail'));
+				if(user==undefined){
+					$('#lingqu_tmpl').tmpl({'balance':0,'convertMoney':result.data.convertMoney}).appendTo($('#detail'));
+				}else{
+					$('#lingqu_tmpl').tmpl({'balance':user.balance,'convertMoney':result.data.convertMoney}).appendTo($('#detail'));
+				}
 				
 				//领取卡券列表
 				$.ajax({
@@ -181,19 +189,9 @@ function pay(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-	
+function phone(date){
+	$("#tell").click();
+}
 
 function initColl(){
 	if(userId!=undefined&&userId!=null){
@@ -253,6 +251,11 @@ function initColl(){
 }
 
 function collect(){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/collect/update/json?web=&type=3&userId='+userId+'&itemId='+id,
@@ -275,6 +278,10 @@ function collect(){
 
 function attr(){
 	//加载页面方法
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	$.ajax({
 	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
 	type : "post",

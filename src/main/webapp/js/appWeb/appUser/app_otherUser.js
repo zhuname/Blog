@@ -41,7 +41,6 @@ function show(){
 	type : "post",
 	dataType : "json",
 	success : function(result){
-		
 		if(result.status=="error"){
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
@@ -82,47 +81,47 @@ function show(){
 		}
 				userId=result.data.id;
 				if(appUserId!=undefined){
-				$.ajax({
-					url : '/mts/system/circle/list/json?web='+"&userId="+userId+data+"&appuserId="+appUserId,
-					type : "post",
-					dataType : "json",
-					success : function(result){
-						
-						if(result.status=="error"){
-							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-							return;
-						}
-						
-						if(result.data!=undefined){
-							for (var int = 0; int < result.data.length; int++){
-								
-								if(result.data[int].image!=undefined){
-									var images=result.data[int].image.split(";");
-									result.data[int].images=images;
-									
-								}
-								
-								if(result.data[int].createTime){
-									result.data[int].m=result.data[int].createTime.substring(5,7);
-									result.data[int].d=result.data[int].createTime.substring(8,10);
-									result.data[int].t=result.data[int].createTime.substring(11,16);
-									
-								}
-								
-								$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+					$.ajax({
+						url : '/mts/system/circle/list/json?web='+"&userId="+userId+data+"&appuserId="+appUserId,
+						type : "post",
+						dataType : "json",
+						success : function(result){
+							
+							if(result.status=="error"){
+								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+								return;
 							}
+							
+							if(result.data!=undefined){
+								for (var int = 0; int < result.data.length; int++){
+									
+									if(result.data[int].image!=undefined){
+										var images=result.data[int].image.split(";");
+										result.data[int].images=images;
+										
+									}
+									
+									if(result.data[int].createTime){
+										result.data[int].m=result.data[int].createTime.substring(5,7);
+										result.data[int].d=result.data[int].createTime.substring(8,10);
+										result.data[int].t=result.data[int].createTime.substring(11,16);
+										
+									}
+									
+									$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+								}
+							}
+							
+						},
+						
+						error:function(XMLHttpRequest, textStatus, errorThrown){
+							
+							console.log(XMLHttpRequest);
+							
+							console.log(textStatus);
+							
 						}
-						
-					},
-					
-					error:function(XMLHttpRequest, textStatus, errorThrown){
-						
-						console.log(XMLHttpRequest);
-						
-						console.log(textStatus);
-						
-					}
-				});
+					});
 	}
 					},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -247,7 +246,7 @@ function change(type,isClear,li){
 		break;
 	case 2:
 		$.ajax({
-			url : '/mts/system/posterpackage/list/json?web=&type=2&userId='+userId+data,
+			url : '/mts/system/posterpackage/list/json?web=&type=2&personType=2&userId='+userId+data,
 			type : "post",
 			dataType : "json",
 			success : function(result){
@@ -280,7 +279,7 @@ function change(type,isClear,li){
 		break;
 	case 3:
 		$.ajax({
-			url : '/mts/system/mediapackage/list/json?web=&status=3&personType=1&userId='+userId+data,
+			url : '/mts/system/mediapackage/list/json?web=&status=3&personType=2&userId='+userId+data,
 			type : "post",
 			dataType : "json",
 			success : function(result){

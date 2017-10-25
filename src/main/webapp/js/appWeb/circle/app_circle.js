@@ -21,11 +21,11 @@ function selectSort(type){
 	nextPage=1;
 	$('#circle').html("");
 	if(type==1){
-		dataString='&selectType=1';
+		dataString='&sort=1';
 	}else if(type==2){
-		dataString='&selectType=2';
+		dataString='&sort=2';
 	}else if(type==3){
-		dataString='&selectType=3';
+		dataString='&sort=3';
 	}
 	show();
 }
@@ -45,7 +45,7 @@ function show(){
 			userId=undefined;
 		}else{
 			userId=result.data.id;
-			userData="&appUserId="+userId;
+			userData="&appuserId="+userId;
 		}
 	
 	$.ajax({
@@ -70,9 +70,16 @@ function show(){
 					
 					if(result.data[int].image!=undefined){
 						var images=result.data[int].image.split(";");
-						result.data[int].images=images;
+						var imagess=new Array();
+						for (var int2 = 0; int2 < images.length; int2++) {
+							if(images[int2]!=""){
+								imagess[int2]=images[int2];
+							}
+						}
 						
+						result.data[int].images=imagess;
 					}
+					
 					console.log(result.data[int]);
 					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
 					

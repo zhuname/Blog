@@ -19,7 +19,6 @@ function show(){
 		success : function(result){
 			var user=result;
 			if(result.data!=undefined){
-				debugger;
 		//获取用户信息
 			$.ajax({
 				url : '/mts/system/appuser/indexStatics/json?web=&id='+result.data.id+'&cityId='+getCookie("htmlCityId"),
@@ -28,7 +27,6 @@ function show(){
 				success : function(result){
 					
 					if(result.status=="error"){
-						debugger;
 						window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 						return;
 					}
@@ -78,7 +76,14 @@ function show(){
 							}
 						
 							$('#name').html(user.data.name);
-							$('#header').attr("src",user.data.header);
+							
+							
+							if(user.data.header!=undefined&&user.data.header!=""){
+								$('#header').attr("src",user.data.header);
+							}
+							
+							
+							
 							if(user.data.currentLqNum!=undefined){
 								
 								currentLqNum=user.data.currentLqNum;

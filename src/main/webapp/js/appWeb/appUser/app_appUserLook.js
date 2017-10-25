@@ -10,7 +10,7 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			$('#weidenglu').tmpl(result.data).appendTo($('#detail'));
+			$('#weidenglu').tmpl(null).appendTo($('#detail'));
 			return;
 		}
 		
@@ -117,37 +117,45 @@ $.ajax({
 
 
 var dataLunbo="";
-if(getQueryString("cityId")!=undefined){
+/*if(getQueryString("cityId")!=undefined){
 	dataLunbo='&cityIds='+getQueryString("cityId");
-}
+}*/
 
-$.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
-	type : "post",
-	dataType : "json",
-	success : function(result){
-		
-		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
-		}
-		
-		if(result.data!=undefined){
-			//获取消息记录
-			for (var int = 0; int < result.data.length; int++) {
-				console.log($('#lunbo').attr("src"));
-				$('#lunbo').attr("src",result.data[0].image);
+if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie("htmlCityId")==""){
+	debugger;
+	setCookie("htmlCityId",410100);
+	dataLunbo='&cityIds='+getCookie("htmlCityId");
+}else{
+	dataLunbo='&cityIds='+getCookie("htmlCityId");
+	$.ajax({
+		url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
 			}
 			
+			if(result.data!=undefined){
+				//获取消息记录
+				for (var int = 0; int < result.data.length; int++) {
+					console.log($('#lunbo').attr("src"));
+					$('#lunbo').attr("src",result.data[0].image);
+				}
+				
+				
+			}
 			
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
 		}
-		
-	},
-	error:function(XMLHttpRequest, textStatus, errorThrown){
-		console.log(XMLHttpRequest) ;
-		console.log(textStatus) ;
-	}
-});
+	});
+}
+
 
 
 function getTime() {  

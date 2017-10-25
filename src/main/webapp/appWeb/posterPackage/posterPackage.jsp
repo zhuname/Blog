@@ -88,7 +88,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n"/>
 				<ul class="more_ul pad_20 dis_n" style="top:1.9rem;" >
 					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/package_new.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
-					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预约最多</span></li>
+					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预订最多</span></li>
 					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/package_card.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
 					<li onclick="selectSort(4);"><img src="<%=basePath%>/js/appWeb/images/package_money.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">金额最多</span></li>
 				</ul>
@@ -104,7 +104,7 @@ Object data=session.getAttribute("data");
 
 <div  class="overh" style="height:2.8rem;">
 	<div style="overflow-x: auto;padding-bottom:0.5rem;">
-		<div class="bg_f pad_2030 dis_f ali_ct jus_bt hbhb_nav" style="width:32rem;" id="category">
+		<div class="bg_f pad_2030 dis_f ali_ct jus_bt hbhb_nav" style="width:28rem;" id="category">
 			<a id="caAll" onclick="javascript:selectCategory();" class="pos_rela active-f clr_r"><img src="<%=basePath%>/js/appWeb/images/c1.png" class="dis_b" style="width:1rem;" /><p class="f_20">全部</p></a>
 		</div>
 	</div>
@@ -146,7 +146,7 @@ Object data=session.getAttribute("data");
 				</li>
 		</script>
 
-		<a onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageSave.jsp';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
+		<a  onclick="window.location.href='/mts/shareApp/down.html';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 	</div>
 </body>
 

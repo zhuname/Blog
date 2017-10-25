@@ -78,14 +78,14 @@ Object data=session.getAttribute("data");
 			<div class="padt_20 bordertop1 borderbot1 disf ali_ct jus_ct dis_f bg_f">
 			<img src="<%=basePath%>/js/appWeb/images/member.png" class="dis_b" style="width:0.7rem;" />
 			&nbsp;
-			<span class="f_24 clr_he">{{= appoinPerson}}人 预约了  {{= appintMoney}}元</span>
+			<span class="f_24 clr_he">{{= appoinPerson}}人 预订了  {{= appintMoney}}元</span>
 			</div>
 		</script>
 		
 		<script id="appoint_list_tmpl" type="text/x-jquery-tmpl">
 			<div class="pad_30 bg_f dis_f ali_ct jus_bt borderbot1">
 			<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'">
-				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.7rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.7rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div class="f_28 clr_he">
 					<span class="ver_mid clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 					{{if appUser.sex}}
@@ -107,7 +107,7 @@ Object data=session.getAttribute("data");
 				</div>
 			</div>
 			<div class="dis_f ali_end jus_bt clr_r flex_col" >
-					<div class="f_24 clr_r">预约金<span class="f_30">￥{{= money}}</span></div>
+					<div class="f_24 clr_r">预订金<span class="f_30">￥{{= money}}</span></div>
 					<div class="f_22 clr_9 mt_10">{{= createTime}}</div>
 			</div>
 			</div>

@@ -95,7 +95,6 @@ html,body{background:#f95d47;}
 			
 			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
 			<ul class="more_ul pad_20 dis_n">
-				<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
 				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
 				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
@@ -116,7 +115,7 @@ html,body{background:#f95d47;}
 			
 			
 		</div>
-
+	
 
 	<div class="pad_20" id="detail">
 		
@@ -124,7 +123,7 @@ html,body{background:#f95d47;}
 		<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_f pad_20" style="padding-bottom:0;">
 			<div class="dis_f ali_ct flex_col">
-				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border: 2px solid #FFF;border-radius: 1.1rem;margin-top:-1.5rem;" />
+				<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border: 2px solid #FFF;border-radius: 1.1rem;margin-top:-1.5rem;" />
 				<div class="dis_f ali_ct f_28 clr_3 mt_20">{{if appUser}}{{= appUser.name}}{{/if}}
 						{{if appUser.sex}}
 							{{if appUser.sex == '男'}}
@@ -164,9 +163,10 @@ html,body{background:#f95d47;}
 				</div>
 			</div>
 
-			<div class="f_28 clr_he dis_f ali_ct jus_bt padt_20 bordertop1 mt_30">
+			<div class="f_28 clr_he dis_f ali_ct jus_bt padt_20 bordertop1 mt_30" onclick="phone({{= phone}});">
 				<div class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/tel_x.png" class="dis_b" style="width:0.8rem;margin-right: 0.3rem;" />{{= phone}}</div>
-				<img src="<%=basePath%>/js/appWeb/images/tel_blue.png" class="dis_b" style="width:1rem;margin-left: 0.3rem;" />
+				 <a href="tel://{{= phone}}" id="tell"><img src="<%=basePath%>/js/appWeb/images/tel_blue.png" class="dis_b" style="width:1rem;margin-left: 0.3rem;" />
+			</a>
 			</div>
 
 
@@ -187,6 +187,8 @@ html,body{background:#f95d47;}
 			<input type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #e3e3e6;border:0;" value="已过期" />
 			{{else status==5 }}
 			<input type="button" class="f_26 clr_f dis_b waiting_check_a" style="background: #e3e3e6;border:0;" value="已领完" />
+			{{else status==6 }}
+			<input type="button" onclick="javascript:window.location.href='/mts/appWeb/appuser/appuserLogin.jsp';"  class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;" value="立即领取" />
 			{{/if}}
 			{{/if}}
 		</div>
@@ -243,7 +245,7 @@ html,body{background:#f95d47;}
 		</script>
 		
 		<script id="lingquan_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'" src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 		</script>
 		
 		<script id="lingquanFoot_tmpl" type="text/x-jquery-tmpl">

@@ -39,13 +39,15 @@ function selectSort(type){
 		dataString='&selectType=2';
 	}else if(type==3){
 		dataString='&selectType=3';
+	}else if(type==4){
+		dataString='';
 	}
 	show();
 }
 
 //加载页面方法
 function show(){
-	var data='&pageIndex='+nextPage+dataString;
+	var data='&pageIndex='+nextPage+dataString+'&cityId='+getQueryString("cityId");
 	
 	$.ajax({
 		url : '/mts/system/posterpackage/list/json?web=&type=1'+data,

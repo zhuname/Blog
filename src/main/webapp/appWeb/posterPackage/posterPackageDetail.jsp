@@ -72,7 +72,6 @@ Object data=session.getAttribute("data");
 			
 			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
 			<ul class="more_ul pad_20 dis_n">
-				<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
 				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
 				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
 				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
@@ -108,9 +107,12 @@ Object data=session.getAttribute("data");
 
 		<div class="pad_30"></div>
 		<div class="pad_30"></div>
+		
+		<div style="display:none" id="showZan"><%=basePath%>/js/appWeb/images/zan2.png</div>
+		<div style="display:none" id="showYiZan"><%=basePath%>/js/appWeb/images/zan.png</div>
 
 		<div class="fixed_comment dis_f ali_ct jus_bt pad_20">
-			<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid"  onclick="oper(1);"  style="height:1rem;" />
+			<img id="zanImg" src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid"  onclick="oper(1);"  style="height:1rem;" />
 			<input placeholder="说点什么吧......" class="ipt1 f_26 clr_9" id="comment" type="text" />
 			<input class="btn1 f_26 clr_f" type="button" onclick="oper(2);"  value="发送" />
 		</div>
@@ -118,7 +120,7 @@ Object data=session.getAttribute("data");
 	
 	<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_f dis_f ali_ct pad_30" >
-			<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border-radius: 1rem;margin-right:0.5rem;" />
+			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:2rem;border-radius: 1rem;margin-right:0.5rem;" />
 			<div>
 				
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}} </span>
@@ -156,7 +158,7 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="f_28 clr_6 mt_20 clr_he" style="line-height:1.2rem;text-indent: 1.4rem;">
-				{{= descr}}
+				<pre  style="white-space: pre-wrap">{{= descr}}</pre>
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">
@@ -188,7 +190,7 @@ Object data=session.getAttribute("data");
 					<p>{{= cardCategoryName}}</p>
 				</div>
 			
-				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}次预定</div>
+				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct" >已有{{= cardLqNum}}次领取</div>
 			</div>
 			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/card/cardUserList.jsp?id={{= cardId}}';">
 				<div class="ceng_img" id="lingquan" >
@@ -198,14 +200,15 @@ Object data=session.getAttribute("data");
 		</div>
 		{{/if}}
 		{{if isAppoint}}
+		{{if isLook==3}}
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap">
 			<div class="dis_f ali_ct">
-				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:$('.kq_mask').show();">
+				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:window.location.href='/mts/appWeb/appuser/appuserLogin.jsp';">
 					<img src="<%=basePath%>/js/appWeb/images/yyyl.png" class="ver_mid" style="width:0.9rem;" />
-					<p >预约有礼</p>
+					<p >预订有礼</p>
 				</div>
 
-				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= appointCount}}人领取</div>
+				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= appointCount}}人预订</div>
 			</div>
 
 			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/appoint/appointUserList.jsp?itemId={{= id}}&type=1';">
@@ -214,6 +217,26 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
 			</div>
 		</div>
+		{{else}}
+
+<div class="bg_f dis_f ali_ct jus_bt xjq_wrap">
+			<div class="dis_f ali_ct">
+				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:$('.kq_mask').show();">
+					<img src="<%=basePath%>/js/appWeb/images/yyyl.png" class="ver_mid" style="width:0.9rem;" />
+					<p >预订有礼</p>
+				</div>
+
+				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= appointCount}}人预订</div>
+			</div>
+
+			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/appoint/appointUserList.jsp?itemId={{= id}}&type=1';">
+				<div class="ceng_img" id="yuyue">
+				</div>
+				<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+			</div>
+		</div>
+
+		{{/if}}
 		{{/if}}
 
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt" style="border-top:1px solid #f2f4f7;">
@@ -235,7 +258,6 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="pad_30 bg_f">
-			{{if isLook}}
 			{{if isLook==1}}
 			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢</a>
 			{{else}}
@@ -247,10 +269,9 @@ Object data=session.getAttribute("data");
 			<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢完</a>
 			{{/if}}	
 			{{/if}}
-			{{/if}}
-			{{else}}
-			<a class="f_26 clr_f dis_b waiting_check_a" id="ljll"  onclick="window.location.href='/mts/appWeb/appuser/appuserLogin.jsp'" style="background: #f95d47;display:none;">立即领取</a>
-			<a class="f_26 clr_f dis_b waiting_check_a" id="lqjs"  style="background: #c8c8cc;">倒计时<span id="miao">10</span>秒抢红包</a>
+
+			{{else isLook==3}}
+			<a class="f_26 clr_f dis_b waiting_check_a" id="ljll"  onclick="javascript:window.location.href='/mts/appWeb/appuser/appuserLogin.jsp';" style="background: #f95d47;display:none;">立即领取</a>
 			{{/if}}
 		</div>
 
@@ -272,14 +293,14 @@ Object data=session.getAttribute("data");
 		<div class="kq_mask" id="payTmpl" style="display: none;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
             <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
-            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" id="money" type="number" placeholder="￥请填写打赏金额"/>
-            <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预约电话"/>
+            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥请填写打赏金额"/>
+            <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预订电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
-               {{if appUser}}{{= appUser.appointExplain}}{{/if}} 
+               {{= appointExplain}}
             </div>
-            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">6.00</span> <a href="javascript:;" class="clr_b">更换</a></div>
+            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b">更换</a></div>
 
-            <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预约"/>
+            <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预订"/>
         </div>
 
 
@@ -292,19 +313,19 @@ Object data=session.getAttribute("data");
 	
 	
 	<script id="yuyue_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+		<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 	</script>
 	
 	<script id="lingquan_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
+		<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'" src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
 	</script>
 	<script id="lingqu_tmpl" type="text/x-jquery-tmpl">
-		<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
+		<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 	</script>
 	<script id="content_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f borderbot1" onclick="toUser({{if appUser}}{{= appUser.id}}{{/if}},'{{if appUser}}{{= appUser.name}}{{/if}}');">
 			<div class="dis_f ali_ct" >
-				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 					{{if appUser}}
@@ -327,7 +348,7 @@ Object data=session.getAttribute("data");
 	<script id="top_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_30 bg_f borderbot1">
 			<div class="dis_f ali_ct" >
-				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+				<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div>
 					<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}

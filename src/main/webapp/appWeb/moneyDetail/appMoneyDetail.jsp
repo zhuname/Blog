@@ -148,11 +148,11 @@ Object data=session.getAttribute("data");
 					{{else type==13}}
 					预约支付
 					{{else type==14}}
-					打赏
+					被打赏
 					{{else type==15}}
 					发布红包人收益
 					{{else type==16}}
-					打赏
+					被打赏
 					{{else type==17}}
 					后台余额变动
 					{{/if}}
