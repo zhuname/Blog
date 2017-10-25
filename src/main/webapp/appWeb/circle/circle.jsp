@@ -78,8 +78,8 @@ Object data=session.getAttribute("data");
 <!-- 提示窗 -->
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">
 <div class="Report dis_f" style="width:100%;height:2rem;background:#fff;padding:.4rem;box-sizing:border-box;">
-	<input type="text" style="flex:1;border:.06rem solid #ddd;border-radius:.2rem;padding-left:.2rem;" placeholder="请填写举报内容">
-	<span style="width:3rem;height:100%;display:inline-block;text-align:center;line-height:1.2rem;margin-left:.4rem;background:#00a0e2;color:#fff;">发送</span>
+	<input type="text" id="content" style="flex:1;border:.06rem solid #ddd;border-radius:.2rem;padding-left:.2rem;" placeholder="请填写举报内容">
+	<span onclick="jubao();" style="width:3rem;height:100%;display:inline-block;text-align:center;line-height:1.2rem;margin-left:.4rem;background:#00a0e2;color:#fff;">发送</span>
 </div>
 </div>
 			<div class="pad_30  dis_f ali_ct jus_bt " style="position:absolute;top:0;left:0;width:14.5rem;">
@@ -109,7 +109,7 @@ Object data=session.getAttribute("data");
 				<div class="pad_30 bg_f borderbot1 mt_20"    onclick="locationHref({{= id}});">
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
-					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 						<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser}}{{if appUser.sex}}
@@ -131,19 +131,26 @@ Object data=session.getAttribute("data");
 				<a  onclick="showCheck(this);" class="more_ul_toggle"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n" />
 				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;" onclick="dou()">
-					<li><img src="<%=basePath%>/js/appWeb/images/a1.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">分享</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">已关注</span></li>
-					<li><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
-					<li onclick="report(this)"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
+					<li onclick="attr({{if appUser}}{{= appUser.id}}{{/if}});"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">{{if isAttr}}已关注{{else}}关注{{/if}}</span></li>
+					<li onclick="pingbi({{if appUser}}{{= appUser.id}}{{/if}});"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽</span></li>
+					<li onclick="report(this,{{if appUser}}{{= appUser.id}}{{/if}},{{= id}})"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{= content}}</div>
-			
+			<div class="f_28 clr_3 mt_20">{{= content}} </div>
+			<!--<b style="font-weight:400;color:blue;padding-left:.2rem;">查看更多</b>-->
 			<div class="dis_f ali_ct flex_w quan_img mt_20">
+				{{if type==2}}
+
+				<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+					您的浏览器不支持 video 标签。
+				</video>
+				{{else}}
 				{{if images}}
 					{{each images}}
-						<img src="{{= $value}}" class="ver_mid" style="width:4.75rem;height:4.75rem;"/>
+						<img src="{{= $value}}" class="ver_mid" style="width:4.5rem;height:4.5rem;margin:0 .1rem;"/>
    					{{/each}}
+				{{/if}}
+
 				{{/if}}
 			</div>
 

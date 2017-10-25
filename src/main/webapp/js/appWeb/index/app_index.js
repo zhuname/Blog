@@ -19,7 +19,6 @@ function show(){
 		success : function(result){
 			var user=result;
 			if(result.data!=undefined){
-				debugger;
 		//获取用户信息
 			$.ajax({
 				url : '/mts/system/appuser/indexStatics/json?web=&id='+result.data.id+'&cityId='+getCookie("htmlCityId"),

@@ -119,7 +119,7 @@ html,body{height:100%;}
 		
 		<script id="media_list_tmpl" type="text/x-jquery-tmpl">
 				<div class="mt_10 pos_rela ">
-				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';"  />
+				<img src="{{= mediaImage}}" class="ver_mid" style="width:100%;height:8rem;"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';"  />
 				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
 					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
 					<p >{{= title}}</p>
@@ -139,10 +139,10 @@ html,body{height:100%;}
 						<span class="f_20 clr_6 ver_mid">{{= topCount}}</span></div>
 					</div>
 
-					<div class="bg_f dis_f ali_ct jus_bt">
+					<div class="bg_f dis_f ali_ct jus_rt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
    					 {{/each}}
 					{{/if}}
 						<div class="clr_3 f_30">…</div>
