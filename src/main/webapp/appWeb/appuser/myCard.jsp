@@ -70,7 +70,7 @@ html,body{height:100%;}
 
 
 		<script id="card_list_tmpl" type="text/x-jquery-tmpl">
-		<div class="pad_3020 pos_rela" style="margin-top:-0.5rem;"  onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= cardId}}';">
+		<div class="pad_3020 pos_rela" style="margin-top:-0.5rem;"  onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= cardId}}&userCardId={{= id}}';">
 			{{if status}}
 			{{if status==1}}
 			{{else}}

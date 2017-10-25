@@ -68,6 +68,32 @@ $.ajax({
 					$('#lingqu_tmpl').tmpl({'balance':user.balance,'convertMoney':result.data.convertMoney}).appendTo($('#detail'));
 				}
 				
+				if(getQueryString("userCardId")!=undefined&&getQueryString("userCardId")!=""&&getQueryString("userCardId")!=null){
+					//领取卡券列表
+					$.ajax({
+						url : '/mts/system/usercard/look/json?web=&id='+getQueryString("userCardId"),
+						type : "post",
+						dataType : "json",
+						success : function(result){
+							console.log(result);
+							if(result.status=="error"){
+								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+								return;
+							}
+							if(result.data!=undefined){
+								
+								$("#cardCode").html(result.data.cardCode);
+								
+								
+							}
+						},
+						error:function(XMLHttpRequest, textStatus, errorThrown){
+							console.log(XMLHttpRequest) ;
+							console.log(textStatus) ;
+						}
+					});
+				}
+				
 				//领取卡券列表
 				$.ajax({
 					url : '/mts/system/moneydetail/listuser/json?web=&itemId='+result.data.id,

@@ -732,6 +732,7 @@ public class AppUserController  extends BaseController {
 			
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser2);
 			if(datas.size()>0){
+				session.setAttribute("appUserSessionId", datas.get(0).getId());
 				returnObject.setData(datas.get(0));
 			}else{
 				//没有找到的话就是新增接口

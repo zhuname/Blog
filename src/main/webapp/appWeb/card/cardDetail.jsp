@@ -175,7 +175,7 @@ html,body{background:#f95d47;}
 			<img src="<%=basePath%>/js/appWeb/images/kq_line.png" class="dis_b" style="width:16rem;height:0.75rem;" />
 		</div>
 
-		<div class="pad_30 bg_f">
+		<div class="pad_30 bg_f" id="cardCode" style="text-align:center;">
 			{{if status}}
 			{{if status == 1}}
 			<input type="button" class="f_26 clr_9 dis_b waiting_check_a" style="background: #e3e3e6;border:0;" value="待审核" />

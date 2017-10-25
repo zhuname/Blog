@@ -100,6 +100,49 @@ function show(){
 }
 
 
+function attr(itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+function pingbi(itemUserId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/shield/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
 $.ajax({
 	url : '/mts/system/lunbopic/list/json?web=&position=6&cityIds='+getQueryString("cityId"),
 	type : "post",
@@ -175,15 +218,58 @@ function locationHref(id){
 	}
 	window.location.href='/mts/appWeb/circle/circleDetail.jsp?id='+id;
 }
-
 function showCheck(obj){
 	$(obj).siblings('.more_ul').toggle();
 	$(obj).siblings('.arr_up_down').toggle();
 	dianji=1;
 	$("#black-box").toggle()
-	console.log("dsfs");
-	console.log($("#black-box"))
 }
+function dou(){
+	  event.stopPropagation();
+}
+
+
+
+
+var jubaoItemId="";
+var reportedUserId="";
+
+function report(obj,reportedUserIdV,jubaoItemIdV){
+	$(".alert-box").css("top","0");
+	$(obj).parents('.more_ul').toggle();
+	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
+	
+	reportedUserId=reportedUserIdV;
+	jubaoItemId=jubaoItemIdV;
+}
+
+function jubao(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+
+
+
+
 
 function getDateDiff(dateTimeStamp){
 	

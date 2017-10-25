@@ -30,7 +30,6 @@ function selectSort(type){
 	joinList(getQueryString("type"));
 }
 
-
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
 	type : "post",
@@ -310,7 +309,10 @@ function all(id){
 	
 	
 }
-
+function alertPrice(){
+	console.log(4654);
+	$(".alert-box").show()
+}
 window.onscroll=function(){
 	var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
