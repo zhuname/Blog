@@ -432,6 +432,43 @@ window.onscroll=function(){
 }
 
 
+
+var jubaoItemId="";
+var reportedUserId="";
+
+function report(obj,reportedUserIdV,jubaoItemIdV){
+	$(".alert-box").css("top","0");
+	$(obj).parents('.more_ul').toggle();
+	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
+	
+	reportedUserId=reportedUserIdV;
+	jubaoItemId=jubaoItemIdV;
+}
+
+function jubao(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/report/update/json?web=&type=1&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+
 function getDateDiff(dateTimeStamp){
 	
 	

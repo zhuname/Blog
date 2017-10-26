@@ -236,14 +236,14 @@ function join(joinOrAward,pageSize){
 				if(joinOrAward==1){
 					//获取消息记录
 					for (var int = 0; int < result.data.length; int++) {
-						console.log(result.data[int]);
 						$('#canyu_tmpl').tmpl(result.data[int]).appendTo($('#canyu'));
 					}
 				}else if(joinOrAward==2){
 					//获取消息记录
 					for (var int = 0; int < result.data.length; int++) {
-						console.log(result.data[int]);
-						$('#zhongjiang_tmpl').tmpl(result.data[int]).appendTo($('#zhongjiang'));
+						if(int<6){
+							$('#zhongjiang_tmpl').tmpl(result.data[int]).appendTo($('#zhongjiang'));
+						}
 					}
 				}
 				
@@ -257,6 +257,39 @@ function join(joinOrAward,pageSize){
 	});
 }
 
+
+var jubaoItemId="";
+var reportedUserId="";
+
+function report(obj){
+	$(".alert-box").css("top","0");
+	$(obj).parents('.more_ul').toggle();
+	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
+	
+	reportedUserId=itemUserId;
+	jubaoItemId=id;
+}
+
+function jubao(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
 
 function getDateDiff(dateTimeStamp){
 	

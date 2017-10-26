@@ -65,6 +65,11 @@ $.ajax({
 				
 				$('#canyu_tmpl').tmpl(result.data).appendTo($('#foot'));
 				
+				if(result.data.awardss!=undefined){
+					for (var int = 0; int < result.data.awardss.length; int++) {
+						$('#jiang_tmpl').tmpl(result.data.awardss[int]).appendTo($('#jiang'));
+					}
+				}
 			}
 			
 		},
@@ -87,7 +92,7 @@ function canyu(){
 function joinList(joinOrAward){
 	var data='&pageIndex='+nextPage;
 	$.ajax({
-		url : '/mts/system/joinactivity/list/json?web=&activityId='+getQueryString("id")+"&joinOrAward="+joinOrAward+data+userData+userId+dataString,
+		url : '/mts/system/joinactivity/list/json?web=&appuserId='+userId+'&activityId='+getQueryString("id")+"&joinOrAward="+joinOrAward+data+userData+userId+dataString,
 		type : "post",
 		dataType : "json",
 		success : function(result){
@@ -136,6 +141,7 @@ function joinList(joinOrAward){
 						result.data[int].createTime = getDateDiff(result.data[int].createTime);
 						
 					}
+					
 					
 					$('#user_list_tmpl').tmpl(result.data[int]).appendTo($('#userList'));
 					
@@ -198,6 +204,31 @@ function showPinglun(){
 	}
 	
 }
+
+function attr(itemUserId){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
 
 	function oper(id){
 			
@@ -309,10 +340,34 @@ function all(id){
 	
 	
 }
-function alertPrice(){
-	console.log(4654);
-	$(".alert-box").show()
+var joinUserIds;
+function alertPrice(joinUserId){
+	$(".alert-box").show();
+	joinUserIds=joinUserId;
 }
+
+function banjiang(awardId){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/giveaward/update/json?web=&userId='+userId+'&joinUserId='+joinUserIds+'&awardId='+awardId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
 window.onscroll=function(){
 	var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
@@ -322,6 +377,49 @@ window.onscroll=function(){
 		joinList(getQueryString("type"));
 	}
 }
+
+
+
+
+
+
+var jubaoItemId="";
+var reportedUserId="";
+
+function report(obj,reportedUserIdV,jubaoItemIdV){
+	$(".alert-box").css("top","0");
+	$(obj).parents('.more_ul').toggle();
+	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
+	
+	reportedUserId=reportedUserIdV;
+	jubaoItemId=jubaoItemIdV;
+}
+
+function jubao(){
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#contents").val(),
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+
+
 
 
 function getDateDiff(dateTimeStamp){
@@ -366,6 +464,7 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
+<<<<<<< HEAD
 function showImg(obj){
 	console.log($(obj).children())
 	$(".show-img-box .swiper-wrapper").empty()
@@ -374,4 +473,9 @@ function showImg(obj){
 		$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
 		
 	})
+=======
+function alertMneu(obj){
+	$(obj).siblings('.more_ul').toggle();
+	$(obj).siblings('.arr_up_down').toggle();
+>>>>>>> 479f39f3c309673a541cddda0af438d2187c71ef
 }
