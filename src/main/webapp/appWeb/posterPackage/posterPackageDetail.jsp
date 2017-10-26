@@ -62,10 +62,10 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
-			<div class=" show-img-box pwd" style="padding:0">
+			<div id="show-img-box" class=" show-img-box pwd" style="padding:0">
 				<div class="pwd-box">
 					<span style="height:2rem;display:block;font-size:.5rem;">预定成功，请去我的预定界面查看兑换码进行兑换</span>
-					<p >确定</p>
+					<p onclick="javascript:window.location.href='/mts/appWeb/appuser/myAppoint.jsp';">确定</p>
 				</div>
 			</div>
 	<div class="wraper overh ">

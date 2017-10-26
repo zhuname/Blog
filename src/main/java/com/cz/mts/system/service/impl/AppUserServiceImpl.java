@@ -217,7 +217,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			Finder finderUserMedal = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=1) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 			finderUserMedal.setParam("userId", userId);
 			List<UserMedal> userMedals = userMedalService.queryForList(finderUserMedal, UserMedal.class);
-			if(null != userMedals && userMedals.size() > 0){
+			//修改免审核标记
+			//if(null != userMedals && userMedals.size() > 0){
+			if(true){
 				//说明有免审核勋章
 				posterPackage.setStatus(3);
 				
@@ -338,7 +340,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 			Finder finderMedia = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=2) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 			finderMedia.setParam("userId", userId);
 			List<UserMedal> userMedalms = userMedalService.queryForList(finderMedia, UserMedal.class);
-			if(null != userMedalms && userMedalms.size() > 0){
+			//修改免审核标记
+			//if(null != userMedalms && userMedalms.size() > 0){
+			if(true){
 				//说明有免审核勋章
 				mediaPackage.setStatus(3);
 				
@@ -747,7 +751,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					Finder finderUserMedal = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=1) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 					finderUserMedal.setParam("userId", posterPackage.getUserId());
 					List<UserMedal> userMedals = userMedalService.queryForList(finderUserMedal, UserMedal.class);
-					if(null != userMedals && userMedals.size() > 0){
+					//修改免审核标记
+					//if(null != userMedals && userMedals.size() > 0){
+					if(true){
 						//说明有免审核勋章
 						posterPackage.setStatus(3);
 						
@@ -875,7 +881,9 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 					Finder finderMedia = Finder.getSelectFinder(UserMedal.class).append("where 1=1 and userId=:userId AND medalId in (SELECT id FROM t_medal WHERE STATUS=2) AND (isEndStatus IS NULL OR isEndStatus != 1)");
 					finderMedia.setParam("userId", mediaPackage.getUserId());
 					List<UserMedal> userMedalms = userMedalService.queryForList(finderMedia, UserMedal.class);
-					if(null != userMedalms && userMedalms.size() > 0){
+					//修改免审核标记
+					//if(null != userMedals && userMedals.size() > 0){
+					if(true){
 						//说明有免审核勋章
 						mediaPackage.setStatus(3);
 						

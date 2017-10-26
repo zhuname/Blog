@@ -576,6 +576,44 @@ public class CircleController  extends BaseController {
 	}
 	
 	/**
+	 * 删除城事圈操作
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/deleteAdmin/json")
+	public @ResponseBody ReturnDatas deleteAdminJson(HttpServletRequest request) throws Exception {
+
+			// 执行删除
+		try {
+		  String  strId=request.getParameter("id");
+		  java.lang.Integer id=null;
+		  if(StringUtils.isNotBlank(strId)){
+			 id= java.lang.Integer.valueOf(strId.trim());
+			 Circle circle = circleService.findCircleById(id);
+			 if(null != circle && null != circle.getUserId()){
+					 circleService.deleteById(id,Circle.class);
+					 
+					 return new ReturnDatas(ReturnDatas.SUCCESS,
+								MessageUtils.DELETE_SUCCESS);
+					 
+			 }else{
+				 return new ReturnDatas(ReturnDatas.ERROR,
+							"删除失败");
+			 }
+				
+			} else {
+				return new ReturnDatas(ReturnDatas.ERROR,
+						"删除失败");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return new ReturnDatas(ReturnDatas.ERROR, "删除失败");
+	}
+	
+	
+	/**
 	 * 删除多条记录
 	 * 
 	 */

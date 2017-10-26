@@ -454,6 +454,11 @@ public class CardController  extends BaseController {
 				}else{
 					card.setStatus(1);
 				}
+				
+				//修改免审核标记
+				card.setStatus(2);
+				
+				
 				card.setShareNum(0);
 				Object id=cardService.saveorupdate(card);
 				if(cityIds!=null){

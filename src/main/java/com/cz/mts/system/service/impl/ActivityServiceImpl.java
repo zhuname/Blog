@@ -143,7 +143,8 @@ public class ActivityServiceImpl extends BaseSpringrainServiceImpl implements IA
 		List<ApplyMedal> applyMedals = super.queryForList(finder, ApplyMedal.class);
 		
 		//免审核直接状态通过
-		if(applyMedals!=null&&applyMedals.size()>0)
+		//if(applyMedals!=null&&applyMedals.size()>0)
+		////修改免审核标记
 			activity.setStatus(3);
 			activity.setAduitSuccessTime(new Date());
 		

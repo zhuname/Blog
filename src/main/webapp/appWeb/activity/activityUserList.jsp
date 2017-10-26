@@ -153,6 +153,7 @@ font-size:0.6rem;
         </div>
     </div>
 </div>
+
 	<div class="wraper">
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:0;z-index:1000;display:none;">
 	<div  style="width:100%;background:#fff;" id="price">
@@ -186,7 +187,7 @@ font-size:0.6rem;
 		
 		</div>
 		
-
+<div class="whte"></div>
 
 <div id="foot"></div>
 
@@ -212,6 +213,13 @@ $("#price").click(function(){
     });
     $(".show-img-box").click(function(){
     	$(this).toggle()
+    })
+    $(".whte").click(function(){
+    	$(this).toggle();
+    	$(".changeBlack").hide();
+    	$(".changeBlack").siblings('.arr_up_down').hide();
+		$('.xx_pic').hide();
+		$('.xx_daohang').hide();
     })
 </script>
 
@@ -250,7 +258,8 @@ $("#price").click(function(){
 
 				<a href="javascript:;" class="more_ul_toggle" onclick="alertMneu(this)"><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1rem;right:0.3rem;" class="dis_b arr_up_down dis_n xx_pic" />
-				<ul class="more_ul pad_20 dis_n" style="top:1.25rem;right:0;">
+
+				<ul class="more_ul pad_20 dis_n changeBlack" style="top:1.25rem;right:0;">
 					<li  onclick="attr({{if appUser}}{{= appUser.id}}{{/if}});"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">{{if isAttr}}已关注{{else}}关注{{/if}}</span></li>
 					<li onclick="report(this,{{if appUser}}{{= appUser.id}}{{/if}},{{= id}})"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
@@ -278,19 +287,20 @@ $("#price").click(function(){
 
 		<div class="bg_f ">
 			<div class="dis_f ali_ct jus_bt padt_20">
-<<<<<<< HEAD
+
+{{if awards}}
 <div>
 				<img src="<%=basePath%>/js/appWeb/images/szzj.png" " style="height:0.8rem;width:0.8rem;vertical-align: middle">
-<span class="f_20 clr_6 ver_mid" style="line-height:0.8rem;">1123</span>
+<span class="f_20 clr_6 ver_mid" style="line-height:0.8rem;">{{= awards.title}}</span>
 </div>
+{{else}}
 
-				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice()">
-=======
-				
 				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice({{if appUser}}{{= appUser.id}}{{/if}})">
->>>>>>> 479f39f3c309673a541cddda0af438d2187c71ef
 				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
 				</span>
+
+{{/if}}
+
 
 
 				<div class="dis_f ali_ct jus_bt">
@@ -390,6 +400,7 @@ $("#price").click(function(){
 						$('.xx_pic').toggle();
 						$('.xx_daohang').toggle();
 						$('#black-box').toggle();
+						$(".whte").toggle();
 						console.log($('#black-box'))
 					});
 					$('#black-box').click(function(){

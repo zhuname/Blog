@@ -88,6 +88,7 @@ Object data=session.getAttribute("data");
 					$('.more_ul').toggle();
 					$('.arr_up_down').toggle();
 				})
+				 
 			</script>
 		</div>
 
@@ -140,7 +141,7 @@ Object data=session.getAttribute("data");
 
 		<div class="bg_f padl_20">
 			
-			<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+			<video src="{{= mediaUrl}}" class="news_video" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
 					您的浏览器不支持 video 标签。
 			</video>
 
@@ -256,7 +257,7 @@ Object data=session.getAttribute("data");
 			{{else}}
 			{{if status}}
 			{{if status==3}}
-				<a class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #f95d47;">立即领取</a>
+				<a id="anniu" class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #c8c8cc;">视频播放结束领红包</a>
 			{{else status==4}}
 				<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢完</a>
 			{{/if}}
@@ -386,16 +387,6 @@ Object data=session.getAttribute("data");
 			</div>
 		</div>
 		
-		<script>
-		// var md=document.getElementsByName("video");
-			var md=document.getElementsByTagName("video")[0];
-		    if(md.ended){
-		        console.log("结束");
-		    }
-		    md.addEventListener("ended",function(){
-		         console.log("结束");
-		    })
-		</script>
 		
 				<!-- 提示窗 -->
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">

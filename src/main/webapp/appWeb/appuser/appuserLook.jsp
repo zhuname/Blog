@@ -317,7 +317,7 @@ Object data=session.getAttribute("data");
 	
 	<!-- 这个是领取机会的问号 -->
 	<script id="appuser_wenPic_tmpl" type="text/x-jquery-tmpl">
-		<img src="<%=basePath%>/js/appWeb/images/wenhao.png" class="ver_mid" style="width:0.55rem;" />
+		<img src="<%=basePath%>/js/appWeb/images/wenhao.png" onclick="javascript:$('#wenhaoshou').show();" class="ver_mid" style="width:0.55rem;" />
 	</script>
 	
 	
@@ -548,11 +548,22 @@ Object data=session.getAttribute("data");
 	
 	</script>
 
+			
 
 
+			<div onclick="javascript:$('#wenhaoshou').hide();" class="command_mask" id="wenhaoshou"  style="display:none;  width:16rem;">
+			<div class="command2  f_28 clr_he">
+				<div class="bg_f command2x padt_30">
+					<img src="<%=basePath%>/js/appWeb/images/tc_hb.png" class="dis_b" style="width:2rem;margin-top:-1.8rem;" />
+					
+					<div class="dis_f ali_ct pad_2030 borderbot1" id="packageRule">
+						
+					</div>
 
-
-
+					
+				</div>
+			</div>
+		</div>
 
 
 

@@ -259,6 +259,30 @@ function getCookie(name)
         return null; 
 } 
 
+
+$.ajax({
+	url : '/mts/system/syssysparam/list/json?web=',
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		if(result.data!=undefined){
+			//获取消息记录
+			$('#packageRule').html(result.data.packageRule);
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
+
 function delCookie(name) 
 { 
     var exp = new Date(); 

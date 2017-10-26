@@ -398,7 +398,7 @@ function yuyue(){
 							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 							return;
 						}
-						window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
+						$("#show-img-box").show();
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown){
 						console.log(XMLHttpRequest) ;

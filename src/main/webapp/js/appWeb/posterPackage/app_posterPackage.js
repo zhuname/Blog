@@ -192,10 +192,23 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
-function changeHref(obj,id){
+
+var commanda;
+var jinruId;
+function changeHref(obj,id,command){
 	if($(obj).find(".jus_bt").children().is("img")){
-		$(".pwd").toggle()
+		$(".pwd").toggle();
 	}else{
 		window.location.href='/mts/appWeb/posterPackage/posterPackageDetail.jsp?id='+id;
 	}
+	commanda=command;
+	jinruId=id;
+}
+
+function jinru(){
+	if(commanda!=$("#command").val()){
+		alert("请输入正确口令");
+		return;
+	}
+	window.location.href='/mts/appWeb/posterPackage/posterPackageDetail.jsp?id='+jinruId;
 }

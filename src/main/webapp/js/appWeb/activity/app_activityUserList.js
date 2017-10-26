@@ -8,6 +8,7 @@ var cityId;
 var itemId;
 var dataString="";
 var userData="";
+var status;
 
 function select(){
 	var titleString= $('#title').val();
@@ -60,6 +61,8 @@ $.ajax({
 				id=result.data.id;
 				
 				auserId=result.data.userId;
+				
+				status=result.data.status;
 				
 				joinList(getQueryString("type"));
 				
@@ -230,8 +233,23 @@ function attr(itemUserId){
 }
 
 
+	
+	
+	function hideInput(){
+		
+		$("#inputBtn").hide();
+		$("#srk_box").hide();
+		$("#content").val("");
+		
+	}
+	
 	function oper(id){
-			
+		
+		if(status==4){
+			alert("活动已结束");
+			return;
+		}
+		
 		//加载页面方法
 		$.ajax({
 			url : '/mts/system/oper/update/json?web=&type=6'+"&itemId="+id+"&userId="+userId,
@@ -243,38 +261,34 @@ function attr(itemUserId){
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 					return;
 				}
-			    window.location.reload();
+				window.location.reload();
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
 				console.log(textStatus) ;
 			}
 		});
-			
+		
 	}
 	
 	function showInput(id){
-		
+		if(status==4){
+			alert("活动已结束");
+			return;
+		}
 		$("#inputBtn").show();
 		$("#srk_box").show();
 		itemId = id ;
 		
 	}
-	
-	
-	function hideInput(){
-		
-		$("#inputBtn").hide();
-		$("#srk_box").hide();
-		$("#content").val("");
-		
-	}
-	
 
 	var toUserIdString="";
 
 	function toUser(id,toUserId,toUserName){
-		
+		if(status==4){
+			alert("活动已结束");
+			return;
+		}
 		if(userId==""){
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 		}
@@ -387,10 +401,11 @@ var jubaoItemId="";
 var reportedUserId="";
 
 function report(obj,reportedUserIdV,jubaoItemIdV){
+	
 	$(".alert-box").css("top","0");
 	$(obj).parents('.more_ul').toggle();
 	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
-	
+	$(".whte").toggle()
 	reportedUserId=reportedUserIdV;
 	jubaoItemId=jubaoItemIdV;
 }
@@ -464,7 +479,6 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
-<<<<<<< HEAD
 function showImg(obj){
 	console.log($(obj).children())
 	$(".show-img-box .swiper-wrapper").empty()
@@ -473,9 +487,9 @@ function showImg(obj){
 		$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
 		
 	})
-=======
+}
 function alertMneu(obj){
 	$(obj).siblings('.more_ul').toggle();
 	$(obj).siblings('.arr_up_down').toggle();
->>>>>>> 479f39f3c309673a541cddda0af438d2187c71ef
+	$(".whte").toggle();
 }

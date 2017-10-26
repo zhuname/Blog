@@ -8,6 +8,7 @@ var packageUserId;
 var encrypt;
 var userData="";
 var balance;
+var ljll=1;
 
 
 	//加载页面方法
@@ -189,6 +190,21 @@ var balance;
 										}
 										
 									}
+									
+									
+									
+									setTimeout(function(){
+										
+										/*视频结束或错误*/  
+									    $('.news_video').bind('error ended', function(){  
+									        $("#anniu").html("立即领取");
+									        $("#anniu").attr("style","background: #f95d47;");
+									        ljll=0;
+									    }) 
+									    
+										},2000)
+									
+									
 							}
 						},
 						error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -198,6 +214,9 @@ var balance;
 					});
 					
 			}
+			
+			
+			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(XMLHttpRequest) ;
@@ -360,6 +379,9 @@ function yuyue(){
 
 
 function lingqu(){
+	if(ljll==1){
+		return;
+	}
 	if(userId==""){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 	}

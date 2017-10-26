@@ -7,7 +7,19 @@ var userData="";
 //初始化页面
 show();
 
-
+function showGengduo(id,obj){
+	
+	if($(obj).attr('show')==1){
+		$(obj).attr("show","0");
+		javascript:$('#contents'+id).show();
+		$(obj).html('收起');
+	}else{
+		$(obj).attr("show","1");
+		javascript:$('#contents'+id).hide();
+		$(obj).html('查看全部');
+	}
+	
+}
 
 function select(){
 	var titleString= $('#title').val();

@@ -77,8 +77,8 @@ Object data=session.getAttribute("data");
 			</div>
 			<div class=" show-img-box pwd" style="padding:0">
 				<div class="pwd-box">
-					<input type="text" placeholder="请输入加密口令方能领取哦">
-					<p style="">确定</p>
+					<input id="command" type="text" placeholder="请输入加密口令方能领取哦">
+					<p style="" onclick="jinru();">确定</p>
 				</div>
 			</div>
 			<script type="text/javascript">
@@ -150,7 +150,7 @@ Object data=session.getAttribute("data");
 		<script id="posterPackage_list_tmpl" type="text/x-jquery-tmpl">
 				<li>
 					<img src="{{= image}}" class="dis_b" style="width:7.15rem;height:10rem;" />
-					<a  onclick="changeHref(this,{{= id}})" class="dis_b mask_hb">
+					<a  onclick="changeHref(this,{{= id}},{{= command}})" class="dis_b mask_hb">
 						<div class="pad_20 dis_f ali_ct jus_bt">
 							<p class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/eye_lock.png" class="dis_b" style="width:0.6rem;" />
 							&nbsp;<span class="f_18 clr_f">{{= lookNum}}</span></p>
