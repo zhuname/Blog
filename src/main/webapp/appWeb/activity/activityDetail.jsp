@@ -97,7 +97,7 @@ Object data=session.getAttribute("data");
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;z-index=15" >
 					<li id="guanzhu" onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">已关注</span></li>
 					<li id="pingbi" onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/f3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">屏蔽</span></li>
-					<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
+					<li onclick="report(this);"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 				</ul>
 				
 			</div>
@@ -243,6 +243,39 @@ Object data=session.getAttribute("data");
 		<script id="canyu_tmpl" type="text/x-jquery-tmpl">
 			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;border-radius: 0.8rem;" />
 		</script>
+		
+		
+			<!-- 提示窗 -->
+<div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">
+<div class="Report dis_f" style="width:100%;height:2rem;background:#fff;padding:.4rem;box-sizing:border-box;">
+	<input type="text" id="content" style="flex:1;border:.06rem solid #ddd;border-radius:.2rem;padding-left:.2rem;" placeholder="请填写举报内容">
+	<span onclick="jubao();" style="width:3rem;height:100%;display:inline-block;text-align:center;line-height:1.2rem;margin-left:.4rem;background:#00a0e2;color:#fff;">发送</span>
+</div>
+</div>
+
+
+	<script type="text/javascript">
+					$('.filter_toggle').click(function(){
+						$('.xx_pic').toggle();
+						$('.xx_daohang').toggle();
+						$('#black-box').toggle();
+						console.log($('#black-box'))
+					});
+					$('#black-box').click(function(){
+						$(this).toggle();
+						$('.more_ul_toggle').siblings("ul").hide()
+						$('.more_ul_toggle').siblings("img").hide()
+					});
+					$(".alert-box").click(function(){
+						$(this).css("top","100%");
+						$("#black-box").hide();
+						$('.more_ul_toggle').siblings("ul").hide()
+						$('.more_ul_toggle').siblings("img").hide()
+					})
+					$(".Report").click(function(){
+						event.stopPropagation();
+					})
+				</script>
 		
 		<script id="zhongjiang_tmpl" type="text/x-jquery-tmpl">
 			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.25rem;border-radius: 0.7rem;" />
