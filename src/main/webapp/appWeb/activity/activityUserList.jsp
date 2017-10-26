@@ -147,7 +147,12 @@ font-size:0.6rem;
 	</style>
 
 <body class="body">
-
+<div class="show-img-box">
+	    <div class="swiper-container">
+        <div class="swiper-wrapper">
+        </div>
+    </div>
+</div>
 	<div class="wraper">
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:0;z-index:1000;display:none;">
 	<div  style="width:100%;background:#fff;" id="price">
@@ -198,6 +203,16 @@ $(".alert-box").click(function(){
 $("#price").click(function(){
 	event.stopPropagation();
 })
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observer:true,
+        observeParents:true,
+        spaceBetween : 10,
+    });
+    $(".show-img-box").click(function(){
+    	$(this).toggle()
+    })
 </script>
 
 
@@ -243,28 +258,40 @@ $("#price").click(function(){
 			<div class="f_28 clr_3 mt_20">
 
 					{{= content}}
-					</br>
-						{{if type==2}}
 
+
+<div>
+						{{if type==2}}
 						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
 						您的浏览器不支持 video 标签。
 						</video>
 						{{else}}
+<div class="show-img" onclick="showImg(this)" style="overflow:hidden">
 						{{if images}}
 							{{each images}}
-								<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:4.6rem;" />
+								<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:4.6rem;margin:.1rem;float:left"/>
    					 		{{/each}}
 						{{/if}}
+</div>
 						{{/if}}
-						</div>
 		</div>
 
-		<div class="bg_f padl_30">
+		<div class="bg_f ">
 			<div class="dis_f ali_ct jus_bt padt_20">
+<<<<<<< HEAD
+<div>
+				<img src="<%=basePath%>/js/appWeb/images/szzj.png" " style="height:0.8rem;width:0.8rem;vertical-align: middle">
+<span class="f_20 clr_6 ver_mid" style="line-height:0.8rem;">1123</span>
+</div>
+
+				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice()">
+=======
 				
 				<span itemId="{{if appUser}}{{= appUser.id}}{{/if}}" class="bj" onclick="alertPrice({{if appUser}}{{= appUser.id}}{{/if}})">
+>>>>>>> 479f39f3c309673a541cddda0af438d2187c71ef
 				<img src="<%=basePath%>/js/appWeb/images/bj.png" class="ver_mid"  style="width:3.5rem;" />
 				</span>
+
 
 				<div class="dis_f ali_ct jus_bt">
 					<div style="margin-right:1rem;">

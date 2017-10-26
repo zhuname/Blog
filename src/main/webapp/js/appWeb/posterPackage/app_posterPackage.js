@@ -34,6 +34,9 @@ function select(){
 function selectSort(type){
 	nextPage=1;
 	$('#posterPackage').html("");
+	$('.more_ul').toggle();
+	$('.arr_up_down').toggle();
+	$(".whte").toggle();
 	if(type==1){
 		dataString='&selectType=1';
 	}else if(type==2){
@@ -189,3 +192,10 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
+function changeHref(obj,id){
+	if($(obj).find(".jus_bt").children().is("img")){
+		$(".pwd").toggle()
+	}else{
+		window.location.href='/mts/appWeb/posterPackage/posterPackageDetail.jsp?id='+id;
+	}
+}

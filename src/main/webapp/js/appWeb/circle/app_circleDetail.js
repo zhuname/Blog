@@ -511,3 +511,12 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
+function showImg(obj){
+	 event.stopPropagation(); 
+	$(".show-img-box .swiper-wrapper").empty()
+	$(".show-img-box").toggle()
+	$(obj).parents("#images").children().each(function(){
+		$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
+		
+	})
+}

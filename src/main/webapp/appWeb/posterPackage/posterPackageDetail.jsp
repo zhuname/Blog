@@ -62,7 +62,12 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
-
+			<div class=" show-img-box pwd" style="padding:0">
+				<div class="pwd-box">
+					<span style="height:2rem;display:block;font-size:.5rem;">预定成功，请去我的预定界面查看兑换码进行兑换</span>
+					<p >确定</p>
+				</div>
+			</div>
 	<div class="wraper overh ">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
