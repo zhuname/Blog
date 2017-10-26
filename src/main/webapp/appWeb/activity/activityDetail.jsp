@@ -116,7 +116,7 @@ Object data=session.getAttribute("data");
 
 		<div id="detail"></div>
 		<script id="detail_tmpl" type="text/x-jquery-tmpl">
-		<div class="pad_30 bg_f mt_20">
+		<div class="pad_30 bg_f mt_10">
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
 					<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />

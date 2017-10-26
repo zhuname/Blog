@@ -63,7 +63,7 @@ Object data=session.getAttribute("data");
 
 <body>
 
-	<div class="wraper overh ">
+	<div class="wraper overh" style="padding-bottom:3rem;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">视频详情</p>
