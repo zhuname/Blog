@@ -1,6 +1,7 @@
 var This=this;
 var nextPage=1;
 var dataString="";
+var userId;
 //初始化页面
 show();
 
@@ -47,7 +48,27 @@ function selectSort(type){
 
 //加载页面方法
 function show(){
+	
+	
+	$.ajax({
+		url : '/mts/system/appuser/look/json?web=',
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			
+			if(result.status=="error"){
+				userId="";
+			}else{
+				userId=result.data.id;
+				userData="&appUserId="+userId;
+			}
+	
 	var data='&pageIndex='+nextPage+dataString+'&cityId='+getQueryString("cityId");
+	
+	if(userId!=""){
+		data=data+"&appUserId="+userId;
+	}
 	
 	$.ajax({
 		url : '/mts/system/posterpackage/list/json?web=&type=1'+data,
@@ -73,8 +94,14 @@ function show(){
 			console.log(textStatus) ;
 		}
 	});
-}
+},
 
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
+}
 
 $.ajax({
 	url : '/mts/system/lunbopic/list/json?web=&position=1&cityIds='+getQueryString("cityId"),

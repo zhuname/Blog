@@ -13,7 +13,7 @@ function select(){
 	var titleString= $('#title').val();
 	nextPage=1;
 	$('#userList').html("");
-	dataString='&name='+titleString;
+	dataString='&name='+titleString+'&content='+titleString;
 	joinList(getQueryString("type"));
 }
 

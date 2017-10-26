@@ -120,7 +120,7 @@ public class JoinActivityController  extends BaseController {
 		Finder finder = Finder.getSelectFinder(JoinActivity.class).append(" where 1=1 ");
 			
 			if(StringUtils.isNotBlank(name)){
-				finder.append(" and userId in (select id from t_app_user where name like :name)" );
+				finder.append(" and (userId in (select id from t_app_user where name like :name) or content like :name)" );
 				finder.setParam("name", "%"+name+"%");
 			}
 			if(StringUtils.isNotBlank(joinOrAward) && "2".equals(joinOrAward)){
@@ -132,8 +132,14 @@ public class JoinActivityController  extends BaseController {
 				finder.append(" and userId = :userId");
 				finder.setParam("userId", joinActivity.getUserId());
 				
+				
 			}
-			
+			if(StringUtils.isNotBlank(joinActivity.getContent())){
+				
+				finder.append(" and content like :contents");
+				finder.setParam("contents", "%"+joinActivity.getContent()+"%");
+				
+			}
 			if(joinActivity.getActivityId()!=null){
 				
 				finder.append(" and activityId=:activityId");

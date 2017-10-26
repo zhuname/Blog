@@ -2,6 +2,65 @@ var This=this;
 var lqNum,currentLqNum;
 
 
+
+
+
+var dataLunbo="";
+/*if(getQueryString("cityId")!=undefined){
+	dataLunbo='&cityIds='+getQueryString("cityId");
+}*/
+
+if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie("htmlCityId")==""){
+	debugger;
+	setCookie("htmlCityId",410100);
+	dataLunbo='&cityIds='+getCookie("htmlCityId");
+}else{
+	dataLunbo='&cityIds='+getCookie("htmlCityId");
+	$.ajax({
+		url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+			
+			if(result.data!=undefined){
+				//获取消息记录
+				for (var int = 0; int < result.data.length; int++) {
+					$('#lunbo_list_tmpl').tmpl({'image':result.data[int].image}).appendTo($('#lunbo'));
+					
+				}
+	setTimeout(function(){
+		TouchSlide({
+			slideCell:"#bann",
+			titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+			mainCell:".bd ul", 
+			effect:"left",
+			autoPlay:true,//自动播放
+			autoPage:true //自动分页
+		});
+	},5000)
+				
+			}
+			
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
+
+
+
+
+
+
+
+
 //获取用户信息
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -116,45 +175,6 @@ $.ajax({
 });
 
 
-var dataLunbo="";
-/*if(getQueryString("cityId")!=undefined){
-	dataLunbo='&cityIds='+getQueryString("cityId");
-}*/
-
-if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie("htmlCityId")==""){
-	debugger;
-	setCookie("htmlCityId",410100);
-	dataLunbo='&cityIds='+getCookie("htmlCityId");
-}else{
-	dataLunbo='&cityIds='+getCookie("htmlCityId");
-	$.ajax({
-		url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
-		type : "post",
-		dataType : "json",
-		success : function(result){
-			
-			if(result.status=="error"){
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-				return;
-			}
-			
-			if(result.data!=undefined){
-				//获取消息记录
-				for (var int = 0; int < result.data.length; int++) {
-					console.log($('#lunbo').attr("src"));
-					$('#lunbo').attr("src",result.data[0].image);
-				}
-				
-				
-			}
-			
-		},
-		error:function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(XMLHttpRequest) ;
-			console.log(textStatus) ;
-		}
-	});
-}
 
 
 

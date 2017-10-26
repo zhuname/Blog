@@ -174,12 +174,6 @@ font-size:0.6rem;
 					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/plzd.png" class="ver_mid" style="width:0.7rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">评论最多</span></li>
 				</ul>
 
-				<script type="text/javascript">
-					$('.filter_toggle').click(function(){
-						$('.xx_pic').toggle();
-						$('.xx_daohang').toggle();
-					});
-				</script>
 			</div>
 
 
@@ -218,6 +212,7 @@ $("#price").click(function(){
 					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
+						{{if appUser}}
 						{{if appUser.sex}}
 						{{if appUser.sex == '男'}}
 						<img src="<%=basePath%>/js/appWeb/images/male.png" class="ver_mid" style="width:0.4rem;" />
@@ -225,10 +220,13 @@ $("#price").click(function(){
 						<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 						{{/if}}
 						{{/if}}
+{{/if}}
+				{{if appUser}}
 				{{if appUser.userMedals}}
 						{{each appUser.userMedals}}
 							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
    					 	{{/each}}
+				{{/if}}
 				{{/if}}
 						<div class="f_22 clr_9">{{= createTime}}</div>
 
@@ -304,6 +302,9 @@ $("#price").click(function(){
 	</script>
 
 	<script id="canyu_tmpl" type="text/x-jquery-tmpl">
+
+			{{if status==3}}
+
 			{{if isPart}}
 				{{if isPart == 1}}
 				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">已参与</a>
@@ -312,6 +313,12 @@ $("#price").click(function(){
 				{{/if}}
 			{{else}}
 				<a onclick="canyu();" class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">立即参与</a>
+			{{/if}}
+
+			{{else}}
+
+				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">已结束</a>
+
 			{{/if}}
 	</script>
 	

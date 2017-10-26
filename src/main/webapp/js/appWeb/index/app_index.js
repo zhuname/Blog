@@ -1,8 +1,56 @@
 var This=this;
 var nextPage=1;
 var lqNum,currentLqNum;
+
+
+
+var dataLunbo="";
+if(getCookie("htmlCityId")!=undefined){
+	dataLunbo='&cityIds='+getCookie("htmlCityId");
+}
+
+$.ajax({
+	url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		if(result.data!=undefined){
+			//获取消息记录
+			for (var int = 0; int < result.data.length; int++) {
+				
+				$('#lunbo_list_tmpl').tmpl({'image':result.data[int].image}).appendTo($('#lunbo'));
+				
+			}
+setTimeout(function(){
+	TouchSlide({
+		slideCell:"#bann",
+		titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+		mainCell:".bd ul", 
+		effect:"left",
+		autoPlay:true,//自动播放
+		autoPage:true //自动分页
+	});
+},5000)
+			
+		}
+		
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+		console.log(XMLHttpRequest) ;
+		console.log(textStatus) ;
+	}
+});
+
+
 //初始化页面
 show();
+
 //加载页面方法
 function show(){
 	
@@ -308,38 +356,7 @@ function countTime() {
 	setTimeout(countTime,1000);  
 }
 
-var dataLunbo="";
-if(getCookie("htmlCityId")!=undefined){
-	dataLunbo='&cityIds='+getCookie("htmlCityId");
-}
 
-$.ajax({
-	url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
-	type : "post",
-	dataType : "json",
-	success : function(result){
-		
-		if(result.status=="error"){
-			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-			return;
-		}
-		
-		if(result.data!=undefined){
-			//获取消息记录
-			for (var int = 0; int < result.data.length; int++) {
-				console.log($('#lunbo').attr("src"));
-				$('#lunbo').attr("src",result.data[0].image);
-			}
-			
-			
-		}
-		
-	},
-	error:function(XMLHttpRequest, textStatus, errorThrown){
-		console.log(XMLHttpRequest) ;
-		console.log(textStatus) ;
-	}
-});
 
 window.onscroll=function(){
 	var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;

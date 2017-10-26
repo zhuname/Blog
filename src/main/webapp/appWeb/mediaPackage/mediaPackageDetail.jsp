@@ -252,13 +252,13 @@ Object data=session.getAttribute("data");
 
 		<div class="pad_30 bg_f">
 			{{if isLook==1}}
-				<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢</a>
+				<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢</a>
 			{{else}}
 			{{if status}}
 			{{if status==3}}
 				<a class="f_26 clr_f dis_b waiting_check_a"  onclick="lingqu();" style="background: #f95d47;">立即领取</a>
 			{{else status==4}}
-				<a class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;">已抢完</a>
+				<a class="f_26 clr_f dis_b waiting_check_a" style="background: #c8c8cc;">已抢完</a>
 			{{/if}}
 			{{/if}}
 

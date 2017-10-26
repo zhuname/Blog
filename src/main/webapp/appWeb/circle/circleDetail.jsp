@@ -348,15 +348,26 @@ Object data=session.getAttribute("data");
 			<a href="javascript:;" class="dis_b close_kq_mask"></a>
 			<a onclick="shaizi();"><img src="<%=basePath%>/js/appWeb/images/shaizi.png" class="dis_b" style="position: absolute;top:7.1rem;right:1.5rem;width:0.7rem;" /></a>
 			
-			<input class="ipt3 f_26 clr_6 ipt_dashang" style="width: 58%" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />
+			<input class="ipt3 f_26 clr_6 ipt_dashang" style="width: 58%" id="money" onkeyup="changeMoney()" type="text" placeholder="￥请填写打赏金额" />
 			<input class="ipt3 f_26 clr_6 ipt_msg" id="contentVal" type="text" placeholder="留下你的打赏留言吧" />
 
 			<a href="javascript:dashang()"><img src="<%=basePath%>/js/appWeb/images/shang.png" class="shang_img" /></a>
-			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance"">0</span> <a href="#" class="clr_b">更换</a></div>
+			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance">0</span> <a href="#" class="clr_b">更换</a></div>
 		</div>
 	</div>
 
 	<script>
+	
+		function changeMoney(){
+			$('#balance').html($('#money').val());
+			
+			if($('#money').val()==""){
+				$('#balance').html(0);	
+			}
+			
+		}
+	
+	
 		$('.close_kq_mask').click(function(){
 			$(this).parents('.kq_mask').hide();
 		});

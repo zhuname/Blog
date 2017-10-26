@@ -54,6 +54,12 @@ Object data=session.getAttribute("data");
 	name="viewport">
 <title>首页</title>
 
+<style>
+.bannD  .bd ,.bannD .tempWrap{ width:100%;}
+/* .bannD  .bd li{ height:33px; line-height:33px;   }
+.bannD  .bd li a{ color:#666;  } */
+</style>
+
 </head>
 
 <body>
@@ -329,9 +335,24 @@ Object data=session.getAttribute("data");
 		<img src="<%=basePath%>/js/appWeb/images/weiduxx.png" class="dis_b" style="width:0.8rem;"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"/>
 	</script>
 	
+	<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
+			<li><img id="lunbo" src="{{= image}}" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;index-z:3;" /></li>
+	</script>
+	
+	
 	<div id="add" class="fabu_mask" style="display:none;">
-				<div><img id="lunbo" src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;" /></div>
-
+				<div class="bannD pos_rela" id="bann">
+				<div class="hd">
+					<ul></ul>
+				</div>
+				<div class="bd">
+					<ul id="lunbo">
+					</ul>
+				</div>
+				</div>
+				
+				
+				
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">
 						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />

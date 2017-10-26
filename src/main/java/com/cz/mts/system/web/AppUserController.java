@@ -1995,13 +1995,36 @@ public class AppUserController  extends BaseController {
 				HttpEntity entity = httpResponse.getEntity();  
 				try {  
 					
-					String wx=EntityUtils.toString(entity);
-					System.out.println(wx);
+					
+					StringBuilder result1 = new StringBuilder();//响应正文
+                	
+                	InputStream instream = entity.getContent();
+
+                    byte[] bytes = new byte[4096];
+                    int size = 0;
+                    try {
+                        while ((size = instream.read(bytes)) > 0) {
+                        String str = new String(bytes, 0, size, "utf-8");
+                          result1.append(str);
+                        }
+                    } catch (IOException e) {
+                          e.printStackTrace();
+                    } finally {
+                       try {
+                           instream.close();
+                        } catch (IOException e) {
+                           e.printStackTrace();
+                    }
+                    }
+                    
+                    System.out.println("转码后========================="+result1);
+                    
+                    
                 	new JSONObject();
 					//解析出来获取Unionid的json
-                	JSONObject obj = JSONObject.fromObject(wx);//将json字符串转换为json对象
+                	JSONObject obj = JSONObject.fromObject(result1.toString());//将json字符串转换为json对象
                 	WxBean wxBean = (WxBean)JSONObject.toBean(obj,WxBean.class);//将建json对象转换为Person对象
-                	
+                	System.out.println(wxBean.getNickname());
 					// 获取响应实体    
 					System.out.println("--------------------------------------");  
 					// 打印响应状态    
