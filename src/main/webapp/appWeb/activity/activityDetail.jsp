@@ -157,7 +157,7 @@ Object data=session.getAttribute("data");
 			<div class="dis_f ali_ct jus_bt">
 				<div class="dis_f ali_ct">
 					<img src="<%=basePath%>/js/appWeb/images/addr.png" class="ver_mid" style="height:0.8rem;margin-right:0.3rem;" />
-					<span class="f_24 clr_3" class="ver_mid" > {{= address}}</span>
+					<span class="f_24 clr_3 dis_b" class="ver_mid" style="width:14rem" > {{= address}}</span>
 				</div>
 			</div>
 		</div>

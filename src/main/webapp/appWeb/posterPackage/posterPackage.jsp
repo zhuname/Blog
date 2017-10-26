@@ -63,7 +63,7 @@ Object data=session.getAttribute("data");
 <body>
 
 	<div class="wraper">
-
+<div class="whte"></div>
 		<div class="haibao_bg pos_rela">
 		
 			<div class="bann pos_rela" id="bann">
@@ -97,7 +97,13 @@ Object data=session.getAttribute("data");
 					$('.filter_toggle').click(function(){
 						$('.more_ul').toggle();
 						$('.arr_up_down').toggle();
+						$(".whte").toggle();
 					});
+					$(".whte").click(function(){
+						$('.more_ul').toggle();
+						$('.arr_up_down').toggle();
+						$(".whte").toggle();
+					})
 				</script>
 			</div>
 		</div>
@@ -139,9 +145,9 @@ Object data=session.getAttribute("data");
 							{{/if}}
 						</div>
 
-						<div class="f_28 clr_f pad_30 al_ct">{{= title}}</div>
+						<div class="f_28 clr_f pad_30 al_ct" style="height:5rem;">{{= title}}</div>
 
-						<div class="f_20 clr_f al_ct" style="margin-top:3rem;">{{if status}}{{if status==4}} 已抢完 {{else}}还有<span class="clr_r"> {{= balance}}元 </span>待抢{{/if}}{{/if}}</div>
+						<div class="f_20 clr_f al_ct">{{if status}}{{if status==4}} 已抢完 {{else}}还有<span class="clr_r"> {{= balance}}元 </span>待抢{{/if}}{{/if}}</div>
 					</a>
 				</li>
 		</script>

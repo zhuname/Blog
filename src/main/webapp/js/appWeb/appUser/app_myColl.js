@@ -106,6 +106,23 @@ function change(type,change){
 						if(result.data!=undefined){
 							for (var int = 0; int < result.data.length; int++) {
 								
+								if($($(result.data[int].mediaPackage)[0])[0].moneyDetails!=undefined){
+									
+									var moneyDetails=$($(result.data[int].mediaPackage)[0])[0].moneyDetails;
+									
+									var moneyDetail=new Array();
+									for (var int2 = 0; int2 < moneyDetails.length; int2++) {
+										
+										if(int2<5){
+											moneyDetail[int2]=moneyDetails[int2];
+										}
+										
+									}
+									$($(result.data[int].mediaPackage)[0])[0].moneyDetails=moneyDetail;
+									
+								}
+								
+								
 								$('#media_list_tmpl').tmpl($(result.data[int].mediaPackage)[0]).appendTo($('#list'));
 								
 							}

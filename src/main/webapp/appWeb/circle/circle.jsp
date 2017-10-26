@@ -136,8 +136,8 @@ Object data=session.getAttribute("data");
 					<li onclick="report(this,{{if appUser}}{{= appUser.id}}{{/if}},{{= id}})"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{= content}}</div>
-			
+			<div class="f_28 clr_3 mt_20">{{= content}} </div>
+			<!--<b style="font-weight:400;color:blue;padding-left:.2rem;">查看更多</b>-->
 			<div class="dis_f ali_ct flex_w quan_img mt_20">
 				{{if type==2}}
 
@@ -147,7 +147,7 @@ Object data=session.getAttribute("data");
 				{{else}}
 				{{if images}}
 					{{each images}}
-						<img src="{{= $value}}" class="ver_mid" style="width:4.75rem;height:4.75rem;"/>
+						<img src="{{= $value}}" class="ver_mid" style="width:4.5rem;height:4.5rem;margin:0 .1rem;"/>
    					{{/each}}
 				{{/if}}
 

@@ -242,9 +242,11 @@ Object data=session.getAttribute("data");
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt" style="border-top:1px solid #f2f4f7;">
 			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';">
 			</div>
-			<div class="clr_3 f_30" onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';">…</div>
+			<div class="clr_3 f_30 dis_f" onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';" style="line-height:1.5rem;align-items:center;">
+<span class="dis_b" style="margin-top:-0.5rem;">…</span>
 
 			<img onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=1';" src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+</div>
 		</div>
 
 		<div class="bg_f dis_f ali_ct jus_ct">
