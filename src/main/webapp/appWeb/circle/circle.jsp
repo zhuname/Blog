@@ -60,6 +60,12 @@ Object data=session.getAttribute("data");
 
 <body>
 		<div id="black-box" style="position:fixed;left:0;top:0;width:100%;height:100%;z-index:100;display:none;"></div>
+		<div class="show-img-box">
+	    <div class="swiper-container">
+        <div class="swiper-wrapper">
+        </div>
+    </div>
+</div>
 	<div class="wraper">
 
 		<div class="haibao_bg pos_rela">
@@ -136,8 +142,8 @@ Object data=session.getAttribute("data");
 					<li onclick="report(this,{{if appUser}}{{= appUser.id}}{{/if}},{{= id}})"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{= content}} </div>
-			<!--<b style="font-weight:400;color:blue;padding-left:.2rem;">查看更多</b>-->
+			<div class="f_28 clr_3 mt_20">{{= content}} <b style="font-weight:400;color:blue;padding-left:.2rem;">查看更多</b></div>
+			
 			<div class="dis_f ali_ct flex_w quan_img mt_20">
 				{{if type==2}}
 
@@ -145,12 +151,13 @@ Object data=session.getAttribute("data");
 					您的浏览器不支持 video 标签。
 				</video>
 				{{else}}
+<div class="show-img" onclick="showImg(this)" style="overflow:hidden">
 				{{if images}}
 					{{each images}}
-						<img src="{{= $value}}" class="ver_mid" style="width:4.5rem;height:4.5rem;margin:0 .1rem;"/>
+						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:4.6rem;margin:.1rem;float:left"/>
    					{{/each}}
 				{{/if}}
-
+</div>
 				{{/if}}
 			</div>
 
@@ -204,6 +211,16 @@ Object data=session.getAttribute("data");
 					$(".Report").click(function(){
 						event.stopPropagation();
 					})
+					    $(".show-img-box").click(function(){
+    	$(this).toggle();
+    });
+					var swiper = new Swiper('.swiper-container', {
+				        pagination: '.swiper-pagination',
+				        paginationClickable: true,
+				        observer:true,
+				        observeParents:true,
+				        spaceBetween : 10,
+				    });
 				</script>
 
 <script type="text/javascript">

@@ -304,3 +304,49 @@ ul,li,ol li{
 	border-bottom:.2rem solid red;
 
 }
+.show-img-box{position:fixed;z-index:1010;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:0; padding: .5rem;display:none;box-sizing:border-box;}
+.show-img-box .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+.show-img-box .swiper-slide{
+        text-align: center;
+        font-size: 18px;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+.show-img-box .swiper-slide img{
+	width:100%;
+}
+.pwd-box{
+	width:70%;
+	padding:.5rem;
+	border-radius:.2rem;
+	background:#fff;
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%)
+}
+.pwd-box input{
+	width:100%;
+	height:1.5rem;
+	border:.05rem solid #aaa;	
+	border-radius:.1rem;
+	padding-left:.2rem;
+	margin-bottom:.8rem;
+}
+.pwd-box p{
+	height:1.5rem;font-size:.7rem;text-align:center;line-height:1.5rem;color:#fff;width:100%;border-radius:.7rem;background:#ed5941
+}

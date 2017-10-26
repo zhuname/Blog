@@ -114,10 +114,18 @@ Object data=session.getAttribute("data");
 			color: #ffffff;
 			text-align: center;
 		}
+		#images img{
+		margin:.1rem;}
 
 	</style>
 
 	<div class="wraper ">
+			<div class="show-img-box">
+	    <div class="swiper-container">
+        <div class="swiper-wrapper">
+        </div>
+    </div>
+</div>
 	<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">城市圈详情</p>
@@ -218,7 +226,8 @@ Object data=session.getAttribute("data");
 			<div class="f_28 clr_3 mt_20">{{= content}}</div>
 
 			<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
-				<div id="images"></div>
+				<div id="images">
+</div>
 			</div>
 		</div>
 
@@ -242,7 +251,7 @@ Object data=session.getAttribute("data");
 		<div id="srcUrl" style="display: none;"><%=basePath%></div>
 		
 		<script id="detail_image_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{= image}}" class="ver_mid" style="width:4.75rem;height:4.75rem;" />
+			<img src="{{= image}}" onclick="showImg(this)" class="ver_mid" style="width:4.75rem;height:4.75rem;" />
 		</script>
 		
 		
@@ -360,6 +369,16 @@ Object data=session.getAttribute("data");
 		$('.close_kq_mask').click(function(){
 			$(this).parents('.kq_mask').hide();
 		});
+							    $(".show-img-box").click(function(){
+    	$(this).toggle();
+    });
+					var swiper = new Swiper('.swiper-container', {
+				        pagination: '.swiper-pagination',
+				        paginationClickable: true,
+				        observer:true,
+				        observeParents:true,
+				        spaceBetween : 10,
+				    });
 	</script>
 	
 	<div id="srk_box" style="display:none;" onclick="hideInput();"  class="srk_box">
@@ -384,7 +403,6 @@ Object data=session.getAttribute("data");
 		$(show).siblings('.arr_up_down').toggle();
 		$(".whte").toggle();
 	};
-	
 	</script>
 		
 	</div>
