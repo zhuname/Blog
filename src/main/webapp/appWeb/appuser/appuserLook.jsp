@@ -101,7 +101,7 @@ Object data=session.getAttribute("data");
 				</span>
 			</div>
 
-			<div style="background: url({{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}) no-repeat;width:16rem;height:7rem; position: absolute; top: 0;z-index: -1"></div>
+			<div style="background: url({{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}})center no-repeat;width:16rem;height:7rem; position: absolute; top: 0;z-index: -1"></div>
 
 
 		</div>

@@ -297,10 +297,10 @@ Object data=session.getAttribute("data");
 				</li>
 			</ul>
 		</div>
-		<div class="kq_mask" id="payTmpl" style="display: none;">
+		<div class="kq_mask" id="payTmpl" style="display: none;z-index:200;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
             <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
-            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥请填写打赏金额"/>
+            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥ 请输入金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预订电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
                {{= appointExplain}}

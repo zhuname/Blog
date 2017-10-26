@@ -153,7 +153,8 @@ html,body{background:#f95d47;}
 				{{= endTime}}止(过期作废)
 			</div>
 
-			<div class="f_26 clr_3">{{= descr}}</div>
+			<div class="f_26 clr_3"><pre style="white-space: pre-wrap;
+word-wrap: break-word;">{{= descr}}</pre></div>
 
 
 			<div class="f_26 clr_3 dis_f ali_ct padt_20 bordertop1 mt_30">
@@ -163,7 +164,7 @@ html,body{background:#f95d47;}
 				</div>
 			</div>
 
-			<div class="f_28 clr_he dis_f ali_ct jus_bt padt_20 bordertop1 mt_30" onclick="phone({{= phone}});">
+			<div class="f_28 clr_he dis_f ali_ct jus_bt padt_20 bordertop1" onclick="phone({{= phone}});">
 				<div class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/tel_x.png" class="dis_b" style="width:0.8rem;margin-right: 0.3rem;" />{{= phone}}</div>
 				 <a href="tel://{{= phone}}" id="tell"><img src="<%=basePath%>/js/appWeb/images/tel_blue.png" class="dis_b" style="width:1rem;margin-left: 0.3rem;" />
 			</a>
@@ -249,8 +250,8 @@ html,body{background:#f95d47;}
 		</script>
 		
 		<script id="lingquanFoot_tmpl" type="text/x-jquery-tmpl">
-			<div class="clr_3 f_30">…</div>
-			<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;padding-right: 5px;" />
+			<div class="clr_3 f_30" style="margin-top:-0.4rem;">…</div>
+			<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem 0 0;padding-right: 5px;" />
 		</script>
 		
 		

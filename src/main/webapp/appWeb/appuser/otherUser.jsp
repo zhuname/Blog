@@ -260,10 +260,10 @@ body{background: #f0f2f5;}
 			<div class="mt_10" style="width:90%;">
 				<div class="f_22 clr_6">{{= t}} 发布动态</div>
 				<div class="clr_3 f_28 mt_10" >{{= content}}</div>
-				<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
+				<div class="dis_f ali_ct  flex_w quan_img mt_20">
 						{{if images}}
 						{{each images}}
-								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:4rem;" />
+								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:4rem;margin:.05rem;" />
    						 {{/each}}
 						{{/if}}
 
@@ -273,7 +273,7 @@ body{background: #f0f2f5;}
 
 				</div>
 
-				<div class="dis_f jus_rt mt_20">
+				<div class="dis_f jus_rt mt_20 hrs pos_rela">
 					<div class="dis_f ali_ct jus_bt padt_20" style="width:9rem;">
 						{{if sumMoney}}
 						<div>
