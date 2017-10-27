@@ -88,8 +88,9 @@ html,body{height:100%;}
 			</li>
 		</ul>
 
-	<div class="haibao_wrap" style="margin-top:-0.5rem;overflow: hidden;">
+	<div class="haibao_wrap" style="margin-top:-0.5rem;overflow:hidden;box-sizing:border-box;">
 			<ul class="mask_hb_ul dis_f ali_ct jus_bt flex_w" id="list">
+			
 				</ul>
 				</div>
 
@@ -155,7 +156,7 @@ html,body{height:100%;}
 			<script id="activity_list_tmpl" type="text/x-jquery-tmpl">
 				<div class="mt_10 pos_rela"  onclick="window.location.href='/mts/appWeb/activity/activityDetail.jsp?id={{= id}}'";>
 				{{if type==1}}
-				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
+				<img src="{{= image}}" class="ver_mid" style="width:100%;height:8rem;" />
 				{{else}}
 				<img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b play_img" style="width:2rem;" />
 				<img src="{{= mediaUrl}}" class="ver_mid" style="width:16rem;height:8rem;" />
@@ -187,8 +188,8 @@ html,body{height:100%;}
 		
 		
 		<script id="card_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela" onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= id}}'">
-			<div class="pad_20 dis_f ali_top bg_f">
+				<div class="pad_3020 pos_rela" onclick="window.location.href='/mts/appWeb/card/cardDetail.jsp?id={{= id}}'" style="width:100%;box-sizing: border-box;">
+			<div class="pad_20 dis_f ali_top bg_f" style="width:100%; box-sizing: border-box;">
 				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
 				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
 					<div>
@@ -217,7 +218,7 @@ html,body{height:100%;}
 			</div>
 
 			<div class="f_30 clr_3 bg_f padl_20" style="padding-bottom:0.5rem;">{{= title}}</div>
-<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem;" /></div>
+<div class="bg_f"><img src="<%=basePath%>/js/appWeb/images/kq_quan.png" class="ver_mid" style="height:0.483rem;width:100%;" /></div>
 			<div class="dis_f ali_ct jus_bt pad_20 bg_f" >
 					<div class="f_18 clr_he dis_f ali_ct">
 						<img src="<%=basePath%>/js/appWeb/images/jzsj.png" class="ver_mid" style="width:0.4rem;margin-right: 0.2rem;" />

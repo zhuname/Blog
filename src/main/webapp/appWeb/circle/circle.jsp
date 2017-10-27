@@ -142,9 +142,11 @@ Object data=session.getAttribute("data");
 					<li onclick="report(this,{{if appUser}}{{= appUser.id}}{{/if}},{{= id}})"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
 			</div>
-			<div class="f_28 clr_3 mt_20">{{= content}} <b id="contents{{= id}}">{{= contents}}</b></div>
-			<!--<div class="f_28 clr_3 mt_20" show="1" style="font-weight:400;color:blue;padding-left:.2rem;" onclick="showGengduo({{= id}},this);">查看更多</div>-->
-			
+			<div class="f_28 clr_3 mt_20" style="display:inline;">{{= content}} </div>
+			<div class="f_28 clr_3 mt_20" style="display:none;display:inline;" id="contents{{= id}}">{{= contents}}</div>
+			{{if quanbu}}
+			<div class="f_28 clr_3 mt_20" id="gengduo" show="1" style="font-weight:400;color:blue;padding-left:.2rem;" onclick="showGengduo({{= id}},this);">查看更多</div>
+			{{/if}}
 			<div class="dis_f ali_ct flex_w quan_img mt_20">
 				{{if type==2}}
 				{{if mediaUrl}}
@@ -153,10 +155,10 @@ Object data=session.getAttribute("data");
 				</video>
 				{{/if}}
 				{{else}}
-<div class="show-img" onclick="showImg(this)" style="overflow:hidden">
+<div class="show-img"  style="overflow:hidden">
 				{{if images}}
 					{{each images}}
-						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:4.6rem;margin:.1rem;float:left"/>
+						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:auto;margin:.1rem;float:left" onclick="showImg(this)"/>
    					{{/each}}
 				{{/if}}
 </div>
@@ -216,13 +218,6 @@ Object data=session.getAttribute("data");
 					    $(".show-img-box").click(function(){
     	$(this).toggle();
     });
-					var swiper = new Swiper('.swiper-container', {
-				        pagination: '.swiper-pagination',
-				        paginationClickable: true,
-				        observer:true,
-				        observeParents:true,
-				        spaceBetween : 10,
-				    });
 				</script>
 
 <script type="text/javascript">

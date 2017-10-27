@@ -24,9 +24,39 @@ $.ajax({
 			//获取消息记录
 			for (var int = 0; int < result.data.length; int++) {
 				
-				$('#lunbo_list_tmpl').tmpl({'image':result.data[int].image}).appendTo($('#lunbo'));
+				var url="";
 				
-			}
+				if(result.data.type!=undefined){
+					if(result.data.type==1){
+						url=result.data.url;
+					}else if(result.data.type==2){
+						url="/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+result.data.itemId;
+					}else if(result.data.type==3){
+						url="/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+result.data.itemId;
+					}else if(result.data.type==4){
+						url="/mts/appWeb/card/cardDetail.jsp?id="+result.data.itemId;
+					}else if(result.data.type==5){
+						url="/mts/appWeb/activity/activityDetail.jsp?id="+result.data.itemId;
+					}else if(result.data.type==6){
+						url="/mts/appWeb/circle/circleDetail.jsp?id="+result.data.itemId;
+					}
+					
+				}
+				
+				
+				$("#lunbo").append("<div class=\"swiper-slide\" onclick=\"window.location.href='"+url+"' \" style=\"height:auto;\"><img src=\"{{= image}}\" class=\"dis_b\" style=\"width:14.25rem;height:6.25rem;" +
+				"margin:.5rem auto 0 auto;\" /></div>").find(".swiper-slide:last img").attr("src",result.data[int].image);
+		
+	}
+	var swiper = new Swiper('.swiper-container', {
+		pagination: '.swiper-pagination',
+        paginationClickable: true,
+		observer:true,//修改swiper自己或子元素时，自动初始化swiper
+		observeParents:true,//修改swiper的父元素时，自动初始化swiper
+		autoplay : 2000,
+		loop : true,
+		 });
+				
 setTimeout(function(){
 	TouchSlide({
 		slideCell:"#bann",

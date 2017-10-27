@@ -8,7 +8,7 @@ var userData="";
 show();
 
 function showGengduo(id,obj){
-	
+	event.stopPropagation()
 	if($(obj).attr('show')==1){
 		$(obj).attr("show","0");
 		javascript:$('#contents'+id).show();
@@ -92,8 +92,29 @@ function show(){
 						result.data[int].images=imagess;
 					}
 					
-					console.log(result.data[int]);
+					if(result.data[int].content.length>60){
+						result.data[int].quanbu=1;
+						
+						var con1=new Array();
+						var con2=new Array();
+						
+						for (var int3 = 0; int3 < result.data[int].content.length; int3++) {
+							
+							if(int3<60){
+								con1[int3]=result.data[int].content[int3];
+							}else{
+								con2[int3-60]=result.data[int].content[int3];
+							}
+							
+						}
+						result.data[int].content=con1;
+						result.data[int].contents=con2;
+						
+					}
+					
+					
 					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
+					javascript:$('#contents'+result.data[int].id).hide();
 					
 				}
 			}
@@ -333,12 +354,21 @@ function getQueryString(aaa) {
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
-}function showImg(obj){
-	 event.stopPropagation(); 
+}
+function showImg(obj){
+	event.stopPropagation()
+	console.log($(obj).index())
+	    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observer:true,
+        observeParents:true,
+        spaceBetween : 10,
+        initialSlide :$(obj).index(),
+    });
 	$(".show-img-box .swiper-wrapper").empty()
 	$(".show-img-box").toggle()
-	$(obj).children().each(function(){
+	$(obj).parent().children().each(function(){
 		$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
-		
 	})
 }
