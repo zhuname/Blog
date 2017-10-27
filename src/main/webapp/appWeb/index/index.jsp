@@ -36,11 +36,15 @@ Object data=session.getAttribute("data");
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/jquery-1.9.1.min.js"></script>
 <script type="text/javascript"
+	src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js"></script>
+<script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/TouchSlide.1.1.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/global_phone.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/jquery.tmpl.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="<%=basePath%>/js/appWeb/css/swiper.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
@@ -298,21 +302,15 @@ Object data=session.getAttribute("data");
 	</div>
 	</script>
 	
-	<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
-			<li><img id="lunbo" src="{{= image}}" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;index-z:3;" /></li>
-	</script>
-	
 	<div id="add" class="fabu_mask" style="display:none;">
 				<%-- <div><img id="lunbo" src="<%=basePath%>/js/appWeb/images/tpic.jpg" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;" /></div> --%>
-				<div class="bannD pos_rela" id="bann">
-				<div class="hd">
-					<ul></ul>
-				</div>
-				<div class="bd">
-					<ul id="lunbo">
-					</ul>
-				</div>
-				</div>
+				    <div class="swiper-container bannD pos_rela" id="alert-banner">
+				        <div class="swiper-wrapper" id="lunbo" style="height:auto;">
+				        
+				        </div>
+				        <!-- Add Pagination -->
+				        <div class="swiper-pagination"></div>
+				    </div>
 
 
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">

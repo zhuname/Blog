@@ -11,7 +11,6 @@ var dataLunbo="";
 }*/
 
 if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie("htmlCityId")==""){
-	debugger;
 	setCookie("htmlCityId",410100);
 	dataLunbo='&cityIds='+getCookie("htmlCityId");
 }else{
@@ -30,19 +29,18 @@ if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie(
 			if(result.data!=undefined){
 				//获取消息记录
 				for (var int = 0; int < result.data.length; int++) {
-					$('#lunbo_list_tmpl').tmpl({'image':result.data[int].image}).appendTo($('#lunbo'));
+					$("#lunbo").append("<div class=\"swiper-slide\"  style=\"height:auto;\"><img src=\"{{= image}}\" class=\"dis_b\" style=\"width:14.25rem;height:6.25rem;" +
+							"margin:.5rem auto 0 auto;\" /></div>").find(".swiper-slide:last img").attr("src",result.data[int].image)
 					
 				}
-	setTimeout(function(){
-		TouchSlide({
-			slideCell:"#bann",
-			titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-			mainCell:".bd ul", 
-			effect:"left",
-			autoPlay:true,//自动播放
-			autoPage:true //自动分页
-		});
-	},5000)
+				var swiper = new Swiper('.swiper-container', {
+					pagination: '.swiper-pagination',
+			        paginationClickable: true,
+		    		observer:true,//修改swiper自己或子元素时，自动初始化swiper
+		    		observeParents:true,//修改swiper的父元素时，自动初始化swiper
+		    		autoplay : 2000,
+		    		loop : true,
+		   		 });
 				
 			}
 			

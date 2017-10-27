@@ -40,7 +40,11 @@ Object data=session.getAttribute("data");
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/global_phone.js"></script>
 <script type="text/javascript"
+	src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js"></script>
+<script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/jquery.tmpl.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="<%=basePath%>/js/appWeb/css/swiper.min.css" />	
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
@@ -53,12 +57,6 @@ Object data=session.getAttribute("data");
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
 <title>首页</title>
-
-<style>
-.bannD  .bd ,.bannD .tempWrap{ width:100%;}
-/* .bannD  .bd li{ height:33px; line-height:33px;   }
-.bannD  .bd li a{ color:#666;  } */
-</style>
 
 </head>
 
@@ -334,24 +332,20 @@ Object data=session.getAttribute("data");
 	<script id="message_weidu_tmpl" type="text/x-jquery-tmpl">
 		<img src="<%=basePath%>/js/appWeb/images/weiduxx.png" class="dis_b" style="width:0.8rem;"  onclick="window.location.href='/mts/appWeb/message/message.jsp';"/>
 	</script>
-	
 	<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
-			<li><img id="lunbo" src="{{= image}}" class="dis_b" style="width:14.25rem;height:6.25rem;margin:.5rem auto 0 auto;index-z:3;" /></li>
+			
 	</script>
 	
-	
+
 	<div id="add" class="fabu_mask" style="display:none;">
-				<div class="bannD pos_rela" id="bann">
-				<div class="hd">
-					<ul></ul>
-				</div>
-				<div class="bd">
-					<ul id="lunbo">
-					</ul>
-				</div>
-				</div>
-				
-				
+				    <!-- Swiper -->
+				    <div class="swiper-container bannD pos_rela" id="alert-banner">
+				        <div class="swiper-wrapper" id="lunbo" style="height:auto;">
+				        
+				        </div>
+				        <!-- Add Pagination -->
+				        <div class="swiper-pagination"></div>
+				    </div>
 				
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">
@@ -392,6 +386,9 @@ Object data=session.getAttribute("data");
 			function addHide(){
 				$("#add").hide();
 			};
+			$("#lunbo").bind("DOMNodeInserted",function(){
+			})
+
 		</script>
 
 

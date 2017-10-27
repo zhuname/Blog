@@ -8,7 +8,7 @@ var userData="";
 show();
 
 function showGengduo(id,obj){
-	
+	event.stopPropagation()
 	if($(obj).attr('show')==1){
 		$(obj).attr("show","0");
 		javascript:$('#contents'+id).show();
@@ -333,12 +333,21 @@ function getQueryString(aaa) {
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
-}function showImg(obj){
-	 event.stopPropagation(); 
+}
+function showImg(obj){
+	event.stopPropagation()
+	console.log($(obj).index())
+	    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observer:true,
+        observeParents:true,
+        spaceBetween : 10,
+        initialSlide :$(obj).index(),
+    });
 	$(".show-img-box .swiper-wrapper").empty()
 	$(".show-img-box").toggle()
-	$(obj).children().each(function(){
+	$(obj).parent().children().each(function(){
 		$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
-		
 	})
 }

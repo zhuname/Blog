@@ -193,7 +193,7 @@ word-wrap: break-word;">{{= descr}}</pre></div>
 			{{/if}}
 			{{/if}}
 		</div>
-				<div class="bg_f dis_f ali_ct padl_30 jus_bt" style="padding-bottom:0.75rem;margin-top: 1%;text-align:right;" id="lingquan">
+				<div class="bg_f dis_f ali_ct padl_30 jus_bt" style="padding-bottom:0.5rem;padding-top:0.5rem;margin-top: 1%;text-align:right;" id="lingquan">
 				</div>
 		</script>
 		

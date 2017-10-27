@@ -61,11 +61,11 @@ Object data=session.getAttribute("data");
 					$('.filter_toggle').click(function(){
 						$('.xx_daohang').toggle();
 						$('.xx_pic').toggle();
-						
 					});
 					function showColl(show){
-						$(show).siblings('.more_ul').toggle();
-						$(show).siblings('.arr_up_down').toggle();
+						console.log($(show).siblings())
+						$(show).siblings('ul').toggle();
+						$(show).siblings('img').toggle();
 						$(".whte").toggle();
 					};
 				</script>
@@ -89,11 +89,11 @@ Object data=session.getAttribute("data");
 		</script>
 
 		<div class="tupian_bg" no-repeat;" style="position:absolute;top:0;left:0;width:14.5rem;">
-			<div class="pad_30  dis_f ali_ct jus_bt pos_rela" >
+			<div class="pad_30  dis_f ali_ct jus_bt pos_rela" style="width:100%;">
 				<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back3.png" class="dis_b" style="width:1rem;" /></a>
 				<div class="whte" onclick="showColl(this)"></div>
-				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;margin-left: 130%;" /></a>
-				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
+				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
+				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;right:1rem;" class=" arr_up_down dis_n xx_pic"/>
 				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;z-index=15" >
 					<li id="guanzhu" onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
 					<li id="pingbi" onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="height:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid"  id="collect">收藏</span></li>
@@ -255,17 +255,6 @@ Object data=session.getAttribute("data");
 
 
 	<script type="text/javascript">
-					$('.filter_toggle').click(function(){
-						$('.xx_pic').toggle();
-						$('.xx_daohang').toggle();
-						$('#black-box').toggle();
-						console.log($('#black-box'))
-					});
-					$('#black-box').click(function(){
-						$(this).toggle();
-						$('.more_ul_toggle').siblings("ul").hide()
-						$('.more_ul_toggle').siblings("img").hide()
-					});
 					$(".alert-box").click(function(){
 						$(this).css("top","100%");
 						$("#black-box").hide();

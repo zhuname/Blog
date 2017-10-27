@@ -143,7 +143,7 @@ Object data=session.getAttribute("data");
 				</ul>
 			</div>
 			<div class="f_28 clr_3 mt_20">{{= content}} <b id="contents{{= id}}">{{= contents}}</b></div>
-			<!--<div class="f_28 clr_3 mt_20" show="1" style="font-weight:400;color:blue;padding-left:.2rem;" onclick="showGengduo({{= id}},this);">查看更多</div>-->
+			<div class="f_28 clr_3 mt_20" show="1" style="font-weight:400;color:blue;padding-left:.2rem;" onclick="showGengduo({{= id}},this);">查看更多</div>
 			
 			<div class="dis_f ali_ct flex_w quan_img mt_20">
 				{{if type==2}}
@@ -152,10 +152,10 @@ Object data=session.getAttribute("data");
 					您的浏览器不支持 video 标签。
 				</video>
 				{{else}}
-<div class="show-img" onclick="showImg(this)" style="overflow:hidden">
+<div class="show-img"  style="overflow:hidden">
 				{{if images}}
 					{{each images}}
-						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:4.6rem;margin:.1rem;float:left"/>
+						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:auto;margin:.1rem;float:left" onclick="showImg(this)"/>
    					{{/each}}
 				{{/if}}
 </div>
@@ -215,13 +215,6 @@ Object data=session.getAttribute("data");
 					    $(".show-img-box").click(function(){
     	$(this).toggle();
     });
-					var swiper = new Swiper('.swiper-container', {
-				        pagination: '.swiper-pagination',
-				        paginationClickable: true,
-				        observer:true,
-				        observeParents:true,
-				        spaceBetween : 10,
-				    });
 				</script>
 
 <script type="text/javascript">

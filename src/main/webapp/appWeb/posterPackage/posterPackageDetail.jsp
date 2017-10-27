@@ -116,7 +116,7 @@ Object data=session.getAttribute("data");
 		<div style="display:none" id="showZan"><%=basePath%>/js/appWeb/images/zan2.png</div>
 		<div style="display:none" id="showYiZan"><%=basePath%>/js/appWeb/images/zan.png</div>
 
-		<div class="fixed_comment dis_f ali_ct jus_bt pad_20">
+		<div class="fixed_comment dis_f ali_ct jus_bt pad_20" style="z-index:110;transfrom:translate(0,0,0)">
 			<img id="zanImg" src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid"  onclick="oper(1);"  style="height:1rem;" />
 			<input placeholder="说点什么吧......" class="ipt1 f_26 clr_9" id="comment" type="text" />
 			<input class="btn1 f_26 clr_f" type="button" onclick="oper(2);"  value="发送" />
@@ -300,7 +300,7 @@ Object data=session.getAttribute("data");
 		<div class="kq_mask" id="payTmpl" style="display: none;z-index:200;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
             <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
-            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥ 请输入金额"/>
+            <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;outline:none;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥ 请输入金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预订电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
                {{= appointExplain}}
@@ -376,11 +376,10 @@ Object data=session.getAttribute("data");
 			<li><img src="{{= image}}" class="dis_b" style="width:15rem;" /></li>
 	</script>
 	
-	<div class="bonus_mask" style="display: none;">
-
-			<div class="honus_bg pos_rela">
+	<div class="bonus_mask" onclick="$('.bonus_mask').hide()" style="display:none;">
+			<div class="honus_bg pos_rela" onclick="javascript:event.stopPropagation()">
 				<div style="position: absolute; height: 2rem;width:7rem; bottom: 0.5rem; left: 3rem"  onclick="lingquList();"></div>
-			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" class="ver_mid close_hb" style="width:1rem;height:1rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" class="ver_mid close_hb" style="width:2rem;height:2rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
 				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="moneyShow"></span><span class="f_24">元</span></div>
 
 				<div class="al_ct" style="padding-top:4.5rem;">
@@ -430,6 +429,7 @@ Object data=session.getAttribute("data");
 					$(".Report").click(function(){
 						event.stopPropagation();
 					})
+
 				</script>
 		
 	
