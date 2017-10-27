@@ -142,7 +142,7 @@ Object data=session.getAttribute("data");
 		<script id="foot_tmpl" type="text/x-jquery-tmpl">
 		<div class="fixed_dashang">
 			<div class="dis_f ali_ct jus_bt bg_f bordertop1" style="padding:0 1.5rem;" >
-				<div class="pad_20"  onclick="$('#showDashang').show();" >
+				<div class="pad_20"  onclick="dashangShow();" >
 					<img src="<%=basePath%>/js/appWeb/images/ds.png" class="ver_mid" style="width:0.8rem;" />
 					<span class="f_26 clr_6 ver_mid">打赏</span>
 				</div>
@@ -151,9 +151,14 @@ Object data=session.getAttribute("data");
 					<span class="f_26 clr_6 ver_mid">评论</span>
 				</div>
 				<div class="pad_20" id="dianzanshow">
+					{{if isOper}}
 					{{if isOper==1}}
 					<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="ver_mid" style="height:0.75rem;" />
 					<span class="f_26 clr_r ver_mid">点赞</span>
+					{{else}}
+					<img src="<%=basePath%>/js/appWeb/images/praise3.png" onclick="dianzan();" class="ver_mid" style="height:0.75rem;" />
+					<span class="f_26 clr_6 ver_mid"  onclick="dianzan();" >点赞</span>
+					{{/if}}
 					{{else}}
 					<img src="<%=basePath%>/js/appWeb/images/praise3.png" onclick="dianzan();" class="ver_mid" style="height:0.75rem;" />
 					<span class="f_26 clr_6 ver_mid"  onclick="dianzan();" >点赞</span>

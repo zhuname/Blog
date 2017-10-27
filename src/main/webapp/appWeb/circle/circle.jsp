@@ -147,10 +147,11 @@ Object data=session.getAttribute("data");
 			
 			<div class="dis_f ali_ct flex_w quan_img mt_20">
 				{{if type==2}}
-
+				{{if mediaUrl}}
 				<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
 					您的浏览器不支持 video 标签。
 				</video>
+				{{/if}}
 				{{else}}
 <div class="show-img" onclick="showImg(this)" style="overflow:hidden">
 				{{if images}}

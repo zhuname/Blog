@@ -52,26 +52,34 @@ $.ajax({
 				
 				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 				
-				
-				var lunbo=result.data.image.split(";");
-				
-				for (var int = 0; int < lunbo.length; int++) {
+				if(result.data.type==1){
 					
+					$("#bann").show();
+					
+					var lunbo=result.data.image.split(";");
+					
+					for (var int = 0; int < lunbo.length; int++) {
+						
 						if(lunbo[int]!=""){
 							$('#lunbo_list_tmpl').tmpl({'image':lunbo[int]}).appendTo($('#lunbo'));
 							
 						}
+						
+					}
 					
+					TouchSlide({
+						slideCell:"#bann",
+						titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+						mainCell:".bd ul", 
+						effect:"left",
+						autoPlay:true,//自动播放
+						autoPage:true //自动分页
+					});
+				}else{
+					$("#videos").show();
+					$("#videos").attr("src",result.data.mediaUrl);
+					$("#videos").attr("poster",result.data.mediaImage);
 				}
-				
-				TouchSlide({
-					slideCell:"#bann",
-					titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-					mainCell:".bd ul", 
-					effect:"left",
-					autoPlay:true,//自动播放
-					autoPage:true //自动分页
-				});
 				
 				
 				

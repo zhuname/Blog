@@ -41,9 +41,21 @@ $(document).ready(function(){
 function xinzeng(){
 	var data='userId='+userId+'&cityId='+cityId+'&type='+chageType+'&content='+$('#content').val();
 	var url="";
+	var imagesNum=0;
 	if($('#content').val()==""||$('#content').val()==null){
-		alert('请完善信息');
-		return;
+		var images = document.getElementsByName("images");
+		for (var int = 0; int < images.length; int++) {
+			if($(images[int]).attr("src")!=""&&$(images[int]).attr("src")!=undefined){
+				if($(images[int]).attr("src")!=""){
+					imagesNum++;
+				}
+			}
+		}
+		if(images<=0){
+			alert('请完善信息');
+			return;
+		}
+			
 	}
 	
 	if(chageType==1){

@@ -118,7 +118,7 @@ Object data=session.getAttribute("data");
 
 		<div class="fixed_comment dis_f ali_ct jus_bt pad_20">
 			<img id="zanImg" src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid"  onclick="oper(1);"  style="height:1rem;" />
-			<input placeholder="说点什么吧......" class="ipt1 f_26 clr_9" id="comment" type="text" />
+			<input onclick="isDenglu();" placeholder="说点什么吧......" class="ipt1 f_26 clr_9" id="comment" type="text" />
 			<input class="btn1 f_26 clr_f" type="button" onclick="oper(2);"  value="发送" />
 		</div>
 	</div>

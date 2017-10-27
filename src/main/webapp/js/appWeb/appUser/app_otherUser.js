@@ -3,8 +3,9 @@ var nextPage=1;
 var dataString="";
 var changeType=1;
 var userId;
-var appUserId;
+var appUserId="";
 var isChange=0;
+var isChangess=0;
 //初始化页面
 var data='&pageIndex='+nextPage;
 show();
@@ -30,7 +31,7 @@ function show(){
 			console.log(textStatus) ;
 		}
 	});
-	
+	isChangess=1;
 	
 	if(isChange==0){
 		isChange=1;
@@ -97,7 +98,13 @@ function show(){
 									
 									if(result.data[int].image!=undefined){
 										var images=result.data[int].image.split(";");
-										result.data[int].images=images;
+										var imagess=new Array();
+										for (var int2 = 0; int2 < images.length; int2++) {
+											if(images[int2]!=""){
+												imagess[int2]=images[int2];
+											}
+										}
+										result.data[int].images=imagess;
 										
 									}
 									
@@ -109,6 +116,9 @@ function show(){
 									}
 									
 									$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+									if(int==result.data.length-1){
+										isChangess=0;
+									}
 								}
 							}
 							
@@ -133,7 +143,13 @@ function show(){
 }
 
 
+
+
 function change(type,isClear,li){
+	console.log(isChangess);
+	if(isChangess==0){
+		isChangess=1;
+	
 	if(isClear==2){
 		
 		$("#list").html("");
@@ -217,7 +233,13 @@ function change(type,isClear,li){
 						
 						if(result.data[int].image!=undefined){
 							var images=result.data[int].image.split(";");
-							result.data[int].images=images;
+							var imagess=new Array();
+							for (var int2 = 0; int2 < images.length; int2++) {
+								if(images[int2]!=""){
+									imagess[int2]=images[int2];
+								}
+							}
+							result.data[int].images=imagess;
 							
 						}
 						
@@ -229,6 +251,9 @@ function change(type,isClear,li){
 						}
 						
 						$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+						if(int==result.data.length-1){
+							isChangess=0;
+						}
 					}
 				}
 				
@@ -261,7 +286,9 @@ function change(type,isClear,li){
 						result.data[int].image=result.data[int].image.split(";")[0];
 						
 						$('#posterPackage_list_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
-						
+						if(int==result.data.length-1){
+							isChangess=0;
+						}
 					}
 				}
 				
@@ -292,7 +319,10 @@ function change(type,isClear,li){
 						
 						$('#media_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
 						
-					}
+						if(int==result.data.length-1){
+							isChangess=0;
+						}
+						}
 				}
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -326,9 +356,21 @@ function change(type,isClear,li){
 							
 						}
 						
-						$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+						if(result.data[int].image!=undefined){
+							var images=result.data[int].image.split(";");
+							
+							result.data[int].image=images[0];
+							
+						}
 						
+						
+						
+						$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+						if(int==result.data.length-1){
+							isChangess=0;
+						}
 					}
+					
 					
 				}
 				
@@ -345,6 +387,7 @@ function change(type,isClear,li){
 		break;
 	}
 	
+	}
 	
 }
 

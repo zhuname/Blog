@@ -209,7 +209,7 @@ var balance;
 							}
 							if(result.data!=undefined){
 									for (var int = 0; int < result.data.length; int++) {
-										if(int<6){
+										if(int<8){
 										
 											$('#lingqu_tmpl').tmpl(result.data[int]).appendTo($('#lingqu'));
 											
@@ -383,7 +383,7 @@ function yuyue(){
 		success : function(result){
 			if(result.status=="error"){
 				
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				alert(result.message);
 				return;
 			}
 			
@@ -395,7 +395,7 @@ function yuyue(){
 					dataType : "json",
 					success : function(result){
 						if(result.status=="error"){
-							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+							alert(result.message);
 							return;
 						}
 						$("#show-img-box").show();
@@ -410,7 +410,7 @@ function yuyue(){
 				
 			}
 			
-			
+			window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -525,7 +525,7 @@ function oper(type){
 	
 
 function initColl(){
-	if(userId!=undefined&&userId!=null){
+	if(userId!=undefined&&userId!=null&&userId!=""){
 	
 	if(userId!=itemUserId){
 	//加载页面方法
@@ -634,13 +634,25 @@ function attr(){
 	});
 }
 
-
+function isDenglu(){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
+}
 
 
 var jubaoItemId="";
 var reportedUserId="";
 
 function report(obj){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
+	
 	$(".alert-box").css("top","0");
 	$(obj).parents('.more_ul').toggle();
 	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();

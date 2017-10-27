@@ -76,7 +76,7 @@ Object data=session.getAttribute("data");
 
 <div class="haibao_bg pos_rela">
 		
-			<div class="bann pos_rela" id="bann">
+			<div class="bann pos_rela" style="display:none;" id="bann">
 				<div class="hd">
 					<ul></ul>
 				</div>
@@ -85,10 +85,15 @@ Object data=session.getAttribute("data");
 					</ul>
 				</div>
 			</div>
+			
+			<video id="videos" src="" class="news_video" style="width:100%;height:100%;display:none;" poster="" controls="controls">
+					您的浏览器不支持 video 标签。
+			</video>
+			
 			<script type="text/javascript">
 		</script>
 
-		<div class="tupian_bg" no-repeat;" style="position:absolute;top:0;left:0;width:14.5rem;">
+		<div class="tupian_bg" no-repeat;" style="position:absolute;top:0;left:0;width:14.5rem;height: auto;">
 			<div class="pad_30  dis_f ali_ct jus_bt pos_rela" >
 				<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back3.png" class="dis_b" style="width:1rem;" /></a>
 				<div class="whte" onclick="showColl(this)"></div>
