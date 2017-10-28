@@ -149,7 +149,7 @@ Object data=session.getAttribute("data");
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
    					 {{/each}}
 					{{/if}}
 						<div class="clr_3 f_30">…</div>

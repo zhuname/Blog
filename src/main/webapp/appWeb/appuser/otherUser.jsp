@@ -150,7 +150,7 @@ body{background: #f0f2f5;}
 		<img src="{{= medal.image}}" class="ver_mid" style="width:0.5rem;" />
 	</script>
 
-		<ul  class="zy_nav_ul f_24 clr_3 dis_f ali_ct jus_bt padl_20 bg_f borderbot1">
+		<ul  class="zy_nav_ul f_24 clr_3 dis_f ali_ct jus_bt padl_20 bg_f borderbot1" >
 			<li onclick="change(1,2,this)" class="change dis_f ali_ct flex_col jus_ct zy_cur ">
 				<img src="<%=basePath%>/js/appWeb/images/h1h.png" class="ver_mid" style="width:0.8rem;" />
 				<p class='lir clr_r' id="cityCircleCount">0</p>
@@ -175,7 +175,7 @@ body{background: #f0f2f5;}
 
 		<div class="wraper overh" id="list"></div>
 
-		<ul class="mask_hb_ul dis_f ali_ct jus_bt flex_w"  id="posterPackage">
+		<ul class="mask_hb_ul dis_f ali_ct jus_bt flex_w"  id="posterPackage" style="padding:0 .4rem;">
 
 		</ul>
 		

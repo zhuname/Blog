@@ -495,7 +495,6 @@ function showImg(obj){
 		$(obj).parent().children().each(function(){
 			$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
 		})
-		
 
 }
 function alertMneu(obj){

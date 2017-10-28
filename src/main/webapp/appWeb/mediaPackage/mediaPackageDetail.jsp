@@ -109,7 +109,7 @@ Object data=session.getAttribute("data");
 		<div style="display:none" id="showZan"><%=basePath%>/js/appWeb/images/zan2.png</div>
 		<div style="display:none" id="showYiZan"><%=basePath%>/js/appWeb/images/zan.png</div>
 
-		<div class="fixed_comment dis_f ali_ct jus_bt pad_20">
+		<div class="fixed_comment dis_f ali_ct jus_bt pad_20" style="padding: 0.2rem .5rem;">
 			<img id="zanImg" src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid"  onclick="oper(3);"  style="height:1rem;" />
 			<input onclick="isDenglu();" placeholder="说点什么吧......" class="ipt1 f_26 clr_9" id="comment" type="text" />
 			<input class="btn1 f_26 clr_f" type="button" onclick="oper(4);"  value="发送" />
