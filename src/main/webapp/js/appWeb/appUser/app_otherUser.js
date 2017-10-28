@@ -149,8 +149,9 @@ function change(type,isClear,li){
 	console.log(isChangess);
 	if(isChangess==0){
 		isChangess=1;
-	
 	if(isClear==2){
+		
+		changeType=type;
 		
 		$("#list").html("");
 		$("#posterPackage").html("");
@@ -218,9 +219,10 @@ function change(type,isClear,li){
 	case 1:
 		
 		$.ajax({
-			url : '/mts/system/circle/list/json?web='+"&userId="+userId+data+"&appuserId="+appUserId,
+			url : '/mts/system/circle/list/json?web='+"&userId="+userId+'&pageIndex='+nextPage+"&appuserId="+appUserId,
 			type : "post",
 			dataType : "json",
+			async: false,
 			success : function(result){
 				
 				if(result.status=="error"){
@@ -271,9 +273,10 @@ function change(type,isClear,li){
 		break;
 	case 2:
 		$.ajax({
-			url : '/mts/system/posterpackage/list/json?web=&type=2&personType=2&userId='+userId+data,
+			url : '/mts/system/posterpackage/list/json?web=&type=2&personType=2&userId='+userId+'&pageIndex='+nextPage,
 			type : "post",
 			dataType : "json",
+			async: false,
 			success : function(result){
 				
 				if(result.status=="error"){
@@ -306,9 +309,10 @@ function change(type,isClear,li){
 		break;
 	case 3:
 		$.ajax({
-			url : '/mts/system/mediapackage/list/json?web=&status=3&personType=2&userId='+userId+data,
+			url : '/mts/system/mediapackage/list/json?web=&status=3&personType=2&userId='+userId+'&pageIndex='+nextPage,
 			type : "post",
 			dataType : "json",
+			async: false,
 			success : function(result){
 				if(result.status=="error"){
 					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
@@ -333,8 +337,9 @@ function change(type,isClear,li){
 		break;
 	case 4:
 		$.ajax({
-			url : '/mts/system/activity/appList/json?web='+'&appuserId='+appUserId+'&userId='+userId+data,
+			url : '/mts/system/activity/appList/json?web='+'&appuserId='+appUserId+'&userId='+userId+'&pageIndex='+nextPage,
 			type : "post",
+			async: false,
 			dataType : "json",
 			success : function(result){
 				
@@ -386,7 +391,7 @@ function change(type,isClear,li){
 		});
 		break;
 	}
-	
+	isChangess=0;
 	}
 	
 }

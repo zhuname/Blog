@@ -174,7 +174,7 @@ Object data=session.getAttribute("data");
 					<span class="f_20 clr_6 ver_mid">{{= commentCount}}</span>
 				</div>
 				<div>
-					{{if topCount==1}}
+					{{if isOper}}
 						<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid" style="height:0.75rem;" />
 						<span class="f_20 clr_r ver_mid ">{{= topCount}}</span>
 					{{else}}
