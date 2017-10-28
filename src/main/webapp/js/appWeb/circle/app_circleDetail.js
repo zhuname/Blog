@@ -361,7 +361,7 @@ function fasong(){
 	console.log($("#content").val());
 	//加载页面方法
 	$.ajax({
-		url : '/mts/system/oper/update/json?web=&type=8'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#content").val()+toUserIdString,
+		url : '/mts/system/oper/update/json?web=&type=8'+"&itemId="+itemId+"&userId="+userId+"&content="+$("#contentValue1").val()+toUserIdString,
 		type : "post",
 		dataType : "json",
 		success : function(result){

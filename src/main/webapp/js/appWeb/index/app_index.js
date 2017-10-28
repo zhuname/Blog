@@ -23,22 +23,20 @@ $.ajax({
 		if(result.data!=undefined){
 			//获取消息记录
 			for (var int = 0; int < result.data.length; int++) {
-				
 				var url="";
-				
-				if(result.data.type!=undefined){
-					if(result.data.type==1){
-						url=result.data.url;
-					}else if(result.data.type==2){
-						url="/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+result.data.itemId;
-					}else if(result.data.type==3){
-						url="/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+result.data.itemId;
-					}else if(result.data.type==4){
-						url="/mts/appWeb/card/cardDetail.jsp?id="+result.data.itemId;
-					}else if(result.data.type==5){
-						url="/mts/appWeb/activity/activityDetail.jsp?id="+result.data.itemId;
-					}else if(result.data.type==6){
-						url="/mts/appWeb/circle/circleDetail.jsp?id="+result.data.itemId;
+				if(result.data[int].type!=undefined){
+					if(result.data[int].type==1){
+						url=result.data[int].url;
+					}else if(result.data[int].type==2){
+						url="/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+result.data[int].itemId;
+					}else if(result.data[int].type==3){
+						url="/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+result.data[int].itemId;
+					}else if(result.data[int].type==4){
+						url="/mts/appWeb/card/cardDetail.jsp?id="+result.data[int].itemId;
+					}else if(result.data[int].type==5){
+						url="/mts/appWeb/activity/activityDetail.jsp?id="+result.data[int].itemId;
+					}else if(result.data[int].type==6){
+						url="/mts/appWeb/circle/circleDetail.jsp?id="+result.data[int].itemId;
 					}
 					
 				}

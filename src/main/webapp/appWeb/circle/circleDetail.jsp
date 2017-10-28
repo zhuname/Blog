@@ -412,7 +412,7 @@ z-index:100;
 	</div>
 	<div  id="inputBtn"  style="display:none;">
 			<div class="pad_20 bottom_srk zIndex">
-				<input id="content" class="inpt2 f_28 clr_9" type="text" placeholder="回复：说点儿什么吧...">
+				<input id="contentValue1" class="inpt2 f_28 clr_9" type="text" placeholder="回复：说点儿什么吧...">
 				<div class="fs" onclick="fasong();">发送</div>
 				<div style="clear: both"></div>
 			</div>

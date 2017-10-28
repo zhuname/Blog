@@ -14,7 +14,7 @@ $.ajax({
 		
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appUserId="+userId;
@@ -192,6 +192,10 @@ function initColl(){
 }
 
 function collect(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/collect/update/json?web=&type=4&userId='+userId+'&itemId='+id,
@@ -212,6 +216,10 @@ function collect(){
 }
 
 function attr(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
@@ -274,6 +282,10 @@ var jubaoItemId="";
 var reportedUserId="";
 
 function report(obj){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	$(".alert-box").css("top","0");
 	$(obj).parents('.more_ul').toggle();
 	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();

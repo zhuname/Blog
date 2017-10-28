@@ -40,7 +40,7 @@ function show(){
 	dataType : "json",
 	success : function(result){
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appuserId="+userId;
