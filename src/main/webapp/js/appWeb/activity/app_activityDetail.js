@@ -100,8 +100,8 @@ $.ajax({
 				
 				//获取同城活动参与人
 				
-				join(1,4);
-				join(2,7);
+				join(1,8);
+				join(2,5);
 				
 			}
 			
@@ -253,9 +253,7 @@ function join(joinOrAward,pageSize){
 				}else if(joinOrAward==2){
 					//获取消息记录
 					for (var int = 0; int < result.data.length; int++) {
-						if(int<8){
 							$('#zhongjiang_tmpl').tmpl(result.data[int]).appendTo($('#zhongjiang'));
-						}
 					}
 				}
 				

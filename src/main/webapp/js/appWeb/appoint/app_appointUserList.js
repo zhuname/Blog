@@ -20,9 +20,11 @@ function show(){
 				
 				if(result.data!=undefined){
 					//获取消息记录
-					$('#appoint_top_tmpl').tmpl(result.data).appendTo($('#detail'));
+					if(nextPage==1){
+						$('#appoint_top_tmpl').tmpl(result.data).appendTo($('#detail'));
+					}
 					$.ajax({
-						url : '/mts/system/appoint/appointList/json?web=&type='+getQueryString('type')+'&itemId='+getQueryString('itemId'),
+						url : '/mts/system/appoint/appointList/json?web=&type='+getQueryString('type')+'&itemId='+getQueryString('itemId')+"&pageIndex="+nextPage,
 						type : "post",
 						dataType : "json",
 						success : function(result){
