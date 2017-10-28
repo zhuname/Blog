@@ -163,7 +163,7 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="f_28 clr_6 mt_20 clr_he" style="line-height:1.2rem;text-indent: 1.4rem;">
-				<pre  style="white-space: pre-wrap">{{= descr}}</pre>
+				<pre  style="white-space: pre-wrap;line-height:1rem;">{{= descr}}</pre>
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">
