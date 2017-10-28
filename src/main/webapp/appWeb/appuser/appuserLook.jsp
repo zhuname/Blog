@@ -72,7 +72,7 @@ Object data=session.getAttribute("data");
 
 			<div class="pad_30 dis_f ali_end jus_bt">
 				<div class="dis_f ali_ct">
-					<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
+					<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b"  onclick="window.location.href='/mts/appWeb/appuser/appuserUpdate.jsp';" style="width:1.5rem;height:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
 					<div class="clr_f">
 						<span class="f_28">{{= name}}</span>
 						{{if sex}}

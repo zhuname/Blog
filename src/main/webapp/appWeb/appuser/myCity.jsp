@@ -105,13 +105,15 @@ html,body{height:100%;}
 		.left_dvwz{
 			position:fixed;
 			right: 0.8rem;
-			top: 4rem;
+			top: 3rem;
 		}
 
 		.left_dvwz a{
 			display: block;
 			color: #2f2f2f;
 			line-height: 0.9rem;
+			width:1rem;
+			text-align:center;
 		}
 
 	</style>

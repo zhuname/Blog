@@ -97,7 +97,7 @@ body{background: #f0f2f5;}
 
 			<div class="pad_30 dis_f ali_end jus_bt">
 				<div class="dis_f ali_ct">
-					<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
+					<img src="{{if header}}{{= header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.5rem;height:1.5rem;border:2px solid #FFF;border-radius: 0.8rem;margin-right:0.5rem;" />
 					<div class="clr_f">
 						<span class="f_28">{{= name}}</span>
 						{{if sex}}
@@ -241,7 +241,7 @@ body{background: #f0f2f5;}
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
    					 {{/each}}
 					{{/if}}
 						<div class="clr_3 f_30">…</div>
