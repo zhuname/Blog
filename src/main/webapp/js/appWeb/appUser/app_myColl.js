@@ -202,6 +202,13 @@ function change(type,change){
 						if(result.data!=undefined){
 							for (var int = 0; int < result.data.length; int++) {
 								if(result.data[int].activity!=undefined){
+									
+									if(result.data[int].activity.endTime){
+										
+										result.data[int].activity.endTime=result.data[int].activity.endTime.substring(0,10);
+										
+									}
+									
 									if(result.data[int].activity.image!=undefined){
 										var image= result.data[int].activity.image.split(";");
 										result.data[int].activity.image=image[0];

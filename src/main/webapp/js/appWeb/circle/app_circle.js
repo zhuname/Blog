@@ -111,7 +111,6 @@ function show(){
 						
 					}
 					
-					
 					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
 					javascript:$('#contents'+result.data[int].id).hide();
 					
