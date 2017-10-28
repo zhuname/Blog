@@ -4,7 +4,6 @@ var dataString="";
 var userId;
 //初始化页面
 show();
-
 function selectCategory(categoryId){
 	nextPage=1;
 	$('#posterPackage').html("");
@@ -182,7 +181,6 @@ window.onscroll=function(){
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
 	var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
 	if(a+b==c){
-		alert(11)
 		nextPage=nextPage+1;
 		show();
 	}
@@ -197,6 +195,7 @@ function getQueryString(aaa) {
 var commanda;
 var jinruId;
 function changeHref(obj,id,command){
+	
 	if($(obj).find(".jus_bt").children().is("img")){
 		$(".pwd").toggle();
 	}else{
@@ -207,9 +206,14 @@ function changeHref(obj,id,command){
 }
 
 function jinru(){
+	
+	alert(11);
+	
 	if(commanda!=$("#command").val()){
+		alert(22);
 		alert("请输入正确口令");
 		return;
 	}
+	alert(33);
 	window.location.href='/mts/appWeb/posterPackage/posterPackageDetail.jsp?id='+jinruId;
 }

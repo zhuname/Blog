@@ -163,25 +163,25 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="f_28 clr_6 mt_20 clr_he" style="line-height:1.2rem;text-indent: 1.4rem;">
-				<pre  style="white-space: pre-wrap">{{= descr}}</pre>
+				<pre  style="white-space: pre-wrap;line-height:1rem;">{{= descr}}</pre>
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">
-				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_b" style="height:0.4rem;display:inline-block;" />
-					<div class="clr_6" style="display:inline-block;">&nbsp; {{= lookNum}}</div>
+				<div class="" style="margin-right:2rem;display:inline-block;">
+					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_b" style="height:0.4rem;display:inline-block;vertical-align: middle" />
+					<div class="clr_6" style="display:inline-block;vertical-align: middle">&nbsp; {{= lookNum}}</div>
 				</div>
-				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_b" style="height:0.6rem;display:inline-block;" />
-					<div class="clr_6" style="display:inline-block;">&nbsp; {{= commentCount}}</div>
+				<div class="" style="margin-right:2rem;display:inline-block;">
+					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_b" style="height:0.6rem;display:inline-block;vertical-align: middle" />
+					<div class="clr_6" style="display:inline-block;vertical-align: middle">&nbsp; {{= commentCount}}</div>
 				</div>
-				<div class="dis_f ali_ct">
+				<div class="dis_f ali_ct" style="display:inline-block;">
 						{{if isTop==1 }}
-						<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="dis_b" style="height:0.6rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="dis_b" style="height:0.6rem;display:inline-block;vertical-align: middle " />
 						{{else}}
-						<img src="<%=basePath%>/js/appWeb/images/praise3.png" class="dis_b" style="height:0.6rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/praise3.png" class="dis_b" style="height:0.6rem;display:inline-block;vertical-align: middle " />
 						{{/if}}
-					<div class="clr_6">&nbsp; {{= topCount}}</div>
+					<div class="clr_6" style="display:inline-block;vertical-align: middle">&nbsp; {{= topCount}}</div>
 				</div>
 			</div>
 		</div>

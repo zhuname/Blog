@@ -91,8 +91,8 @@ Object data=session.getAttribute("data");
 					<div onclick="select();" class="btn2"  ></div>
 				</div>
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
-				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n"/>
-				<ul class="more_ul pad_20 dis_n" style="top:1.9rem;" >
+				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" id="img-top" class="dis_b arr_up_down dis_n"/>
+				<ul class="more_ul pad_20 dis_n" style="top:1.9rem;" id="img-list">
 					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/package_new.png" class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新发布</span></li>
 					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">预订最多</span></li>
 					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/package_card.png"  class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">卡券最多</span></li>
@@ -101,13 +101,13 @@ Object data=session.getAttribute("data");
 
 				<script type="text/javascript">
 					$('.filter_toggle').click(function(){
-						$('.more_ul').toggle();
-						$('.arr_up_down').toggle();
+						$("#img-top").toggle();
+						$("#img-list").toggle();
 						$(".whte").toggle();
 					});
 					$(".whte").click(function(){
-						$('.more_ul').toggle();
-						$('.arr_up_down').toggle();
+						$("#img-top").toggle();
+						$("#img-list").toggle();
 						$(".whte").toggle();
 					})
 					$(".pwd").click(function(){
@@ -150,7 +150,7 @@ Object data=session.getAttribute("data");
 		<script id="posterPackage_list_tmpl" type="text/x-jquery-tmpl">
 				<li>
 					<img src="{{= image}}" class="dis_b" style="width:7.15rem;height:10rem;" />
-					<a  onclick="changeHref(this,{{= id}},{{= command}})" class="dis_b mask_hb">
+					<a  onclick="changeHref(this,{{= id}},'{{if commend}}{{= command}}{{/if}}');" class="dis_b mask_hb">
 						<div class="pad_20 dis_f ali_ct jus_bt">
 							<p class="dis_f ali_ct"><img src="<%=basePath%>/js/appWeb/images/eye_lock.png" class="dis_b" style="width:0.6rem;" />
 							&nbsp;<span class="f_18 clr_f">{{= lookNum}}</span></p>
