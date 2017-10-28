@@ -150,8 +150,9 @@ Object data=session.getAttribute("data");
 
 			<div class="dis_f ali_ct jus_bt padt_20 bordertop1 mt_20">
 				<div class="dis_f ali_ct">
-					<img src="<%=basePath%>/js/appWeb/images/tel.png" class="ver_mid" style="height:0.7rem;margin-right:0.3rem;" />
+					<a href="tel://{{= phone}}" id="tell"><img src="<%=basePath%>/js/appWeb/images/tel.png" class="ver_mid" style="height:0.7rem;margin-right:0.3rem;" />
 					<span class="f_24 clr_3" class="ver_mid" > {{= phone}}</span>
+			</a>
 				</div>
 				<div class="dis_f ali_ct">
 					<img src="<%=basePath%>/js/appWeb/images/lou2.png" class="ver_mid" style="height:0.5rem;margin-right:0.3rem;" />
