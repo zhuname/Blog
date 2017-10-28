@@ -250,8 +250,8 @@ word-wrap: break-word;">{{= descr}}</pre></div>
 		</script>
 		
 		<script id="lingquanFoot_tmpl" type="text/x-jquery-tmpl">
-			<div class="clr_3 f_30" style="margin-top:-0.4rem;">…</div>
-			<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem 0 0;padding-right: 5px;" />
+			<div class="clr_3 f_30" style="margin-top:-0.4rem;" onclick="window.location.href='/mts/appWeb/card/cardUserList.jsp?id={{= id}}'">…</div>
+			<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem 0 0;padding-right: 5px;" onclick="window.location.href='/mts/appWeb/card/cardUserList.jsp?id={{= id}}'"/>
 		</script>
 		
 		

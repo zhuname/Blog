@@ -276,6 +276,13 @@ function attr(itemUserId){
 			alert("活动已结束");
 			return;
 		}
+		
+		if(userId==""){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		
+		
 		$("#inputBtn").show();
 		$("#srk_box").show();
 		itemId = id ;

@@ -92,8 +92,29 @@ function show(){
 						result.data[int].images=imagess;
 					}
 					
-					console.log(result.data[int]);
+					if(result.data[int].content.length>60){
+						result.data[int].quanbu=1;
+						
+						var con1=new Array();
+						var con2=new Array();
+						
+						for (var int3 = 0; int3 < result.data[int].content.length; int3++) {
+							
+							if(int3<60){
+								con1[int3]=result.data[int].content[int3];
+							}else{
+								con2[int3-60]=result.data[int].content[int3];
+							}
+							
+						}
+						result.data[int].content=con1;
+						result.data[int].contents=con2;
+						
+					}
+					
+					
 					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));
+					javascript:$('#contents'+result.data[int].id).hide();
 					
 				}
 			}

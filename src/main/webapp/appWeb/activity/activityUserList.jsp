@@ -170,7 +170,7 @@ font-size:0.6rem;
 				<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="height:1rem;" /></a>
 				<div class="search_bg2 pos_rela">
 					<input class="ipt2 f_22 clr_he" id="title"  type="text" placeholder="昵称/主题" />
-					<img onclick="select();" class="btn2" style="width:auto;height:auto;"/>
+					<a onclick="select();" class="btn2" style="width:1.8rem;height:1.3rem;"/>
 				</div>
 				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter2.png" class="dis_b filter_toggle" style="height:0.9rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>

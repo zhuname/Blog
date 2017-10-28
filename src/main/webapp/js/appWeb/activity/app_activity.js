@@ -43,7 +43,7 @@ function show(){
 			userId=undefined;
 		}else{
 			userId=result.data.id;
-			userData="&appUserId="+userId;
+			userData="&appuserId="+userId;
 		}
 	
 	$.ajax({

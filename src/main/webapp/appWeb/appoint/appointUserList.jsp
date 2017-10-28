@@ -84,7 +84,7 @@ Object data=session.getAttribute("data");
 		
 		<script id="appoint_list_tmpl" type="text/x-jquery-tmpl">
 			<div class="pad_30 bg_f dis_f ali_ct jus_bt borderbot1">
-			<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{= id}}'">
+			<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'">
 				<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.7rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 				<div class="f_28 clr_he">
 					<span class="ver_mid clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>

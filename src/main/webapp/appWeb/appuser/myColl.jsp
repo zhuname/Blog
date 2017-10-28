@@ -133,7 +133,7 @@ html,body{height:100%;}
 				<div class="bg_f pad_20 dis_f ali_ct jus_bt">
 					<div style="width:6rem;" class="dis_f ali_ct jus_bt">
 						<div><img src="<%=basePath%>/js/appWeb/images/play.png" class="ver_mid" style="height:0.6rem;" />
-						<span class="f_20 clr_6 ver_mid">{{= lqNum}}</span></div>
+						<span class="f_20 clr_6 ver_mid">{{= scanNum}}</span></div>
 						<div><img src="<%=basePath%>/js/appWeb/images/pl.png" class="ver_mid" style="height:0.6rem;" />
 						<span class="f_20 clr_6 ver_mid">{{= commentCount}}</span></div>
 						<div><img src="<%=basePath%>/js/appWeb/images/zan2.png" class="ver_mid" style="height:0.7rem;" />

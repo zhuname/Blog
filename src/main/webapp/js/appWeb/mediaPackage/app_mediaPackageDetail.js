@@ -97,6 +97,18 @@ var ljll=1;
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
 					
+					setTimeout(function(){
+						
+						/*视频结束或错误*/  
+					    $('.news_video').bind('error ended', function(){  
+					        $("#anniu").html("立即领取");
+					        $("#anniu").attr("style","background: #f95d47;");
+					        ljll=0;
+					    }) 
+					    
+						},2000)
+					
+					
 					id=result.data.id;
 					
 					
@@ -183,26 +195,13 @@ var ljll=1;
 							}
 							if(result.data!=undefined){
 									for (var int = 0; int < result.data.length; int++) {
-										if(int<6){
+										if(int<8){
 										
 											$('#lingqu_tmpl').tmpl(result.data[int]).appendTo($('#lingqu'));
 											
 										}
 										
 									}
-									
-									
-									
-									setTimeout(function(){
-										
-										/*视频结束或错误*/  
-									    $('.news_video').bind('error ended', function(){  
-									        $("#anniu").html("立即领取");
-									        $("#anniu").attr("style","background: #f95d47;");
-									        ljll=0;
-									    }) 
-									    
-										},2000)
 									
 									
 							}
@@ -363,9 +362,33 @@ function yuyue(){
 		success : function(result){
 			if(result.status=="error"){
 				
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				alert(result.message);
 				return;
 			}
+			
+			
+			if(result.data!=undefined){
+				$.ajax({
+					url : '/mts/system/appuser/pay/json?web=&type=4&userId='+userId+'&code='+result.data.code,
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						if(result.status=="error"){
+							alert(result.message);
+							return;
+						}
+						$("#show-img-box").show();
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(XMLHttpRequest) ;
+						console.log(textStatus) ;
+					}
+				});
+				
+				
+				
+			}
+			
 			window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -587,8 +610,18 @@ function attr(){
 
 var jubaoItemId="";
 var reportedUserId="";
-
+function isDenglu(){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
+}
 function report(obj){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	$(".alert-box").css("top","0");
 	$(obj).parents('.more_ul').toggle();
 	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();

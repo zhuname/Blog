@@ -15,7 +15,7 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appuserId="+userId;
@@ -181,7 +181,9 @@ function collect(){
 
 
 function shaizi(){
-	$("#money").val(Math.round(Math.random()*9+1)+"."+Math.round(Math.random()*9)+Math.round(Math.random()*9));
+	var random=Math.round(Math.random()*9+1)+"."+Math.round(Math.random()*9)+Math.round(Math.random()*9);
+	$("#money").val(random);
+	$("#balance").html(random);
 }
 
 function attr(){
@@ -292,8 +294,21 @@ function show(type){
 }
 
 
+function dashangShow(){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
+	$('#showDashang').show();
+}
+
 
 function dianzan(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	
 	if(userId!=null&&userId!=""&&id!=null&&id!=""){
 		$('#dianzanshow').html("");
@@ -320,6 +335,11 @@ function dianzan(){
 }
 
 function showInput(id){
+	
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	
 	$("#inputBtn").show();
 	$("#srk_box").show();
@@ -437,6 +457,10 @@ var jubaoItemId="";
 var reportedUserId="";
 
 function report(obj,reportedUserIdV,jubaoItemIdV){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	$(".alert-box").css("top","0");
 	$(obj).parents('.more_ul').toggle();
 	$(obj).parents('.more_ul').siblings('.arr_up_down').toggle();
