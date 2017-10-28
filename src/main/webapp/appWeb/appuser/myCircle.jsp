@@ -81,7 +81,7 @@ Object data=session.getAttribute("data");
 				<div class="dis_f ali_ct  flex_w quan_img mt_20">
 					{{if images}}
 						{{each images}}
-								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:4rem;" />
+								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:auto;margin:.1rem;" />
    						 {{/each}}
 						{{/if}}
 				</div>

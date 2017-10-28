@@ -344,7 +344,6 @@ window.onscroll=function(){
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
 	var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
 	if(a+b==c){
-		alert(11)
 		nextPage=nextPage+1;
 		show();
 	}
@@ -358,14 +357,7 @@ function getQueryString(aaa) {
 function showImg(obj){
 	event.stopPropagation()
 	console.log($(obj).index())
-	    var swiper = new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        paginationClickable: true,
-        observer:true,
-        observeParents:true,
-        spaceBetween : 10,
-        initialSlide :$(obj).index(),
-    });
+swiper.activeIndex=$(obj).index()
 	$(".show-img-box .swiper-wrapper").empty()
 	$(".show-img-box").toggle()
 	$(obj).parent().children().each(function(){

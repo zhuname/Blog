@@ -225,7 +225,7 @@ $("#price").click(function(){
 		<div class="pad_30 bg_f borderbot1 mt_20">
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct"  onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'">
-					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;height:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
+					<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
 					<div>
 						<span class="ver_mid f_28 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser}}
@@ -411,13 +411,13 @@ $("#price").click(function(){
 						event.stopPropagation();
 					})
 					var swiper = new Swiper('.swiper-container', {
-					    pagination: '.swiper-pagination',
-					    paginationClickable: true,
-					    observer:true,
-					    observeParents:true,
-					    spaceBetween : 10,
-					    initialSlide :1,
-					});
+				    pagination: '.swiper-pagination',
+				    paginationClickable: true,
+				    observer:true,
+				    observeParents:true,
+				    spaceBetween : 10,
+				   // initialSlide :$(obj).index(),
+				});
 				</script>
 		
 	

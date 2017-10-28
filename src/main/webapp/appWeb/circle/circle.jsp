@@ -218,6 +218,13 @@ Object data=session.getAttribute("data");
 					    $(".show-img-box").click(function(){
     	$(this).toggle();
     });
+				    var swiper = new Swiper('.swiper-container', {
+				        pagination: '.swiper-pagination',
+				        paginationClickable: true,
+				        observer:true,
+				        observeParents:true,
+				        spaceBetween : 10
+				    });
 				</script>
 
 <script type="text/javascript">
