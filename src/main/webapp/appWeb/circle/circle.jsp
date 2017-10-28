@@ -90,7 +90,7 @@ Object data=session.getAttribute("data");
 </div>
 			<div class="pad_30  dis_f ali_ct jus_bt " style="position:absolute;top:0;left:0;width:14.5rem;">
 				<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b" style="width:1rem;" /></a>
-				
+				<div class="whte"></div>
 				<div class="search_bg pos_rela">
 					<input class="ipt2 f_22 clr_he" id="title" type="text" placeholder="昵称/主题" />
 					<div onclick="select();" class="btn2"  ></div>
@@ -198,18 +198,17 @@ Object data=session.getAttribute("data");
 					$('.filter_toggle').click(function(){
 						$('.xx_pic').toggle();
 						$('.xx_daohang').toggle();
-						$('#black-box').toggle();
-						console.log($('#black-box'))
+						$('.whte').toggle();
 					});
-					$('#black-box').click(function(){
-						$(this).toggle();
-						$('.more_ul_toggle').siblings("ul").hide()
-						$('.more_ul_toggle').siblings("img").hide()
+					$('.whte').click(function(){
+						$('.xx_pic').toggle();
+						$('.xx_daohang').toggle();
+						$('.whte').toggle();
 					});
 					$(".alert-box").click(function(){
 						$(this).css("top","100%");
 						$("#black-box").hide();
-						$('.more_ul_toggle').siblings("ul").hide()
+						$('.xx_pic').hide()
 						$('.more_ul_toggle').siblings("img").hide()
 					})
 					$(".Report").click(function(){
