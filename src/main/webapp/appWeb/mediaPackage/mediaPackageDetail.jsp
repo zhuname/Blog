@@ -418,8 +418,8 @@ Object data=session.getAttribute("data");
 					$(".Report").click(function(){
 						event.stopPropagation();
 					})
-					function(){
-						$("#LinkUser").click(function(){
+					function LinkUser(){
+						$(this).click(function(){
 							console.log("sdf");
 							event.stopPropagation();    
 						});

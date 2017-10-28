@@ -189,7 +189,7 @@ height:auto;
 				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{else}}
 				<img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b play_img" style="width:2rem;" />
-				<img src="{{= mediaUrl}}" class="ver_mid" style="width:16rem;height:8rem;" />
+				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{/if}}
 				{{if status==4}}
 				<img src="<%=basePath%>/js/appWeb/images/over.png" class="dis_b end_img" style="width:3rem;" />
@@ -245,7 +245,7 @@ height:auto;
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{if $value.appUser.header}}{{= $value.appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
    					 {{/each}}
 					{{/if}}
 						<div class="clr_3 f_30">…</div>
@@ -265,15 +265,21 @@ height:auto;
 				<div class="f_22 clr_6">{{= t}} 发布动态</div>
 				<div class="clr_3 f_28 mt_10" >{{= content}}</div>
 				<div class="dis_f ali_ct  flex_w quan_img mt_20" id="mains">
-						{{if images}}
-						{{each images}}
-								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:4rem;margin:.05rem;" />
-   						 {{/each}}
-						{{/if}}
-
-						{{if mediaUrl}}
-						<video  src="{{= mediaUrl}}" poster="{{= mediaImage}}"></video>
-						{{/if}}
+						{{if type==2}}
+				{{if mediaUrl}}
+				<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+					您的浏览器不支持 video 标签。
+				</video>
+				{{/if}}
+				{{else}}
+<div class="show-img"  style="overflow:hidden">
+				{{if images}}
+					{{each images}}
+						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:auto;margin:.1rem;float:left" onclick="showImg(this)"/>
+   					{{/each}}
+				{{/if}}
+</div>
+				{{/if}}
 
 				</div>
 
@@ -292,7 +298,7 @@ height:auto;
 							<span class="f_20 clr_6 ver_mid">{{= commentCount}}</span>
 						</div>
 						<div>
-							{{if topCount==1}}
+							{{if isOper}}
 								<img src="<%=basePath%>/js/appWeb/images/zan.png" class="ver_mid" style="height:0.75rem;" />
 								<span class="f_20 clr_r ver_mid ">{{= topCount}}</span>
 							{{else}}
