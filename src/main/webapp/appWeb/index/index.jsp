@@ -215,8 +215,8 @@ Object data=session.getAttribute("data");
 			{{/if}}
 			{{/if}}
 				<img src="<%=basePath%>/js/appWeb/images/xinxi.png" class="dis_b" />
-				<p class="f_26 clr_3 mt_10">趣闻趣事</p>
-				<p class="f_20 clr_r">还有<span class="f_28">{{= cityCircleCount}}</span>条</p>
+				<p class="f_26 clr_3 mt_10">城市圈</p>
+				<p class="f_20 clr_r">趣闻趣事<span class="f_28">{{= cityCircleCount}}</span>条</p>
 				</a>
 			</li>
 		</ul>
@@ -294,8 +294,8 @@ Object data=session.getAttribute("data");
 			{{/if}}
 			{{/if}}
 				<img src="<%=basePath%>/js/appWeb/images/xinxi.png" class="dis_b" />
-				<p class="f_26 clr_3 mt_10">趣闻趣事</p>
-				<p class="f_20 clr_r">还有<span class="f_28">{{= cityCircleCount}}</span>条</p>
+				<p class="f_26 clr_3 mt_10">城市圈</p>
+				<p class="f_20 clr_r">趣闻趣事<span class="f_28">{{= cityCircleCount}}</span>条</p>
 				</a>
 			</li>
 		</ul>
