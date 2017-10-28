@@ -76,7 +76,7 @@ Object data=session.getAttribute("data");
 			</div>
 			<script type="text/javascript">
 		</script>
-		
+		<div class="whte"></div>
 			<div class="pad_30  dis_f ali_ct jus_bt " style="position:absolute;top:0;left:0;width:14.5rem;">
 				<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b" style="width:1rem;" /></a>
 				<div class="search_bg pos_rela">
@@ -95,7 +95,14 @@ Object data=session.getAttribute("data");
 					$('.filter_toggle').click(function(){
 						$('.xx_pic').toggle();
 						$('.xx_daohang').toggle();
+						$(".whte").toggle()
 					});
+					$(".whte").click(function(){
+						$('.xx_pic').toggle();
+						$('.xx_daohang').toggle();
+						$(".whte").toggle()
+					})
+					
 				</script>
 			</div>
 		</div>
