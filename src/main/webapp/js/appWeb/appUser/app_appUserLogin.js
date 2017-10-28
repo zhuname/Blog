@@ -6,7 +6,6 @@ var This=this;
     	var openid=null;
     	This.openid=openid;
     	var code=getQueryString("code");
-    	$("#qqShow").remove();
     } else {
     	 //alert('判断：非微信端登录');
     	$("#wxShow").remove();

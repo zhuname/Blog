@@ -182,6 +182,7 @@ window.onscroll=function(){
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
 	var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
 	if(a+b==c){
+		alert(11)
 		nextPage=nextPage+1;
 		show();
 	}

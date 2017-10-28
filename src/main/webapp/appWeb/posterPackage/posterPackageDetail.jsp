@@ -379,7 +379,7 @@ Object data=session.getAttribute("data");
 	<div class="bonus_mask" onclick="$('.bonus_mask').hide()" style="display:none;">
 			<div class="honus_bg pos_rela" onclick="javascript:event.stopPropagation()">
 				<div style="position: absolute; height: 2rem;width:7rem; bottom: 0.5rem; left: 3rem"  onclick="lingquList();"></div>
-			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" class="ver_mid close_hb" style="width:2rem;height:2rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
+			<img src="<%=basePath%>/js/appWeb/images/close_hb123.png" class="ver_mid close_hb" style="width:2rem;height:2rem;"  onclick="javascript:$('.bonus_mask').hide();"/>
 				<div style="font-size:2rem;color:#fbd39c;padding-top:5.5rem;" class="al_ct" ><span id="moneyShow"></span><span class="f_24">元</span></div>
 
 				<div class="al_ct" style="padding-top:4.5rem;">

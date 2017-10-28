@@ -92,18 +92,17 @@ function show(){
 						result.data[int].images=imagess;
 					}
 					
-					if(result.data[int].content.length>60){
+					if(result.data[int].content.length>100){
 						result.data[int].quanbu=1;
 						
-						var con1=new Array();
-						var con2=new Array();
+						var con1="";
+						var con2="";
 						
 						for (var int3 = 0; int3 < result.data[int].content.length; int3++) {
-							
-							if(int3<60){
-								con1[int3]=result.data[int].content[int3];
+							if(int3<100){
+								con1+=result.data[int].content[int3];
 							}else{
-								con2[int3-60]=result.data[int].content[int3];
+								con2+=result.data[int].content[int3];
 							}
 							
 						}
@@ -303,7 +302,7 @@ function jubao(){
 
 
 function getDateDiff(dateTimeStamp){
-	
+	dateTimeStamp=GetDateDiff(dateTimeStamp);
 	var stringTime = dateTimeStamp;
 	var timestamp2 = Date.parse(new Date(stringTime));
 	dateTimeStamp = timestamp2 ;
@@ -345,6 +344,7 @@ window.onscroll=function(){
 	var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
 	var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
 	if(a+b==c){
+		alert(11)
 		nextPage=nextPage+1;
 		show();
 	}
