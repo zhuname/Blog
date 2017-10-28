@@ -253,7 +253,7 @@ function join(joinOrAward,pageSize){
 				}else if(joinOrAward==2){
 					//获取消息记录
 					for (var int = 0; int < result.data.length; int++) {
-						if(int<6){
+						if(int<8){
 							$('#zhongjiang_tmpl').tmpl(result.data[int]).appendTo($('#zhongjiang'));
 						}
 					}

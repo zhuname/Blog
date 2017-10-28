@@ -79,11 +79,21 @@ Object data=session.getAttribute("data");
 				<div class="f_22 clr_6">{{= t}} 发布动态</div>
 				<div class="clr_3 f_28 mt_10" >{{= content}}</div>
 				<div class="dis_f ali_ct  flex_w quan_img mt_20">
-					{{if images}}
-						{{each images}}
-								<img src="{{= $value}}" class="ver_mid" style="width:4rem;height:auto;margin:.1rem;" />
-   						 {{/each}}
-						{{/if}}
+						{{if type==2}}
+				{{if mediaUrl}}
+				<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+					您的浏览器不支持 video 标签。
+				</video>
+				{{/if}}
+				{{else}}
+<div class="show-img"  style="overflow:hidden">
+				{{if images}}
+					{{each images}}
+						<img src="{{= $value}}" class="ver_mid" style="width:4.6rem;height:auto;margin:.1rem;float:left" onclick="showImg(this)"/>
+   					{{/each}}
+				{{/if}}
+</div>
+				{{/if}}
 				</div>
 
 				<div class="dis_f jus_rt mt_20 hrs" style="position:relative;">

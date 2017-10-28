@@ -116,7 +116,9 @@ Object data=session.getAttribute("data");
 		}
 		#images img{
 		margin:.1rem;}
-
+.zIndex{
+z-index:100;
+}
 	</style>
 
 	<div class="wraper ">
@@ -234,6 +236,14 @@ Object data=session.getAttribute("data");
 				<div id="images">
 
 </div>
+
+				{{if type==2}}
+				{{if mediaUrl}}
+				<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+					您的浏览器不支持 video 标签。
+				</video>
+				{{/if}}
+				{{/if}}
 			</div>
 		</div>
 
@@ -401,7 +411,7 @@ Object data=session.getAttribute("data");
 	<div id="srk_box" style="display:none;" onclick="hideInput();"  class="srk_box">
 	</div>
 	<div  id="inputBtn"  style="display:none;">
-			<div class="pad_20 bottom_srk">
+			<div class="pad_20 bottom_srk zIndex">
 				<input id="content" class="inpt2 f_28 clr_9" type="text" placeholder="回复：说点儿什么吧...">
 				<div class="fs" onclick="fasong();">发送</div>
 				<div style="clear: both"></div>
