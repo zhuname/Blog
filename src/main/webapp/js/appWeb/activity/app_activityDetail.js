@@ -304,7 +304,7 @@ function jubao(){
 }
 
 function getDateDiff(dateTimeStamp){
-	
+	dateTimeStamp=GetDateDiff(dateTimeStamp);
 	
 	var stringTime = dateTimeStamp;
 	var timestamp2 = Date.parse(new Date(stringTime));

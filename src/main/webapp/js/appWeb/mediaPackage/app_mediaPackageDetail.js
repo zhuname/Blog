@@ -302,7 +302,7 @@ var ljll=1;
 	}
 
 	function getDateDiff(dateTimeStamp){
-		
+		dateTimeStamp=GetDateDiff(dateTimeStamp);
 		
 		var stringTime = dateTimeStamp;
 		var timestamp2 = Date.parse(new Date(stringTime));

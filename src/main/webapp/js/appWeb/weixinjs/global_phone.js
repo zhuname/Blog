@@ -35,3 +35,8 @@
     }, !1), w()
 }(window);
 	  
+function GetDateDiff(diffTime) {
+    //将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式   
+    startTime = diffTime.replace(/\-/g, "/");  
+    return startTime;
+};  
