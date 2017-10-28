@@ -72,7 +72,7 @@ Object data=session.getAttribute("data");
 		
 		</div>
 		
-		<div id="footDetail"></div>
+		<!-- <div id="footDetail"></div> -->
 		
 		
 <div class="pad_30"></div>

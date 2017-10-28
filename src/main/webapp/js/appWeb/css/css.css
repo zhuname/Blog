@@ -350,4 +350,4 @@ ul,li,ol li{
 .pwd-box p{
 	height:1.5rem;font-size:.7rem;text-align:center;line-height:1.5rem;color:#fff;width:100%;border-radius:.7rem;background:#ed5941
 }
-.hrs:after{content:"";width:16rem;left:-2.2rem;height:.05rem;background:#e5e5e5;position:absolute;}
+.hrs:after{content:"";width:16rem;left:-2.2rem;height:.05rem;background:#e5e5e5;position:absolute;bottom: 0;}
