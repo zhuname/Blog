@@ -115,7 +115,7 @@ Object data=session.getAttribute("data");
 	<script id="detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_r">
 			<div class="dis_f ali_ct jus_bt pad_30">
-				<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/index/myCity.jsp';">
+				<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/index/myCitys.jsp';">
 					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" />
 					<div class="f_20 clr_f">&nbsp; <a id="city"></a> <span class="f_16" id="weather">多云转晴 23℃/28℃</span></div>
 				</div>
@@ -227,7 +227,7 @@ Object data=session.getAttribute("data");
 	<script id="nouser_detail_tmpl" type="text/x-jquery-tmpl">
 		<div class="bg_r">
 			<div class="dis_f ali_ct jus_bt pad_30">
-				<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/index/myCity.jsp';">
+				<div class="dis_f ali_ct" onclick="window.location.href='/mts/appWeb/index/myCitys.jsp';">
 					<img src="<%=basePath%>/js/appWeb/images/location.png" class="dis_b" style="width:0.55rem;" />
 					<div class="f_20 clr_f">&nbsp; <a id="city"></a> <span class="f_16" id="weather"></span></div>
 				</div>
