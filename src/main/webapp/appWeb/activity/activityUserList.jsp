@@ -316,17 +316,17 @@ $("#price").click(function(){
 				</div>
 			</div>
 
-			<div class="f_22 clr_3 padt_20 pinglun ">
 				{{if opers}}
+			<div class="f_22 clr_3 padt_20 pinglun ">
 						{{each opers}}
 						<div onclick="toUser({{= itemId}},{{if $value.userId}}{{= $value.userId}}{{/if}},'{{if $value.nickName}}{{= $value.nickName}}{{/if}}');">
 							<span class="clr_b">{{if $value.nickName}}{{= $value.nickName}}{{/if}}</span>  {{if $value.toUserName}}回复  <font color="#003D79">{{= $value.toUserName}}</font>:{{else}}:{{/if}}  {{if $value.content}}{{= $value.content}}{{/if}}
 							<p class="f_18 clr_9">{{if $value.createTime}}{{= $value.createTime}}{{/if}}</p>
 						</div>
    					 	{{/each}}
-				{{/if}}
 				<a href="javascript:all({{= id}});" id="{{= id}}" style="display:none;" all="0" class="clr_b">展开</a>
 			</div>
+				{{/if}}
 		</div>
 
 	</script>

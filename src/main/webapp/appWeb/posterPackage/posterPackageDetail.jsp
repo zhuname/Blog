@@ -168,12 +168,12 @@ Object data=session.getAttribute("data");
 
 			<div class="dis_f ali_ct jus_rt pad_30">
 				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_b" style="height:0.4rem;" />
-					<div class="clr_6">&nbsp; {{= lookNum}}</div>
+					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_b" style="height:0.4rem;display:inline-block;" />
+					<div class="clr_6" style="display:inline-block;">&nbsp; {{= lookNum}}</div>
 				</div>
 				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_b" style="height:0.6rem;" />
-					<div class="clr_6">&nbsp; {{= commentCount}}</div>
+					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_b" style="height:0.6rem;display:inline-block;" />
+					<div class="clr_6" style="display:inline-block;">&nbsp; {{= commentCount}}</div>
 				</div>
 				<div class="dis_f ali_ct">
 						{{if isTop==1 }}
@@ -305,7 +305,7 @@ Object data=session.getAttribute("data");
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
                {{= appointExplain}}
             </div>
-            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b">更换</a></div>
+            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b" style="padding:0 .2rem;">更换</a></div>
 
             <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预订"/>
         </div>

@@ -537,6 +537,7 @@ function getQueryString(aaa) {
 } 
 function showImg(obj){
 	 event.stopPropagation(); 
+	 swiper.activeIndex=$(obj).index()
 	$(".show-img-box .swiper-wrapper").empty()
 	$(".show-img-box").toggle()
 	$(obj).parents("#images").children().each(function(){
