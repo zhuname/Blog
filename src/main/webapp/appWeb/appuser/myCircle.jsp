@@ -78,10 +78,10 @@ Object data=session.getAttribute("data");
 			<div class="mt_10" style="width:90%;">
 				<div class="f_22 clr_6">{{= t}} 发布动态</div>
 				<div class="clr_3 f_28 mt_10" >{{= content}}</div>
-				<div class="dis_f ali_ct  flex_w quan_img mt_20">
+				<div class="dis_f ali_ct  flex_w quan_img mt_20" style="width:100%">
 						{{if type==2}}
 				{{if mediaUrl}}
-				<video src="{{= mediaUrl}}" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+				<video src="{{= mediaUrl}}" style="width:90%;height:auto;" poster="{{= mediaImage}}" controls="controls">
 					您的浏览器不支持 video 标签。
 				</video>
 				{{/if}}
