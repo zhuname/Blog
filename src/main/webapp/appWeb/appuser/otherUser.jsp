@@ -252,7 +252,7 @@ body{background: #f0f2f5;}
 			</script>
 
 		<script id="circle_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="dis_f jus_bt pad_2030 bg_f"  onclick="locationHref({{= id}});">
+				<div class="dis_f jus_bt pad_2030 bg_f"  onclick="locationHref({{= id}});" style="padding-bottom:0;">
 			<div class="f_38 clr_6">
 				{{= d}}<p class="f_22">{{= m}}月</p>
 			</div>

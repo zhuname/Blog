@@ -480,6 +480,10 @@ function getQueryString(aaa) {
 	if (r != null) return unescape(r[2]); return null; 
 } 
 function showImg(obj){
+	console.log($(obj).index());
+	if(swiper){
+		swiper=null;
+	}
 	    var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         paginationClickable: true,
