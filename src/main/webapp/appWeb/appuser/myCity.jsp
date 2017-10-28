@@ -105,7 +105,7 @@ html,body{height:100%;}
 		.left_dvwz{
 			position:fixed;
 			right: 0.8rem;
-			top: 3rem;
+			top: 2rem;
 		}
 
 		.left_dvwz a{
