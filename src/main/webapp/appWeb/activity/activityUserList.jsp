@@ -410,6 +410,14 @@ $("#price").click(function(){
 					$(".Report").click(function(){
 						event.stopPropagation();
 					})
+					var swiper = new Swiper('.swiper-container', {
+					    pagination: '.swiper-pagination',
+					    paginationClickable: true,
+					    observer:true,
+					    observeParents:true,
+					    spaceBetween : 10,
+					    initialSlide :1,
+					});
 				</script>
 		
 	

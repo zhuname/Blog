@@ -56,6 +56,9 @@ $.ajax({
 					
 					$("#bann").show();
 					
+					
+					if(result.data.image!=undefined){
+						
 					var lunbo=result.data.image.split(";");
 					
 					for (var int = 0; int < lunbo.length; int++) {
@@ -75,6 +78,7 @@ $.ajax({
 						autoPlay:true,//自动播放
 						autoPage:true //自动分页
 					});
+					}
 				}else{
 					$("#videos").show();
 					$("#videos").attr("src",result.data.mediaUrl);

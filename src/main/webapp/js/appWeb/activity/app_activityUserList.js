@@ -487,23 +487,14 @@ function getQueryString(aaa) {
 	if (r != null) return unescape(r[2]); return null; 
 } 
 function showImg(obj){
-	console.log($(obj).index());
-	if(swiper){
-		swiper=null;
-	}
-	    var swiper = new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        paginationClickable: true,
-        observer:true,
-        observeParents:true,
-        spaceBetween : 10,
-        initialSlide :$(obj).index(),
-    });
-	$(".show-img-box .swiper-wrapper").empty()
-	$(".show-img-box").toggle()
-	$(obj).parent().children().each(function(){
-		$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
-	})
+	swiper.activeIndex=$(obj).index()
+		$(".show-img-box .swiper-wrapper").empty()
+		$(".show-img-box").toggle()
+		$(obj).parent().children().each(function(){
+			$(".show-img-box .swiper-wrapper").append("<div class=\"swiper-slide\"><img></div>").find("img:last").attr("src",this.src);
+		})
+		
+
 }
 function alertMneu(obj){
 	$(obj).siblings('.more_ul').toggle();

@@ -70,7 +70,7 @@ Object data=session.getAttribute("data");
 		<div id="circle"></div>
 		
 		<script id="circle_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="dis_f jus_bt pad_2030 bg_f"  onclick="locationHref({{= id}});">
+				<div class="dis_f jus_bt pad_2030 bg_f"  onclick="locationHref({{= id}});" style="padding-bottom:0;">
 			<div class="f_38 clr_6">
 				{{= d}}<p class="f_22">{{= m}}月</p>
 			</div>
@@ -86,7 +86,7 @@ Object data=session.getAttribute("data");
 						{{/if}}
 				</div>
 
-				<div class="dis_f jus_rt mt_20">
+				<div class="dis_f jus_rt mt_20 hrs" style="position:relative;">
 					<div class="dis_f ali_ct jus_bt padt_20" style="width:9rem;">
 						{{if sumMoney}}
 						<div>

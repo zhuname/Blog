@@ -140,7 +140,7 @@ Object data=session.getAttribute("data");
 		
 		
 		<script id="foot_tmpl" type="text/x-jquery-tmpl">
-		<div class="fixed_dashang">
+		<div class="fixed_dashang bg_f" style="z-index:10">
 			<div class="dis_f ali_ct jus_bt bg_f bordertop1" style="padding:0 1.5rem;" >
 				<div class="pad_20"  onclick="dashangShow();" >
 					<img src="<%=basePath%>/js/appWeb/images/ds.png" class="ver_mid" style="width:0.8rem;" />
@@ -232,6 +232,7 @@ Object data=session.getAttribute("data");
 
 			<div class="dis_f ali_ct jus_bt flex_w quan_img mt_20">
 				<div id="images">
+
 </div>
 			</div>
 		</div>
@@ -256,7 +257,7 @@ Object data=session.getAttribute("data");
 		<div id="srcUrl" style="display: none;"><%=basePath%></div>
 		
 		<script id="detail_image_tmpl" type="text/x-jquery-tmpl">
-			<img src="{{= image}}" onclick="showImg(this)" class="ver_mid" style="width:4.75rem;height:4.75rem;" />
+			<img src="{{= image}}" onclick="showImg(this)" class="ver_mid" style="width:4.6rem;height:4.6rem;" />
 		</script>
 		
 		

@@ -119,9 +119,9 @@ Object data=session.getAttribute("data");
 			</script>
 
 
-		<div id="detail"></div>
+		<div id="detail" style="padding-bottom: 2.5rem;"></div>
 		<script id="detail_tmpl" type="text/x-jquery-tmpl">
-		<div class="pad_30 bg_f mt_10">
+		<div class="pad_30 bg_f mt_10"sytle="margin-top:0;>
 			<div class="dis_f ali_top jus_bt pos_rela" >
 				<div class="dis_f ali_ct" >
 					<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b" style="width:1.75rem;border-radius: 0.9rem;margin-right:0.5rem;" />
@@ -220,16 +220,16 @@ Object data=session.getAttribute("data");
 			</div>
 
 			{{if status==4}}
-				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">已结束</a>
+				<a class="dis_b f_28 a_btn2 al_ct mt_20 " style=" background: #e3e3e6;color: #a7a7a6;position:fixed;bottom:0;left:0;">已结束</a>
 			{{else}}
 			{{if isPart}}
 				{{if isPart == 1}}
-				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;">已参与</a>
+				<a class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #e3e3e6;color: #a7a7a6;position:fixed;bottom:0;left:0;">已参与</a>
 				{{else}}
-				<a  onclick="canyu();"  class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">立即参与</a>
+				<a  onclick="canyu();"  class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;position:fixed;bottom:0;left:0;">立即参与</a>
 				{{/if}}
 			{{else}}
-				<a onclick="canyu();" class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;">立即参与</a>
+				<a onclick="canyu();" class="dis_b f_28 a_btn2 al_ct mt_20" style=" background: #FF7575;color: #FFFFFF;position:fixed;bottom:0;left:0;">立即参与</a>
 			{{/if}}
 			{{/if}}
 
