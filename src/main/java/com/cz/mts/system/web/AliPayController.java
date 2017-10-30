@@ -1,14 +1,29 @@
 package com.cz.mts.system.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.dom4j.DocumentException;
+import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cz.mts.frame.annotation.SecurityApi;
 import com.cz.mts.frame.controller.BaseController;
+import com.cz.mts.frame.util.AlipayUtil;
+import com.cz.mts.frame.util.ReturnDatas;
 import com.cz.mts.system.service.IAppUserService;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -138,5 +155,24 @@ public class AliPayController extends BaseController {
 		return null;
 	}
 
+	
+	@RequestMapping("/getDingdan/json")
+	public static void getDingdan(HttpServletRequest request) throws IOException, DocumentException {
+		log.info("------------->支付宝订单！");
+		
+		
+		
+		AlipayUtil alipayUtil=new AlipayUtil();
+		
+		
+		try {
+			alipayUtil.zfbPay(request.getParameter("name"), request.getParameter("code"), request.getParameter("money"), request.getParameter("detail"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 }

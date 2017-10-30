@@ -5,27 +5,43 @@ var code=getQueryString("code");
 var openid=null;
 var unionid = null ;
 $().ready(function(){
-if(code!=null&&code!=undefined&&code!="undefined"){
-	$.ajax({
-		url : '/mts/system/appuser/openId/json?web=1&code='+code,
-		type : "get",
-		success : function(result) {
-			data = JSON.parse(result.data);
-			data = JSON.parse(data);
-			openid = data.openid;
-		},
-		error:function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(XMLHttpRequest) ;
-			console.log(textStatus) ;
-		}
-	});
-}else{
-	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
-}
-})
-
-
+	
+    var ua = navigator.userAgent.toLowerCase();  
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+    	
+    	if(code!=null&&code!=undefined&&code!="undefined"){
+    		$.ajax({
+    			url : '/mts/system/appuser/openId/json?web=1&code='+code,
+    			type : "get",
+    			success : function(result) {
+    				data = JSON.parse(result.data);
+    				data = JSON.parse(data);
+    				openid = data.openid;
+    			},
+    			error:function(XMLHttpRequest, textStatus, errorThrown){
+    				console.log(XMLHttpRequest) ;
+    				console.log(textStatus) ;
+    			}
+    		});
+    	}else{
+    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    	}
+    } else {
+    }  
+}); 
+	
 function chongzhi(){
+	
+	if(payType==1){
+		wx();
+	}else{
+		zfb();
+	}
+
+}
+
+
+function wx(){
 	if($("#money").val()!=""){
 		$.ajax({
 			url : '/mts/system/wx/getDingdan/json?web=1&openid1='+openid+'&total_fee1='+$("#money").val(),
@@ -77,6 +93,44 @@ function chongzhi(){
 				console.log(textStatus) ;
 			}
 		});
+	}else{
+		alert("请填写充值金额");
+	}
+}
+
+
+
+function zfb(){
+	if($("#money").val()!=""){
+		
+		
+		
+		
+		//获取用户信息
+		$.ajax({
+			url : '/mts/system/appuser/look/json?web=',
+			type : "post",
+			dataType : "json",
+			success : function(result){
+				
+				if(result.status=="error"){
+					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+					return;
+				}
+				
+					
+				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏支付&money="+$("#money").val()+"&detail=每天赏充值余额&code="+"R"+result.data.id+new Date().getTime();
+					
+					
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
+
+		
+		
 	}else{
 		alert("请填写充值金额");
 	}
