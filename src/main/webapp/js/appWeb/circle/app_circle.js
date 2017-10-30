@@ -54,7 +54,7 @@ function show(){
 	success : function(result){
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appuserId="+userId;
@@ -213,6 +213,10 @@ $.ajax({
 
 
 function xinzeng(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	window.location.href='/mts/appWeb/circle/circleSave.jsp?cityId='+getQueryString("cityId");
 }
 
