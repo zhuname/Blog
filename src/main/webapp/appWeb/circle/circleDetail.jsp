@@ -134,7 +134,17 @@ z-index:100;
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;visibility: hidden;" /></a>
 		</div>
 		
-		
+		<div class="public_App" style="top:2rem;">
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<p>领福利，发活动，用APP免费参加</p>
+			<span onclick="appLink()">立即打开</span>
+		</div>
+		<script type="text/javascript">
+			$("#close_app").click(function(){
+				$(".public_App").remove()
+			})
+		</script>
 		<div id="detail"></div>
 		
 		<!-- <div class="pad_20"></div>

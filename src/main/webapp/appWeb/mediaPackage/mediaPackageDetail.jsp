@@ -64,8 +64,13 @@ Object data=session.getAttribute("data");
 <body>
 
 	<div class="wraper overh" style="padding-bottom:3rem;">
+<<<<<<< HEAD
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+=======
+		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" style="5;">
+			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+>>>>>>> 34a3cd620a570a134ca2dc8d34bf7d18870386ab
 			<p class="f_30 clr_3">视频详情</p>
 			<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
@@ -76,7 +81,6 @@ Object data=session.getAttribute("data");
 				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
 				<li onclick="report(this);"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 			</ul>
-
 			<script type="text/javascript">
 				$('.more_ul_toggle').click(function(){
 					$('.more_ul').toggle();
@@ -91,7 +95,17 @@ Object data=session.getAttribute("data");
 				 
 			</script>
 		</div>
-
+					<div class="public_App" style="top:2rem;">
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<p>领福利，发活动，用APP免费参加</p>
+			<span onclick="appLink()">立即打开</span>
+		</div>
+		<script type="text/javascript">
+			$("#close_app").click(function(){
+				$(".public_App").remove()
+			})
+		</script>
 		
 		
 		<div id="detail">
@@ -155,21 +169,21 @@ Object data=session.getAttribute("data");
 			</div>
 
 			<div class="dis_f ali_ct jus_rt pad_30">
-				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_ib" style="height:0.4rem;" />
-					<div class="clr_6 dis_ib">&nbsp; {{= scanNum}}</div>
+				<div class="dis_ib" style="margin-right:2rem;">
+					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_ib" style="height:0.4rem;vertical-align: middle;" />
+					<div class="clr_6 dis_ib" style="vertical-align: middle;">&nbsp; {{= scanNum}}</div>
 				</div>
-				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_ib" style="height:0.6rem;" />
-					<div class="clr_6 dis_ib">&nbsp; {{= commentCount}}</div>
+				<div class="dis_ib" style="margin-right:2rem;">
+					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_ib" style="height:0.6rem;vertical-align: middle;" />
+					<div class="clr_6 dis_ib" style="vertical-align: middle;">&nbsp; {{= commentCount}}</div>
 				</div>
-				<div class="dis_f ali_ct">
+				<div class="dis_ib">
 						{{if isTop==1 }}
-						<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="dis_ib" style="height:0.6rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="dis_ib" style="height:0.6rem;vertical-align: middle;" />
 						{{else}}
-						<img src="<%=basePath%>/js/appWeb/images/praise3.png" class="dis_ib" style="height:0.6rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/praise3.png" class="dis_ib" style="height:0.6rem;vertical-align: middle;" />
 						{{/if}}
-					<div class="clr_6 dis_ib">&nbsp; {{= topCount}}</div>
+					<div class="clr_6 dis_ib" style="vertical-align: middle;">&nbsp; {{= topCount}}</div>
 				</div>
 			</div>
 		</div>

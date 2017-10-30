@@ -219,6 +219,12 @@ Object data=session.getAttribute("data");
 				<span onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';">...</span>
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" />
 			</div>
+					<div class="public_App" style="bottom:2.5rem;">
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<p>领福利，发活动，用APP免费参加</p>
+			<span onclick="appLink()">立即打开</span>
+		</div>
 
 			{{if status==4}}
 				<a class="dis_b f_28 a_btn2 al_ct mt_20 " style=" background: #e3e3e6;color: #a7a7a6;position:fixed;bottom:0;left:0;">已结束</a>
@@ -250,7 +256,11 @@ Object data=session.getAttribute("data");
 			<img onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'" src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1.5rem;height:1.5rem;border-radius: 0.8rem;" />
 		</script>
 		
-		
+		<script type="text/javascript">
+			$("#close_app").click(function(){
+				$(".public_App").remove()
+			})
+		</script>
 			<!-- 提示窗 -->
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">
 <div class="Report dis_f" style="width:100%;height:2rem;background:#fff;padding:.4rem;box-sizing:border-box;">
