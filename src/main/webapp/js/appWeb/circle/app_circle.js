@@ -54,7 +54,7 @@ function show(){
 	success : function(result){
 		
 		if(result.status=="error"){
-			userId=undefined;
+			userId="";
 		}else{
 			userId=result.data.id;
 			userData="&appuserId="+userId;
@@ -213,6 +213,10 @@ $.ajax({
 
 
 function xinzeng(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	window.location.href='/mts/appWeb/circle/circleSave.jsp?cityId='+getQueryString("cityId");
 }
 
@@ -275,7 +279,7 @@ function report(obj,reportedUserIdV,jubaoItemIdV){
 function jubao(){
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/report/update/json?web=&type=1&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
 	type : "post",
 	dataType : "json",
 	success : function(result){

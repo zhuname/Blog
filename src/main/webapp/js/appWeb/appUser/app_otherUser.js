@@ -86,6 +86,7 @@ function show(){
 						url : '/mts/system/circle/list/json?web='+"&userId="+userId+data+"&appuserId="+appUserId,
 						type : "post",
 						dataType : "json",
+						async: false,
 						success : function(result){
 							
 							if(result.status=="error"){
@@ -116,9 +117,6 @@ function show(){
 									}
 									
 									$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
-									if(int==result.data.length-1){
-										isChangess=0;
-									}
 								}
 							}
 							
@@ -132,6 +130,7 @@ function show(){
 							
 						}
 					});
+					isChangess=0;
 	}
 					},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -253,9 +252,6 @@ function change(type,isClear,li){
 						}
 						
 						$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
-						if(int==result.data.length-1){
-							isChangess=0;
-						}
 					}
 				}
 				
@@ -289,9 +285,6 @@ function change(type,isClear,li){
 						result.data[int].image=result.data[int].image.split(";")[0];
 						
 						$('#posterPackage_list_tmpl').tmpl(result.data[int]).appendTo($('#posterPackage'));
-						if(int==result.data.length-1){
-							isChangess=0;
-						}
 					}
 				}
 				
@@ -323,9 +316,6 @@ function change(type,isClear,li){
 						
 						$('#media_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
 						
-						if(int==result.data.length-1){
-							isChangess=0;
-						}
 						}
 				}
 			},
@@ -371,9 +361,6 @@ function change(type,isClear,li){
 						
 						
 						$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
-						if(int==result.data.length-1){
-							isChangess=0;
-						}
 					}
 					
 					

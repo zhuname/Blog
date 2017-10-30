@@ -633,7 +633,7 @@ function report(obj){
 function jubao(){
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/report/update/json?web=&type=4&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	url : '/mts/system/report/update/json?web=&type=4&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content1").val(),
 	type : "post",
 	dataType : "json",
 	success : function(result){

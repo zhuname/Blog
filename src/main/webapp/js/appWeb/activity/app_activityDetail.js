@@ -123,7 +123,7 @@ function canyu(){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 		return;
 	}
-	window.location.href='/mts/appWeb/circle/circleSave.jsp?activityId='+id;
+	window.location.href='/mts/appWeb/circle/circleSave.jsp?';
 }
 
 function change(changeType){
@@ -297,9 +297,10 @@ function report(obj){
 }
 
 function jubao(){
+	debugger;
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
+	url : '/mts/system/report/update/json?web=&type=1&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
 	type : "post",
 	dataType : "json",
 	success : function(result){

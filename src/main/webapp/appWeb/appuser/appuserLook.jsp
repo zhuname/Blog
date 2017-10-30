@@ -349,7 +349,7 @@ Object data=session.getAttribute("data");
 				
 				<div class="dis_f ali_ct jus_bt" style="width:9rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">
-						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="window.location.href='/mts/appWeb/circle/circleSave.jsp';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<img src="<%=basePath%>/js/appWeb/images/t1.png" onclick="canyu();"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
 						<div class="f_28 clr_f mt_10">城市圈</div>
 					</div>
 

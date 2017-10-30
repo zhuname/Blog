@@ -29,28 +29,28 @@ if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie(
 			if(result.data!=undefined){
 				
 				
-				var url="";
-				
-				if(result.data[int].type!=undefined){
-					if(result.data[int].type==1){
-						url=result.data[int].url;
-					}else if(result.data[int].type==2){
-						url="/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+result.data[int].itemId;
-					}else if(result.data[int].type==3){
-						url="/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+result.data[int].itemId;
-					}else if(result.data[int].type==4){
-						url="/mts/appWeb/card/cardDetail.jsp?id="+result.data[int].itemId;
-					}else if(result.data[int].type==5){
-						url="/mts/appWeb/activity/activityDetail.jsp?id="+result.data[int].itemId;
-					}else if(result.data[int].type==6){
-						url="/mts/appWeb/circle/circleDetail.jsp?id="+result.data[int].itemId;
-					}
-					
-				}
 				
 				
 				//获取消息记录
 				for (var int = 0; int < result.data.length; int++) {
+					var url="";
+					
+					if(result.data[int].type!=undefined){
+						if(result.data[int].type==1){
+							url=result.data[int].url;
+						}else if(result.data[int].type==2){
+							url="/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+result.data[int].itemId;
+						}else if(result.data[int].type==3){
+							url="/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+result.data[int].itemId;
+						}else if(result.data[int].type==4){
+							url="/mts/appWeb/card/cardDetail.jsp?id="+result.data[int].itemId;
+						}else if(result.data[int].type==5){
+							url="/mts/appWeb/activity/activityDetail.jsp?id="+result.data[int].itemId;
+						}else if(result.data[int].type==6){
+							url="/mts/appWeb/circle/circleDetail.jsp?id="+result.data[int].itemId;
+						}
+						
+					}
 					$("#lunbo").append("<div class=\"swiper-slide\" onclick=\"window.location.href='"+url+"' \" style=\"height:auto;\"><img src=\"{{= image}}\" class=\"dis_b\" style=\"width:14.25rem;height:6.25rem;" +
 							"margin:.5rem auto 0 auto;\" /></div>").find(".swiper-slide:last img").attr("src",result.data[int].image)
 					
@@ -74,8 +74,14 @@ if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie(
 	});
 }
 
-
-
+var userId;
+function canyu(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
+	window.location.href='/mts/appWeb/circle/circleSave.jsp?';
+}
 
 
 
@@ -89,6 +95,7 @@ $.ajax({
 	success : function(result){
 		
 		if(result.status=="error"){
+			userId="";
 			$('#weidenglu').tmpl(null).appendTo($('#detail'));
 			return;
 		}

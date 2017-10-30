@@ -9,6 +9,16 @@ if(getCookie("htmlCityId")!=undefined){
 	dataLunbo='&cityIds='+getCookie("htmlCityId");
 }
 
+
+var userId;
+function canyu(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
+	window.location.href='/mts/appWeb/circle/circleSave.jsp?';
+}
+
 $.ajax({
 	url : '/mts/system/lunbopic/list/json?web=&position=7'+dataLunbo,
 	type : "post",
@@ -94,6 +104,11 @@ function show(){
 		dataType : "json",
 		success : function(result){
 			var user=result;
+			
+			if(result.status=="error"){
+				userId="";
+			}
+			
 			if(result.data!=undefined){
 		//获取用户信息
 			$.ajax({
