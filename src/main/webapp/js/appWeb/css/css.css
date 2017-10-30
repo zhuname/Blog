@@ -73,7 +73,7 @@ color: #cc9d9d;
 .al_ct{text-align:center;}
 .al_rt{text-align:right;}
 
-.dis_f{display:flex;}
+.dis_f{display:flex;display: -webkit-flex;}
 .jus_bt{justify-content:space-between;}
 .jus_ct{justify-content:center;}
 .jus_rt{justify-content:flex-end;}
