@@ -66,6 +66,7 @@ $.ajax({
 				
 				joinList(getQueryString("type"));
 				
+				
 				$('#canyu_tmpl').tmpl(result.data).appendTo($('#foot'));
 				
 				if(result.data.awardss!=undefined){
@@ -89,6 +90,10 @@ console.log(textStatus);
 });
 
 function canyu(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	window.location.href='/mts/appWeb/circle/circleSave.jsp?activityId='+id;
 }
 
