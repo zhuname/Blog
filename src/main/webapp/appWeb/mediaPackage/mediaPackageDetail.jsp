@@ -156,20 +156,20 @@ Object data=session.getAttribute("data");
 
 			<div class="dis_f ali_ct jus_rt pad_30">
 				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_b" style="height:0.4rem;" />
-					<div class="clr_6">&nbsp; {{= scanNum}}</div>
+					<img src="<%=basePath%>/js/appWeb/images/eye2.png" class="dis_ib" style="height:0.4rem;" />
+					<div class="clr_6 dis_ib">&nbsp; {{= scanNum}}</div>
 				</div>
 				<div class="dis_f ali_ct" style="margin-right:2rem;">
-					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_b" style="height:0.6rem;" />
-					<div class="clr_6">&nbsp; {{= commentCount}}</div>
+					<img src="<%=basePath%>/js/appWeb/images/msg3.png" class="dis_ib" style="height:0.6rem;" />
+					<div class="clr_6 dis_ib">&nbsp; {{= commentCount}}</div>
 				</div>
 				<div class="dis_f ali_ct">
 						{{if isTop==1 }}
-						<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="dis_b" style="height:0.6rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/praise2.png" class="dis_ib" style="height:0.6rem;" />
 						{{else}}
-						<img src="<%=basePath%>/js/appWeb/images/praise3.png" class="dis_b" style="height:0.6rem;" />
+						<img src="<%=basePath%>/js/appWeb/images/praise3.png" class="dis_ib" style="height:0.6rem;" />
 						{{/if}}
-					<div class="clr_6">&nbsp; {{= topCount}}</div>
+					<div class="clr_6 dis_ib">&nbsp; {{= topCount}}</div>
 				</div>
 			</div>
 		</div>
@@ -234,7 +234,7 @@ Object data=session.getAttribute("data");
 		<div class="bg_f dis_f ali_ct pad_30 jus_bt dis_f" style="border-top:1px solid #f2f4f7;">
 			<div id="lingqu"  onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';">
 			</div>
-			<div class="clr_3 f_30 dis_f" onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';" style="line-height:1.5rem;align-items:center;">
+			<div class="clr_3 f_30 dis_f" onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';" style="line-height:1.5rem;-webkit-align-items:center;">
 <span class="dis_b" style="margin-top:-0.5rem;">…</span>
 
 			<img onclick="window.location.href='/mts/appWeb/posterPackage/posterPackageUsersList.jsp?itemId={{= id}}&type=2';" src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />

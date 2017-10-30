@@ -122,8 +122,9 @@ Object data=session.getAttribute("data");
 	height:2rem;
 	border-bottom:.05rem solid #ddd;
 	display:flex;
-	justify-content:center;
-	align-items:center;
+	display: -webkit-flex;
+	-webkit-justify-content:center;
+	-webkit-align-items:center;
 }
 .prize-list img{
 width:1rem;

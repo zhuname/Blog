@@ -232,11 +232,11 @@ html,body{height:100%;}
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
    					 {{/each}}
 					{{/if}}
-						<div class="clr_3 f_30">…</div>
-						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+						<div class="clr_3 f_30" style="margin-top:-0.4rem">…</div>
+						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem 0 0.1rem;" />
 					</div>
 				</div>
 			</div>
@@ -271,11 +271,11 @@ html,body{height:100%;}
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
    					 {{/each}}
 					{{/if}}
-						<div class="clr_3 f_30">…</div>
-						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+						<div class="clr_3 f_30 " style="margin-top:-0.3rem;">…</div>
+						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem 0 0;" />
 					</div>
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
@@ -314,11 +314,11 @@ html,body{height:100%;}
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
+							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
    					 {{/each}}
 					{{/if}}
-						<div class="clr_3 f_30">…</div>
-						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem;" />
+						<div class="clr_3 f_30" style="margin-top:-0.4rem;">…</div>
+						<img src="<%=basePath%>/js/appWeb/images/right.png" class="dis_b" style="width:0.4rem;margin:0 0.5rem  0 0.1rem;" />
 					</div>
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
