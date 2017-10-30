@@ -194,7 +194,7 @@ color: #cc9d9d;
 
 .tc_lock{position: absolute;top:0.5rem;right:0.4rem;}
 
-.public_fixed{position: fixed;right:1rem;bottom:1rem;}
+.public_fixed{position: fixed;right:1rem;bottom:2rem;}
 
 .fabu_ul{width:12.5rem;border:2px solid #f95d47;border-radius: 0.2rem;}
 .fabu_ul li{border-right:2px solid #f95d47;height:1.25rem;line-height:1.25rem;text-align: center;width:4rem;}
@@ -352,3 +352,43 @@ ul,li,ol li{
 	height:1.5rem;font-size:.7rem;text-align:center;line-height:1.5rem;color:#fff;width:100%;border-radius:.7rem;background:#ed5941
 }
 .hrs:after{content:"";width:16rem;left:-2.2rem;height:.05rem;background:#e5e5e5;position:absolute;bottom: 0;}
+.public_App{
+	position: fixed;
+	width: 100%;
+	height: 2rem;
+	background: rgba(0,0,0,.7);
+	left:0;
+	display: flex;
+	display: -webkit-flex;
+	align-items:center;
+	-webkit-align-items:center;
+	z-index:5;
+}
+.public_App img:first-child{
+-webkit-align-self:flex-start;
+width: .5rem;
+height: .5rem;
+margin:.2rem 0 0 .2rem;
+}
+.public_App img:nth-of-type(2){
+	width: 1.5rem;
+	height: 1.5rem;
+	margin:0 .4rem;
+}
+.public_App p{
+	height: 100%;
+	width: 10rem;
+	line-height: 2rem;
+	color: #1a87ec;
+}
+.public_App span{
+	width: 2.5rem;
+	height: 1rem;
+	text-align: center;
+	line-height: 1rem;
+	color: #fff;
+	font-size: .5rem;
+	display: block;
+	background: #1a87ec;
+	border-radius: .2rem;
+}

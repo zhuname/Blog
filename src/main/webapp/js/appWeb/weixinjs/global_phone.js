@@ -40,3 +40,6 @@ function GetDateDiff(diffTime) {
 	    	startTime = diffTime.replace(/\-/g, "/");  
 	    	return startTime;
 };  
+function appLink(){
+	window.location.href="/mts/shareApp/down.html"
+}

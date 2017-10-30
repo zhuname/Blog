@@ -68,7 +68,7 @@ Object data=session.getAttribute("data");
 					<p onclick="javascript:window.location.href='/mts/appWeb/appuser/myAppoint.jsp';">确定</p>
 				</div>
 			</div>
-	<div class="wraper overh ">
+	<div class="wraper overh " style="position: relative;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">海报详情</p>
@@ -95,7 +95,17 @@ Object data=session.getAttribute("data");
 				})
 			</script>
 		</div>
-
+					<div class="public_App" style="top:2rem;">
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<p>领福利，发活动，用APP免费参加</p>
+			<span onclick="appLink()">立即打开</span>
+		</div>
+		<script type="text/javascript">
+			$("#close_app").click(function(){
+				$(".public_App").remove()
+			})
+		</script>
 		
 		
 		<div id="detail">
@@ -104,8 +114,6 @@ Object data=session.getAttribute("data");
 		
 		</div>
 		<div id="content">
-		
-		
 		
 		</div>
 
@@ -226,7 +234,7 @@ Object data=session.getAttribute("data");
 
 <div class="bg_f dis_f ali_ct jus_bt xjq_wrap">
 			<div class="dis_f ali_ct">
-				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:$('.kq_mask').show();">
+				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="reserver()">
 					<img src="<%=basePath%>/js/appWeb/images/yyyl.png" class="ver_mid" style="width:0.9rem;" />
 					<p >预订有礼</p>
 				</div>
@@ -299,7 +307,7 @@ Object data=session.getAttribute("data");
 		</div>
 		<div class="kq_mask" id="payTmpl" style="display: none;z-index:200;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
-            <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
+            <a href="javascript:;" class="dis_b close_kq_mask" onclick="removeRes()"></a>
             <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;outline:none;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥ 请输入金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预订电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
@@ -314,8 +322,19 @@ Object data=session.getAttribute("data");
     	</div>
 
 	</script>
-	
-	
+	<script>
+		function reserver(){
+			$("#payTmpl").css("position","absolute")
+			$('.kq_mask').show();
+			$("body").scrollTop(0);
+			$(".wraper").css("height","100%")
+		}
+		function removeRes(){
+			$("#payTmpl").css("position","fixed")
+			$('.kq_mask').hide();
+			$(".wraper").css("height","auto")
+		}
+	</script>
 		 
 	
 	
