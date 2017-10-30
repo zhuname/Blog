@@ -40,3 +40,19 @@ function GetDateDiff(diffTime) {
 	    	startTime = diffTime.replace(/\-/g, "/");  
 	    	return startTime;
 };  
+
+
+function hrefIndexShare() {
+	if(getQueryString("isShare")!=undefined){
+		window.location.href="/mts/appWeb/index/index.jsp";
+	}else{
+		window.history.back();
+	}
+    
+}; 
+
+function getQueryString(aaa) { 
+	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); 
+	if (r != null) return unescape(r[2]); return null; 
+} 

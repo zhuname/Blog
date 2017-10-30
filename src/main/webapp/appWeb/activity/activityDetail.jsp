@@ -95,7 +95,7 @@ Object data=session.getAttribute("data");
 
 		<div class="tupian_bg" no-repeat;" style="position:absolute;top:0;left:0;width:14.5rem;height: auto;">
 			<div class="pad_30  dis_f ali_ct jus_bt pos_rela" style="width:100%;">
-				<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back3.png" class="dis_b" style="width:1rem;" /></a>
+				<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back3.png" class="dis_b" style="width:1rem;" /></a>
 				<div class="whte" onclick="showColl(this)"></div>
 				<a href="javascript:;"  onclick="showColl(this);" ><img src="<%=basePath%>/js/appWeb/images/more2.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
 				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;right:1rem;" class=" arr_up_down dis_n xx_pic"/>
