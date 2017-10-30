@@ -84,7 +84,7 @@ body{background: #f0f2f5;}
 			<input class="ipt3 al_rt f_28 ph_red" id="money" type="text" placeholder="请填写海报红包金额" onkeyup="getFloatStr();" style="width:9rem;" />
 		</div>
 		<div class="pad_30 borderbot1 bg_f f_28 clr_3  ali_ct jus_bt baba bordertop1">
-			<div style="width: 100%; display: flex; justify-content:space-between;">
+			<div style="width: 100%; display: flex;display: -webkit-flex; -webkit-justify-content:space-between;">
 				<p class="dis_f ali_ct">
 					<img src="<%=basePath%>/js/appWeb/images/3-02posterPackPeo.png" class="dis_b" style="height:1rem;margin-right: 0.5rem;" />
 					人数

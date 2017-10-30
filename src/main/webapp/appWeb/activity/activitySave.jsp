@@ -149,6 +149,7 @@ body{background: #f0f2f5;}
 
         .alertBox .week {
             display: flex;
+            display: -webkit-flex;
             line-height: 1.06rem;
             color: #585858;
         }
