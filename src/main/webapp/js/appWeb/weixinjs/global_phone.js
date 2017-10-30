@@ -40,7 +40,6 @@ function GetDateDiff(diffTime) {
 	    	startTime = diffTime.replace(/\-/g, "/");  
 	    	return startTime;
 };  
-<<<<<<< HEAD
 
 
 function hrefIndexShare() {
@@ -57,8 +56,6 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
-=======
 function appLink(){
 	window.location.href="/mts/shareApp/down.html"
 }
->>>>>>> 34a3cd620a570a134ca2dc8d34bf7d18870386ab

@@ -314,11 +314,7 @@ html,body{height:100%;}
 					<div class="bg_f dis_f ali_ct jus_bt">
 						{{if moneyDetails}}
 					{{each moneyDetails}}
-<<<<<<< HEAD
 							<img src="{{if $value.appUser.header}}{{= $value.appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.5rem;" />
-=======
-							<img src="{{= $value.appUser.header}}" class="ver_mid" style="width:1rem;height:1rem;border-radius: 0.5rem;margin-right:0.2rem;" />
->>>>>>> 2cbf16272705f3f881d70f99431cd5eb53a05375
    					 {{/each}}
 					{{/if}}
 						<div class="clr_3 f_30" style="margin-top:-0.4rem;">…</div>

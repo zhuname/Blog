@@ -64,13 +64,8 @@ Object data=session.getAttribute("data");
 <body>
 
 	<div class="wraper overh" style="padding-bottom:3rem;">
-<<<<<<< HEAD
-		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
-			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
-=======
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" style="5;">
-			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
->>>>>>> 34a3cd620a570a134ca2dc8d34bf7d18870386ab
+			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">视频详情</p>
 			<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
