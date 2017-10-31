@@ -75,7 +75,7 @@ body{background: #f0f2f5;}
 		
 		<div class="bg_f pad_30 f_28 clr_3 mt_20 borderbot1">支付方式</div>
 <div>
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba">
+		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba" id="wxShow">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wx3.png" class="dis_b" style="width:1rem;margin-right:0.5rem;" />
 				微信
@@ -83,7 +83,7 @@ body{background: #f0f2f5;}
 			<img src="<%=basePath%>/js/appWeb/images/check_yes.png" payType="1" class="dis_b check_toggle check" style="width:0.7rem;" />
 			
 		</div>
-		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba">
+		<div class="pad_30 borderbot1 bg_f f_28 clr_3 dis_f ali_ct jus_bt baba" id="zfbShow">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/zfb3.png" class="dis_b" style="width:1rem;margin-right:0.5rem;" />
 				支付宝

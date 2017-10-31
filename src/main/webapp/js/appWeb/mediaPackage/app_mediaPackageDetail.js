@@ -54,7 +54,9 @@ $().ready(function(){
     	}else{
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	}
+    	$('#zfbShow').remove();
     } else {
+    	$('#wxShow').remove();
     }  
 }); 
 
@@ -72,6 +74,7 @@ $().ready(function(){
 			userId=result.data.id;
 			userData="&appUserId="+userId;
 			balance=result.data.balance;
+			$("#payBalance").html(result.data.balance);
 		}
 	
 		

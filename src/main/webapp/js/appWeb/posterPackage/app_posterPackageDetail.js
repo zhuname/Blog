@@ -53,7 +53,9 @@ $().ready(function(){
     	}else{
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	}
+    	$('#zfbShow').remove();
     } else {
+    	$('#wxShow').remove();
     }  
 }); 
 
@@ -69,6 +71,7 @@ $().ready(function(){
 		}else{
 			userId=result.data.id;
 			balance=result.data.balance;
+			$("#payBalance").html(result.data.balance);
 		}
 	},
 	error:function(XMLHttpRequest, textStatus, errorThrown){

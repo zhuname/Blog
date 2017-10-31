@@ -70,11 +70,11 @@ Object data=session.getAttribute("data");
 						<img src="<%=basePath%>/js/appWeb/images/close.png" onclick="javascript:$('.pay-type').css('top','100%')">
 						<p>请选择支付方式</p>
 					</li>
-					<li onclick="javascript:changePayType(2);">
+					<li onclick="javascript:changePayType(2);" id="wxShow">
 						<img src="<%=basePath%>/js/appWeb/images/icon-weixin.png">
 						<p>微信支付</p>
 					</li>
-					<li onclick="javascript:changePayType(1);">
+					<li onclick="javascript:changePayType(1);" id="zfbShow">
 						<img src="<%=basePath%>/js/appWeb/images/icon-zfb.png">
 						<p>支付宝</p>
 					</li>
