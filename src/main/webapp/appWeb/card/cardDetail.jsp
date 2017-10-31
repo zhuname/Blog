@@ -88,7 +88,7 @@ html,body{background:#f95d47;}
 
 	<div class="wraper" style="background: #f95d47;height:100%;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f bg_r">
-			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="height:1rem;" /></a>
+			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="height:1rem;" /></a>
 			
 				<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more3.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
