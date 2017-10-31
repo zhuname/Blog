@@ -295,12 +295,13 @@ function show(type){
 
 
 function dashangShow(){
-	
 	if(userId==""){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 		return;
 	}
-	$('#showDashang').show();
+	$('#showDashang').show().css("position","absolute");
+	$("body").scrollTop(0);
+	$(".wraper").css("height","100%")
 }
 
 
