@@ -3,12 +3,14 @@ package com.cz.mts.system.web;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
@@ -100,6 +102,10 @@ public class AliPayController extends BaseController {
 			type = code.substring(0, 1);
 			code = code.substring(1);
 			money = notify.getTotal_fee();
+			if(money==null){
+				money=notify.getTotal_amount();
+			}
+			
 			payNumber = notify.getTrade_no();
 			tradeNo = notify.getTrade_no();
 			body = notify.getBody();
@@ -109,6 +115,9 @@ public class AliPayController extends BaseController {
 			log.info("****code=" + code + "*****");
 		} else {
 			money = params.get("total_fee");
+			if(money==null){
+				money=params.get("total_amount");
+			}
 			tradeNo = params.get("trade_no");
 			payNumber = params.get("trade_no");
 			body = params.get("body");
@@ -157,7 +166,7 @@ public class AliPayController extends BaseController {
 
 	
 	@RequestMapping("/getDingdan/json")
-	public static void getDingdan(HttpServletRequest request) throws IOException, DocumentException {
+	public static void getDingdan(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
 		log.info("------------->支付宝订单！");
 		
 		
@@ -166,12 +175,15 @@ public class AliPayController extends BaseController {
 		
 		
 		try {
-			alipayUtil.zfbPay(request.getParameter("name"), request.getParameter("code"), request.getParameter("money"), request.getParameter("detail"));
+			  String form = alipayUtil.zfbPay(request.getParameter("name"), request.getParameter("code"), request.getParameter("money"), request.getParameter("detail"));
+			  System.out.println(form);
+		        OutputStream out = response.getOutputStream();
+		        out.write(form.getBytes("utf-8"));
+		        out.flush();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		
 	}
 	

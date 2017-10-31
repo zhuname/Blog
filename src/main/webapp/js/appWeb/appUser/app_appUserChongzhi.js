@@ -44,7 +44,7 @@ function chongzhi(){
 function wx(){
 	if($("#money").val()!=""){
 		$.ajax({
-			url : '/mts/system/wx/getDingdan/json?web=1&openid1='+openid+'&total_fee1='+$("#money").val(),
+			url : '/mts/system/wx/getDingdan/json?web=1&payType=R&openid1='+openid+'&total_fee1='+$("#money").val(),
 			type : "get",
 			success : function(result) {
 				console.log(result);
@@ -119,7 +119,7 @@ function zfb(){
 				}
 				
 					
-				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏支付&money="+$("#money").val()+"&detail=每天赏充值余额&code="+"R"+result.data.id+new Date().getTime();
+				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏支付&money="+$("#money").val()+"&detail=每天赏充值余额&code="+"R"+result.data.id+"_"+new Date().getTime();
 					
 					
 			},
