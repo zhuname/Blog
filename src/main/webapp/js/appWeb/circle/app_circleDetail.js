@@ -51,7 +51,7 @@ $().ready(function(){
     			}
     		});
     	}else{
-    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/circle/circleDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	}
     } else {
     }  
