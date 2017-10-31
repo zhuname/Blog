@@ -44,7 +44,7 @@ function chongzhi(){
 function wx(){
 	if($("#money").val()!=""){
 		$.ajax({
-			url : '/mts/system/wx/getDingdan/json?web=1&payType=R&openid1='+openid+'&total_fee1='+$("#money").val(),
+			url : '/mts/system/wx/getDingdan/json?web=1&payType=R&openid1='+openid+'&total_fee1='+$("#money").val()*100,
 			type : "get",
 			success : function(result) {
 				console.log(result);

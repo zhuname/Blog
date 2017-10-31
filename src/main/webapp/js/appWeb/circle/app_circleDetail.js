@@ -488,7 +488,7 @@ function dashang(){
 				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏打赏&money="+money+"&detail=每天赏打赏&code="+"D"+result.data.code+"_"+new Date().getTime();
 			}if(payType==2){
 				$.ajax({
-					url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=D&openid1='+openid+'&total_fee1='+money,
+					url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=D&openid1='+openid+'&total_fee1='+money*100,
 					type : "get",
 					success : function(result) {
 						console.log(result);

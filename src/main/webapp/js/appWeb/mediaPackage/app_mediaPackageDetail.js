@@ -440,7 +440,7 @@ function yuyue(){
 					
 				}if(payType==2){
 					$.ajax({
-						url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=A&openid1='+openid+'&total_fee1='+$("#money").val(),
+						url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=A&openid1='+openid+'&total_fee1='+$("#money").val()*100,
 						type : "get",
 						success : function(result) {
 							console.log(result);

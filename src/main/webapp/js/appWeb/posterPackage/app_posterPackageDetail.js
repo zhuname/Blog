@@ -462,7 +462,7 @@ function yuyue(){
 				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏预约&money="+$("#money").val()+"&detail=每天赏预约&code="+"A"+result.data.code+"_"+new Date().getTime();
 			}if(payType==2){
 				$.ajax({
-					url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=A&openid1='+openid+'&total_fee1='+$("#money").val(),
+					url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=A&openid1='+openid+'&total_fee1='+$("#money").val()*100,
 					type : "get",
 					success : function(result) {
 						console.log(result);
