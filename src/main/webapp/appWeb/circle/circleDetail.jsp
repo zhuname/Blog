@@ -136,16 +136,16 @@ z-index:100;
 					</li>
 					<li>
 						<img src="<%=basePath%>/js/appWeb/images/icon-weixin.png">
-						<p>微信支付</p>
+						<p onclick="javascript:changePayType(2);">微信支付</p>
 					</li>
 					<li>
 						<img src="<%=basePath%>/js/appWeb/images/icon-zfb.png">
-						<p>支付宝</p>
+						<p onclick="javascript:changePayType(1);">支付宝</p>
 					</li>
 
 					<li>
 						<img src="<%=basePath%>/js/appWeb/images/icon-money.png">
-						<p>余额支付:￥<span>33.12</span></p>
+						<p onclick="javascript:changePayType(2);">余额支付:￥<span id="payBalance">00.00</span></p>
 					</li>
 				</ul>
 			</div>
@@ -408,7 +408,7 @@ z-index:100;
 			<input class="ipt3 f_26 clr_6 ipt_msg" id="contentVal" type="text" placeholder="留下你的打赏留言吧" />
 
 			<a href="javascript:dashang()"><img src="<%=basePath%>/js/appWeb/images/shang.png" class="shang_img" /></a>
-			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance">0</span> <a  class="clr_b" onclick="javascript:$('.pay-type').css('top',0)">更换</a></div>
+			<div class="f_20 clr_3 dashang_ye" >使用<span id="payString">账户余额</span>付款 ¥<span id="balance">0</span> <a  class="clr_b" onclick="javascript:$('.pay-type').css('top',0)">更换</a></div>
 		</div>
 	</div>
 

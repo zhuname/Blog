@@ -74,7 +74,7 @@ public class AlipayUtil {
 			model.setProductCode("QUICK_WAP_PAY");
 			alipay_request.setBizModel(model);
 			// 设置异步通知地址
-			alipay_request.setNotifyUrl("http://w37919765677.imwork.net/mts/system/zfb/getzfb/json");
+			alipay_request.setNotifyUrl("http://app.mtianw.com/mts/system/zfb/getzfb/json");
 			// 设置同步地址
 			alipay_request.setReturnUrl("http://app.mtianw.com/mts/appWeb/moneyDetail/appMoneyDetail.jsp");
 			// 调用SDK生成表单
