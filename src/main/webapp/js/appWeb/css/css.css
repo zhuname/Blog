@@ -363,6 +363,7 @@ ul,li,ol li{
 	align-items:center;
 	-webkit-align-items:center;
 	z-index:5;
+	transition: top .5s;
 }
 .public_App img:first-child{
 -webkit-align-self:flex-start;
@@ -392,3 +393,42 @@ margin:.2rem 0 0 .2rem;
 	background: #1a87ec;
 	border-radius: .2rem;
 }
+	.pay-type{
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 100%;
+		left: 0;
+		z-index: 300;
+		background: rgba(0,0,0,.7);
+		transition: top .5s;
+
+	}
+	.pay-type ul{
+		border-top:.5rem solid #ddd;
+		background: #fff;
+		width: 100%;
+	}
+	.pay-type ul li{
+		border-bottom: 1px solid #ddd;
+		padding:.3rem;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+	}
+	.pay-type ul li img{
+		width: 1.5rem;
+		height: 1.5rem;
+
+	}
+	.pay-type ul li p{
+		-webkit-box-flex: 1;
+		    -ms-flex: 1;
+		        flex: 1;
+		padding-left: .5rem;
+		line-height: 1.5rem;
+		font-size: .6rem;
+	}
+	.pay-type ul li:first-of-type p{
+		text-align: center;
+	}

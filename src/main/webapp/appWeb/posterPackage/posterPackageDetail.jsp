@@ -59,6 +59,9 @@ Object data=session.getAttribute("data");
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
 <title>红包详情</title>
+<style type="text/css">
+
+</style>
 </head>
 
 <body>
@@ -68,8 +71,29 @@ Object data=session.getAttribute("data");
 					<p onclick="javascript:window.location.href='/mts/appWeb/appuser/myAppoint.jsp';">确定</p>
 				</div>
 			</div>
+			<div class="pay-type dis_f ali_end">
+				<ul>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/close.png" onclick="javascript:$('.pay-type').css('top','100%')">
+						<p>请选择支付方式</p>
+					</li>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-weixin.png">
+						<p>微信支付</p>
+					</li>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-zfb.png">
+						<p>支付宝</p>
+					</li>
+
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-money.png">
+						<p>余额支付:￥<span>33.12</span></p>
+					</li>
+				</ul>
+			</div>
 	<div class="wraper overh " style="position: relative;">
-		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
+		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" id="headers">
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">海报详情</p>
 						<div class="whte"></div>
@@ -313,7 +337,7 @@ Object data=session.getAttribute("data");
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
                {{= appointExplain}}
             </div>
-            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b" style="padding:0 .2rem;">更换</a></div>
+            <div class="f_20 clr_3 al_ct pad_20" >使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b" onclick="javascript:$('.pay-type').css('top',0)" style="padding:0 .2rem;">更换</a></div>
 
             <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预订"/>
         </div>
@@ -323,17 +347,13 @@ Object data=session.getAttribute("data");
 
 	</script>
 	<script>
-		function reserver(){
-			$("#payTmpl").css("position","absolute")
-			$('.kq_mask').show();
-			$("body").scrollTop(0);
-			$(".wraper").css("height","100%")
-		}
-		function removeRes(){
-			$("#payTmpl").css("position","fixed")
-			$('.kq_mask').hide();
-			$(".wraper").css("height","auto")
-		}
+
+		$(".pay-type").click(function(){
+			$(this).css("top","100%")
+		})
+		$(".pay-type ul").click(function(){
+			event.stopPropagation();    	
+		})
 	</script>
 		 
 	
@@ -448,7 +468,13 @@ Object data=session.getAttribute("data");
 					$(".Report").click(function(){
 						event.stopPropagation();
 					})
-
+$(window).scroll(function(){
+	if($("body").scrollTop()>=$("#headers").outerHeight()){
+		$(".public_App").css("top",0)
+	}else{
+		$(".public_App").css("top","2rem")
+	}
+})
 				</script>
 		
 	

@@ -63,8 +63,29 @@ Object data=session.getAttribute("data");
 
 <body>
 
-	<div class="wraper overh" style="padding-bottom:3rem;">
-		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" style="5;">
+	<div class="wraper overh" style="padding-bottom:3rem;position: relative;box-sizing: border-box;">
+				<div class="pay-type dis_f ali_end">
+				<ul>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/close.png" onclick="javascript:$('.pay-type').css('top','100%')">
+						<p>请选择支付方式</p>
+					</li>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-weixin.png">
+						<p>微信支付</p>
+					</li>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-zfb.png">
+						<p>支付宝</p>
+					</li>
+
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-money.png">
+						<p>余额支付:￥<span>33.12</span></p>
+					</li>
+				</ul>
+			</div>
+		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" >
 			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">视频详情</p>
 			<div class="whte"></div>
@@ -90,7 +111,7 @@ Object data=session.getAttribute("data");
 				 
 			</script>
 		</div>
-					<div class="public_App" style="top:2rem;">
+					<div class="public_App" style="top:2rem;"  id="headers">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
 			<p>领福利，发活动，用APP免费参加</p>
@@ -223,7 +244,7 @@ Object data=session.getAttribute("data");
 		{{else}}
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap">
 			<div class="dis_f ali_ct">
-				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;" onclick="javascript:$('.kq_mask').show();">
+				<div class="xjq_box f_20 clr_f dis_f ali_ct jus_ct flex_col" style="background: #eb5744;"  onclick="reserver()">
 					<img src="<%=basePath%>/js/appWeb/images/yyyl.png" class="ver_mid" style="width:0.9rem;" />
 					<p >预订有礼</p>
 				</div>
@@ -299,14 +320,14 @@ Object data=session.getAttribute("data");
 
 		<div class="kq_mask" id="payTmpl" style="display: none;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
-            <a href="javascript:;" class="dis_b close_kq_mask" onclick="javascript:$('.kq_mask').hide();"></a>
+            <a href="javascript:;" class="dis_b close_kq_mask" onclick="removeRes()"></a>
 
             <input class="ipt3 f_26 clr_6 ipt_dashang" style="top:6.5rem;" onkeyup="changeBalance();" id="money" type="number" placeholder="￥请填写打赏金额"/>
             <input class="ipt3 f_26 clr_6 ipt_msg" style="top:8.3rem;left:2.6rem;" id="phone" type="text" placeholder="请填写预订电话"/>
             <div class="f_20 clr_6" style="margin-top:3rem;line-height: 0.8rem;padding:1rem 1rem 0 1rem;">
                   {{= appointExplain}}
             </div>
-            <div class="f_20 clr_3 al_ct pad_20">使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b">更换</a></div>
+            <div class="f_20 clr_3 al_ct pad_20">使用账户余额付款 ¥<span id="userBalance">0.00</span> <a href="javascript:;" class="clr_b"  onclick="javascript:$('.pay-type').css('top',0)">更换</a></div>
 
             <input type="button" onclick="yuyue();"; class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即预订"/>
         </div>
@@ -430,6 +451,19 @@ Object data=session.getAttribute("data");
 					function LinkUser(obj){
 							event.stopPropagation();    
 					}
+					$(window).scroll(function(){
+						if($("body").scrollTop()>=$("#headers").outerHeight()){
+							$(".public_App").css("top",0)
+						}else{
+							$(".public_App").css("top","2rem")
+						}
+					})
+			$(".pay-type").click(function(){
+			$(this).css("top","100%")
+		})
+		$(".pay-type ul").click(function(){
+			event.stopPropagation();    	
+		})
 				</script>
 	
 </body>

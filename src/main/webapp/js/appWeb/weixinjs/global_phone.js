@@ -43,3 +43,14 @@ function GetDateDiff(diffTime) {
 function appLink(){
 	window.location.href="/mts/shareApp/down.html"
 }
+function reserver(){
+	$("#payTmpl").css("position","absolute")
+	$('.kq_mask').show();
+	$("body").scrollTop(0);
+	$(".wraper").css("height","100%")
+}
+function removeRes(){
+	$("#payTmpl").css("position","fixed")
+	$('.kq_mask').hide();
+	$(".wraper").css("height","auto")
+}
