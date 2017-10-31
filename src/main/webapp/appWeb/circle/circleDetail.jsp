@@ -128,6 +128,27 @@ z-index:100;
         </div>
     </div>
 </div>
+<div class="pay-type dis_f ali_end">
+				<ul>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/close.png" onclick="javascript:$('.pay-type').css('top','100%')">
+						<p>请选择支付方式</p>
+					</li>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-weixin.png">
+						<p>微信支付</p>
+					</li>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-zfb.png">
+						<p>支付宝</p>
+					</li>
+
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/icon-money.png">
+						<p>余额支付:￥<span>33.12</span></p>
+					</li>
+				</ul>
+			</div>
 	<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
 			<a  onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">城市圈详情</p>
@@ -370,7 +391,7 @@ z-index:100;
 		
 
 
-	<div class="kq_mask" style="display: none;" id="showDashang">
+	<div class="kq_mask" style="display: none;z-index:100;" id="showDashang">
 		<!-- <div class="dashang_bg pos_rela" style="padding-top:5.8rem;">
 			<a href="javascript:;" class="dis_b close_kq_mask"></a>
 			<input class="ipt3 f_26 clr_6 ipt_dashang" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />
@@ -387,7 +408,7 @@ z-index:100;
 			<input class="ipt3 f_26 clr_6 ipt_msg" id="contentVal" type="text" placeholder="留下你的打赏留言吧" />
 
 			<a href="javascript:dashang()"><img src="<%=basePath%>/js/appWeb/images/shang.png" class="shang_img" /></a>
-			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance">0</span> <a href="#" class="clr_b">更换</a></div>
+			<div class="f_20 clr_3 dashang_ye" >使用账户余额付款 ¥<span id="balance">0</span> <a  class="clr_b" onclick="javascript:$('.pay-type').css('top',0)">更换</a></div>
 		</div>
 	</div>
 
@@ -401,10 +422,16 @@ z-index:100;
 			}
 			
 		}
-	
+		$(".pay-type").click(function(){
+			$(this).css("top","100%")
+		})
+		$(".pay-type ul").click(function(){
+			event.stopPropagation();    	
+		})
 	
 		$('.close_kq_mask').click(function(){
-			$(this).parents('.kq_mask').hide();
+			$(this).parents('.kq_mask').hide().css("position","fixed");
+			$(".wraper").css("height","auto")
 		});
 							    $(".show-img-box").click(function(){
     	$(this).toggle();
