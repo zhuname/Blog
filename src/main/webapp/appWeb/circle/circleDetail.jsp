@@ -370,7 +370,7 @@ z-index:100;
 		
 
 
-	<div class="kq_mask" style="display: none;" id="showDashang">
+	<div class="kq_mask" style="display: none;z-index:100;" id="showDashang">
 		<!-- <div class="dashang_bg pos_rela" style="padding-top:5.8rem;">
 			<a href="javascript:;" class="dis_b close_kq_mask"></a>
 			<input class="ipt3 f_26 clr_6 ipt_dashang" id="money" onkeyup="javascript:$('#balance').html($('#money').val());" type="text" placeholder="￥请填写打赏金额" />

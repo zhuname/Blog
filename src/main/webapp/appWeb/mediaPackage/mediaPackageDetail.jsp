@@ -318,7 +318,7 @@ Object data=session.getAttribute("data");
 
 
 
-		<div class="kq_mask" id="payTmpl" style="display: none;">
+		<div class="kq_mask" id="payTmpl" style="display: none;z-index:100;">
         <div class="yuyue_bg pos_rela" style="padding-top:5.8rem;">
             <a href="javascript:;" class="dis_b close_kq_mask" onclick="removeRes()"></a>
 
