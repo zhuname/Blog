@@ -183,7 +183,7 @@ Object data=session.getAttribute("data");
 			</div>
 
 
-			<div class="bg_f pad_20 clr_3 f_22 " id="huodongShow" style="line-height: 1rem;">
+			<div class="bg_f pad_20 clr_3 f_22 " id="huodongShow" style="line-height: 1rem;overflow:hidden;">
 
 			</div>
 
@@ -191,7 +191,7 @@ Object data=session.getAttribute("data");
 				<pre  style="white-space: pre-wrap">{{= joinExplain}}</pre>
 			</div>
 
-			<div class="bg_f dis_f ali_ct jus_bt xjq_wrap mt_20">
+			<div class="bg_f dis_f ali_ct jus_bt xjq_wrap mt_20" style="width:100%;">
 				<div class="f_22 clr_3 dis_f ali_ct pad_20">
 					<img src="<%=basePath%>/js/appWeb/images/zhong.png" class="dis_b" style="width:0.8rem;margin-right:0.3rem;" />
 					<div>{{= sumWinPrizePerson}}个中奖名额，已获奖{{= winPrizePerson}}人</div>
@@ -219,8 +219,8 @@ Object data=session.getAttribute("data");
 				<span onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';">...</span>
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" />
 			</div>
-					<div class="public_App" style="bottom:2.5rem;">
-			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
+					<div class="public_App" style="top:7rem;" onload="linkApp()">
+			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" onclick="closeApp()">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
 			<p>领福利，发活动，用APP免费参加</p>
 			<span onclick="appLink()">立即打开</span>
@@ -244,7 +244,7 @@ Object data=session.getAttribute("data");
 
 		<script id="huodong_tmpl" type="text/x-jquery-tmpl">
 			<div class="dis_f ali_ct jus_bt"  style="float:left;">
-				<div class="dis_f ali_ct"  style="float:right;">
+				<div class="dis_f ali_ct"  style="float:right;width:13rem;">
 					<span class="f_24 clr_3" class="ver_mid" > {{= title}}:{{= content}}</span>
 				</div>
 			</div>
@@ -257,9 +257,16 @@ Object data=session.getAttribute("data");
 		</script>
 		
 		<script type="text/javascript">
-			$("#close_app").click(function(){
+		function closeApp(){
 				$(".public_App").remove()
-			})
+		}
+		$(window).scroll(function(){
+			if($("body").scrollTop()>=$(".haibao_bg").outerHeight()/4){
+				$(".public_App").css("top",0)
+			}else{
+				$(".public_App").css("top","7rem")
+			}
+		})
 		</script>
 			<!-- 提示窗 -->
 <div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">
