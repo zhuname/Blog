@@ -162,11 +162,18 @@ public class wxController extends BaseController {
 		
 		ReturnDatas returnDatas=ReturnDatas.getSuccessReturnDatas();
 		
+		String payType=request.getParameter("payType");
+		
+		String code=request.getParameter("code");
+		if(code==null){
+			code=session.getAttribute("appUserSessionId").toString();
+		}
+		
         String appid = wxAppId;
         String mch_id = wxMch_id;
         String nonce_str = random();//生成随机数，可直接用系统提供的方法  
         String body = "每天赏-商品订单";  
-        String out_trade_no = "R"+session.getAttribute("appUserSessionId").toString()+new Date().getTime();  
+        String out_trade_no = payType+code+"_"+new Date().getTime();  
         String total_fee = request.getParameter("total_fee1");
         String spbill_create_ip = "47.92.129.76";//用户端ip,这里随意输入的  
         String notify_url = "http://app.mtianw.com/mts/system/appuser/pay/json";//支付回调地址  
@@ -335,9 +342,36 @@ public class wxController extends BaseController {
                     	String total_fee=jsonObject.get("total_fee").toString().substring(2, jsonObject.get("total_fee").toString().length()-2);
                     	String transaction_id=jsonObject.get("transaction_id").toString().substring(2, jsonObject.get("transaction_id").toString().length()-2);
                     	out_trade_no = out_trade_no.substring(1);
-                    	appUserService.alipay(out_trade_no, 4, Double.parseDouble(total_fee)/100, transaction_id, 2);
+                    	type = out_trade_no.substring(0, 1);
+
+        				if ("SUCCESS".equals(result_code)) {
+        					// c充值
+        					// 此处为业务逻辑
+        					int returnvalue = 0;
+        					switch (type) {
+        					case"P":
+        						appUserService.alipay(out_trade_no, 1, Double.parseDouble(total_fee)/100, transaction_id, 2);
+        						break;
+        					case"V":
+        						appUserService.alipay(out_trade_no, 2, Double.parseDouble(total_fee)/100, transaction_id, 2);
+        						break;
+        					case"C":
+        						appUserService.alipay(out_trade_no, 3, Double.parseDouble(total_fee)/100, transaction_id, 2);
+        						break;
+        					case"R":
+        						appUserService.alipay(out_trade_no, 4, Double.parseDouble(total_fee)/100, transaction_id, 2);
+        						break;
+        					case"A":
+        						appUserService.alipay(out_trade_no, 5, Double.parseDouble(total_fee)/100, transaction_id, 2);
+        						break;
+        					case "D":
+        						appUserService.alipay(out_trade_no, 6, Double.parseDouble(total_fee)/100, transaction_id, 2);
+        						break;
+        					}
+                    	
+                    	
+        					}
                     }
-                    
                     
                     
                     returnDatas.setData(obj);

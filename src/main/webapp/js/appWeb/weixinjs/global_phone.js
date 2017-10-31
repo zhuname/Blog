@@ -59,7 +59,6 @@ function getQueryString(aaa) {
 function appLink(){
 	window.location.href="/mts/shareApp/down.html"
 }
-<<<<<<< HEAD
 function reserver(){
 	$("#payTmpl").css("position","absolute")
 	$('.kq_mask').show();
@@ -71,5 +70,3 @@ function removeRes(){
 	$('.kq_mask').hide();
 	$(".wraper").css("height","auto")
 }
-=======
->>>>>>> 055b0d9de6133c487fb661906cdb486cadaedb0a

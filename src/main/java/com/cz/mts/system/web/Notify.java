@@ -23,6 +23,7 @@ public class Notify {
 	private String body;
 	private String refund_status;
 	private String gmt_refund;
+	private String total_amount;
 	
 	public String getSeller_email() {
 		return seller_email;
@@ -149,6 +150,12 @@ public class Notify {
 	}
 	public void setGmt_refund(String gmt_refund) {
 		this.gmt_refund = gmt_refund;
+	}
+	public String getTotal_amount() {
+		return total_amount;
+	}
+	public void setTotal_amount(String total_amount) {
+		this.total_amount = total_amount;
 	}
 	
 }

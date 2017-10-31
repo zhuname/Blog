@@ -28,5 +28,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/alipay-sdk-java20170829142630.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/aliyun-java-sdk-core-3.2.3.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/aliyun-java-sdk-dysmsapi-1.0.0.jar"/>
 	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
 </classpath>
