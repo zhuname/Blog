@@ -149,6 +149,8 @@ var This=this;
     			
     		},
     		error:function(XMLHttpRequest, textStatus, errorThrown){
+    			alert(textStatus);
+    			alert(errorThrown);
     			console.log(XMLHttpRequest) ;
     			console.log(textStatus) ;
     		}
