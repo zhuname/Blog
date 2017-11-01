@@ -58,7 +58,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>红包详情</title>
+<title>海报红包详情</title>
 <style type="text/css">
 
 </style>
@@ -95,7 +95,7 @@ Object data=session.getAttribute("data");
 	<div class="wraper overh " style="position: relative;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" id="headers">
 			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
-			<p class="f_30 clr_3">海报详情</p>
+			<p class="f_30 clr_3">海报红包详情</p>
 						<div class="whte"></div>
 			<a><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
 			
