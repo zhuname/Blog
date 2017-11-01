@@ -93,7 +93,7 @@ Object data=session.getAttribute("data");
 				</ul>
 			</div>
 	<div class="wraper overh " style="position: relative;">
-		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela">
+		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1 pos_rela" id="headers">
 			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">海报详情</p>
 						<div class="whte"></div>
