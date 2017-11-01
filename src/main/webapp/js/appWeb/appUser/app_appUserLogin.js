@@ -69,6 +69,12 @@ var This=this;
     	    		type : "get",
     	    		success : function(result) {
     	    			data = JSON.parse(result.data);
+    	    			if(data.nickname==undefined){
+    	    				data.nickname="每天赏用户";
+    	    			}
+    	    			if(data.headimgurl==undefined){
+    	    				data.headimgurl="";
+    	    			}
     	    			var checkSex="";
     	    			if(data.sex==1){
     	    				checkSex="男";
