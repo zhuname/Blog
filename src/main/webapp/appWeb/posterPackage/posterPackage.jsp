@@ -55,7 +55,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>红包列表</title>
+<title>海报红包</title>
 
 
 </head>

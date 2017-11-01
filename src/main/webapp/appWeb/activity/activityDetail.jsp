@@ -54,7 +54,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>首页</title>
+<title>活动详情</title>
 </head>
 
 				<script type="text/javascript">

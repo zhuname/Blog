@@ -374,7 +374,7 @@ public class ActivityController  extends BaseController {
 		
 		String selectTitle = request.getParameter("selectTitle");
 		
-		Finder finder =Finder.getSelectFinder(Activity.class).append(" where 1=1 ");
+		Finder finder =Finder.getSelectFinder(Activity.class).append(" where 1=1 and isDel=0");;
 		
 		if(StringUtils.isNotBlank(cityId)){
 			
