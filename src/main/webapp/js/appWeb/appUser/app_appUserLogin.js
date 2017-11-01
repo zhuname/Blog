@@ -109,6 +109,7 @@ var This=this;
     var unionid = null ;
     $().ready(function(){
     if(code!=null&&code!=undefined&&code!="undefined"){
+    	alert(111);
     	$.ajax({
     		url : 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx8653ea068146c48c&secret=14392f71468a99159688155f5aa98e38&code='+code+'&grant_type=authorization_code',
     		type : "get",
@@ -139,16 +140,12 @@ var This=this;
     	    	    		}
     	    	    	});
     	    			
-    	    			
-    	    			
     	    		},
     	    		error:function(XMLHttpRequest, textStatus, errorThrown){
     	    			console.log(XMLHttpRequest) ;
     	    			console.log(textStatus) ;
     	    		}
     	    	});
-    			
-    			
     			
     		},
     		error:function(XMLHttpRequest, textStatus, errorThrown){
