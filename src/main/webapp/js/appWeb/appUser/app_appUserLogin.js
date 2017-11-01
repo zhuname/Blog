@@ -113,14 +113,14 @@ var This=this;
     		url : 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx8653ea068146c48c&secret=14392f71468a99159688155f5aa98e38&code='+code+'&grant_type=authorization_code',
     		type : "get",
     		success : function(result) {
+    			alert(result);
     			data = JSON.parse(result);
-
     			$.ajax({
     	    		url : 'https://api.weixin.qq.com/sns/userinfo?access_token='+result.access_token+'&openid='+result.openid+'&lang=zh_CN ',
     	    		type : "get",
     	    		success : function(result) {
+    	    			alert(result);
     	    			data = JSON.parse(result);
-
     	    			var checkSex="";
     	    			if(data.sex==1){
     	    				checkSex="男";
