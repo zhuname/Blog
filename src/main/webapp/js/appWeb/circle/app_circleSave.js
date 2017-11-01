@@ -100,7 +100,7 @@ function xinzeng(){
 				return;
 			}
 			
-			javascript:window.history.back();
+			javascript:window.history.go(-1);
 			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
