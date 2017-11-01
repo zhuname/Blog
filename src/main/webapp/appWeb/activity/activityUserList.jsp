@@ -54,7 +54,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>首页</title>
+<title>活动参与列表</title>
 </head>
 
 
@@ -265,7 +265,7 @@ $("#price").click(function(){
 
 <div>
 						{{if type==2}}
-						<video src="{{= mediaUrl}}" style="width:100%;height:30%;" controls="controls">
+						<video src="{{= mediaUrl}}" poster="{{= mediaImage}}" style="width:100%;height:30%;" controls="controls">
 						您的浏览器不支持 video 标签。
 						</video>
 						{{else}}

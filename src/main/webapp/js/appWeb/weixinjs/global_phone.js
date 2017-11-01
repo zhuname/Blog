@@ -46,7 +46,14 @@ function hrefIndexShare() {
 	if(getQueryString("isShare")!=undefined){
 		window.location.href="/mts/appWeb/index/index.jsp";
 	}else{
-		window.history.back();
+		$(document).ready(function(){ 
+		    var ua = navigator.userAgent.toLowerCase();  
+		    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+		    	window.history.go(-2);
+		    } else {
+		    	window.history.go(-1);
+		    }  
+		}); 
 	}
     
 }; 
