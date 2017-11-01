@@ -1987,7 +1987,7 @@ public class AppUserController  extends BaseController {
 			CloseableHttpClient httpclient = HttpClients.createDefault();  
 			try {
 				// 创建httpget.
-				String url = "https://api.weixin.qq.com/sns/userinfo?access_token="+getAccessToken()+"&openid="+openId+"&lang=zh_CN" ;
+				String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+getAccessToken()+"&openid="+openId+"&lang=zh_CN" ;
 				HttpGet httpget = new HttpGet(url);
 				System.out.println("executing request " + httpget.getURI());  
 				// 执行get请求.
