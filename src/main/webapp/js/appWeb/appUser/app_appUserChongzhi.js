@@ -24,7 +24,11 @@ $().ready(function(){
     			}
     		});
     	}else{
-    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    		var isShare="";
+    		if(getQueryString("isShare")!=undefined){
+    			isShare="&isShare=1";
+    		}
+    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp"+isShare+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	}
     	$('#zfbShow').remove();
     } else {
