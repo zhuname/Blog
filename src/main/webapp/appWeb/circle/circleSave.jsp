@@ -55,7 +55,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title id="showTitle" >发布城市圈</title>
+<title id="showTitle1">发布城市圈</title>
 
 <style>
 body{background: #f0f2f5;}

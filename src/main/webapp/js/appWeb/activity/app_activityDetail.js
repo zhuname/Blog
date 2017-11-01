@@ -123,7 +123,7 @@ function canyu(){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 		return;
 	}
-	window.location.href='/mts/appWeb/circle/circleSave.jsp?';
+	window.location.href='/mts/appWeb/circle/circleSave.jsp?activityId='+id;
 }
 
 function change(changeType){

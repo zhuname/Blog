@@ -33,6 +33,8 @@ console.log(textStatus) ;
 });
 
 $(document).ready(function(){ 
+	debugger;
+	console.log(getQueryString('activityId'));
 	if(getQueryString('activityId')!=""&&getQueryString('activityId')!=undefined&&getQueryString('activityId')!="undefined"){
 		$("#showTitle").html("参与活动");
 		$("#showTitle1").html("参与活动");
