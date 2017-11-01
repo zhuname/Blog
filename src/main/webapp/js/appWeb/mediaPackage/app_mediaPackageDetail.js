@@ -56,6 +56,7 @@ $().ready(function(){
     		if(getQueryString("isShare")!=undefined){
     			isShare="&isShare=1";
     		}
+    		alert(isShare);
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id="+getQueryString("id")+""+isShare+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	}
     	$('#zfbShow').remove();
