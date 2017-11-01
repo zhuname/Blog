@@ -53,7 +53,7 @@ var This=this;
     }
     
     
-    var code=getQueryString("code");
+    /*var code=getQueryString("code");
     var openid=null;
     var unionid = null ;
     $().ready(function(){
@@ -93,6 +93,62 @@ var This=this;
     	    			console.log(textStatus) ;
     	    		}
     	    	});
+    			
+    		},
+    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    			console.log(XMLHttpRequest) ;
+    			console.log(textStatus) ;
+    		}
+    	});
+    }
+    })*/
+    
+    
+    var code=getQueryString("code");
+    var openid=null;
+    var unionid = null ;
+    $().ready(function(){
+    if(code!=null&&code!=undefined&&code!="undefined"){
+    	$.ajax({
+    		url : 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx8653ea068146c48c&secret=14392f71468a99159688155f5aa98e38&code='+code+'&grant_type=authorization_code',
+    		type : "get",
+    		success : function(result) {
+    			data = JSON.parse(result);
+
+    			$.ajax({
+    	    		url : 'https://api.weixin.qq.com/sns/userinfo?access_token='+result.access_token+'&openid='+result.openid+'&lang=zh_CN ',
+    	    		type : "get",
+    	    		success : function(result) {
+    	    			data = JSON.parse(result);
+
+    	    			var checkSex="";
+    	    			if(data.sex==1){
+    	    				checkSex="男";
+    	    			}else if(data.sex==2){
+    	    				checkSex="女";
+    	    			}
+    	    			$.ajax({
+    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+result.unionid+'&header='+result.headimgurl+'&sex='+checkSex+'&name='+result.nickname,
+    	    	    		type : "get",
+    	    	    		success : function(result) {
+    	    	    			window.location.href="/mts/appWeb/appuser/appuserLook.jsp"; 
+    	    	    		},
+    	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    	    	    			console.log(XMLHttpRequest) ;
+    	    	    			console.log(textStatus) ;
+    	    	    		}
+    	    	    	});
+    	    			
+    	    			
+    	    			
+    	    		},
+    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    	    			console.log(XMLHttpRequest) ;
+    	    			console.log(textStatus) ;
+    	    		}
+    	    	});
+    			
+    			
     			
     		},
     		error:function(XMLHttpRequest, textStatus, errorThrown){
