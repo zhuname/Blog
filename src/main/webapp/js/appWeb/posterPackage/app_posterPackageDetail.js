@@ -53,10 +53,8 @@ $().ready(function(){
     	}else{
     		var isShare="";
     		if(getQueryString("isShare")!=undefined){
-    			alert(1);
     			isShare="&isShare=1";
     		}
-    		alert("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+getQueryString("id")+""+isShare+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect");
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+getQueryString("id")+""+isShare+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	}
     	$('#zfbShow').remove();

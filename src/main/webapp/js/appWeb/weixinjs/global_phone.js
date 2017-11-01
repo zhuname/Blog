@@ -43,6 +43,7 @@ function GetDateDiff(diffTime) {
 
 
 function hrefIndexShare() {
+	alert(getQueryString("isShare"));
 	if(getQueryString("isShare")!=undefined){
 		window.location.href="/mts/appWeb/index/index.jsp";
 	}else{
