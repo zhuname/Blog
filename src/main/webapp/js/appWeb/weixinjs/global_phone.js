@@ -52,7 +52,6 @@ function pushHistory(){
         title:"",
         url: "#"
     }; 
-    window.location.reload();
 };
 
 function hrefIndexShare() {
