@@ -38,8 +38,7 @@ var This=this;
 				
 				console.log(result);
 				if(result.data!=undefined){
-					setCookie("isGoBack", "1");
-					window.history.go(-1);
+					window.location.href=getCookie("backUrl");
 				}
 				
 			},
@@ -59,7 +58,6 @@ var This=this;
     var unionid = null ;
     $().ready(function(){
     if(code!=null&&code!=undefined&&code!="undefined"){
-    	alert(code);
     	$.ajax({
     		url : '/mts/system/appuser/openId/json?web=1&code='+code,
     		type : "get",
@@ -87,8 +85,7 @@ var This=this;
     	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname,
     	    	    		type : "get",
     	    	    		success : function(result) {
-    	    	    			setCookie("isGoBack", "1");
-    	    	    			window.history.go(-2);
+    	    	    			window.location.href=getCookie("backUrl");
     	    	    		},
     	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
     	    	    			console.log(XMLHttpRequest) ;
@@ -167,6 +164,7 @@ var This=this;
     }
     })*/
     
+    
     function wxCheck() { 
     	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
     	//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
@@ -177,3 +175,32 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 } 
+
+
+function setCookie(name,value) 
+{
+    var Days = 30; 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
+} 
+
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
+} 
+
+function delCookie(name) 
+{ 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() - 1); 
+    var cval=getCookie(name); 
+    if(cval!=null) 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+}

@@ -42,14 +42,13 @@ function GetDateDiff(diffTime) {
 };  
 
 $(function(){
-	window.setInterval(showalert, 3000); 
-	function showalert() 
-	{ 
-		if(getCookie("isGoBack")!=undefined){
-			delCookie("isGoBack");
-			window.location.reload();
-		}
-	} 
+	var code = getQueryString("code");
+	var test = window.location.href;
+	if(code!=null&&code!=undefined&&code!="undefined"){
+    	
+    }else{
+    	setCookie("backUrl",test);
+    }
 });
 
 
