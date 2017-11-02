@@ -39,7 +39,6 @@ var This=this;
 				console.log(result);
 				if(result.data!=undefined){
 					window.history.go(-1);
-					location.reload();
 				}
 				
 			},
@@ -87,7 +86,6 @@ var This=this;
     	    	    		type : "get",
     	    	    		success : function(result) {
     	    	    			window.history.go(-2);
-    	    	    			location.reload();
     	    	    		},
     	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
     	    	    			console.log(XMLHttpRequest) ;
