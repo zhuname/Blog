@@ -43,8 +43,9 @@ function GetDateDiff(diffTime) {
 
 $(function(){
 	setTimeout(function(){
-		if("1"==getCookie("isGoBack")){
-			setCookie("isGoBack","2");
+		alert(getCookie("isGoBack"));
+		if(getCookie("isGoBack")!=undefined){
+			delCookie("isGoBack");
 			window.location.reload();
 		}
 	},1000)
