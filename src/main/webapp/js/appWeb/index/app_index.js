@@ -94,7 +94,7 @@ function show(){
 	
 	if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie("htmlCityId")==""){
 		
-		setCookie("htmlCityId",110100);
+		setCookie("htmlCityId",321300);
 		
 	}
 	
