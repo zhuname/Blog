@@ -152,6 +152,7 @@ Object data=session.getAttribute("data");
 					<div class="public_App" style="bottom:0;">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
+			
 			<p>领福利，发活动，用APP免费参加</p>
 			<span onclick="appLink()">立即打开</span>
 		</div>

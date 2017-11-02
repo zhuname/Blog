@@ -65,6 +65,10 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
+
+<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg" width="0" height="0" />
+
+
 			<div id="show-img-box" class=" show-img-box pwd" style="padding:0">
 				<div class="pwd-box">
 					<span style="height:2rem;display:block;font-size:.5rem;">预定成功，请去我的预定界面查看兑换码进行兑换</span>
