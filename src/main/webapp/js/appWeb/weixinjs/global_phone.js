@@ -58,8 +58,6 @@ $(function(){
 
 
 function hrefIndexShare() {
-	alert(getQueryString("state"));
-	alert(getQueryString("isShare"));
 	if(getQueryString("isShare")!=undefined||getQueryString("state")=="isShare"){
 		window.location.href="/mts/appWeb/index/index.jsp";
 	}else{
