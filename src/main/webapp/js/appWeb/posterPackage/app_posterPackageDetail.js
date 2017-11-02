@@ -52,13 +52,9 @@ $().ready(function(){
     		});
     	}else{
     		var isShare="";
-    		alert(getQueryString("isShare"));
-    		alert(isShare);
     		if(getQueryString("isShare")!=undefined){
-    			alert(isShare);
     			isShare="isShare";
     		}
-    		alert(isShare);
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/posterPackage/posterPackageDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
     	}
     	$('#zfbShow').remove();

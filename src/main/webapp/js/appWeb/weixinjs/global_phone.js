@@ -58,6 +58,12 @@ $(function(){
 
 
 function hrefIndexShare() {
+	var test = document.referrer;
+	if(test+""==""){
+		window.location.href="/mts/appWeb/index/index.jsp";
+		return;
+	}
+	
 	if(getQueryString("isShare")!=undefined||getQueryString("state")=="isShare"){
 		window.location.href="/mts/appWeb/index/index.jsp";
 	}else{
