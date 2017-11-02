@@ -41,6 +41,21 @@ function GetDateDiff(diffTime) {
 	    	return startTime;
 };  
 
+$(function(){
+    pushHistory();
+});
+function pushHistory(){
+    window.addEventListener("popstate", function(e){
+        alert("回退！");
+
+        window.location.reload();
+    }, false); 
+    var state = {
+        title:"",
+        url: "#"
+    }; 
+    window.history.pushState(state, "", "#"); 
+};
 
 function hrefIndexShare() {
 	if(getQueryString("isShare")!=undefined||getQueryString("state")=="isShare"){
@@ -77,3 +92,4 @@ function removeRes(){
 	$('.kq_mask').hide();
 	$(".wraper").css("height","auto")
 }
+
