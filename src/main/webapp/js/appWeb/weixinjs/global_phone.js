@@ -45,11 +45,13 @@ $(function(){
 	var code = getQueryString("code");
 	var test = window.location.href;
 	alert(getCookie("backUrl"));
-	if(code!=null&&code!=undefined&&code!="undefined"){
-    	
-    }else{
-    	setCookie("backUrl",test);
-    }
+	if(test!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
+		if(code!=null&&code!=undefined&&code!="undefined"){
+			
+		}else{
+			setCookie("backUrl",test);
+		}
+	}
 });
 
 
