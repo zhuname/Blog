@@ -247,7 +247,7 @@ public class ShareController  extends BaseController {
 							activity.setShareNum(0);
 						}
 						activity.setShareNum(activity.getShareNum() + 1);
-						cardService.update(activity,true);
+						activityService.update(activity,true);
 					}else{
 						returnObject.setStatus(ReturnDatas.ERROR);
 						returnObject.setMessage("该内容不存在");
