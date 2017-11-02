@@ -38,7 +38,7 @@ var This=this;
 				
 				console.log(result);
 				if(result.data!=undefined){
-					window.location.href="/mts/appWeb/appuser/appuserLook.jsp?isCity=1"; 
+					window.history.go(-1);
 				}
 				
 			},
@@ -85,7 +85,7 @@ var This=this;
     	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname,
     	    	    		type : "get",
     	    	    		success : function(result) {
-    	    	    			window.location.href="/mts/appWeb/appuser/appuserLook.jsp"; 
+    	    	    			window.history.go(-2);
     	    	    		},
     	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
     	    	    			console.log(XMLHttpRequest) ;

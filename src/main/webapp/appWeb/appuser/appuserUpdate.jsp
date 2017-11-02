@@ -149,7 +149,7 @@ $(document).on("change", "#filed", function() {
 			</div>
 		</div>
 
-		<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1">
+		<!--<div class="dis_f ali_ct jus_bt bg_f pad_2030 borderbot1 mt_20 bordertop1">
 			<img src="<%=basePath%>/js/appWeb/images/sj.png" class="dis_b" style="width:1rem;" />
 			<div class="dis_f ali_ct f_28 clr_he">
 				<p style="white-space:nowrap">{{= phone}}</p>
@@ -172,6 +172,7 @@ $(document).on("change", "#filed", function() {
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
+		-->
 
 	<div class="command_mask nameShow" style="width:16rem;display: none;">
 			<div class="command pad_20">
