@@ -44,7 +44,6 @@ function GetDateDiff(diffTime) {
 $(function(){
 	var code = getQueryString("code");
 	var test = window.location.href;
-	alert(getCookie("backUrl"));
 	if(test!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
 		if(code!=null&&code!=undefined&&code!="undefined"){
 			
@@ -52,6 +51,7 @@ $(function(){
 			setCookie("backUrl",test);
 		}
 	}
+	alert(getCookie("backUrl"));
 });
 
 
