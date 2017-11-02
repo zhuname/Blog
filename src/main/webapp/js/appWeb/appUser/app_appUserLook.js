@@ -100,11 +100,6 @@ $.ajax({
 			return;
 		}
 		
-		if(result.data.cityId==undefined){
-			window.location.href="/mts/appWeb/appuser/myCity.jsp?id="+result.data.id;
-			return;
-		}
-		
 		if(getQueryString("isCity")!=undefined){
 			setCookie("htmlCityId", result.data.cityId);
 		}
