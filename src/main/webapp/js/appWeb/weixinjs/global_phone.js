@@ -44,6 +44,7 @@ function GetDateDiff(diffTime) {
 $(function(){
 	var code = getQueryString("code");
 	var test = window.location.href;
+	alert(getCookie("backUrl"));
 	if(code!=null&&code!=undefined&&code!="undefined"){
     	
     }else{
