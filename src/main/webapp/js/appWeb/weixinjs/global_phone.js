@@ -50,11 +50,6 @@ function pushHistory(){
 
         window.location.reload();
     }, false); 
-    var state = {
-        title:"",
-        url: "#"
-    }; 
-    window.history.pushState(state, "", "#"); 
 };
 
 function hrefIndexShare() {
