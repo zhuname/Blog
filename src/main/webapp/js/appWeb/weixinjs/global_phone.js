@@ -47,7 +47,7 @@ $(function(){
 			setCookie("isGoBack","2");
 			window.location.reload();
 		}
-	},5000)
+	},1000)
 });
 
 function hrefIndexShare() {
