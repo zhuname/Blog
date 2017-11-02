@@ -152,7 +152,6 @@ var This=this;
     	    			console.log(textStatus) ;
     	    		}
     	    	});
-    			
     		},
     		error:function(XMLHttpRequest, textStatus, errorThrown){
     			alert(textStatus);

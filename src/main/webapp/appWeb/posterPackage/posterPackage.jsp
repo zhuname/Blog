@@ -173,7 +173,7 @@ Object data=session.getAttribute("data");
 		<a  onclick="window.location.href='/mts/shareApp/down.html';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 		<div class="public_App" style="bottom:0;">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
-			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
 			<p>领福利，发活动，用APP免费参加</p>
 			<span onclick="appLink()">立即打开</span>
 		</div>

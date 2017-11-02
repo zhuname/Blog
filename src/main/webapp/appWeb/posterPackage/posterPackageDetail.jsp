@@ -58,7 +58,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>海报红包详情</title>
+<title id="title">海报红包详情</title>
 <style type="text/css">
 
 </style>
@@ -121,7 +121,7 @@ Object data=session.getAttribute("data");
 		</div>
 					<div class="public_App" style="top:2rem;">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
-			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
 			<p>领福利，发活动，用APP免费参加</p>
 			<span onclick="appLink()">立即打开</span>
 		</div>

@@ -151,6 +151,10 @@ $().ready(function(){
 						}
 					}
 					
+					if(result.data.title!=undefined){
+						$("#title").html(result.data.title);
+					}
+					
 					$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 					
 					

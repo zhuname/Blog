@@ -54,7 +54,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title>活动详情</title>
+<title id="title">活动详情</title>
 </head>
 
 				<script type="text/javascript">
@@ -221,7 +221,7 @@ Object data=session.getAttribute("data");
 			</div>
 					<div class="public_App" style="top:7rem;" onload="linkApp()">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" onclick="closeApp()">
-			<img src="<%=basePath%>/js/appWeb/images/App_icon.png">
+			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
 			<p>领福利，发活动，用APP免费参加</p>
 			<span onclick="appLink()">立即打开</span>
 		</div>

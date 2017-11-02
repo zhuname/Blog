@@ -41,6 +41,10 @@ $.ajax({
 					
 				}
 				
+				if(result.data.content!=undefined){
+					$("#title").html(result.data.content);
+				}
+				
 				id=result.data.id;
 				
 				//右上角
@@ -297,7 +301,6 @@ function report(obj){
 }
 
 function jubao(){
-	debugger;
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/report/update/json?web=&type=1&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),

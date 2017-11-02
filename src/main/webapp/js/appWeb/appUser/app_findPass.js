@@ -36,7 +36,6 @@ function sendCode(){
     if(result){
     	sendMessage();
         //doPostBack('/mts/system/sms/content/json',backFunc1,{"phone":phonenum,"web":"","type":1});
-    	debugger;
     	setCookie("sendt",60);//添加cookie记录,有效时间60s
         console.log(getCookie("sendt"));
         settime();//开始倒计时
