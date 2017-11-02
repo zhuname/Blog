@@ -52,6 +52,7 @@ $().ready(function(){
     		});
     	}else{
     		var isShare="";
+    		alert(getQueryString("isShare"));
     		alert(isShare);
     		if(getQueryString("isShare")!=undefined){
     			alert(isShare);
