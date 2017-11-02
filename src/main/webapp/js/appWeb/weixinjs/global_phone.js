@@ -45,7 +45,6 @@ $(function(){
 	window.setInterval(showalert, 3000); 
 	function showalert() 
 	{ 
-		alert(getCookie("isGoBack"));
 		if(getCookie("isGoBack")!=undefined){
 			delCookie("isGoBack");
 			window.location.reload();
