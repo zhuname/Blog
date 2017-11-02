@@ -42,14 +42,18 @@ function GetDateDiff(diffTime) {
 };  
 
 $(function(){
-	setTimeout(function(){
+	window.setInterval(showalert, 3000); 
+	function showalert() 
+	{ 
 		alert(getCookie("isGoBack"));
 		if(getCookie("isGoBack")!=undefined){
 			delCookie("isGoBack");
 			window.location.reload();
 		}
-	},1000)
+	} 
 });
+
+
 
 function hrefIndexShare() {
 	if(getQueryString("isShare")!=undefined||getQueryString("state")=="isShare"){
