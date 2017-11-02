@@ -45,7 +45,7 @@ $(function(){
 	debugger;
 	var code = getQueryString("code");
 	var test = window.location.href;
-	if(test+""!="http://localhost/mts/appWeb/appuser/appuserLogin.jsp"){
+	if(test+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
 		if(code!=null&&code!=undefined&&code!="undefined"){
 			
 		}else{
