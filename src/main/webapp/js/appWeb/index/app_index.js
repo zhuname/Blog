@@ -109,6 +109,8 @@ function show(){
 				userId="";
 			}
 			
+			setCookie("htmlCityId", id);
+			
 			if(result.data!=undefined){
 		//获取用户信息
 			$.ajax({

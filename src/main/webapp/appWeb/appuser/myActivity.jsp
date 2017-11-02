@@ -75,7 +75,7 @@ Object data=session.getAttribute("data");
 				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{else}}
 				<img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b play_img" style="width:2rem;" />
-				<img src="{{= mediaUrl}}" class="ver_mid" style="width:16rem;height:8rem;" />
+				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{/if}}
 				{{if status==4}}
 				<img src="<%=basePath%>/js/appWeb/images/over.png" class="dis_b end_img" style="width:3rem;" />

@@ -17,7 +17,7 @@ $.ajax({
 			userId="";
 		}else{
 			userId=result.data.id;
-			userData="&appUserId="+userId;
+			userData="&appuserId="+userId;
 		}
 	
 		//获取同城活动详情
