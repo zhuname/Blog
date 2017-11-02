@@ -42,12 +42,12 @@ function GetDateDiff(diffTime) {
 };  
 
 $(function(){
-	$(function(){
-		if(1==getCookie("isGoBack")){
-			setCookie("isGoBack",2);
+	setTimeout(function(){
+		if("1"==getCookie("isGoBack")){
+			setCookie("isGoBack","2");
 			window.location.reload();
 		}
-	});
+	},5000)
 });
 
 function hrefIndexShare() {
