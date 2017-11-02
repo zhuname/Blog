@@ -59,6 +59,7 @@ var This=this;
     var unionid = null ;
     $().ready(function(){
     if(code!=null&&code!=undefined&&code!="undefined"){
+    	alert(code);
     	$.ajax({
     		url : '/mts/system/appuser/openId/json?web=1&code='+code,
     		type : "get",
