@@ -46,10 +46,13 @@ $(function(){
 });
 function pushHistory(){
     window.addEventListener("popstate", function(e){
-        alert("回退！");
-
         window.location.reload();
     }, false); 
+    var state = {
+        title:"",
+        url: "#"
+    }; 
+    window.location.reload();
 };
 
 function hrefIndexShare() {
