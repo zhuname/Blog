@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	});
   
   
-  wx.ready(function(){
+/*   wx.ready(function(){
   
    wx.onMenuShareAppMessage({
     title: '你是煞笔么，让我生效一次行不行', // 分享标题
@@ -91,7 +91,7 @@ wx.checkJsApi({
         // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
     }
 });
-  
+   */
    
 
        var imgUrl = "http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg";  //注意必须是绝对路径
