@@ -47,7 +47,8 @@ function GetDateDiff(diffTime) {
 $(function(){
 	
 	
-	var utl1 = location.href.split('#')[0];
+	var utl1 = location.href;
+	//var utl1 = location.href.split('#')[0];
 	urls=utl1.replace(/\?from=timeline&isappinstalled=0/, "");
 	urls=urls.replace(/\?from=groupmessage&isappinstalled=0/, "");
 	urls=urls.replace(/\?from=singlemessage&isappinstalled=0/, "");
@@ -90,10 +91,12 @@ $(function(){
 		return;
 	}
 
+	
 
 		$.ajax({
-	    	url : '/mts/system/wxShare/ceshi/json?shareUrl='+urls,
+	    	url : '/mts/system/wxShare/ceshi/json',
 	    	   type : "post",
+	    	   data:{'shareUrl':urls},
 	    	   dataType: 'json',  
 	    	    	success : function(result) {
 	    	    	
