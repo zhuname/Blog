@@ -189,8 +189,8 @@ $(function() {
                 // wx.hideOptionMenu();
                 wx.onMenuShareTimeline({
                     title: '这是一个测试的标题--程高伟的博客',
-                    link: 'http://app.mtianw.com',
-                    imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
+                    link: 'http://app.mtianw.com/',
+                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
                     success: function () { 
                         // 用户确认分享后执行的回调函数
                          alert('分享到朋友圈成功');
@@ -203,7 +203,7 @@ $(function() {
                 wx.onMenuShareAppMessage({
                       title: '这是一个测试的标题--百度',
                       desc: '这个是要分享内容的一些描述--百度一下，你就知道',
-                      link: 'http://app.mtianw.com',
+                      link: 'http://app.mtianw.com/',
                       imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
                       trigger: function (res) {
                         // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
@@ -222,7 +222,6 @@ $(function() {
         });
 </script>
 
-  
   
   <body>
    <div >

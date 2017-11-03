@@ -56,7 +56,7 @@ class Sign {
     	 String jsapi_ticket = getTicket();
 
          
-         String url = "http://app.mtianw.com";
+         String url = "http://app.mtianw.com/";
          Map<String, String> ret = sign(jsapi_ticket, url);
          String ticket="{";
          for (Map.Entry entry : ret.entrySet()) {
