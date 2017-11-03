@@ -37,6 +37,7 @@
 
 document.write(" <script language=\"javascript\" src=\"http://res.wx.qq.com/open/js/jweixin-1.2.0.js\" > <\/script>"); 
 
+
 function GetDateDiff(diffTime) {
     //将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式   
 	    	startTime = diffTime.replace(/\-/g, "/");  
@@ -44,6 +45,167 @@ function GetDateDiff(diffTime) {
 };  
 
 $(function(){
+	
+	
+	var utl1 = location.href.split('#')[0];
+	urls=utl1.replace(/\?from=timeline&isappinstalled=0/, "");
+	urls=urls.replace(/\?from=groupmessage&isappinstalled=0/, "");
+	urls=urls.replace(/\?from=singlemessage&isappinstalled=0/, "");
+
+	alert(urls);
+
+	if(utl1.indexOf("?from=timeline&isappinstalled=0")>0){
+		window.location.href=urls;
+		return;
+	}
+	if(utl1.indexOf("?from=groupmessage&isappinstalled=0")>0){
+		window.location.href=urls;
+		return;
+	}
+	if(utl1.indexOf("?from=singlemessage&isappinstalled=0")>0){
+		window.location.href=urls;
+		return;
+	}
+
+
+
+
+
+	urls=utl1.replace(/\&from=timeline&isappinstalled=0/, "");
+	urls=urls.replace(/\&from=groupmessage&isappinstalled=0/, "");
+	urls=urls.replace(/\&from=singlemessage&isappinstalled=0/, "");
+
+	alert(urls);
+
+	if(utl1.indexOf("&from=timeline&isappinstalled=0")>0){
+		window.location.href=urls;
+		return;
+	}
+	if(utl1.indexOf("&from=groupmessage&isappinstalled=0")>0){
+		window.location.href=urls;
+		return;
+	}
+	if(utl1.indexOf("&from=singlemessage&isappinstalled=0")>0){
+		window.location.href=urls;
+		return;
+	}
+
+
+		$.ajax({
+	    	url : '/mts/system/wxShare/ceshi/json?shareUrl='+urls,
+	    	   type : "post",
+	    	   dataType: 'json',  
+	    	    	success : function(result) {
+	    	    	
+	    	    	console.log(result);
+	    	    	
+	    	    	console.log(result.nonceStr);
+					    	    	
+					wx.checkJsApi({
+					    jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+					    success: function(res) {
+					        // 以键值对的形式返回，可用的api值true，不可用为false
+					        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+					        alert("checkJsApi1");
+					    },
+					    fail:function(res){
+					    	alert("checkJsApi2");
+					    }
+					});
+	    	    	
+					  wx.config({
+					    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					    appId: 'wx8653ea068146c48c', // 必填，公众号的唯一标识
+					    timestamp:  result.timestamp, // 必填，生成签名的时间戳
+					    nonceStr: result.nonceStr, // 必填，生成签名的随机串
+					    signature: result.signature,// 必填，签名，见附录1
+					    jsApiList: [ 'checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					  });
+	    	    	
+	    	    	},
+	    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
+	    				console.log(XMLHttpRequest) ;
+	    				console.log(textStatus) ;
+	    		}
+	  	});
+
+	          
+
+	            wx.ready(function(){
+	                // wx.hideOptionMenu();
+	                wx.onMenuShareTimeline({
+	                    title: '这是一个测试的标题--程高伟的博客',
+	                    link: document.location.href,
+	                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
+	                    success: function () { 
+	                        // 用户确认分享后执行的回调函数
+	                         alert('分享到朋友圈成功');
+	                    },
+	                    cancel: function () { 
+	                        // 用户取消分享后执行的回调函数
+	                         alert('你没有分享到朋友圈');
+	                    }
+	                });
+	                wx.onMenuShareAppMessage({
+	                      title: '这是一个测试的标题--百度',
+	                      desc: '这个是要分享内容的一些描述--百度一下，你就知道',
+	                      link: document.location.href,
+	                      imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
+	                      trigger: function (res) {
+	                        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+	                      },
+	                      success: function (res) {
+	                          alert('分享给朋友成功');
+	                      },
+	                      cancel: function (res) {
+	                        alert('你没有分享给朋友');
+	                      },
+	                      fail: function (res) {
+	                        alert(JSON.stringify(res));
+	                      }
+	                    });
+	            });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	var code = getQueryString("code");
 	var test = window.location.href;
 	if(test+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){

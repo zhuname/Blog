@@ -54,6 +54,29 @@ if(utl1.indexOf("?from=singlemessage&isappinstalled=0")>0){
 }
 
 
+
+
+
+urls=utl1.replace(/\&from=timeline&isappinstalled=0/, "");
+urls=urls.replace(/\&from=groupmessage&isappinstalled=0/, "");
+urls=urls.replace(/\&from=singlemessage&isappinstalled=0/, "");
+
+alert(urls);
+
+if(utl1.indexOf("&from=timeline&isappinstalled=0")>0){
+	window.location.href=urls;
+	return;
+}
+if(utl1.indexOf("&from=groupmessage&isappinstalled=0")>0){
+	window.location.href=urls;
+	return;
+}
+if(utl1.indexOf("&from=singlemessage&isappinstalled=0")>0){
+	window.location.href=urls;
+	return;
+}
+
+
 	$.ajax({
     	url : '/mts/system/wxShare/ceshi/json?shareUrl='+urls,
     	   type : "post",
