@@ -17,9 +17,23 @@ public class WxBean implements Serializable{
 	private String nickname;
 	private String headimgurl;
 	private String ticket;
+	private String from;
+	
 	private List<Integer> tagid_list;
 	private String city;
 	
+	
+	
+	
+	
+	
+	
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
 	public String getTicket() {
 		return ticket;
 	}

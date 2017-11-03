@@ -41,13 +41,13 @@ import com.cz.mts.system.entity.WxBean;
 class Sign {
 
     @RequestMapping("/ceshi/json")
-    public void ceshi(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    public void ceshi(HttpServletRequest request,HttpServletResponse response,WxBean wxBean) throws Exception{
     	
     	 String jsapi_ticket = getTicket();
          
          String url = request.getParameter("shareUrl");
          
-         String from = request.getParameter("from");
+         String from = wxBean.getFrom();
          
          System.out.println("url111111111111111111============================================="+url);
          System.out.println("from============================================="+from);
@@ -229,4 +229,8 @@ class Sign {
     private static String create_timestamp() {
         return Long.toString(System.currentTimeMillis() / 1000);
     }
+    
+    public String id;
+    
+    
 }
