@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        var lineLink = "http://app.mtianw.com";   //同样，必须是绝对路径
        var descContent = '微信测试电视台我想测试一下，爽歪歪。'; //分享给朋友或朋友圈时的文字简介
        var shareTitle = '微信电台精选';  //分享title
-       var appid = ''; //apiID，可留空
+       var appid = 'wx8653ea068146c48c'; //apiID，可留空
         
        function shareFriend() {
            WeixinJSBridge.invoke('sendAppMessage',{
