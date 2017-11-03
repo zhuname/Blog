@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;  
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
@@ -50,20 +51,19 @@ class Sign {
     };
 
     @RequestMapping("/ceshi/json")
-    public ReturnDatas ceshi(HttpServletRequest request) throws Exception{
-    	ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+    public void ceshi(HttpServletRequest request,HttpServletResponse response) throws Exception{
     	
     	 String jsapi_ticket = getTicket();
 
-    	 returnObject.setData(jsapi_ticket);
          
          String url = "http://app.mtianw.com";
          Map<String, String> ret = sign(jsapi_ticket, url);
+         String ticket="{";
          for (Map.Entry entry : ret.entrySet()) {
-             System.out.println(entry.getKey() + ", " + entry.getValue());
+        	 ticket+="\""+entry.getKey()+"\":\""+entry.getValue()+"\",";
          }
-
-		return returnObject;
+         ticket+="}";
+         response.getWriter().write(ticket);  
     }
     
     public String getTicket() throws Exception{

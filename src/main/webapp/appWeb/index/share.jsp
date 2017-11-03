@@ -34,30 +34,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script>
   
   	$.ajax({
-    	url : 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx8653ea068146c48c&secret=14392f71468a99159688155f5aa98e38',
+    	url : '/mts/system/wxShare/ceshi/json',
     	   type : "get",
+    	   text : "json",
     	    	success : function(result) {
-		    	    		$.ajax({
-						    	url : 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+result+'&type=jsapi',
-						    	   type : "get",
-						    	    	success : function(result) {
-							    	    	 	$.ajax({
-											    	url : 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+result+'&type=jsapi',
-											    	   type : "get",
-											    	    	success : function(result) {
-											    	    	  window.location.href=getCookie("backUrl");
-											    	    	},
-											    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
-											    				console.log(XMLHttpRequest) ;
-											    				console.log(textStatus) ;
-											    		}
-											  	});
-						    	    	},
-						    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
-						    				console.log(XMLHttpRequest) ;
-						    				console.log(textStatus) ;
-						    		}
-						  	});
+    	    	
+    	    	
+    	    	console.log(result);
+    	    	
+    	    	
+    	    	
+    	    	
     	    	},
     	  		error:function(XMLHttpRequest, textStatus, errorThrown){
     				console.log(XMLHttpRequest) ;
