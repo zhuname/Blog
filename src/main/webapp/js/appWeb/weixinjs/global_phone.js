@@ -56,14 +56,17 @@ $(function(){
 	alert(urls);
 
 	if(utl1.indexOf("?from=timeline&isappinstalled=0")>0){
+		urls.replace("?code","cod");
 		window.location.href=urls;
 		return;
 	}
 	if(utl1.indexOf("?from=groupmessage&isappinstalled=0")>0){
+		urls.replace("?code","cod");
 		window.location.href=urls;
 		return;
 	}
 	if(utl1.indexOf("?from=singlemessage&isappinstalled=0")>0){
+		urls.replace("?code","cod");
 		window.location.href=urls;
 		return;
 	}
@@ -79,14 +82,19 @@ $(function(){
 	alert(urls);
 
 	if(utl1.indexOf("&from=timeline&isappinstalled=0")>0){
+		
+		urls.replace("&code","cod");
+		
 		window.location.href=urls;
 		return;
 	}
 	if(utl1.indexOf("&from=groupmessage&isappinstalled=0")>0){
+		urls.replace("&code","cod");
 		window.location.href=urls;
 		return;
 	}
 	if(utl1.indexOf("&from=singlemessage&isappinstalled=0")>0){
+		urls.replace("&code","cod");
 		window.location.href=urls;
 		return;
 	}
