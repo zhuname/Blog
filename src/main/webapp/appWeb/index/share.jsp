@@ -94,7 +94,7 @@ wx.checkJsApi({
   
    
 
- /*  var imgUrl = "http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg";  //注意必须是绝对路径
+       var imgUrl = "http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg";  //注意必须是绝对路径
        var lineLink = "http://app.mtianw.com";   //同样，必须是绝对路径
        var descContent = '微信测试电视台我想测试一下，爽歪歪。'; //分享给朋友或朋友圈时的文字简介
        var shareTitle = '微信电台精选';  //分享title
@@ -148,7 +148,7 @@ wx.checkJsApi({
                shareWeibo();
            });
        }, false);
-		 */
+
 		</script> 
   
   
