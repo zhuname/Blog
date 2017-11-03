@@ -125,7 +125,7 @@ $(function(){
 					});
 	    	    	
 					  wx.config({
-					    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 					    appId: 'wx8653ea068146c48c', // 必填，公众号的唯一标识
 					    timestamp:  result.timestamp, // 必填，生成签名的时间戳
 					    nonceStr: result.nonceStr, // 必填，生成签名的随机串
@@ -145,6 +145,7 @@ $(function(){
 	            wx.ready(function(){
 	                // wx.hideOptionMenu();
 	                wx.onMenuShareTimeline({
+	                    title: '美天赏给生活一点惊喜',
 	                    link: document.location.href,
 	                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
 	                    success: function () { 
@@ -155,6 +156,8 @@ $(function(){
 	                    }
 	                });
 	                wx.onMenuShareAppMessage({
+	                      title: '美天赏给生活一点惊喜',
+	                      desc: '美天赏APP，同城生活互动平台；地投入、精准投放、深度记忆、方便快捷、精准数据。',
 	                      link: document.location.href,
 	                      imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
 	                      trigger: function (res) {
