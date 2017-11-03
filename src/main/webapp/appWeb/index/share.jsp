@@ -36,9 +36,9 @@ $(function() {
 
 var utl1 = location.href.split('#')[0];
 var urls="";
-urls=str.replace(/from=timeline/, "");
-urls=str.replace(/from=groupmessage/, "");
-urls=str.replace(/from=singlemessage/, "");
+urls=utl1.replace(/from=timeline/, "");
+urls=utl1.replace(/from=groupmessage/, "");
+urls=utl1.replace(/from=singlemessage/, "");
 
 	$.ajax({
     	url : '/mts/system/wxShare/ceshi/json?shareUrl='+urls,
