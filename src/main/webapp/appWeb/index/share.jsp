@@ -23,8 +23,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <script>
-		
-	   var imgUrl = "http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg";  //注意必须是绝对路径
+wx.onMenuShareAppMessage({
+    title: '你是煞笔么，让我生效一次行不行', // 分享标题
+    desc: '你是煞笔么，让我生效一次行不行', // 分享描述
+    link: 'http://app.mtianw.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg', // 分享图标
+    type: '', // 分享类型,music、video或link，不填默认为link
+    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+    success: function () { 
+        // 用户确认分享后执行的回调函数
+    },
+    cancel: function () { 
+        // 用户取消分享后执行的回调函数
+    }
+});		
+
+ /*  var imgUrl = "http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg";  //注意必须是绝对路径
        var lineLink = "http://app.mtianw.com";   //同样，必须是绝对路径
        var descContent = '微信测试电视台我想测试一下，爽歪歪。'; //分享给朋友或朋友圈时的文字简介
        var shareTitle = '微信电台精选';  //分享title
@@ -78,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                shareWeibo();
            });
        }, false);
-		
+		 */
 		</script> 
   
   
