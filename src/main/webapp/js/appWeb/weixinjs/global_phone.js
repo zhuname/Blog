@@ -53,7 +53,6 @@ $(function(){
 	urls=urls.replace(/\?from=groupmessage&isappinstalled=0/, "");
 	urls=urls.replace(/\?from=singlemessage&isappinstalled=0/, "");
 
-	alert(urls);
 
 	if(utl1.indexOf("?from=timeline&isappinstalled=0")>0){
 		urls=urls.replace("&code","&cod");
@@ -80,7 +79,6 @@ $(function(){
 	urls=urls.replace(/&from=groupmessage&isappinstalled=0/, "");
 	urls=urls.replace(/&from=singlemessage&isappinstalled=0/, "");
 
-	alert(urls);
 
 	if(utl1.indexOf("&from=timeline&isappinstalled=0")>0){
 		
@@ -121,10 +119,8 @@ $(function(){
 					    success: function(res) {
 					        // 以键值对的形式返回，可用的api值true，不可用为false
 					        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-					        alert("checkJsApi1");
 					    },
 					    fail:function(res){
-					    	alert("checkJsApi2");
 					    }
 					});
 	    	    	
@@ -154,11 +150,9 @@ $(function(){
 	                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
 	                    success: function () { 
 	                        // 用户确认分享后执行的回调函数
-	                         alert('分享到朋友圈成功');
 	                    },
 	                    cancel: function () { 
 	                        // 用户取消分享后执行的回调函数
-	                         alert('你没有分享到朋友圈');
 	                    }
 	                });
 	                wx.onMenuShareAppMessage({
@@ -170,13 +164,10 @@ $(function(){
 	                        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
 	                      },
 	                      success: function (res) {
-	                          alert('分享给朋友成功');
 	                      },
 	                      cancel: function (res) {
-	                        alert('你没有分享给朋友');
 	                      },
 	                      fail: function (res) {
-	                        alert(JSON.stringify(res));
 	                      }
 	                    });
 	            });
