@@ -49,8 +49,8 @@ class Sign {
          
          String from = request.getParameter("from");
          
-         String isappinstalled = request.getParameter("isappinstalled");
-         
+         System.out.println("url111111111111111111============================================="+url);
+         System.out.println("from============================================="+from);
          if(StringUtils.isNotBlank(from)){  
              
              url.concat("?from="+from);  
