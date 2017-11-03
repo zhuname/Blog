@@ -150,7 +150,7 @@ z-index:100;
 				</ul>
 			</div>
 	<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a  onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<a  onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/home.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">城市圈详情</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;visibility: hidden;" /></a>
 		</div>

@@ -130,7 +130,7 @@ Object data=session.getAttribute("data");
 
 			</div>
 			<div class="dis_f ali_ct flex_col jus_ct">
-				<img id="header" src="<%=basePath%>/js/appWeb/images/default_header.png" class="dis_b" style="width:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />
+				<img id="header" src="<%=basePath%>/js/appWeb/images/default_header.png" class="dis_b" style="width:3rem;height:3rem;border-radius: 1.5rem;border:0.05rem solid #fca498;" />
 				<div class="f_24 clr_f mt_10" id="name"></div>
 			</div>
 			
