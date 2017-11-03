@@ -16,6 +16,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	 <link rel="apple-touch-icon" href="http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg" />
+	 
+	<script type="text/javascript"
+	src="<%=basePath%>/js/appWeb/weixinjs/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript"
+	src="<%=basePath%>/js/appWeb/weixinjs/jquery.tmpl.min.js"></script>
 	<script type="text/javascript"
 	src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 	<!--
@@ -28,6 +33,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <script>
   
+  	$.ajax({
+    	url : 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx8653ea068146c48c&secret=14392f71468a99159688155f5aa98e38',
+    	   type : "get",
+    	    	success : function(result) {
+		    	    		$.ajax({
+						    	url : 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+result+'&type=jsapi',
+						    	   type : "get",
+						    	    	success : function(result) {
+							    	    	 	$.ajax({
+											    	url : 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+result+'&type=jsapi',
+											    	   type : "get",
+											    	    	success : function(result) {
+											    	    	  window.location.href=getCookie("backUrl");
+											    	    	},
+											    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
+											    				console.log(XMLHttpRequest) ;
+											    				console.log(textStatus) ;
+											    		}
+											  	});
+						    	    	},
+						    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
+						    				console.log(XMLHttpRequest) ;
+						    				console.log(textStatus) ;
+						    		}
+						  	});
+    	    	},
+    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
+    				console.log(XMLHttpRequest) ;
+    				console.log(textStatus) ;
+    		}
+  	});
+  
   
   wx.config({
     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -36,9 +73,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     nonceStr: 'gpP2F8KH1QEcMGfTB8qi', // 必填，生成签名的随机串
     signature: 'jOxIPQHRSrCRQvwAHHYkQhuOpzvCDOotEFJFPdSdlNA',// 必填，签名，见附录1
     jsApiList: [onMenuShareTimeline] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-});
+  });
   wx.ready(function(){
-  
   
    wx.onMenuShareAppMessage({
     title: '你是煞笔么，让我生效一次行不行', // 分享标题

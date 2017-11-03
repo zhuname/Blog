@@ -16,8 +16,16 @@ public class WxBean implements Serializable{
 	private String sex;
 	private String nickname;
 	private String headimgurl;
+	private String ticket;
 	private List<Integer> tagid_list;
 	private String city;
+	
+	public String getTicket() {
+		return ticket;
+	}
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
+	}
 	public String getAccess_token() {
 		return access_token;
 	}
