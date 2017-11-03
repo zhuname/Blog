@@ -35,6 +35,8 @@
     }, !1), w()
 }(window);
 
+document.write(" <script language=\"javascript\" src=\"http://res.wx.qq.com/open/js/jweixin-1.2.0.js\" > <\/script>"); 
+
 function GetDateDiff(diffTime) {
     //将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式   
 	    	startTime = diffTime.replace(/\-/g, "/");  
@@ -163,4 +165,6 @@ function getQueryString(aaa) {
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
-} 
+}
+
+

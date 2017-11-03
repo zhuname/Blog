@@ -39,24 +39,25 @@ import com.cz.mts.system.entity.WxBean;
 @Controller
 @RequestMapping(value="/system/wxShare")
 class Sign {
-    public static void main(String[] args) {
-        String jsapi_ticket = "jsapi_ticket";
-
-       
-        String url = "http://example.com";
-        Map<String, String> ret = sign(jsapi_ticket, url);
-        for (Map.Entry entry : ret.entrySet()) {
-            System.out.println(entry.getKey() + ", " + entry.getValue());
-        }
-    };
 
     @RequestMapping("/ceshi/json")
     public void ceshi(HttpServletRequest request,HttpServletResponse response) throws Exception{
     	
     	 String jsapi_ticket = getTicket();
-
          
          String url = request.getParameter("shareUrl");
+         
+         String from = request.getParameter("from");
+         
+         String isappinstalled = request.getParameter("isappinstalled");
+         
+         if(StringUtils.isNotBlank(from)){  
+             
+             url.concat("&from="+from+"&isappinstalled="+isappinstalled);  
+               
+         }
+         
+         
          Map<String, String> ret = sign(jsapi_ticket, url);
          String ticket="{";
          for (Map.Entry entry : ret.entrySet()) {
