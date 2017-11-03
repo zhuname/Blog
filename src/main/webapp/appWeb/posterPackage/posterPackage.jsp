@@ -102,13 +102,7 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
-
-
-<div style ='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
-<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
-</div>
-
-
+<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg" width="0" height="0" />
 
 
 	<div class="wraper">
