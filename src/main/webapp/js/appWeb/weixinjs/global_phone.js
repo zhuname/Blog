@@ -71,7 +71,6 @@ $(function(){
 function hrefIndexShare(type) {
 	/*var test = document.referrer;
 	if(test+""==""){*/
-	
 	switch (type) {
 	case 1:
 		window.location.href="/mts/appWeb/posterPackage/posterPackage.jsp?cityId="+getCookie("htmlCityId");;
@@ -85,15 +84,12 @@ function hrefIndexShare(type) {
 	case 4:
 		window.location.href="/mts/appWeb/circle/circle.jsp?cityId="+getCookie("htmlCityId");;
 		break;
-	case 5:
+	default:
 		if(document.referrer!=""){
 			window.location.href=document.referrer;
 		}else{
 			window.location.href="/mts/appWeb/index/index.jsp";
 		}
-		break;
-	default:
-		window.location.href="/mts/appWeb/index/index.jsp";
 		break;
 	}
 	/*	return;
