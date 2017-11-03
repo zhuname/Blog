@@ -44,8 +44,15 @@ function GetDateDiff(diffTime) {
 	    	return startTime;
 };  
 
+
 $(function(){
 	
+	var title = "";
+	function hello(){ 
+		title=$(document).attr("title"); 
+	} 
+	//重复执行某个方法 
+	var t2 = window.setInterval("hello()",300); 
 	
 	var utl1 = location.href;
 	//var utl1 = location.href.split('#')[0];
@@ -145,7 +152,7 @@ $(function(){
 	            wx.ready(function(){
 	                // wx.hideOptionMenu();
 	                wx.onMenuShareTimeline({
-	                    title: '美天赏给生活一点惊喜',
+	                    title: title ,
 	                    link: document.location.href,
 	                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
 	                    success: function () { 
@@ -156,8 +163,8 @@ $(function(){
 	                    }
 	                });
 	                wx.onMenuShareAppMessage({
-	                      title: '美天赏给生活一点惊喜',
-	                      desc: '美天赏APP，同城生活互动平台；地投入、精准投放、深度记忆、方便快捷、精准数据。',
+	                      title: title ,
+	                      desc: '美天赏APP，同城生活互动平台；低投入、精准投放、深度记忆、方便快捷、精准数据。',
 	                      link: document.location.href,
 	                      imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
 	                      trigger: function (res) {
