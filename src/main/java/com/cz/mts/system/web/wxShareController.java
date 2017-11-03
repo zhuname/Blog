@@ -62,6 +62,9 @@ class Sign {
          for (Map.Entry entry : ret.entrySet()) {
         	 ticket+="\""+entry.getKey()+"\":\""+entry.getValue()+"\",";
          }
+         
+         ticket=ticket.substring(0, ticket.length()-1);
+         
          ticket+="}";
          response.getWriter().write(ticket);  
     }
