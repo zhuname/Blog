@@ -24,10 +24,6 @@ public class WxBean implements Serializable{
 	
 	
 	
-	
-	
-	
-	
 	public String getFrom() {
 		return from;
 	}
