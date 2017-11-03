@@ -97,6 +97,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	});
 
    
+   
+   
+   wx.onMenuShareTimeline({
+    title: '你好测试', // 分享标题
+    link: 'http://app.mtianw.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg', // 分享图标
+    success: function () { 
+        // 用户确认分享后执行的回调函数
+         alert("onMenuShareAppMessage1");
+    },
+    cancel: function () { 
+        // 用户取消分享后执行的回调函数
+         alert("onMenuShareAppMessage2");
+    }
+});
 		</script> 
   
   
