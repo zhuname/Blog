@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 
-<script>
+<!-- <script>
 		
 				//分享回调
 			dataForShareCallback=function(type){_$(_api3._shareCount,"info_id="+_info._id36+"&info_type=party&share_url="+dataForShare.url+"&share_type="+type+"&share_location=detail_party");};
@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		
 		
-		</script>
+		</script> -->
 
 
 
@@ -68,6 +68,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   测试微信
   
   
-    <img src="http://app.mtianw.com:80/mts//js/appWeb/images/App_icon.jpg" width="0" height="0" />
+    <img src="http://app.mtianw.com:80/mts//js/appWeb/images/App_icon.png" width="0" height="0" />
   </body>
 </html>
