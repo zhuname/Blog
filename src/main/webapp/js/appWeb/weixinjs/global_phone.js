@@ -145,7 +145,6 @@ $(function(){
 	            wx.ready(function(){
 	                // wx.hideOptionMenu();
 	                wx.onMenuShareTimeline({
-	                    title: '这是一个测试的标题--程高伟的博客',
 	                    link: document.location.href,
 	                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
 	                    success: function () { 
@@ -156,8 +155,6 @@ $(function(){
 	                    }
 	                });
 	                wx.onMenuShareAppMessage({
-	                      title: '这是一个测试的标题--百度',
-	                      desc: '这个是要分享内容的一些描述--百度一下，你就知道',
 	                      link: document.location.href,
 	                      imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
 	                      trigger: function (res) {
