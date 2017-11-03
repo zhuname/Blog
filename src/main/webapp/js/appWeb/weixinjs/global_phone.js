@@ -58,7 +58,12 @@ $(function(){
 	if(getQueryString("cityId")!=undefined&&getQueryString("cityId")!=null){
 		setCookie("htmlCityId",getQueryString("cityId"));
 	}else{
-		setCookie("htmlCityId",321300);
+		if(getCookie("htmlCityId")==undefined||getCookie("htmlCityId")==null||getCookie("htmlCityId")==""){
+			
+			setCookie("htmlCityId",321300);
+			
+		}
+		
 	}
 	
 });
