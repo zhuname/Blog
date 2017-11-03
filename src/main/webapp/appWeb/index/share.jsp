@@ -35,9 +35,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 $(function() {
 var utl1 = location.href.split('#')[0];
 var urls="";
-urls=utl1.replace(/from=timeline/, "");
-urls=urls.replace(/from=groupmessage/, "");
-urls=urls.replace(/from=singlemessage/, "");
+urls=utl1.replace(/?from=timeline/, "");
+urls=urls.replace(/?from=groupmessage/, "");
+urls=urls.replace(/?from=singlemessage/, "");
 
 
 	$.ajax({
