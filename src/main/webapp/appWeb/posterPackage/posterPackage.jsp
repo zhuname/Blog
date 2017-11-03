@@ -60,7 +60,7 @@ Object data=session.getAttribute("data");
 
 	<script>
 		
-					//分享回调
+			/* 		//分享回调
 			dataForShareCallback=function(type){_$(_api3._shareCount,"info_id="+_info._id36+"&info_type=party&share_url="+dataForShare.url+"&share_type="+type+"&share_location=detail_party");};
 			
 			 var dataForShare={
@@ -91,7 +91,7 @@ Object data=session.getAttribute("data");
             dataForShare.description=dataForShare.description || dataForShare.title;
             dataForShare.sms="快来看看这个活动：【11.12樊登北京千人活动】2017领导力高峰论坛暨一书一课产品发布会 http://www.hdb.com/party/7s222.html";
             dataForShare.callback=function(type){_$("/post/api:7","info_id="+_info._id36+"&info_type="+_info._type+"&share_url="+dataForShare.weixin_url+"&share_type="+type+"&share_location=wxdetail")};
-        })();
+        })(); */
 		
 		
 		
@@ -102,6 +102,14 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
+
+
+<div style ='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
+</div>
+
+
+
 
 	<div class="wraper">
 <div class="whte"></div>
@@ -224,38 +232,6 @@ Object data=session.getAttribute("data");
 			})
 			
 			$(document).ready(function(){ 
-			/* wx.onMenuShareTimeline({
-			    title: '111', // 分享标题
-			    link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-			    imgUrl: '', // 分享图标
-			    success: function () { 
-			        // 用户确认分享后执行的回调函数
-			    },
-			    cancel: function () { 
-			        // 用户取消分享后执行的回调函数
-			    }
-			});
-			
-			
-			
-			wx.onMenuShareAppMessage({
-			    title: '111', // 分享标题
-			    desc: '', // 分享描述
-			    link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-			    imgUrl: '', // 分享图标
-			    type: '', // 分享类型,music、video或link，不填默认为link
-			    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-			    success: function () { 
-			        // 用户确认分享后执行的回调函数
-			    },
-			    cancel: function () { 
-			        // 用户取消分享后执行的回调函数
-			    }
-			}); */
-			
-			
-			
-			
 			
 			}); 
 			
