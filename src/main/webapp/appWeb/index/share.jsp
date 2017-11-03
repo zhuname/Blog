@@ -34,9 +34,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 $(function() {
 
+var utl1 = location.href.split('#')[0];
+var urls="";
+urls=str.replace(/from=timeline/, "");
+urls=str.replace(/from=groupmessage/, "");
+urls=str.replace(/from=singlemessage/, "");
 
 	$.ajax({
-    	url : '/mts/system/wxShare/ceshi/json?shareUrl='+location.href.split('#')[0],
+    	url : '/mts/system/wxShare/ceshi/json?shareUrl='+urls,
     	   type : "post",
     	   dataType: 'json',  
     	    	success : function(result) {
@@ -110,6 +115,22 @@ $(function() {
                     });
             });
         });
+        
+        //js获取url中参数值的方法
+        function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return null;
+    	}
+        
+        
+        
+        
+        
+        
+        
 </script>
 
   
