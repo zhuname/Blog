@@ -47,9 +47,9 @@ function GetDateDiff(diffTime) {
 
 $(function(){
 	
-	var title = "";
+	var title1 = "";
 	function hello(){ 
-		title=$(document).attr("title"); 
+		title1=$(document).attr("title"); 
 	} 
 	//重复执行某个方法 
 	var t2 = window.setInterval("hello()",300); 
@@ -152,7 +152,7 @@ $(function(){
 	            wx.ready(function(){
 	                // wx.hideOptionMenu();
 	                wx.onMenuShareTimeline({
-	                    title: title ,
+	                    title: title1 ,
 	                    link: document.location.href,
 	                    imgUrl: 'http://app.mtianw.com/mts/js/appWeb/images/App_icon_1.jpg',
 	                    success: function () { 
@@ -163,7 +163,7 @@ $(function(){
 	                    }
 	                });
 	                wx.onMenuShareAppMessage({
-	                      title: title ,
+	                      title: title1 ,
 	                      desc: '美天赏APP，同城生活互动平台；低投入、精准投放、深度记忆、方便快捷、精准数据。',
 	                      link: document.location.href,
 	                      imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
