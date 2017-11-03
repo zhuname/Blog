@@ -34,10 +34,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 $(function() {
 var utl1 = location.href.split('#')[0];
-var urls="";
-urls=utl1.replace(/\?from=timeline/, "");
+var urls=utl1;
+/* urls=utl1.replace(/\?from=timeline/, "");
 urls=urls.replace(/\?from=groupmessage/, "");
-urls=urls.replace(/\?from=singlemessage/, "");
+urls=urls.replace(/\?from=singlemessage/, ""); */
 
 
 	$.ajax({
