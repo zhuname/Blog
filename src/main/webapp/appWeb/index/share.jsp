@@ -33,6 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <script>
   
+  /* 
   	$.ajax({
     	url : '/mts/system/wxShare/ceshi/json',
     	   type : "get",
@@ -73,7 +74,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   
 
-  
    wx.onMenuShareAppMessage({
     title: '你是煞笔么，让我生效一次行不行', // 分享标题
     desc: '你是煞笔么，让我生效一次行不行', // 分享描述
@@ -111,8 +111,117 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         // 用户取消分享后执行的回调函数
          alert("onMenuShareAppMessage2");
     }
-});
-		</script> 
+}); */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(function() {
+
+
+	$.ajax({
+    	url : '/mts/system/wxShare/ceshi/json',
+    	   type : "get",
+    	   dataType: 'json',  
+    	    	success : function(result) {
+    	    	
+    	    	console.log(result);
+    	    	
+    	    	console.log(result.nonceStr);
+				    	    	
+				wx.checkJsApi({
+				    jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+				    success: function(res) {
+				        // 以键值对的形式返回，可用的api值true，不可用为false
+				        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+				        alert("checkJsApi1");
+				    },
+				    fail:function(res){
+				    	alert("checkJsApi2");
+				    }
+				});
+    	    	
+				  wx.config({
+				    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				    appId: 'wx8653ea068146c48c', // 必填，公众号的唯一标识
+				    timestamp:  result.timestamp, // 必填，生成签名的时间戳
+				    nonceStr: result.nonceStr, // 必填，生成签名的随机串
+				    signature: result.signature,// 必填，签名，见附录1
+				    jsApiList: [onMenuShareTimeline] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				  });
+    	    	
+    	    	},
+    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
+    				console.log(XMLHttpRequest) ;
+    				console.log(textStatus) ;
+    		}
+  	});
+
+          
+
+            wx.ready(function(){
+                // wx.hideOptionMenu();
+                wx.onMenuShareTimeline({
+                    title: '这是一个测试的标题--程高伟的博客',
+                    link: 'http://app.mtianw.com',
+                    imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
+                    success: function () { 
+                        // 用户确认分享后执行的回调函数
+                         alert('分享到朋友圈成功');
+                    },
+                    cancel: function () { 
+                        // 用户取消分享后执行的回调函数
+                         alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                      title: '这是一个测试的标题--百度',
+                      desc: '这个是要分享内容的一些描述--百度一下，你就知道',
+                      link: 'http://app.mtianw.com',
+                      imgUrl: 'http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg',
+                      trigger: function (res) {
+                        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                      },
+                      success: function (res) {
+                          alert('分享给朋友成功');
+                      },
+                      cancel: function (res) {
+                        alert('你没有分享给朋友');
+                      },
+                      fail: function (res) {
+                        alert(JSON.stringify(res));
+                      }
+                    });
+            });
+        });
+</script>
+
   
   
   <body>
