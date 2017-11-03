@@ -53,7 +53,7 @@ class Sign {
          
          if(StringUtils.isNotBlank(from)){  
              
-             url.concat("&from="+from+"&isappinstalled="+isappinstalled);  
+             url.concat("?from="+from);  
                
          }
          
