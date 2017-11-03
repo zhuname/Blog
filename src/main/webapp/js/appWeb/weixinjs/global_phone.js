@@ -71,9 +71,9 @@ $(function(){
 
 
 
-	urls=utl1.replace(/\&from=timeline&isappinstalled=0/, "");
-	urls=urls.replace(/\&from=groupmessage&isappinstalled=0/, "");
-	urls=urls.replace(/\&from=singlemessage&isappinstalled=0/, "");
+	urls=utl1.replace(/&from=timeline&isappinstalled=0/, "");
+	urls=urls.replace(/&from=groupmessage&isappinstalled=0/, "");
+	urls=urls.replace(/&from=singlemessage&isappinstalled=0/, "");
 
 	alert(urls);
 

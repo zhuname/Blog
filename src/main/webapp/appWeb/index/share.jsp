@@ -33,7 +33,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
 $(function() {
-var utl1 = location.href.split('#')[0];
+var utl1 = location.href;
+//var utl1 = location.href.split('#')[0];
 urls=utl1.replace(/\?from=timeline&isappinstalled=0/, "");
 urls=urls.replace(/\?from=groupmessage&isappinstalled=0/, "");
 urls=urls.replace(/\?from=singlemessage&isappinstalled=0/, "");
