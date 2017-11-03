@@ -182,7 +182,7 @@ Object data=session.getAttribute("data");
 				$(".public_App").remove()
 			})
 			
-			
+			$(document).ready(function(){ 
 			wx.onMenuShareTimeline({
 			    title: '111', // 分享标题
 			    link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
@@ -194,6 +194,7 @@ Object data=session.getAttribute("data");
 			        // 用户取消分享后执行的回调函数
 			    }
 			});
+			}); 
 			
 			
 		</script>
