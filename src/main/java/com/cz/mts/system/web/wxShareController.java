@@ -47,7 +47,11 @@ class Sign {
          
          String url = request.getParameter("shareUrl");
          
-         String from = wxBean.getFrom().toString();
+         String from ="";
+         
+         if(wxBean.getFrom()!=null){
+        	 from = wxBean.getFrom().toString();
+         }
          
          System.out.println("url111111111111111111============================================="+url);
          System.out.println("from============================================="+from);
