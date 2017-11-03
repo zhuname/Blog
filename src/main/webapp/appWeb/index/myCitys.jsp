@@ -165,7 +165,7 @@ Object data=session.getAttribute("data");
 <div class="wraper overh bjt">
     <div class="navBox">
         <div class="jus_bt pad_20 pos_rela clear_padding_bottom">
-            <a  onclick="javascript:window.history.back();" style="display: block"><img src="<%=basePath%>/js/appWeb/images/close_hb123.png" class="dis_b float" style="width:0.7rem;"/></a>
+            <a  onclick="javascript:hrefIndexShare();" style="display: block"><img src="<%=basePath%>/js/appWeb/images/close_hb123.png" class="dis_b float" style="width:0.7rem;"/></a>
         </div>
 
         <div class="subox">

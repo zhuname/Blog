@@ -65,7 +65,7 @@ Object data=session.getAttribute("data");
 		<div class="bg_r pad_30 dis_f ali_ct jus_ct flex_col">
 
 			<div class="f_30 clr_f pos_rela w_100 al_ct">我的钱包
-				<img src="<%=basePath%>/js/appWeb/images/back4.png" onclick="javascript:window.history.back();" class="dis_b back4" style="height:0.8rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/back4.png" onclick="javascript:hrefIndexShare();" class="dis_b back4" style="height:0.8rem;" />
 			</div>
 			<div class="f_26 clr_f mt_30 w_100">账户余额:</div>
 

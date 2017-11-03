@@ -168,7 +168,7 @@ font-size:0.6rem;
 </div>
 
 			<div class="bg_f pad_2030  dis_f ali_ct jus_bt pos_rela">
-				<a onclick="javascript:window.history.back();"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="height:1rem;" /></a>
+				<a onclick="javascript:hrefIndexShare();"><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="height:1rem;" /></a>
 				<div class="search_bg2 pos_rela">
 					<input class="ipt2 f_22 clr_he" id="title"  type="text" placeholder="昵称/主题" />
 					<a onclick="select();" class="btn2" style="width:1.8rem;height:1.3rem;"/>

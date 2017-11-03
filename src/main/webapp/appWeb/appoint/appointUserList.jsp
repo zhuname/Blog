@@ -66,7 +66,7 @@ Object data=session.getAttribute("data");
 
 	<div class="wraper overh " style="background: #f9f9fb;height:100%;overflow:auto;">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
+			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back.png" class="dis_b" style="width:1rem;" /></a>
 			<p class="f_30 clr_3">预订列表</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/gantan.png" class="dis_b" style="width:0.9rem;visibility: hidden;" /></a>
 	

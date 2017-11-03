@@ -119,7 +119,7 @@ html,body{height:100%;}
 
 	<div class="wraper box22">
 		<div class="title_top dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<a onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="width:0.4rem;" /></a>
+			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back6.png" class="dis_b" style="width:0.4rem;" /></a>
 			<p class="f_30 ">选择投放城市</p>
 			<a class="dis_b f_24 wancheng"  onclick="checkSucc();">完成</a>
 		</div>

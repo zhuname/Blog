@@ -61,7 +61,7 @@ Object data=session.getAttribute("data");
 
 	<div class="wraper" style="background: #f9f9fb;height:100%;" id="messageList">
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f borderbot1">
-			<img src="<%=basePath%>/js/appWeb/images/back.png"  onclick="javascript:window.history.back();"  class="dis_b" style="width:1rem;" />
+			<img src="<%=basePath%>/js/appWeb/images/back.png"  onclick="javascript:hrefIndexShare();"  class="dis_b" style="width:1rem;" />
 			<p class="f_30 clr_3">通知消息</p>
 			<a ><img src="<%=basePath%>/js/appWeb/images/more.png" class="dis_b more_ul_toggle" style="width:1rem;visibility: hidden;" /></a>
 	
