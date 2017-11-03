@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -16,14 +16,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	 <link rel="apple-touch-icon" href="http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg" />
+	<script type="text/javascript"
+	src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	
+	
 
   </head>
   
   <script>
-wx.onMenuShareAppMessage({
+  
+  
+  wx.config({
+    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: 'wx8653ea068146c48c', // 必填，公众号的唯一标识
+    timestamp: new Date().getTime() , // 必填，生成签名的时间戳
+    nonceStr: 'gpP2F8KH1QEcMGfTB8qi', // 必填，生成签名的随机串
+    signature: 'jOxIPQHRSrCRQvwAHHYkQhuOpzvCDOotEFJFPdSdlNA',// 必填，签名，见附录1
+    jsApiList: [onMenuShareTimeline] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+  wx.ready(function(){
+  
+  
+   wx.onMenuShareAppMessage({
     title: '你是煞笔么，让我生效一次行不行', // 分享标题
     desc: '你是煞笔么，让我生效一次行不行', // 分享描述
     link: 'http://app.mtianw.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
@@ -37,6 +54,23 @@ wx.onMenuShareAppMessage({
         // 用户取消分享后执行的回调函数
     }
 });		
+  
+  
+    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+});
+wx.error(function(res){
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+});
+
+wx.checkJsApi({
+    jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+    success: function(res) {
+        // 以键值对的形式返回，可用的api值true，不可用为false
+        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+    }
+});
+  
+   
 
  /*  var imgUrl = "http://app.mtianw.com/mts//js/appWeb/images/App_icon_1.jpg";  //注意必须是绝对路径
        var lineLink = "http://app.mtianw.com";   //同样，必须是绝对路径
