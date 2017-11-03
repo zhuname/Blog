@@ -68,6 +68,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   测试微信
   
   
-    <img src="http://app.mtianw.com:80/mts//js/appWeb/images/App_icon.png" width="0" height="0" />
+    <img src="http://app.mtianw.com:80/mts//js/appWeb/images/App_icon.png"/>
   </body>
 </html>
