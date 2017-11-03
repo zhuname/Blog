@@ -36,8 +36,8 @@ $(function() {
 
 
 	$.ajax({
-    	url : '/mts/system/wxShare/ceshi/json?shareUrl='+document.location.href,
-    	   type : "get",
+    	url : '/mts/system/wxShare/ceshi/json?shareUrl='+location.href.split('#')[0],
+    	   type : "post",
     	   dataType: 'json',  
     	    	success : function(result) {
     	    	
