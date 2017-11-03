@@ -85,7 +85,7 @@ Object data=session.getAttribute("data");
 		</script>
 		
 			<div class="pad_30  dis_f ali_ct jus_bt " style="position:absolute;top:0;left:0;width:14.5rem;">
-				<a  onclick="javascript:window.history.back();" ><img src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b" style="width:1rem;" /></a>
+				<a  onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b" style="width:1rem;" /></a>
 				<div class="search_bg pos_rela">
 					<input class="ipt2 f_22 clr_he" id="title" type="text" placeholder="昵称/主题" />
 					<div onclick="select();" class="btn2"  ></div>
