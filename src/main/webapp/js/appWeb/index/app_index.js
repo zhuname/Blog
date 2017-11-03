@@ -278,32 +278,14 @@ function show(){
 										}
 									});
 								}
-							
-								countTime();
+							countTime();
 						}
-						
-						
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown){
 						console.log(XMLHttpRequest) ;
 						console.log(textStatus) ;
 					}
 				});
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -312,6 +294,7 @@ function show(){
 		}
 	});
 }
+
 
 
 $.ajax({
