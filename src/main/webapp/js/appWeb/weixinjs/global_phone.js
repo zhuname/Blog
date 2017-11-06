@@ -45,14 +45,27 @@ function GetDateDiff(diffTime) {
 };  
 
 
+
+
+
+
 var titles = "";
 function hello(){ 
 	titles=$(document).attr("title"); 
 } 
 $(function(){
 	
+	var isHas="2";
+	
+	console.log($("title").is(".waitCheck"));
+	if($("title").is(".waitCheck")){
+		isHas="1";
+	}else{
+		isHas="2";
+	}
+	
 	//重复执行某个方法 
-	 window.setInterval("hello()",1000); 
+	 //window.setInterval("hello()",1000); 
 	
 	var utl1 = location.href;
 	//var utl1 = location.href.split('#')[0];
@@ -109,7 +122,7 @@ $(function(){
 	}
 
 	
-
+	if(isHas=="2"){
 		$.ajax({
 	    	url : '/mts/system/wxShare/ceshi/json',
 	    	   type : "post",
@@ -117,9 +130,6 @@ $(function(){
 	    	   dataType: 'json',  
 	    	    	success : function(result) {
 	    	    	
-	    	    	console.log(result);
-	    	    	
-	    	    	console.log(result.nonceStr);
 					    	    	
 					wx.checkJsApi({
 					    jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
@@ -146,6 +156,47 @@ $(function(){
 	    				console.log(textStatus) ;
 	    		}
 	  	});
+	}
+	
+	
+	$(".waitCheck").bind("DOMNodeInserted",function(){
+		$.ajax({
+	    	url : '/mts/system/wxShare/ceshi/json',
+	    	   type : "post",
+	    	   data:{'shareUrl':urls},
+	    	   dataType: 'json',  
+	    	    	success : function(result) {
+	    	    	
+					    	    	
+					wx.checkJsApi({
+					    jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+					    success: function(res) {
+					        // 以键值对的形式返回，可用的api值true，不可用为false
+					        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+					    },
+					    fail:function(res){
+					    }
+					});
+	    	    	
+					  wx.config({
+					    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					    appId: 'wx8653ea068146c48c', // 必填，公众号的唯一标识
+					    timestamp:  result.timestamp, // 必填，生成签名的时间戳
+					    nonceStr: result.nonceStr, // 必填，生成签名的随机串
+					    signature: result.signature,// 必填，签名，见附录1
+					    jsApiList: [ 'checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					  });
+	    	    	
+	    	    	},
+	    	  		error:function(XMLHttpRequest, textStatus, errorThrown){
+	    				console.log(XMLHttpRequest) ;
+	    				console.log(textStatus) ;
+	    		}
+	  	});
+	})	
+	
+
+		
 
 	          
 

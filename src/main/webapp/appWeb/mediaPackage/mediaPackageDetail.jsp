@@ -58,7 +58,7 @@ Object data=session.getAttribute("data");
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
 	name="viewport">
-<title id="title">视频红包详情</title>
+<title id="title" class="waitCheck">视频红包详情</title>
 </head>
 
 <body>
