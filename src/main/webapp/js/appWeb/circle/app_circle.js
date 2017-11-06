@@ -2,7 +2,7 @@ var This=this;
 var nextPage=1;
 var dataString="";
 var dianji=0;
-var userId;
+var userId="";
 var userData="";
 //初始化页面
 show();
@@ -132,6 +132,10 @@ function show(){
 
 
 function attr(itemUserId){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,
@@ -153,6 +157,10 @@ function attr(itemUserId){
 }
 
 function pingbi(itemUserId){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/shield/update/json?web=&userId='+userId+'&itemId='+itemUserId,
@@ -222,6 +230,10 @@ function xinzeng(){
 
 
 function zan(id){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 		url : '/mts/system/oper/update/json?web=&type=7'+"&itemId="+id+"&userId="+userId,
@@ -277,6 +289,10 @@ function report(obj,reportedUserIdV,jubaoItemIdV){
 }
 
 function jubao(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/report/update/json?web=&type=2&operUserId='+userId+'&itemId='+jubaoItemId+'&reportedUserId='+reportedUserId+'&content='+$("#content").val(),
