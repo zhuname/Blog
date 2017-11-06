@@ -142,8 +142,8 @@ Object data=session.getAttribute("data");
 					<li onclick="report(this,{{if appUser}}{{= appUser.id}}{{/if}},{{= id}})"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">举报</span></li>
 				</ul>
 			</div>
-			<div class="f_28 clr_3 mt_20" style="display:inline;">{{= content}} </div>
-			<div class="f_28 clr_3 mt_20" style="display:none;display:inline;" id="contents{{= id}}">{{= contents}}</div>
+			<pre style="white-space: pre-wrap;word-wrap: break-word;"><div class="f_28 clr_3 mt_20" style="display:inline;">{{= content}}<div class="f_28 clr_3 mt_20" style="display:none;display:inline;" id="contents{{= id}}">{{= contents}}</div> </div></pre>
+			
 			{{if quanbu}}
 			<div class="f_28 clr_3 mt_20" id="gengduo" show="1" style="font-weight:400;color:blue;padding-left:.2rem;" onclick="showGengduo({{= id}},this);">查看更多</div>
 			{{/if}}

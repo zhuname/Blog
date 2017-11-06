@@ -619,7 +619,7 @@ function oper(type){
 
 
 function initColl(){
-	if(userId!=undefined&&userId!=null){
+	if(userId!=undefined&&userId!=null&&userId!=""){
 	if(userId!=itemUserId){
 	//加载页面方法
 	$.ajax({
