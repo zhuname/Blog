@@ -581,7 +581,7 @@ public class MediaPackageController  extends BaseController {
 					}
 					
 					
-					mediaPackageService.check(id.toString(), 1+"", "");
+				//	mediaPackageService.check(id.toString(), 1+"", "");
 					
 				}else{
 					returnObject.setMessage("每个人的领取金额最少是0.01元");

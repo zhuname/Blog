@@ -68,7 +68,7 @@ $.ajax({
 				
 				convertMoney=result.data.convertMoney;
 				num=result.data.num;
-				limitNumber=result.data.num;
+				limitNumber=result.data.limitNumber;
 				
 				if(user==undefined){
 					$('#lingqu_tmpl').tmpl({'balance':0,'convertMoney':result.data.convertMoney}).appendTo($('#detail'));
@@ -157,6 +157,8 @@ console.log(textStatus) ;
 });
 
 function change(type){
+	debugger;
+	console.log(parseInt($('#num').val()));
 	if(type==1){
 		if(parseInt($('#num').val())==parseInt(1)){
 			return;
@@ -165,7 +167,7 @@ function change(type){
 		$('#balance').html(parseInt($('#num').val())*parseInt(convertMoney));
 		$('#convertMoney').html(parseInt($('#num').val())*parseInt(convertMoney));
 	}else if(type ==2){
-		if(parseInt($('#num').val())==parseInt(num-lqNum)||parseInt($('#num').val())==parseInt(limitNumber-lqNum)){
+		if(parseInt($('#num').val())>=parseInt(num-lqNum)||parseInt($('#num').val())>=parseInt(limitNumber-lqNum)){
 			return;
 		}
 		$('#num').val(parseInt($('#num').val())+1);

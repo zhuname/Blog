@@ -599,7 +599,7 @@ public class CardController  extends BaseController {
 			finderSelect.setParam("cardId", cardId);
 			
 			List<UserCard> userCardss=userCardService.queryForList(finderSelect, UserCard.class);
-			if(userCardss.size()>card.getLimitNumber() ){
+			if(userCardss.size()>=card.getLimitNumber() ){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("已达到限领次数");
 				return returnObject;

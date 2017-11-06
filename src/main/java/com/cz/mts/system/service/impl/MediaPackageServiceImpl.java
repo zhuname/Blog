@@ -512,6 +512,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 		
 		AppUser appUser = appUserService.findAppUserById(pp.getUserId());
 		if("0".equals(type)){  //拒绝
+			
 			pp.setStatus(2);
 			pp.setFailTime(new Date());
 			pp.setFailReason(failReason);
@@ -536,6 +537,7 @@ public class MediaPackageServiceImpl extends BaseSpringrainServiceImpl implement
 			}
 			
 		}else {  //审核通过
+			
 			pp.setStatus(3);
 			pp.setSuccTime(new Date());
 			if(null != appUser && 1 == appUser.getIsPush()){

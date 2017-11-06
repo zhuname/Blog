@@ -768,7 +768,7 @@ public class PosterPackageController  extends BaseController {
 					}
 					
 					
-					posterPackageService.check(id.toString(), 1+"", null);
+					//posterPackageService.check(id.toString(), 1+"", null);
 					returnObject.setData(posterPackageService.findPosterPackageById(id));
 				}else{
 					returnObject.setMessage("每个人的领取金额最少是0.01元");
