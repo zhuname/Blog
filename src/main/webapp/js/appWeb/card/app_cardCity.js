@@ -42,6 +42,8 @@ $.ajax({
 	}
 });
 
+
+
 function check(id,name){
 	if($('#'+id+'').attr('check')==0){
 		$('#'+id+'').attr('check','1');

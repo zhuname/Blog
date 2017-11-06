@@ -5,7 +5,58 @@ var limitNumber;
 var userId;
 var id;
 var itemUserId;
+var payType=3;
 var lqNum=0;
+
+function changePayType(type){
+	payType=type;
+	javascript:$('.pay-type').css('top','100%');
+	switch (type) {
+	case 1:
+		$("#payString").html("支付宝");
+		break;
+	case 2:
+		$("#payString").html("微信");
+		break;
+	case 3:
+		$("#payString").html("账户余额");
+		break;
+	default:
+		break;
+	}
+}
+
+$().ready(function(){
+	
+    var ua = navigator.userAgent.toLowerCase();  
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+    	
+    	if(code!=null&&code!=undefined&&code!="undefined"){
+    		$.ajax({
+    			url : '/mts/system/appuser/openId/json?web=1&code='+code,
+    			type : "get",
+    			success : function(result) {
+    				data = JSON.parse(result.data);
+    				data = JSON.parse(data);
+    				openid = data.openid;
+    			},
+    			error:function(XMLHttpRequest, textStatus, errorThrown){
+    				console.log(XMLHttpRequest) ;
+    				console.log(textStatus) ;
+    			}
+    		});
+    	}else{
+    		var isShare="";
+    		if(getQueryString("isShare")!=undefined){
+    			isShare="isShare";
+    		}
+    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/card/cardDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
+    	}
+    	$('#zfbShow').remove();
+    } else {
+    	$('#wxShow').remove();
+    }  
+}); 
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -19,6 +70,7 @@ $.ajax({
 			userId=result.data.id;
 			userData="&appUserId="+userId;
 			balance=result.data.balance;
+			$("#payBalance").html(result.data.balance);
 		}
 		
 		
@@ -176,6 +228,8 @@ function change(type){
 	}
 }
 
+
+
 function pay(){
 	
 	if(itemUserId==userId){
@@ -183,33 +237,160 @@ function pay(){
 		return;
 	}
 	
-	$.ajax({
-		url : '/mts/system/card/payCard/json?web=&cardId='+getQueryString("id")+'&userId='+userId+'&num='+$('#num').val(),
-		type : "post",
-		dataType : "json",
-		success : function(result){
-			if(result.status=="error"){
-				alert(result.message);
-				return;
-			}
-			if(result.data!=undefined){
-				
-				if(result.data.convertMoney==undefined){
-					location.reload();
-					return;
-				}
-				
+	
+	if(userId!=null&&userId!=""&&id!=null&&id!=""){
+			
+			
+			if(payType==3){
 				$.ajax({
-					url : '/mts/system/appuser/pay/json?web=&type=3&userId='+userId+'&code='+result.data.userCards[0].code,
+					url : '/mts/system/card/payCard/json?web=&cardId='+getQueryString("id")+'&userId='+userId+'&num='+$('#num').val(),
 					type : "post",
 					dataType : "json",
 					success : function(result){
 						if(result.status=="error"){
-							window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+							alert(result.message);
 							return;
 						}
 						if(result.data!=undefined){
-							window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+							
+							if(result.data.convertMoney==undefined){
+								location.reload();
+								return;
+							}
+							
+							$.ajax({
+								url : '/mts/system/appuser/pay/json?web=&type=3&userId='+userId+'&code='+result.data.userCards[0].code,
+								type : "post",
+								dataType : "json",
+								success : function(result){
+									if(result.status=="error"){
+										window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+										return;
+									}
+									if(result.data!=undefined){
+										window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+									}
+								},
+								error:function(XMLHttpRequest, textStatus, errorThrown){
+									console.log(XMLHttpRequest) ;
+									console.log(textStatus) ;
+								}
+							});
+							
+						}
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(XMLHttpRequest) ;
+						console.log(textStatus) ;
+					}
+				});
+			}else if(payType==1){
+				$.ajax({
+					url : '/mts/system/card/payCard/json?web=&cardId='+getQueryString("id")+'&userId='+userId+'&num='+$('#num').val(),
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						if(result.status=="error"){
+							alert(result.message);
+							return;
+						}
+						if(result.data!=undefined){
+							
+							if(result.data.convertMoney==undefined){
+								location.reload();
+								return;
+							}
+							
+							window.location.href="/mts/system/zfb/getDingdan/json?name=购买卡券&money="+($('#num').val()*result.data.convertMoney)+"&detail=购买卡券&code="+"C"+result.data.code+"_"+new Date().getTime();
+							
+						}
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						console.log(XMLHttpRequest) ;
+						console.log(textStatus) ;
+					}
+				});
+				
+			}if(payType==2){
+				
+				$.ajax({
+					url : '/mts/system/card/payCard/json?web=&cardId='+getQueryString("id")+'&userId='+userId+'&num='+$('#num').val(),
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						if(result.status=="error"){
+							alert(result.message);
+							return;
+						}
+						if(result.data!=undefined){
+							
+							if(result.data.convertMoney==undefined){
+								location.reload();
+								return;
+							}
+							
+							
+							
+							$.ajax({
+								url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=D&openid1='+openid+'&total_fee1='+($('#num').val()*result.data.convertMoney)*100,
+								type : "get",
+								success : function(result) {
+									console.log(result);
+									
+									var out_trade_no=result.data.out_trade_no;
+									
+									WeixinJSBridge.invoke(  
+									        'getBrandWCPayRequest', {  
+									            "appId" : result.data.appId,     //公众号名称，由商户传入   
+									            "timeStamp" :  result.data.timeStamp, //时间戳，自1970年以来的秒数 (java需要处理成10位才行，又一坑)
+									            "nonceStr" :  result.data.nonceStr, //随机串  
+									            "package" :  result.data.package1, //拼装好的预支付标示  
+									            "signType" : "MD5",//微信签名方式  
+									            "paySign" :  result.data.paySign //微信签名  
+									        },  
+									        function(res){  
+									             //使用以下方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。  
+									            if(res.err_msg == "get_brand_wcpay_request:ok" ) {       
+									                 alert("支付成功");      
+									                 
+									                 $.ajax({
+									             		url : '/mts/system/wx/htmlRetrun/json?web=1&out_trade_no='+out_trade_no,
+									             		type : "get",
+									             		success : function(result){
+									             			data = JSON.parse(result.data);
+									             			data = JSON.parse(data);
+									             			openid = data.openid;
+									             		},
+									             		error:function(XMLHttpRequest, textStatus, errorThrown){
+									             			console.log(XMLHttpRequest) ;
+									             			console.log(textStatus) ;
+									             		}
+									             	});
+									                 ;
+									                 
+									                 
+									            }else{  
+									                 alert("支付失败");  
+									            }  
+									        }  
+									    );
+									
+								},
+								error:function(XMLHttpRequest, textStatus, errorThrown){
+									console.log(XMLHttpRequest) ;
+									console.log(textStatus) ;
+								}
+							});
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 						}
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -220,13 +401,13 @@ function pay(){
 				
 				
 				
+				
+				
 			}
-		},
-		error:function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(XMLHttpRequest) ;
-			console.log(textStatus) ;
-		}
-	});
+			
+			
+	}
+			
 	
 }
 

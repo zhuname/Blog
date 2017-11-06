@@ -63,7 +63,7 @@ Object data=session.getAttribute("data");
 html,body{background:#f95d47;}
 </style>
 
-	<script>
+			<script>
 				$('.close_kq_mask').click(function(){
 					$('.kq_mask').hide();
 				});
@@ -86,20 +86,45 @@ html,body{background:#f95d47;}
 
 <body>
 
+
+<div class="pay-type dis_f ali_end">
+				<ul>
+					<li>
+						<img src="<%=basePath%>/js/appWeb/images/close.png" onclick="javascript:$('.pay-type').css('top','100%')">
+						<p>请选择支付方式</p>
+					</li>
+					<li onclick="javascript:changePayType(2);" id="wxShow">
+						<img src="<%=basePath%>/js/appWeb/images/icon-weixin.png">
+						<p >微信支付</p>
+					</li>
+					<li onclick="javascript:changePayType(1);" id="zfbShow">
+						<img src="<%=basePath%>/js/appWeb/images/icon-zfb.png">
+						<p >支付宝</p>
+					</li>
+
+					<li onclick="javascript:changePayType(3);">
+						<img src="<%=basePath%>/js/appWeb/images/icon-money.png">
+						<p >余额支付:￥<span id="payBalance">00.00</span></p>
+					</li>
+				</ul>
+			</div>
+
 	<div class="wraper" style="background: #f95d47;height:100%;">
+	
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f bg_r">
+			
 			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="height:1rem;" /></a>
 			
-				<div class="whte"></div>
+			<div class="whte"></div>
+				
 			<a><img src="<%=basePath%>/js/appWeb/images/more3.png" class="dis_b more_ul_toggle" style="width:1rem;" /></a>
-			
 			<img src="<%=basePath%>/js/appWeb/images/images/arr_up.png" style="width:0.55rem" class="dis_b arr_up_down dis_n" />
 			<ul class="more_ul pad_20 dis_n">
 				<li onclick="attr();"><img src="<%=basePath%>/js/appWeb/images/a2.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid"  id="attr">关注</span></li>
 				<li onclick="collect();"><img src="<%=basePath%>/js/appWeb/images/a3.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="collect">收藏</span></li>
 				<li onclick="report();"><img src="<%=basePath%>/js/appWeb/images/a4.png" class="ver_mid" style="width:0.75rem;" /> <span class="f_26 clr_f ver_mid" id="report">举报</span></li>
 			</ul>
-
+			
 			<script type="text/javascript">
 				$('.more_ul_toggle').click(function(){
 					$('.more_ul').toggle();
@@ -113,10 +138,8 @@ html,body{background:#f95d47;}
 				})
 			</script>
 			
-			
 		</div>
-	
-
+		
 	<div class="pad_20" id="detail">
 		
 		
@@ -232,7 +255,7 @@ word-wrap: break-word;">{{= descr}}</pre></div>
 				</div>
 			</div>
 
-			<div class="f_20 clr_3 pad_30 al_ct">使用账户余额付款 ¥<span id="balance">{{= convertMoney}}</span>  <a href="#" class="clr_b">更换</a></div>
+			<div class="f_20 clr_3 pad_30 al_ct">使用账户余额付款 ¥<span id="balance">{{= convertMoney}}</span>  <a  onclick="javascript:$('.pay-type').css('top',0)" class="clr_b">更换</a></div>
 				<div class="">
 			<input type="button"  onclick="pay();"  class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即领取" />
 		</div>
