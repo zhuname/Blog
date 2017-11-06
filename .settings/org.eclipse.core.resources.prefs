@@ -31,6 +31,8 @@ encoding//src/main/webapp/WEB-INF/freemarker/posterpackage/posterpackageCru.html
 encoding//src/main/webapp/WEB-INF/freemarker/posterpackage/posterpackageList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/province/provinceList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/push/url.html=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/redcity/redcityList.html=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/report/reportList.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/syssysparam/aboutImage.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/syssysparam/appointCharge.html=UTF-8
 encoding//src/main/webapp/WEB-INF/freemarker/syssysparam/publishRule.html=UTF-8
