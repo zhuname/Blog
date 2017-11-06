@@ -593,6 +593,19 @@ public class CardController  extends BaseController {
 				returnObject.setMessage("此卡券暂不能购买");
 				return returnObject;
 			}
+			
+			Finder finderSelect=new Finder().getSelectFinder(UserCard.class).append(" where 1=1 and userId=:userId and cardId=:cardId ");
+			finderSelect.setParam("userId", userId);
+			finderSelect.setParam("cardId", cardId);
+			
+			List<UserCard> userCardss=userCardService.queryForList(finderSelect, UserCard.class);
+			if(userCardss.size()>card.getLimitNumber() ){
+				returnObject.setStatus(ReturnDatas.ERROR);
+				returnObject.setMessage("已达到限领次数");
+				return returnObject;
+			}
+			
+			
 			List<UserCard> userCards=new ArrayList<>();
 			
 			String code=new Date().getTime()+""+RandomUtils.nextInt(1, 9);

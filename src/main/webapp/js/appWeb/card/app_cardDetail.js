@@ -187,17 +187,23 @@ function pay(){
 		dataType : "json",
 		success : function(result){
 			if(result.status=="error"){
-				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				alert(result.message);
 				return;
 			}
 			if(result.data!=undefined){
+				
+				if(result.data.convertMoney==undefined){
+					location.reload();
+					return;
+				}
+				
 				$.ajax({
 					url : '/mts/system/appuser/pay/json?web=&type=3&userId='+userId+'&code='+result.data.userCards[0].code,
 					type : "post",
 					dataType : "json",
 					success : function(result){
 						if(result.status=="error"){
-							window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+							window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
 							return;
 						}
 						if(result.data!=undefined){
