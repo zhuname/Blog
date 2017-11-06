@@ -203,7 +203,7 @@ Object data=session.getAttribute("data");
 				</div>
 			</div>
 		</div>
-		{{if isAppoint}}
+		{{if isRelevance}}
 
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap" >
 			<div class="dis_f ali_ct">
@@ -221,7 +221,7 @@ Object data=session.getAttribute("data");
 			</div>
 		</div>
 		{{/if}}
-		{{if isRelevance}}
+		{{if isAppoint}}
 		{{if isLook==3}}
 			
 		<div class="bg_f dis_f ali_ct jus_bt xjq_wrap">

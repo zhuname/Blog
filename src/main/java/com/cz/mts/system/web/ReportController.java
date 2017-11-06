@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cz.mts.system.entity.Activity;
 import com.cz.mts.system.entity.AppUser;
 import com.cz.mts.system.entity.Card;
 import com.cz.mts.system.entity.Circle;
@@ -24,6 +25,7 @@ import com.cz.mts.system.entity.JoinActivity;
 import com.cz.mts.system.entity.MediaPackage;
 import com.cz.mts.system.entity.PosterPackage;
 import com.cz.mts.system.entity.Report;
+import com.cz.mts.system.service.IActivityService;
 import com.cz.mts.system.service.IAppUserService;
 import com.cz.mts.system.service.ICardService;
 import com.cz.mts.system.service.ICircleService;
@@ -64,6 +66,8 @@ public class ReportController  extends BaseController {
 	private IMediaPackageService mediaPackageService;
 	@Resource
 	private ICardService cardService;
+	@Resource
+	private IActivityService activityService;
 	
 	private String listurl="/report/reportList";
 	
@@ -178,6 +182,15 @@ public class ReportController  extends BaseController {
 							Card card = cardService.findCardById(rp.getItemId());
 							if(null != card && StringUtils.isNotBlank(card.getTitle())){
 								rp.setItemContent(card.getTitle());
+							}else{
+								rp.setItemContent("暂无链接目标");
+							}
+						}
+						
+						if(6 == rp.getType()){
+							Activity activity = activityService.findActivityById(rp.getItemId());
+							if(null != activity && StringUtils.isNotBlank(activity.getContent())){
+								rp.setItemContent(activity.getContent());
 							}else{
 								rp.setItemContent("暂无链接目标");
 							}
