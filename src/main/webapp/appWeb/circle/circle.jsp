@@ -211,6 +211,11 @@ Object data=session.getAttribute("data");
 						$('.xx_pic').hide()
 						$('.more_ul_toggle').siblings("img").hide()
 					})
+					$("#black-box").click(function(){
+						$(".arr_up_down ").hide();
+						$(".more_ul ").hide();
+						$(this).hide();
+					})
 					$(".Report").click(function(){
 						event.stopPropagation();
 					})
