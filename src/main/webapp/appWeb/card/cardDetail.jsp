@@ -113,7 +113,7 @@ html,body{background:#f95d47;}
 	
 		<div class="dis_f ali_ct jus_bt pad_20 bg_f bg_r">
 			
-			<a onclick="javascript:hrefIndexShare();" ><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="height:1rem;" /></a>
+			<a onclick="javascript:hrefCardShare();" ><img src="<%=basePath%>/js/appWeb/images/back5.png" class="dis_b" style="height:1rem;" /></a>
 			
 			<div class="whte"></div>
 				
@@ -236,7 +236,7 @@ word-wrap: break-word;">{{= descr}}</pre></div>
 					
 					<div class="dis_f ali_ct">
 						<img src="<%=basePath%>/js/appWeb/images/reduce.png"  onclick="javascript:change(1);"  class="dis_b reduce_click" style="width:0.8rem;" />
-						<input class="ipt3 al_ct ipt_num f_22" value="1" id="num" type="number" style="width:1.5rem;" />
+						<input class="ipt3 al_ct ipt_num f_22" disabled="disabled" value="1" id="num" type="number" style="width:1.5rem;" />
 						<img src="<%=basePath%>/js/appWeb/images/plus.png" onclick="javascript:change(2);" class="dis_b plus_click" style="width:0.8rem;" />
 					</div>
 					
@@ -255,7 +255,7 @@ word-wrap: break-word;">{{= descr}}</pre></div>
 				</div>
 			</div>
 
-			<div class="f_20 clr_3 pad_30 al_ct">使用账户余额付款 ¥<span id="balance">{{= convertMoney}}</span>  <a  onclick="javascript:$('.pay-type').css('top',0)" class="clr_b">更换</a></div>
+			<div class="f_20 clr_3 pad_30 al_ct">使用<span id="payString">账户余额</span>付款 ¥<span id="balance">{{= convertMoney}}</span>  <a  onclick="javascript:$('.pay-type').css('top',0)" class="clr_b">更换</a></div>
 				<div class="">
 			<input type="button"  onclick="pay();"  class="f_26 clr_f dis_b waiting_check_a" style="background: #f95d47;border:0;width:9.5rem;height:1.7rem;line-height: 1.7rem;" value="立即领取" />
 		</div>

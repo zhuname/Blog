@@ -50,13 +50,21 @@ $().ready(function(){
     		if(getQueryString("isShare")!=undefined){
     			isShare="isShare";
     		}
+
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/card/cardDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
     	}
     	$('#zfbShow').remove();
     } else {
+    	if(document.referrer+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
+			setCookie("cardUrl",document.referrer);
+		}
     	$('#wxShow').remove();
     }  
 }); 
+
+function hrefCardShare() {
+	window.location.href=getCookie("cardUrl");
+}
 
 $.ajax({
 	url : '/mts/system/appuser/look/json?web=',
@@ -209,8 +217,6 @@ console.log(textStatus) ;
 });
 
 function change(type){
-	debugger;
-	console.log(parseInt($('#num').val()));
 	if(type==1){
 		if(parseInt($('#num').val())==parseInt(1)){
 			return;
@@ -575,7 +581,33 @@ function jubao(){
 
 
 
+function setCookie(name,value) 
+{
+    var Days = 30; 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
+} 
 
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
+} 
+
+function delCookie(name) 
+{ 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() - 1); 
+    var cval=getCookie(name); 
+    if(cval!=null) 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+}
 
 
 

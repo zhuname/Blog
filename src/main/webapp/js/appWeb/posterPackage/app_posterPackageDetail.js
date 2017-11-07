@@ -436,6 +436,25 @@ function yuyue(){
 	
 	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
 		
+		var mon=$("#phone").val();
+		if(mon.length==0) 
+	       { 
+	          alert('请输入手机号码！'); 
+	          return false; 
+	       }     
+	       if(mon.length!=11) 
+	       { 
+	           alert('请输入有效的手机号码！'); 
+	           return false; 
+	       } 
+	        
+	       var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+	       if(!myreg.test(mon)) 
+	       { 
+	           alert('请输入有效的手机号码！'); 
+	           return false; 
+	       } 
+		
 		//加载页面方法
 		$.ajax({
 		url : '/mts/system/appoint/update/json?web=&type=1&itemId='+getQueryString("id")+"&userId="+userId+"&packageUserId="+packageUserId+"&phone="+$("#phone").val()+"&money="+$("#money").val(),
@@ -458,7 +477,7 @@ function yuyue(){
 								alert(result.message);
 								return;
 							}
-							$("#show-img-box").show();
+							//$("#show-img-box").show();
 
 							window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 							
@@ -532,6 +551,9 @@ function yuyue(){
 			}
 		});
 	
+	}else{
+		
+		alert("请填写预约信息");
 	}
 }
 
