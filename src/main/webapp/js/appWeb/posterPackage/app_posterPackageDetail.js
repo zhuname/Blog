@@ -261,11 +261,6 @@ $().ready(function(){
 						type : "post",
 						dataType : "json",
 						success : function(result){
-							if(result.status=="error"){
-								
-								window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-								return;
-							}
 							if(result.data!=undefined){
 									for (var int = 0; int < result.data.length; int++) {
 										if(int<8){
