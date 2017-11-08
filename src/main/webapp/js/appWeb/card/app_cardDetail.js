@@ -264,6 +264,7 @@ function pay(){
 								return;
 							}
 							
+							
 							$.ajax({
 								url : '/mts/system/appuser/pay/json?web=&type=3&userId='+userId+'&code='+result.data.userCards[0].code,
 								type : "post",

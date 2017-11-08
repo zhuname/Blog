@@ -611,6 +611,7 @@ public class CardController  extends BaseController {
 			String code=new Date().getTime()+""+RandomUtils.nextInt(1, 9);
 			
 			//新增usercard
+			
 			for (int i = 0; i < num; i++) {
 				UserCard userCar = new UserCard();
 				
