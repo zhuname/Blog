@@ -28,7 +28,7 @@ function changePayType(type){
 }
 
 $().ready(function(){
-	
+	code=getQueryString("code");
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
     	
