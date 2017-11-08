@@ -35,8 +35,16 @@ function selectSort(type){
 	if(type==1){
 		dataString='&sort=1';
 	}else if(type==2){
+		if(userId==""){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
 		dataString='&sort=2';
 	}else if(type==3){
+		if(userId==""){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
 		dataString='&sort=3';
 	}
 	show();
