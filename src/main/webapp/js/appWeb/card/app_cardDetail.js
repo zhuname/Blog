@@ -7,6 +7,7 @@ var id;
 var itemUserId;
 var payType=3;
 var lqNum=0;
+var code;
 
 function changePayType(type){
 	payType=type;
