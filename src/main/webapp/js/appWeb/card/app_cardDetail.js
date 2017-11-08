@@ -308,7 +308,7 @@ function pay(){
 								return;
 							}
 							
-							window.location.href="/mts/system/zfb/getDingdan/json?name=购买卡券&money="+($('#num').val()*result.data.convertMoney)+"&detail=购买卡券&code="+"C"+result.data.code+"_"+new Date().getTime();
+							window.location.href="/mts/system/zfb/getDingdan/json?name=购买卡券&money="+($('#num').val()*result.data.convertMoney)+"&detail=购买卡券&code="+"C"+result.data.userCards[0].code+"_"+new Date().getTime();
 							
 						}
 					},
@@ -337,7 +337,7 @@ function pay(){
 							}
 							
 							$.ajax({
-								url : '/mts/system/wx/getDingdan/json?web=1&code='+$(result.data.userCodes[0]).code+'&payType=D&openid1='+openid+'&total_fee1='+($('#num').val()*result.data.convertMoney)*100,
+								url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.userCards[0].code+'&payType=D&openid1='+openid+'&total_fee1='+($('#num').val()*result.data.convertMoney)*100,
 								type : "get",
 								success : function(result) {
 									console.log(result);
