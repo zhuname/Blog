@@ -271,10 +271,10 @@ function pay(){
 								dataType : "json",
 								success : function(result){
 									if(result.status=="error"){
-										window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+										alert(result.message);
 										return;
 									}
-										window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
+									window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
 								},
 								error:function(XMLHttpRequest, textStatus, errorThrown){
 									console.log(XMLHttpRequest) ;
