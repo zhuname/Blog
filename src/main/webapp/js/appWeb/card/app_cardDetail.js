@@ -222,15 +222,15 @@ function change(type){
 			return;
 		}
 		$('#num').val(parseInt($('#num').val())-1);
-		$('#balance').html(parseInt($('#num').val())*parseInt(convertMoney));
-		$('#convertMoney').html(parseInt($('#num').val())*parseInt(convertMoney));
+		$('#balance').html($('#num').val()*convertMoney);
+		$('#convertMoney').html($('#num').val()*convertMoney);
 	}else if(type ==2){
 		if(parseInt($('#num').val())>=parseInt(num-lqNum)||parseInt($('#num').val())>=parseInt(limitNumber-lqNum)){
 			return;
 		}
 		$('#num').val(parseInt($('#num').val())+1);
-		$('#balance').html(parseInt($('#num').val())*parseInt(convertMoney));
-		$('#convertMoney').html(parseInt($('#num').val())*parseInt(convertMoney));
+		$('#balance').html($('#num').val()*convertMoney);
+		$('#convertMoney').html($('#num').val()*convertMoney);
 	}
 }
 
