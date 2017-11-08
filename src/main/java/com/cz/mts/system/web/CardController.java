@@ -594,7 +594,7 @@ public class CardController  extends BaseController {
 				return returnObject;
 			}
 			
-			Finder finderSelect=new Finder().getSelectFinder(UserCard.class).append(" where 1=1 and userId=:userId and cardId=:cardId ");
+			Finder finderSelect=new Finder().getSelectFinder(UserCard.class).append(" where 1=1 and userId=:userId and cardId=:cardId and status=1");
 			finderSelect.setParam("userId", userId);
 			finderSelect.setParam("cardId", cardId);
 			
