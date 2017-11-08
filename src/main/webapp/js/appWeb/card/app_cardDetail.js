@@ -335,8 +335,6 @@ function pay(){
 								return;
 							}
 							
-							
-							
 							$.ajax({
 								url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=D&openid1='+openid+'&total_fee1='+($('#num').val()*result.data.convertMoney)*100,
 								type : "get",
