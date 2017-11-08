@@ -8,6 +8,7 @@ var itemUserId;
 var payType=3;
 var lqNum=0;
 var code;
+var openId;
 
 function changePayType(type){
 	payType=type;
@@ -336,7 +337,7 @@ function pay(){
 							}
 							
 							$.ajax({
-								url : '/mts/system/wx/getDingdan/json?web=1&code='+result.data.code+'&payType=D&openid1='+openid+'&total_fee1='+($('#num').val()*result.data.convertMoney)*100,
+								url : '/mts/system/wx/getDingdan/json?web=1&code='+$(result.data.userCodes[0]).code+'&payType=D&openid1='+openid+'&total_fee1='+($('#num').val()*result.data.convertMoney)*100,
 								type : "get",
 								success : function(result) {
 									console.log(result);
