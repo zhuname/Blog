@@ -4,7 +4,6 @@ var lqNum,currentLqNum;
 var code=getQueryString("code");
 var openid=null;
 var unionid = null ;
-$().ready(function(){
 	
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
@@ -34,7 +33,6 @@ $().ready(function(){
     } else {
     	$('#wxShow').remove();
     }  
-}); 
 	
 function chongzhi(){
 	
@@ -142,16 +140,6 @@ function zfb(){
 	}
 }
 
-if (typeof(WeixinJSBridge) == "undefined"){  
-if( document.addEventListener ){  
-    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);  
-}else if (document.attachEvent){  
-    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);  
-    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);  
-}  
-}else{  
-onBridgeReady();  
-}  
 
 function countTime() {  
 	

@@ -33,14 +33,19 @@ Object data=session.getAttribute("data");
 <meta name="viewport"
 	content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/jquery-1.9.1.min.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/TouchSlide.1.1.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/global_phone.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/jquery.tmpl.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="<%=basePath%>/js/appWeb/css/swiper.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
