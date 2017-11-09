@@ -9,7 +9,7 @@ var encrypt;
 var userData="";
 var balance;
 var ljll=1;
-var payType;
+var payType=3;
 var code=getQueryString("code");
 var openid=null;
 var unionid = null ;
@@ -532,7 +532,7 @@ function yuyue(){
 	
 	}else{
 		
-		alert("请填写预约信息");
+		alert("请填输入正确的金额");
 	}
 }
 

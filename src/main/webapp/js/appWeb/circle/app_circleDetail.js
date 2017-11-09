@@ -8,7 +8,7 @@ var id;
 var itemUserId;
 var userData="";
 var balance;
-var payType;
+var payType=3;
 var code=getQueryString("code");
 var openid=null;
 var unionid = null ;
@@ -99,6 +99,11 @@ $.ajax({
 					
 				}
 				
+				if(result.data.isShield==1){
+					result.data.isShields="取消屏蔽";
+				}else{
+					result.data.isShields="屏蔽";
+				}
 				
 				$('#detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 				
@@ -184,9 +189,21 @@ function initColl(){
 			console.log(textStatus) ;
 		}
 	});
+	
+}else{
+	$($("#collect").parent()).remove();
+}
+	}
+}
+
+function collect(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/collect/coll/json?web=&type=3&userId='+userId+'&itemId='+id,
+	url : '/mts/system/collect/update/json?web=&type=4&userId='+userId+'&itemId='+id,
 	type : "post",
 	dataType : "json",
 	success : function(result){
@@ -195,29 +212,23 @@ function initColl(){
 			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 			return;
 		}
-		if(result.data==0){
-			$("#collect").html("收藏");
-		}else{
-			$("#collect").html("已收藏");
-		}
+		 window.location.reload();
 	},
 	error:function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(XMLHttpRequest) ;
 			console.log(textStatus) ;
 		}
 	});
-	
-}else{
-	$($("#attr").parent()).remove();
-	$($("#collect").parent()).remove();
-}
-	}
 }
 
-function collect(){
+function pingbi(itemUserId){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
-	url : '/mts/system/collect/update/json?web=&type=4&userId='+userId+'&itemId='+id,
+	url : '/mts/system/shield/update/json?web=&userId='+userId+'&itemId='+itemUserId,
 	type : "post",
 	dataType : "json",
 	success : function(result){
@@ -243,6 +254,10 @@ function shaizi(){
 }
 
 function attr(){
+	if(userId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+		return;
+	}
 	//加载页面方法
 	$.ajax({
 	url : '/mts/system/attention/update/json?web=&userId='+userId+'&itemId='+itemUserId,

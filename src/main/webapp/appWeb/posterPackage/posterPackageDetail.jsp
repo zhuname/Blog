@@ -387,7 +387,11 @@ Object data=session.getAttribute("data");
 							{{/if}}
 						{{/if}}
 					{{/if}}
-					<img src="<%=basePath%>/js/appWeb/images/badge.png" class="ver_mid" style="width:0.5rem;" />
+					{{if appUser}}{{if appUser.userMedals}}
+						{{each appUser.userMedals}}
+							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
+   						{{/each}}
+						{{/if}}{{/if}}
 					<div class="f_22 clr_9">{{= createTime}}</div>
 				</div>
 			</div>
@@ -408,7 +412,11 @@ Object data=session.getAttribute("data");
 							<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 							{{/if}}
 						{{/if}}
-					<img src="<%=basePath%>/js/appWeb/images/badge.png" class="ver_mid" style="width:0.5rem;" />
+					{{if appUser}}{{if appUser.userMedals}}
+						{{each appUser.userMedals}}
+							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
+   						{{/each}}
+						{{/if}}{{/if}}
 					<div class="f_22 clr_9">{{= createTime}}</div>
 				</div>
 			</div>

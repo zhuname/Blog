@@ -112,11 +112,16 @@ function show(){
 							}else{
 								con2+=result.data[int].content[int3];
 							}
-							
 						}
 						result.data[int].content=con1;
 						result.data[int].contents=con2;
 						
+					}
+					
+					if(result.data[int].isShield==1){
+						result.data[int].isShields="取消屏蔽";
+					}else{
+						result.data[int].isShields="屏蔽";
 					}
 					
 					$('#circle_list_tmpl').tmpl(result.data[int]).appendTo($('#circle'));

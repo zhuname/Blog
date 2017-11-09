@@ -813,7 +813,6 @@ public class AppUserController  extends BaseController {
 					
 					System.out.println("payWxOpenId-----------------------------------------------------------------"+payWxOpenId);
 					System.out.println("payWxOpenId****************************************************************"+session.getAttribute("payWxOpenId"));
-				
 					
 					session.setAttribute("appUserSessionId", appuser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
