@@ -82,6 +82,8 @@ $.ajax({
 						autoPlay:true,//自动播放
 						autoPage:true //自动分页
 					});
+					console.log($("#lunbo").height()+"px");
+					$(".public_App").css("top",$("#lunbo").height()+"px");
 					}
 				}else{
 					$("#videos").show();
