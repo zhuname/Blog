@@ -5,36 +5,53 @@ var code=getQueryString("code");
 var openid=null;
 var unionid = null ;
 var userId;
-	
-    var ua = navigator.userAgent.toLowerCase();  
-    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
-    	
-    	/*if(code!=null&&code!=undefined&&code!="undefined"){
-    		$.ajax({
-    			url : '/mts/system/appuser/openId/json?web=1&code='+code,
-    			type : "get",
-    			success : function(result) {
-    				data = JSON.parse(result.data);
-    				data = JSON.parse(data);
-    				openid = data.openid;
-    			},
-    			error:function(XMLHttpRequest, textStatus, errorThrown){
-    				console.log(XMLHttpRequest) ;
-    				console.log(textStatus) ;
-    			}
-    		});
-    	}else{
-    		var isShare="";
-    		if(getQueryString("isShare")!=undefined){
-    			isShare="isShare";
-    		}
-    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp"+isShare+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
-    	}*/
-    	$('#zfbShow').remove();
-    } else {
-    	$('#wxShow').remove();
-    }  
-    
+
+
+var rem="";
+setTimeout("inits()",300);
+
+function inits(){
+	if(rem=="1"){
+		$('#zfbShow').remove();
+	}else{
+		$('#wxShow').remove();
+	}
+}
+
+
+	  var ua = navigator.userAgent.toLowerCase();  
+	    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+	    	
+	    	/*if(code!=null&&code!=undefined&&code!="undefined"){
+	    		$.ajax({
+	    			url : '/mts/system/appuser/openId/json?web=1&code='+code,
+	    			type : "get",
+	    			success : function(result) {
+	    				data = JSON.parse(result.data);
+	    				data = JSON.parse(data);
+	    				openid = data.openid;
+	    			},
+	    			error:function(XMLHttpRequest, textStatus, errorThrown){
+	    				console.log(XMLHttpRequest) ;
+	    				console.log(textStatus) ;
+	    			}
+	    		});
+	    	}else{
+	    		var isShare="";
+	    		if(getQueryString("isShare")!=undefined){
+	    			isShare="isShare";
+	    		}
+	    		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp"+isShare+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
+	    	}*/
+	    	rem="1";
+	    	
+	    } else {
+	    	rem="2";
+	    	
+	    }  
+
+
+  
   //获取用户信息
 	$.ajax({
 		url : '/mts/system/appuser/look/json?web=',

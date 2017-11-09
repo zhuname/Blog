@@ -35,7 +35,6 @@ $().ready(function(){
 	
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
-    	
     	/*if(code!=null&&code!=undefined&&code!="undefined"){
     		$.ajax({
     			url : '/mts/system/appuser/openId/json?web=1&code='+code,
