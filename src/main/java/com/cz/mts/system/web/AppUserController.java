@@ -677,11 +677,9 @@ public class AppUserController  extends BaseController {
 					}else {
 						
 						String payWxOpenId=request.getParameter("payWxOpenId");
-						System.out.println("loginPayWxOpenId=============No"+payWxOpenId);
 						if(StringUtils.isNoneBlank(payWxOpenId)){
 							session.setAttribute("payWxOpenId", payWxOpenId);
 						}
-						System.out.println("loginPayWxOpenId============="+session.getAttribute("payWxOpenId"));
 						
 						session.setAttribute("appUserSessionId", user.getId());
 						returnObject.setData(datas.get(0));
@@ -802,9 +800,11 @@ public class AppUserController  extends BaseController {
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
 					
 					String payWxOpenId=request.getParameter("payWxOpenId");
+					System.out.println("payWxOpenId---------------"+payWxOpenId);
 					if(StringUtils.isNoneBlank(payWxOpenId)){
 						session.setAttribute("payWxOpenId", payWxOpenId);
 					}
+					System.out.println("payWxOpenId**************"+session.getAttribute("payWxOpenId"));
 					
 					session.setAttribute("appUserSessionId", appuser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
