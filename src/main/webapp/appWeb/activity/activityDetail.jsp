@@ -220,7 +220,7 @@ Object data=session.getAttribute("data");
 				<span onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';">...</span>
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" />
 			</div>
-					<div class="public_App" style="top:7rem;" onload="linkApp()">
+					<div class="public_App"  onload="linkApp()" style="z-index:100">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" onclick="closeApp()">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
 			<p>领福利，发活动，用APP免费参加</p>
@@ -265,7 +265,7 @@ Object data=session.getAttribute("data");
 			if($("body").scrollTop()>=$(".haibao_bg").outerHeight()/4){
 				$(".public_App").css("top",0)
 			}else{
-				$(".public_App").css("top","7rem")
+				$(".public_App").css("top",$("#lunbo").height()+"px")
 			}
 		})
 		</script>
