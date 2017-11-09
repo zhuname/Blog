@@ -39,7 +39,7 @@ var unionid = null ;
     	}
     	
     	$.ajax({
-			url : '/mts/system/appuser/login/json?web=&phone='+phone+"&password="+password+"&wxPayOpenid="+openid,
+			url : '/mts/system/appuser/login/json?web=&phone='+phone+"&password="+password+"&payWxOpenId="+openid,
 			type : "post",
 			dataType : "json",
 			success : function(result){
@@ -146,7 +146,7 @@ var unionid = null ;
     	    				checkSex="女";
     	    			}
     	    			$.ajax({
-    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname+"&wxPayOpenid="+openid,
+    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname+"&payWxOpenId="+openid,
     	    	    		type : "get",
     	    	    		success : function(result) {
     	    	    			window.location.href=getCookie("backUrl");
