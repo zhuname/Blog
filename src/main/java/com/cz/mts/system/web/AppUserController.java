@@ -750,6 +750,13 @@ public class AppUserController  extends BaseController {
 			
 			List<AppUser> datas=appUserService.findListDataByFinder(null,page,AppUser.class,appUser2);
 			if(datas.size()>0){
+				String payWxOpenId=request.getParameter("payWxOpenId");
+				if(StringUtils.isNoneBlank(payWxOpenId)){
+					session.setAttribute("payWxOpenId", payWxOpenId);
+				}	
+				
+				System.out.println("payWxOpenId-----------------------------------------------------------------"+payWxOpenId);
+				System.out.println("payWxOpenId****************************************************************"+session.getAttribute("payWxOpenId"));
 				session.setAttribute("appUserSessionId", datas.get(0).getId());
 				returnObject.setData(datas.get(0));
 			}else{
@@ -803,6 +810,7 @@ public class AppUserController  extends BaseController {
 					if(StringUtils.isNoneBlank(payWxOpenId)){
 						session.setAttribute("payWxOpenId", payWxOpenId);
 					}	
+					
 					System.out.println("payWxOpenId-----------------------------------------------------------------"+payWxOpenId);
 					System.out.println("payWxOpenId****************************************************************"+session.getAttribute("payWxOpenId"));
 				
