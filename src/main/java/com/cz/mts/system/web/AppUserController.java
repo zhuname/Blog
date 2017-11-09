@@ -304,6 +304,8 @@ public class AppUserController  extends BaseController {
 					appUser.setPayWxOpenId(session.getAttribute("payWxOpenId").toString());
 				}
 				
+				System.out.println("payWxOpenId============="+session.getAttribute("payWxOpenId"));
+				
 				returnObject.setData(appUser);
 			 }else{
 				 returnObject.setStatus(ReturnDatas.ERROR);
