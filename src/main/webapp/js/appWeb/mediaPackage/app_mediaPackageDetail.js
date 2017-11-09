@@ -327,7 +327,7 @@ $().ready(function(){
 		}
 		//评论/点赞列表
 		$.ajax({
-			url : '/mts/system/oper/list/json?type='+type+'&web=&itemId='+id+"&pageIndex="+nextPage,
+			url : '/mts/system/oper/list/json?type='+type+'&web=1&itemId='+id+"&pageIndex="+nextPage,
 			type : "post",
 			dataType : "json",
 			success : function(result){

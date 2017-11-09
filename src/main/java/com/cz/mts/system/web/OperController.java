@@ -102,6 +102,10 @@ public class OperController  extends BaseController {
 		ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
 		// ==构造分页请求
 		Page page = newPage(request);
+		
+		
+		
+		
 		// ==执行分页查询
 		Finder finder = Finder.getSelectFinder(Oper.class).append("where 1=1 ");
 		if(null != oper.getType()){
@@ -188,6 +192,14 @@ public class OperController  extends BaseController {
 		// ==构造分页请求
 		Page page = newPage(request);
 		// ==执行分页查询
+
+		String web=request.getParameter("web");
+		
+		if(StringUtils.isBlank(web)){
+			page.setPageSize(10000);
+			
+		}
+		
 		List<Oper> datas=operService.findListDataByFinder(null,page,Oper.class,oper);
 		if(null != datas && datas.size() > 0){
 			for (Oper op : datas) {
