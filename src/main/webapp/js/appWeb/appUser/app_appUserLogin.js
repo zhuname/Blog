@@ -168,7 +168,7 @@ var unionid = null ;
     	
     }
 
-function getQueryString(aaa) { 
+function getQueryString(aaa) {
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 

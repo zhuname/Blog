@@ -300,7 +300,7 @@ public class AppUserController  extends BaseController {
 				 }
 				 
 				 
-				if(StringUtils.isNoneBlank(session.getAttribute("payWxOpenId").toString())){
+				if(session.getAttribute("payWxOpenId")!=null){
 					appUser.setPayWxOpenId(session.getAttribute("payWxOpenId").toString());
 				}
 				
