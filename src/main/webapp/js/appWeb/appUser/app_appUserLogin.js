@@ -39,7 +39,7 @@ var unionid = null ;
     	}
     	
     	$.ajax({
-			url : '/mts/system/appuser/login/json?web=&phone='+phone+"&password="+password+"&wxPayOpenid="+openId,
+			url : '/mts/system/appuser/login/json?web=&phone='+phone+"&password="+password+"&wxPayOpenid="+openid,
 			type : "post",
 			dataType : "json",
 			success : function(result){
@@ -147,7 +147,7 @@ var unionid = null ;
     	    			}
     	    			alert(data.unionid);
     	    			$.ajax({
-    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname+"&wxPayOpenid="+openId,
+    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname+"&wxPayOpenid="+openid,
     	    	    		type : "get",
     	    	    		success : function(result) {
     	    	    			window.location.href=getCookie("backUrl");
