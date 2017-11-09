@@ -145,7 +145,7 @@ var unionid = null ;
     	    			}else if(data.sex==2){
     	    				checkSex="女";
     	    			}
-    	    			alert(1);
+    	    			alert(data.unionid);
     	    			$.ajax({
     	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname+"&wxPayOpenid="+openId,
     	    	    		type : "get",
