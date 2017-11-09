@@ -4,11 +4,12 @@ var lqNum,currentLqNum;
 var code=getQueryString("code");
 var openid=null;
 var unionid = null ;
+var userId;
 	
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
     	
-    	if(code!=null&&code!=undefined&&code!="undefined"){
+    	/*if(code!=null&&code!=undefined&&code!="undefined"){
     		$.ajax({
     			url : '/mts/system/appuser/openId/json?web=1&code='+code,
     			type : "get",
@@ -28,11 +29,33 @@ var unionid = null ;
     			isShare="isShare";
     		}
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/chongzhi.jsp"+isShare+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
-    	}
+    	}*/
     	$('#zfbShow').remove();
     } else {
     	$('#wxShow').remove();
     }  
+    
+  //获取用户信息
+	$.ajax({
+		url : '/mts/system/appuser/look/json?web=',
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+			userId=result.data.id;
+			openid=result.data.payWxOpenId;
+			$("#payBalance").html(result.data.balance);
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+    
 	
 function chongzhi(){
 	
@@ -107,33 +130,8 @@ function wx(){
 function zfb(){
 	if($("#money").val()!=""){
 		
-		
-		
-		
-		//获取用户信息
-		$.ajax({
-			url : '/mts/system/appuser/look/json?web=',
-			type : "post",
-			dataType : "json",
-			success : function(result){
-				
-				if(result.status=="error"){
-					window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
-					return;
-				}
-				
 					
-				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏支付&money="+$("#money").val()+"&detail=每天赏充值余额&code="+"R"+result.data.id+"_"+new Date().getTime();
-					
-					
-			},
-			error:function(XMLHttpRequest, textStatus, errorThrown){
-				console.log(XMLHttpRequest) ;
-				console.log(textStatus) ;
-			}
-		});
-
-		
+				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏支付&money="+$("#money").val()+"&detail=每天赏充值余额&code="+"R"+userId+"_"+new Date().getTime();
 		
 	}else{
 		alert("请填写充值金额");

@@ -33,7 +33,7 @@ $().ready(function(){
     var ua = navigator.userAgent.toLowerCase();  
     if(ua.match(/MicroMessenger/i)=="micromessenger") {  
     	
-    	if(code!=null&&code!=undefined&&code!="undefined"){
+    	/*if(code!=null&&code!=undefined&&code!="undefined"){
     		$.ajax({
     			url : '/mts/system/appuser/openId/json?web=1&code='+code,
     			type : "get",
@@ -54,7 +54,7 @@ $().ready(function(){
     		}
 
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/card/cardDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
-    	}
+    	}*/
     	$('#zfbShow').remove();
     } else {
     	if(document.referrer+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
@@ -80,6 +80,7 @@ $.ajax({
 			userId=result.data.id;
 			userData="&appUserId="+userId;
 			balance=result.data.balance;
+			openid=result.data.payWxOpenId;
 			$("#payBalance").html(result.data.balance);
 		}
 		

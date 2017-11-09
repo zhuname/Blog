@@ -1,17 +1,30 @@
 var This=this;
-
+var code=getQueryString("code");
+var openid=null;
+var unionid = null ;
 	$(document).ready(function(){ 
-    var ua = navigator.userAgent.toLowerCase();  
-    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
-    	var openid=null;
-    	This.openid=openid;
-    	var code=getQueryString("code");
-    } else {
-    	 //alert('判断：非微信端登录');
-    	$("#wxShow").remove();
-    }  
+		 var ua = navigator.userAgent.toLowerCase();  
+		    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+		    	
+		    	if(code!=null&&code!=undefined&&code!="undefined"){
+		    		$.ajax({
+		    			url : '/mts/system/appuser/openId/json?web=1&code='+code,
+		    			type : "get",
+		    			success : function(result) {
+		    				data = JSON.parse(result.data);
+		    				data = JSON.parse(data);
+		    				openid = data.openid;
+		    			},
+		    			error:function(XMLHttpRequest, textStatus, errorThrown){
+		    				console.log(XMLHttpRequest) ;
+		    				console.log(textStatus) ;
+		    			}
+		    		});
+		    	}else{
+		        	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+		        }
+		    }
 	}); 
-    
     function login(){
     	
     	var phone=$("#phone").val();
@@ -26,7 +39,7 @@ var This=this;
     	}
     	
     	$.ajax({
-			url : '/mts/system/appuser/login/json?web=&phone='+phone+"&password="+password,
+			url : '/mts/system/appuser/login/json?web=&phone='+phone+"&password="+password+"&wxPayOpenid="+openId,
 			type : "post",
 			dataType : "json",
 			success : function(result){
@@ -53,61 +66,7 @@ var This=this;
     }
     
     
-    var code=getQueryString("code");
-    var openid=null;
-    var unionid = null ;
-    $().ready(function(){
-    if(code!=null&&code!=undefined&&code!="undefined"){
-    	$.ajax({
-    		url : '/mts/system/appuser/openId/json?web=1&code='+code,
-    		type : "get",
-    		success : function(result) {
-    			data = JSON.parse(result.data);
-    			data = JSON.parse(data);
-    			$.ajax({
-    	    		url : '/mts/system/appuser/getWxUser/json?web=1&openId='+data.openid,
-    	    		type : "get",
-    	    		success : function(result) {
-    	    			data = JSON.parse(result.data);
-    	    			if(data.nickname==undefined){
-    	    				data.nickname="美天赏用户";
-    	    			}
-    	    			if(data.headimgurl==undefined){
-    	    				data.headimgurl="";
-    	    			}
-    	    			var checkSex="";
-    	    			if(data.sex==1){
-    	    				checkSex="男";
-    	    			}else if(data.sex==2){
-    	    				checkSex="女";
-    	    			}
-    	    			$.ajax({
-    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname,
-    	    	    		type : "get",
-    	    	    		success : function(result) {
-    	    	    			window.location.href=getCookie("backUrl");
-    	    	    		},
-    	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
-    	    	    			console.log(XMLHttpRequest) ;
-    	    	    			console.log(textStatus) ;
-    	    	    		}
-    	    	    	});
-    	    			
-    	    		},
-    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
-    	    			console.log(XMLHttpRequest) ;
-    	    			console.log(textStatus) ;
-    	    		}
-    	    	});
-    			
-    		},
-    		error:function(XMLHttpRequest, textStatus, errorThrown){
-    			console.log(XMLHttpRequest) ;
-    			console.log(textStatus) ;
-    		}
-    	});
-    }
-    })
+  
     
     
     /*var code=getQueryString("code");
@@ -166,8 +125,46 @@ var This=this;
     
     
     function wxCheck() { 
-    	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    	
     	//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+    	
+    			$.ajax({
+    	    		url : '/mts/system/appuser/getWxUser/json?web=1&openId='+openid,
+    	    		type : "get",
+    	    		success : function(result) {
+    	    			data = JSON.parse(result.data);
+    	    			if(data.nickname==undefined){
+    	    				data.nickname="美天赏用户";
+    	    			}
+    	    			if(data.headimgurl==undefined){
+    	    				data.headimgurl="";
+    	    			}
+    	    			var checkSex="";
+    	    			if(data.sex==1){
+    	    				checkSex="男";
+    	    			}else if(data.sex==2){
+    	    				checkSex="女";
+    	    			}
+    	    			$.ajax({
+    	    	    		url : '/mts/system/appuser/loginS/json?web=1&wxNum='+data.unionid+'&header='+data.headimgurl+'&sex='+checkSex+'&name='+data.nickname+"&wxPayOpenid="+openId,
+    	    	    		type : "get",
+    	    	    		success : function(result) {
+    	    	    			window.location.href=getCookie("backUrl");
+    	    	    		},
+    	    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    	    	    			console.log(XMLHttpRequest) ;
+    	    	    			console.log(textStatus) ;
+    	    	    		}
+    	    	    	});
+    	    			
+    	    		},
+    	    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    	    			console.log(XMLHttpRequest) ;
+    	    			console.log(textStatus) ;
+    	    		}
+    	    	});
+    			
+    	
     }
 
 function getQueryString(aaa) { 

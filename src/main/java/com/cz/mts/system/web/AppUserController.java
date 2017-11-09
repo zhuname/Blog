@@ -245,7 +245,11 @@ public class AppUserController  extends BaseController {
 			  }else if (session.getAttribute("appUserSessionId")!=null) {
 				  String userId = session.getAttribute("appUserSessionId").toString();
 				  id= java.lang.Integer.valueOf(userId.trim());
-			}
+			  }
+			  
+				
+			  
+			  
 			 AppUser appUser = appUserService.findAppUserById(id);
 			 if(null != appUser){
 				 
@@ -294,7 +298,13 @@ public class AppUserController  extends BaseController {
 				 if(null != userMedals && userMedals.size() > 0){
 					 appUser.setUserMedals(userMedals);
 				 }
-				 returnObject.setData(appUser);
+				 
+				 
+				if(StringUtils.isNoneBlank(session.getAttribute("payWxOpenId").toString())){
+					appUser.setPayWxOpenId(session.getAttribute("payWxOpenId").toString());
+				}
+				
+				returnObject.setData(appUser);
 			 }else{
 				 returnObject.setStatus(ReturnDatas.ERROR);
 				 returnObject.setMessage("该用户不存在");
@@ -663,6 +673,12 @@ public class AppUserController  extends BaseController {
 						returnObject.setStatus(ReturnDatas.WARNING);
 						returnObject.setMessage("黑名单成员！");
 					}else {
+						
+						String payWxOpenId=request.getParameter("payWxOpenId");
+						if(StringUtils.isNoneBlank(payWxOpenId)){
+							session.setAttribute("payWxOpenId", payWxOpenId);
+						}
+						
 						session.setAttribute("appUserSessionId", user.getId());
 						returnObject.setData(datas.get(0));
 					}
@@ -780,6 +796,12 @@ public class AppUserController  extends BaseController {
 					
 					
 					Object appuser=(Object) appUserService.saveorupdate(appUser);
+					
+					String payWxOpenId=request.getParameter("payWxOpenId");
+					if(StringUtils.isNoneBlank(payWxOpenId)){
+						session.setAttribute("payWxOpenId", payWxOpenId);
+					}
+					
 					session.setAttribute("appUserSessionId", appuser);
 					returnObject.setData(appUserService.findById(appuser, AppUser.class));
 				} catch (Exception e) {

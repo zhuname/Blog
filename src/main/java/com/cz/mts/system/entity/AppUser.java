@@ -178,6 +178,7 @@ public class AppUser  extends BaseEntity {
 	
 	private Integer cityId;
 	
+	
 	/**
 	 * 是否是黑名单 0否 1是
 	 */
@@ -230,10 +231,18 @@ public class AppUser  extends BaseEntity {
 	private Double posterRemainMoney;
 	private Double mediaSumMoney;
 	private Double mediaRemainMoney;
+	private String payWxOpenId;
 	
 	
-	
-	
+	@Transient
+	public String getPayWxOpenId() {
+		return payWxOpenId;
+	}
+
+	public void setPayWxOpenId(String payWxOpenId) {
+		this.payWxOpenId = payWxOpenId;
+	}
+
 	@Transient
 	public Double getPosterSumMoney() {
 		return posterSumMoney;
@@ -420,7 +429,7 @@ public class AppUser  extends BaseEntity {
 		return wxPhone;
 	}
 
-	
+
 	@WhereSQL(sql="cityId=:AppUser_cityId")
 	public Integer getCityId() {
 		return cityId;
