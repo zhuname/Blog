@@ -1,6 +1,6 @@
 var This=this;
 var code=getQueryString("code");
-var openid=null;
+var openid="";
 var unionid = null ;
 	$(document).ready(function(){ 
 		 var ua = navigator.userAgent.toLowerCase();  
