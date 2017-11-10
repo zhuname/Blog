@@ -267,7 +267,7 @@ Object data=session.getAttribute("data");
 					<p >预订有礼</p>
 				</div>
 
-				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= appointCount}}人预订</div>
+				<div class="f_24 clr_6 xjq_lq_box dis_f ali_ct jus_ct">已有{{= appointCount}}次预订</div>
 			</div>
 
 			<div class="dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/appWeb/appoint/appointUserList.jsp?itemId={{= id}}&type=1';">

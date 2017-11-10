@@ -10,7 +10,6 @@ Object data=session.getAttribute("data");
 <html>
 <head>
 <base href="<%=basePath%>">
-
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -29,10 +28,8 @@ Object data=session.getAttribute("data");
 <meta name="format-detection" content="telephone=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
 <meta name="viewport"
 	content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/weixinjs/jquery-1.9.1.min.js"></script>
 <script type="text/javascript"
@@ -45,7 +42,6 @@ Object data=session.getAttribute("data");
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/appUser/app_myAppoint.js"></script>
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta
 	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
