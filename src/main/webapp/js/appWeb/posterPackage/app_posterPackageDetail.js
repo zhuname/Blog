@@ -116,7 +116,7 @@ $().ready(function(){
 					
 					if(result.data.id!=undefined){
 						
-						packageUserId=result.data.id;
+						packageUserId=result.data.userId;
 						
 					}
 				
@@ -431,7 +431,13 @@ function yuyue(){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 	}
 	
-	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
+	if($("#money").val()!=null&&$("#money").val()!=""){
+		
+		
+		if($("#phone").val()==null&&$("#phone").val()==""){
+			alert('请输入有效的手机号码！'); 
+	        return false; 
+		}
 		
 		var mon=$("#phone").val();
 		if(mon.length==0) 

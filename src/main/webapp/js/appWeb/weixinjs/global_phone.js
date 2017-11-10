@@ -46,9 +46,6 @@ function GetDateDiff(diffTime) {
 
 
 
-
-
-
 $(function(){
 	
 	var isHas="2";
@@ -229,43 +226,6 @@ $(function(){
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	var code = getQueryString("code");
 	var test = window.location.href;
 	if(test+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
@@ -337,16 +297,20 @@ function getQueryString(aaa) {
 	var reg = new RegExp("(^|&)" + aaa + "=([^&]*)(&|$)", "i"); 
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
-} 
+}
+
 function appLink(){
 	window.location.href="/mts/shareApp/down.html"
 }
+
 function reserver(){
 	$("#payTmpl").css("position","absolute")
 	$('.kq_mask').show();
 	$("body").scrollTop(0);
 	$(".wraper").css("height","100%")
 }
+
+
 function removeRes(){
 	$("#payTmpl").css("position","fixed")
 	$('.kq_mask').hide();
@@ -354,17 +318,17 @@ function removeRes(){
 }
 
 
-
-function setCookie(name,value) 
+function setCookie(name,value)
 {
     var Days = 30; 
     var exp = new Date(); 
-    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
-} 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+
 
 function getCookie(name) 
-{ 
+{
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
  
     if(arr=document.cookie.match(reg))
@@ -372,10 +336,10 @@ function getCookie(name)
         return unescape(arr[2]); 
     else 
         return null; 
-} 
+}
 
 function delCookie(name) 
-{ 
+{
     var exp = new Date(); 
     exp.setTime(exp.getTime() - 1); 
     var cval=getCookie(name); 
@@ -388,5 +352,3 @@ function getQueryString(aaa) {
 	var r = window.location.search.substr(1).match(reg); 
 	if (r != null) return unescape(r[2]); return null; 
 }
-
-
