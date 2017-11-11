@@ -66,11 +66,10 @@ html,body{height:100%;}
 		<script id="appoint_list_tmpl" type="text/x-jquery-tmpl">
 		<div class="pad_3020 ">
 			<div class="pad_20 dis_f ali_top bg_f">
-<div onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'"  class="dis_b yy_face_img" style="margin-right:0.5rem;height:2rem;overflow: hidden;">
-
-
+			<div onclick="window.location.href='/mts/appWeb/appuser/otherUser.jsp?id={{if appUser}}{{= appUser.id}}{{/if}}'"  class="dis_b yy_face_img" style="margin-right:0.5rem;height:2rem;overflow: hidden;">
 				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}"style="width:2rem;"/>
-</div>				<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
+				</div>				
+					<div class="f_24 clr_3 dis_f ali_ct jus_bt" style="width:12rem;">
 					<div>
 						<span class="ver_mid f_24 clr_3">{{if appUser}}{{= appUser.name}}{{/if}}</span>
 						{{if appUser.sex}}
@@ -80,7 +79,11 @@ html,body{height:100%;}
 							<img src="<%=basePath%>/js/appWeb/images/female2.png" class="ver_mid" style="width:0.4rem;" />
 							{{/if}}
 						{{/if}}
-						<img src="<%=basePath%>/js/appWeb/images/badge.png" class="ver_mid" style="width:0.5rem;" />
+						{{if appUser.userMedals}}
+						{{each appUser.userMedals}}
+							<img src="{{= $value.medal.image}}" class="ver_mid" style="width:0.5rem;" />
+   						{{/each}}
+						{{/if}}
 					</div>
 					<div class="f_22 clr_9 mt_10">{{= createTime}}</div>
 				</div>

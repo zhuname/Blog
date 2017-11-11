@@ -481,7 +481,7 @@ function yuyue(){
 								return;
 							}
 							//$("#show-img-box").show();
-
+							$("#payTmpl").toggle();
 							window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 							
 						},
@@ -492,6 +492,7 @@ function yuyue(){
 					});
 				}
 			}else if(payType==1){
+				$("#payTmpl").toggle();
 				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏预约&money="+$("#money").val()+"&detail=每天赏预约&code="+"A"+result.data.code+"_"+new Date().getTime();
 			}if(payType==2){
 				$.ajax({
@@ -501,7 +502,7 @@ function yuyue(){
 						console.log(result);
 						
 						var out_trade_no=result.data.out_trade_no;
-						
+						$("#payTmpl").toggle();
 						WeixinJSBridge.invoke(  
 						        'getBrandWCPayRequest', {  
 						            "appId" : result.data.appId,     //公众号名称，由商户传入   
@@ -515,7 +516,6 @@ function yuyue(){
 						             //使用以下方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。  
 						            if(res.err_msg == "get_brand_wcpay_request:ok" ) {       
 						                 alert("支付成功");      
-						                 
 						                 $.ajax({
 						             		url : '/mts/system/wx/htmlRetrun/json?web=1&out_trade_no='+out_trade_no,
 						             		type : "get",

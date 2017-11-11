@@ -277,6 +277,7 @@ function pay(){
 										alert(result.message);
 										return;
 									}
+									$(".kq_mask").hide();
 									window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
 								},
 								error:function(XMLHttpRequest, textStatus, errorThrown){
