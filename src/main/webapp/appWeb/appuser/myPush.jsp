@@ -165,7 +165,7 @@ html,body{height:100%;}
 							<div class="f_20 clr_f dis_f ali_ct flex_col" style="margin-top:2rem;">
 								<div class="dis_f ali_ct jus_bt" style="width:5.8rem;">
 									<div class="clr_f refuse" style="padding:0.1rem 0.3rem;border-radius: 0.2rem;border:1px solid #FFF;">拒绝原因</div>
-									<div class="clr_f"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';"  style="padding:0.1rem 0.3rem;border-radius: 0.2rem;border:1px solid #FFF;">重新编辑</div>
+									<div class="clr_f"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"  style="padding:0.1rem 0.3rem;border-radius: 0.2rem;border:1px solid #FFF;">重新编辑</div>
 								</div>
 								<div class="mt_20">已拒绝</div>
 							</div>
@@ -193,7 +193,7 @@ html,body{height:100%;}
 								<div class="f_28 clr_f pad_30 al_ct">{{= title}}</div>
 
 								<div class="f_20 clr_f dis_f ali_ct flex_col" style="margin-top:2rem;">
-								<div class="bg_f clr_3" style="padding:0.1rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">再发一次</div>
+								<div class="bg_f clr_3" style="padding:0.1rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">再发一次</div>
 								<div class="mt_10">已结束</div>
 							</div>
 							</a>
@@ -250,12 +250,12 @@ html,body{height:100%;}
 					<p >{{= title}}</p>
 				</div>
 				{{if encrypt==1}}
-				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
+				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" >
 					<img src="<%=basePath%>/js/appWeb/images/lock.png" class="dis_b" style="height:0.6rem;" />
 				</div>
 				{{/if}}
 				<div class="dis_f ali_ct jus_ct flex_col play_video mt_120" >
-					<a  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';"  ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
+					<a  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"  ><img src="<%=basePath%>/js/appWeb/images/play.png" class="dis_b" style="width:2rem;" /></a>
 					<div class="f_24 clr_f mt_40">{{if status}}{{if status==4}} 已抢完 {{else status==1}}正在审核 {{else status==2}}已拒绝{{else}}还有<span class="clr_ora">{{= balance}}元</span>待抢{{/if}}{{/if}}</div>
 				</div>
 				<div class="bg_f pad_20 dis_f ali_ct jus_bt">
@@ -293,7 +293,7 @@ html,body{height:100%;}
 					<p >{{= title}}</p>
 				</div>
 				{{if encrypt==1}}
-				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
+				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" >
 					<img src="<%=basePath%>/js/appWeb/images/lock.png" class="dis_b" style="height:0.6rem;" />
 				</div>
 				{{/if}}
@@ -322,14 +322,14 @@ html,body{height:100%;}
 					</div>
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
-						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">再发一次</div>
+						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">再发一次</div>
 					</div>
 			</div>
 		</script>
 		
 		
 			<script id="card_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="pad_3020 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="width: 100%;
+				<div class="pad_3020 pos_rela"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" style="width: 100%;
     box-sizing: border-box" >
 			<div class="pad_20 dis_f ali_top bg_f">
 				<img src="{{if appUser}}{{if appUser.header}}{{= appUser.header}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}{{else}}<%=basePath%>/js/appWeb/images/default_header.png{{/if}}" class="dis_b yy_face_img" style="margin-right:0.5rem;"/>
@@ -422,7 +422,7 @@ html,body{height:100%;}
 				</div>
 				<div class="dis_f ali_ct jus_rt pad_20 bg_f" >
 					<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;margin-right:0.5rem;">拒绝原因</div>
-					<div class="f_20 clr_3"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
+					<div class="f_20 clr_3"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
 				</div>
 		</div>
 		</script>
@@ -454,7 +454,7 @@ html,body{height:100%;}
 							<img src="<%=basePath%>/js/appWeb/images/kq2.png" style="width:0.6rem;" class="ver_mid"/>
 							<span class="ver_mid">{{= convertNum}}</span>
 						</div>
-						<div class="f_22 clr_3" style="border:1px solid #333;border-radius: 0.2rem;padding:0.1rem 0.5rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">
+						<div class="f_22 clr_3" style="border:1px solid #333;border-radius: 0.2rem;padding:0.1rem 0.5rem;" onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">
 							再发一次
 						</div>
 					</div>
@@ -479,7 +479,7 @@ html,body{height:100%;}
 		
 		
 		<script id="activity_list_tmpl" type="text/x-jquery-tmpl">
-				<div class="mt_10 pos_rela"  onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" >
+				<div class="mt_10 pos_rela"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" >
 				{{if type==1}}
 				<img src="{{= image}}" class="ver_mid" style="width:16rem;height:8rem;" />
 				{{else}}
@@ -543,7 +543,7 @@ html,body{height:100%;}
 					</div>
 				</div>
 					<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
-						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';">再发一次</div>
+						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.2rem 0.5rem;border-radius: 0.2rem;" onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">再发一次</div>
 					</div>
 			</div>
 		</script>
@@ -580,7 +580,7 @@ html,body{height:100%;}
 				</div>
 				<div class="dis_f jus_rt bg_f pad_2030 bordertop1 borderbot1">
 						<div class="f_20 clr_3" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;margin-right:0.5rem;">拒绝原因</div>
-						<div class="f_20 clr_3" onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
+						<div class="f_20 clr_3" onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" style="border:1px solid #333;padding:0.1rem 0.5rem;border-radius: 0.2rem;">重新编辑</div>
 				</div>
 			</div>
 		</script>

@@ -263,7 +263,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt"  onclick="window.location.href='/mts/shareApp/down.html';">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt"  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdxz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的勋章</p>
@@ -286,7 +286,7 @@ Object data=session.getAttribute("data");
 
 
 	<div class="bg_f padl_20 mt_20">
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt " onclick="window.location.href='/mts/shareApp/down.html';">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt " onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/sz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>设置</p>
@@ -354,24 +354,24 @@ Object data=session.getAttribute("data");
 					</div>
 
 					<div class="dis_f ali_ct jus_ct flex_col">
-						<img src="<%=basePath%>/js/appWeb/images/t2.png"   onclick="window.location.href='/mts/shareApp/down.html';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
+						<img src="<%=basePath%>/js/appWeb/images/t2.png"   onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:3.5rem auto 0 auto;" />
 						<div class="f_28 clr_f mt_10">同城活动</div>
 					</div>
 				</div>
 
 				<div class="dis_f ali_ct jus_bt" style="width:13.5rem;margin:0 auto;">
 					<div class="dis_f ali_ct jus_ct flex_col">
-						<img src="<%=basePath%>/js/appWeb/images/t3.png"   onclick="window.location.href='/mts/shareApp/down.html';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<img src="<%=basePath%>/js/appWeb/images/t3.png"   onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
 						<div class="f_28 clr_f mt_10">海报</div>
 					</div>
 
 					<div class="dis_f ali_ct jus_ct flex_col">
-						<img src="<%=basePath%>/js/appWeb/images/t4.png"   onclick="window.location.href='/mts/shareApp/down.html';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<img src="<%=basePath%>/js/appWeb/images/t4.png"   onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
 						<div class="f_28 clr_f mt_10">视频</div>
 					</div>
 
 					<div class="dis_f ali_ct jus_ct flex_col">
-						<img src="<%=basePath%>/js/appWeb/images/t5.png"   onclick="window.location.href='/mts/shareApp/down.html';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
+						<img src="<%=basePath%>/js/appWeb/images/t5.png"   onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"  class="dis_b" style="width:2.4rem;height:2.4rem;margin:2.5rem auto 0 auto;" />
 						<div class="f_28 clr_f mt_10">卡券</div>
 					</div>
 				</div>
@@ -500,7 +500,7 @@ Object data=session.getAttribute("data");
 				<img src="<%=basePath%>/js/appWeb/images/arr_he.png" class="dis_b" style="height:0.4rem;margin-left:0.5rem;" />
 			</div>
 		</div>
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='/mts/shareApp/down.html';">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt" onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/wdxz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>我的勋章</p>
@@ -517,7 +517,7 @@ Object data=session.getAttribute("data");
 
 
 	<div class="bg_f padl_20 mt_20">
-		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt " onclick="window.location.href='/mts/shareApp/down.html';">
+		<div class="f_20 clr_3  padt_30 borderbot1 dis_f ali_ct jus_bt " onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';">
 			<div class="dis_f ali_ct">
 				<img src="<%=basePath%>/js/appWeb/images/sz.png" class="dis_b" style="width:0.8rem;margin-right:0.5rem;" />
 				<p>设置</p>
