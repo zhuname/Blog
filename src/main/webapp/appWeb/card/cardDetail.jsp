@@ -180,7 +180,7 @@ html,body{background:#f95d47;}
 word-wrap: break-word;">{{= descr}}</pre></div>
 
 
-			<div class="f_26 clr_3 dis_f ali_ct padt_20 bordertop1 mt_30">
+			<div class="f_26 clr_3 dis_f ali_ct padt_20 bordertop1 mt_30" onclick="window.location.href='/mts/appWeb/card/showBaiduMap.jsp?log={{= lot}}&lat={{= lat}}';">
 				<img src="<%=basePath%>/js/appWeb/images/wz.png" class="dis_b" style="width:0.65rem;margin-right: 0.3rem;" />
 				<div>
 					{{= address}}

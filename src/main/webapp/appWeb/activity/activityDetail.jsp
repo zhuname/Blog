@@ -161,7 +161,7 @@ Object data=session.getAttribute("data");
 				</div>
 			</div>
 
-			<div class="dis_f ali_ct jus_bt">
+			<div class="dis_f ali_ct jus_bt" onclick="window.location.href='/mts/appWeb/card/showBaiduMap.jsp?log={{= longitude}}&lat={{= latitude}}';">
 				<div class="dis_f ali_ct">
 					<img src="<%=basePath%>/js/appWeb/images/addr.png" class="ver_mid" style="height:0.8rem;margin-right:0.3rem;" />
 					<span class="f_24 clr_3 dis_b" class="ver_mid" style="width:14rem" > {{= address}}</span>
