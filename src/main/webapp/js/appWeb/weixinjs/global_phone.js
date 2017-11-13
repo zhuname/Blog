@@ -300,7 +300,7 @@ function getQueryString(aaa) {
 }
 
 function appLink(){
-	window.location.href="/mts/shareApp/down.html"
+	window.location.href="http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang"
 }
 
 function reserver(){
