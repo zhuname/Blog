@@ -263,7 +263,7 @@ public class CardSchema extends BaseLogger{
 	 */
 	@Scheduled(cron="0 0/15 * * * ?")
 	public void endPosterPackage() throws Exception{
-		logger.info("海报红包下线定时任务");
+		/*logger.info("海报红包下线定时任务");
 		Finder finder = Finder.getSelectFinder(PosterPackage.class).append("where 1=1 and `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1");
 		List<PosterPackage> posterPackages = posterPackageService.queryForList(finder, PosterPackage.class);
 		if(null != posterPackages && posterPackages.size() > 0){
@@ -275,7 +275,7 @@ public class CardSchema extends BaseLogger{
 					notificationService.notify(37, posterPackage.getId(), posterPackage.getUserId());
 				}
 			}
-		}
+		}*/
 	}
 	
 	/**
@@ -283,7 +283,7 @@ public class CardSchema extends BaseLogger{
 	 */
 	@Scheduled(cron="0 0/15 * * * ?")
 	public void endMediaPackage() throws Exception{
-		logger.info("视频红包下线定时任务");
+		/*logger.info("视频红包下线定时任务");
 		Finder finder = Finder.getSelectFinder(MediaPackage.class).append("where 1=1 and `status`=4 AND DATE_ADD(endTime,INTERVAL 3 DAY) <= NOW() AND isValid != 1");
 		List<MediaPackage> mediaPackages = mediaPackageService.queryForList(finder, MediaPackage.class);
 		if(null != mediaPackages && mediaPackages.size() > 0){
@@ -295,7 +295,7 @@ public class CardSchema extends BaseLogger{
 					notificationService.notify(36, mediaPackage.getId(), mediaPackage.getUserId());
 				}
 			}
-		}
+		}*/
 	}
 	
 	
