@@ -116,7 +116,7 @@ $().ready(function(){
 					
 					if(result.data.id!=undefined){
 						
-						packageUserId=result.data.id;
+						packageUserId=result.data.userId;
 						
 					}
 				
@@ -431,7 +431,13 @@ function yuyue(){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 	}
 	
-	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
+	if($("#money").val()!=null&&$("#money").val()!=""){
+		
+		
+		if($("#phone").val()==null&&$("#phone").val()==""){
+			alert('请输入有效的手机号码！'); 
+	        return false; 
+		}
 		
 		var mon=$("#phone").val();
 		if(mon.length==0) 
@@ -445,7 +451,7 @@ function yuyue(){
 	           return false; 
 	       } 
 	        
-	       var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+	       var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
 	       if(!myreg.test(mon)) 
 	       { 
 	           alert('请输入有效的手机号码！'); 
@@ -475,7 +481,7 @@ function yuyue(){
 								return;
 							}
 							//$("#show-img-box").show();
-
+							$("#payTmpl").toggle();
 							window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 							
 						},
@@ -486,6 +492,7 @@ function yuyue(){
 					});
 				}
 			}else if(payType==1){
+				$("#payTmpl").toggle();
 				window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏预约&money="+$("#money").val()+"&detail=每天赏预约&code="+"A"+result.data.code+"_"+new Date().getTime();
 			}if(payType==2){
 				$.ajax({
@@ -495,7 +502,7 @@ function yuyue(){
 						console.log(result);
 						
 						var out_trade_no=result.data.out_trade_no;
-						
+						$("#payTmpl").toggle();
 						WeixinJSBridge.invoke(  
 						        'getBrandWCPayRequest', {  
 						            "appId" : result.data.appId,     //公众号名称，由商户传入   
@@ -509,7 +516,6 @@ function yuyue(){
 						             //使用以下方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。  
 						            if(res.err_msg == "get_brand_wcpay_request:ok" ) {       
 						                 alert("支付成功");      
-						                 
 						                 $.ajax({
 						             		url : '/mts/system/wx/htmlRetrun/json?web=1&out_trade_no='+out_trade_no,
 						             		type : "get",
@@ -527,6 +533,7 @@ function yuyue(){
 						                 
 						                 
 						            }else{  
+						            	window.location.reload();
 						                 alert("支付失败");  
 						            }  
 						        }  

@@ -74,7 +74,7 @@ Object data=session.getAttribute("data");
 			<div class="mt_40">
 				<a  onclick="window.location.href='/mts/appWeb/appuser/chongzhi.jsp';"  class="f_26 clr_r a_btn3" style="margin-right:1rem;">充值</a>
 				<!-- <a  onclick="window.location.href='/mts/appWeb/moneyDetail/tixian.jsp';"  class="f_26 clr_f a_btn4" >提现</a> -->
-				<a   onclick="window.location.href='http://app.mtianw.com/mts/shareApp/down.html';"   class="f_26 clr_f a_btn4" >提现</a>
+				<a   onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';"   class="f_26 clr_f a_btn4" >提现</a>
 				
 				
 			</div>

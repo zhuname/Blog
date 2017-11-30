@@ -44,7 +44,7 @@ $().ready(function(){
     			},
     			error:function(XMLHttpRequest, textStatus, errorThrown){
     				console.log(XMLHttpRequest) ;
-    				console.log(textStatus) ;
+    				console.log(textStatus);
     			}
     		});
     	}else{
@@ -55,6 +55,9 @@ $().ready(function(){
 
     		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8653ea068146c48c&redirect_uri=http://app.mtianw.com/mts/appWeb/card/cardDetail.jsp?id="+getQueryString("id")+"&response_type=code&scope=snsapi_base&state="+isShare+"#wechat_redirect";
     	}*/
+    	if(document.referrer+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
+			setCookie("cardUrl",document.referrer);
+		}
     	$('#zfbShow').remove();
     } else {
     	if(document.referrer+""!="http://app.mtianw.com/mts/appWeb/appuser/appuserLogin.jsp"){
@@ -277,6 +280,7 @@ function pay(){
 										alert(result.message);
 										return;
 									}
+									$(".kq_mask").hide();
 									window.location.href="/mts/appWeb/card/cardUserList.jsp?id="+getQueryString("id");
 								},
 								error:function(XMLHttpRequest, textStatus, errorThrown){

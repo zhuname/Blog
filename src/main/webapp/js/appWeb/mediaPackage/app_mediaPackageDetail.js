@@ -115,7 +115,7 @@ $().ready(function(){
 					
 					if(result.data.id!=undefined){
 						
-						packageUserId=result.data.id;
+						packageUserId=result.data.userId;
 						
 					}
 				
@@ -410,8 +410,12 @@ function yuyue(){
 		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 	}
 	
-	if($("#money").val()!=null&&$("#money").val()!=""&&$("#phone").val()!=null&&$("#phone").val()!=""){
+	if($("#money").val()!=null&&$("#money").val()!=""){
 		
+		if($("#phone").val()==null&&$("#phone").val()==""){
+			alert('请输入有效的手机号码！'); 
+	           return false; 
+		}
 		var mon=$("#phone").val();
 		if(mon.length==0) 
 	       { 
@@ -424,7 +428,7 @@ function yuyue(){
 	           return false; 
 	       } 
 	        
-	       var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+	       var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
 	       if(!myreg.test(mon)) 
 	       { 
 	           alert('请输入有效的手机号码！'); 
@@ -454,8 +458,10 @@ function yuyue(){
 									alert(result.message);
 									return;
 								}
+								$("#payTmpl").toggle();
 								window.location.href="/mts/appWeb/appuser/myAppoint.jsp";
 								//$("#show-img-box").show();
+								
 							},
 							error:function(XMLHttpRequest, textStatus, errorThrown){
 								console.log(XMLHttpRequest) ;
@@ -464,7 +470,7 @@ function yuyue(){
 						});
 					}
 				}else if(payType==1){
-					
+					$("#payTmpl").toggle();
 					window.location.href="/mts/system/zfb/getDingdan/json?name=每天赏预约&money="+$("#money").val()+"&detail=每天赏预约&code="+"A"+result.data.code+"_"+new Date().getTime();
 					
 				}if(payType==2){
@@ -475,7 +481,7 @@ function yuyue(){
 							console.log(result);
 							
 							var out_trade_no=result.data.out_trade_no;
-							
+							$("#payTmpl").toggle();
 							WeixinJSBridge.invoke(  
 							        'getBrandWCPayRequest', {  
 							            "appId" : result.data.appId,     //公众号名称，由商户传入   
@@ -507,6 +513,7 @@ function yuyue(){
 							                 
 							                 
 							            }else{  
+							            	window.location.reload();
 							                 alert("支付失败");  
 							            }  
 							        }  

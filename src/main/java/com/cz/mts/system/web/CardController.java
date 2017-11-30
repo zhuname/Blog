@@ -580,6 +580,7 @@ public class CardController  extends BaseController {
 				returnObject.setMessage("自己不能购买自己发布的卡券");
 				return returnObject;
 			}
+			
 			//判断数量
 			if((card.getNum() <= 0) || (card.getNum()<num)){
 				returnObject.setStatus(ReturnDatas.ERROR);
@@ -599,12 +600,11 @@ public class CardController  extends BaseController {
 			finderSelect.setParam("cardId", cardId);
 			
 			List<UserCard> userCardss=userCardService.queryForList(finderSelect, UserCard.class);
-			if(userCardss.size()>=card.getLimitNumber() ){
+			if(userCardss.size()+num>card.getLimitNumber()){
 				returnObject.setStatus(ReturnDatas.ERROR);
 				returnObject.setMessage("已达到限领次数");
 				return returnObject;
 			}
-			
 			
 			List<UserCard> userCards=new ArrayList<>();
 			
@@ -622,7 +622,7 @@ public class CardController  extends BaseController {
 					"6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I",
 					"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
 					"W", "X", "Y", "Z" };
-
+				
 				StringBuffer shortBuffer = new StringBuffer();
 				String uuid = UUID.randomUUID().toString().replace("-", "");
 				for (int j = 0; j < 6; j++) {
@@ -654,6 +654,7 @@ public class CardController  extends BaseController {
 				userCar.setOsType(osType);
 				
 				userCards.add(userCar);
+				
 			}
 			userCardService.save(userCards);
 			if(null == card.getConvertMoney() || (null != card.getConvertMoney() && 0.0 == card.getConvertMoney())){

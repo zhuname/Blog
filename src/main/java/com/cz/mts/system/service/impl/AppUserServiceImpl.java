@@ -473,7 +473,7 @@ public class AppUserServiceImpl extends BaseSpringrainServiceImpl implements IAp
 				MoneyDetail moneyDetailC=new MoneyDetail();
 				moneyDetailC.setBalance(appUser.getBalance());
 				moneyDetailC.setCreateTime(new Date());
-				moneyDetailC.setItemId(itemId);
+				moneyDetailC.setItemId(card.getId());
 				moneyDetailC.setMoney(-cardSum.doubleValue());
 				moneyDetailC.setType(3);
 				moneyDetailC.setPayType(3);

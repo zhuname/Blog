@@ -165,7 +165,7 @@ Object data=session.getAttribute("data");
 			</div>
 			</script>
 
-			<a  onclick="window.location.href='/mts/shareApp/down.html';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
+			<a  onclick="window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=com.chuizi.meitianshang';" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
 					<div class="public_App" style="bottom:0;">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
