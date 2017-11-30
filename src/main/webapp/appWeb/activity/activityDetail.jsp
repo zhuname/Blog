@@ -87,7 +87,7 @@ Object data=session.getAttribute("data");
 				</div>
 			</div>
 			
-			<video id="videos" src="" class="news_video" style="width:100%;height:100%;display:none;" poster="" controls="controls">
+			<video id="videos" src="" class="news_video" style="width:100%;height:100%;display:none;" poster="" controls="controls" webkit-playsinline playsinline>
 					您的浏览器不支持 video 标签。
 			</video>
 			
