@@ -171,7 +171,7 @@ Object data=session.getAttribute("data");
 
 		<div class="bg_f padl_20">
 			
-			<video src="{{= mediaUrl}}" class="news_video" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+			<video src="{{= mediaUrl}}" class="news_video" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls" webkit-playsinline playsinline>
 					您的浏览器不支持 video 标签。
 			</video>
 
