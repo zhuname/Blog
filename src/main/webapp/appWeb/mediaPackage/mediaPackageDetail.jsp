@@ -170,11 +170,11 @@ Object data=session.getAttribute("data");
 		</div>
 
 		<div class="bg_f padl_20">
-			
-			<video src="{{= mediaUrl}}" class="news_video" style="width:100%;height:30%;" poster="{{= mediaImage}}" controls="controls">
+			<div style="width:100%;height:7rem;">
+			<video src="{{= mediaUrl}}" style="width:100%;height:100%;" poster="{{= mediaImage}}" controls="controls" webkit-playsinline playsinline>
 					您的浏览器不支持 video 标签。
 			</video>
-
+			</div>
 			<div class="f_40 clr_3 mt_20">
 				<img src="<%=basePath%>/js/appWeb/images/bar.png" class="ver_mid" style="width:0.1rem;" />
 				<span class="ver_mid">{{= title}}</span>

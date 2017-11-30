@@ -87,7 +87,7 @@ Object data=session.getAttribute("data");
 				</div>
 			</div>
 			
-			<video id="videos" src="" class="news_video" style="width:100%;height:100%;display:none;" poster="" controls="controls">
+			<video id="videos" src="" class="news_video" style="width:100%;height:100%;display:none;" poster="" controls="controls" webkit-playsinline playsinline>
 					您的浏览器不支持 video 标签。
 			</video>
 			
@@ -220,7 +220,7 @@ Object data=session.getAttribute("data");
 				<span onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';">...</span>
 				<img src="<%=basePath%>/js/appWeb/images/right.png" class="ver_mid" style="width:0.4rem;margin:0 0.5rem;"  onclick="window.location.href='/mts/appWeb/activity/activityUserList.jsp?type=1&id={{= id}}';" />
 			</div>
-					<div class="public_App"  onload="linkApp()" style="z-index:100">
+					<div class="public_App"  onload="linkApp()">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" onclick="closeApp()">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
 			<p>领福利，发活动，用APP免费参加</p>

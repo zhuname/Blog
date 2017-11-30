@@ -129,9 +129,9 @@ Object data=session.getAttribute("data");
 			<script id="media_list_tmpl" type="text/x-jquery-tmpl">
 				<div class="mt_10 pos_rela ">
 				<img src="{{= mediaImage}}" class="ver_mid" style="width:16rem;height:8rem;"  onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';"  />
-				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
+				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" style="height:auto" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">
 					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
-					<p >{{= title}}</p>
+					<p style="line-height:1.2rem;">{{= title}}</p>
 				</div>
 				{{if encrypt==1}}
 				<div class="f_28 clr_f tc_lock padl_30 dis_f ali_ct" onclick="window.location.href='/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= id}}';">

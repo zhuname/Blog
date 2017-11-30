@@ -124,9 +124,9 @@ Object data=session.getAttribute("data");
 				{{if status==4}}
 				<img src="<%=basePath%>/js/appWeb/images/over.png" class="dis_b end_img" style="width:3rem;" />
 				{{/if}}
-				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct">
+				<div class="f_28 clr_f tc_title padl_30 dis_f ali_ct" style="height:auto;">
 					<img src="<%=basePath%>/js/appWeb/images/bar.png" class="dis_b" style="width:0.1rem;margin-right:0.5rem;" />
-					<p>{{= content}}</p>
+					<p style=""line-height: 1.2rem;>{{= content}}</p>
 				</div>
 				<div class="bg_f pad_20 dis_f ali_ct jus_bt">
 					<div style="width:9.5rem;" class="dis_f ali_ct jus_bt">
