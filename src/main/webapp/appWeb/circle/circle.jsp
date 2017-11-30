@@ -29,8 +29,9 @@ Object data=session.getAttribute("data");
 <meta name="format-detection" content="telephone=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">  
-<meta name="app-mobile-web-app-capable" content="yes">  
+<meta name="viewport"
+	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="app-mobile-web-app-capable" content="yes">
 <meta name="viewport"
 	content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -46,10 +47,12 @@ Object data=session.getAttribute("data");
 	href="<%=basePath%>/js/appWeb/css/css.css" />
 <script type="text/javascript"
 	src="<%=basePath%>/js/appWeb/circle/app_circle.js"></script>
-	
-<script src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js" type="text/javascript"></script>
 
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/js/appWeb/css/swiper.min.css" />
+<script src="<%=basePath%>/js/appWeb/weixinjs/swiper.min.js"
+	type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="<%=basePath%>/js/appWeb/css/swiper.min.css" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta
@@ -59,17 +62,17 @@ Object data=session.getAttribute("data");
 </head>
 
 <body>
-		<div id="black-box" style="position:fixed;left:0;top:0;width:100%;height:100%;z-index:100;display:none;"></div>
-		<div class="show-img-box">
-	    <div class="swiper-container">
-        <div class="swiper-wrapper">
-        </div>
-    </div>
-</div>
+	<div id="black-box"
+		style="position:fixed;left:0;top:0;width:100%;height:100%;z-index:100;display:none;"></div>
+	<div class="show-img-box">
+		<div class="swiper-container">
+			<div class="swiper-wrapper"></div>
+		</div>
+	</div>
 	<div class="wraper">
 
 		<div class="haibao_bg pos_rela">
-		
+
 			<div class="bann pos_rela" id="bann">
 				<div class="hd">
 					<ul></ul>
@@ -81,36 +84,58 @@ Object data=session.getAttribute("data");
 			</div>
 			<script type="text/javascript">
 		</script>
-<!-- 提示窗 -->
-<div class="alert-box dis_f jus_ct ali_end" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">
-<div class="Report dis_f" style="width:100%;height:2rem;background:#fff;padding:.4rem;box-sizing:border-box;">
-	<input type="text" id="content" style="flex:1;border:.06rem solid #ddd;border-radius:.2rem;padding-left:.2rem;" placeholder="请填写举报内容">
-	<span onclick="jubao();" style="width:3rem;height:100%;display:inline-block;text-align:center;line-height:1.2rem;margin-left:.4rem;background:#00a0e2;color:#fff;">发送</span>
-</div>
-</div>
-			<div class="pad_30  dis_f ali_ct jus_bt " style="position:absolute;top:0;left:0;width:14.5rem;">
-				<a  onclick="javascript:window.location.href='/mts/appWeb/index/index.jsp';" ><img src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b" style="width:1rem;" /></a>
+			<!-- 提示窗 -->
+			<div class="alert-box dis_f jus_ct ali_end"
+				style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,.6);left:0;top:100%;z-index:1000;transition:all .5s;">
+				<div class="Report dis_f"
+					style="width:100%;height:2rem;background:#fff;padding:.4rem;box-sizing:border-box;">
+					<input type="text" id="content"
+						style="flex:1;border:.06rem solid #ddd;border-radius:.2rem;padding-left:.2rem;"
+						placeholder="请填写举报内容"> <span onclick="jubao();"
+						style="width:3rem;height:100%;display:inline-block;text-align:center;line-height:1.2rem;margin-left:.4rem;background:#00a0e2;color:#fff;">发送</span>
+				</div>
+			</div>
+			<div class="pad_30  dis_f ali_ct jus_bt "
+				style="position:absolute;top:0;left:0;width:14.5rem;">
+				<a
+					onclick="javascript:window.location.href='/mts/appWeb/index/index.jsp';"><img
+					src="<%=basePath%>/js/appWeb/images/back2.png" class="dis_b"
+					style="width:1rem;" /></a>
 				<div class="whte"></div>
 				<div class="search_bg pos_rela">
-					<input class="ipt2 f_22 clr_he" id="title" type="text" placeholder="昵称/主题" />
-					<div onclick="select();" class="btn2"  ></div>
+					<input class="ipt2 f_22 clr_he" id="title" type="text"
+						placeholder="昵称/主题" />
+					<div onclick="select();" class="btn2"></div>
 				</div>
-				
-				<a href="javascript:;"><img src="<%=basePath%>/js/appWeb/images/filter.png" class="dis_b filter_toggle" style="width:1rem;" /></a>
-				<img src="<%=basePath%>/js/appWeb/images/arr_up.png" style="width:0.55rem;top:1.7rem;" class="dis_b arr_up_down dis_n xx_pic"/>
-				
-				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;" >
-					<li onclick="selectSort(1);"><img src="<%=basePath%>/js/appWeb/images/package_new.png"    class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">最新的</span></li>
-					<li onclick="selectSort(2);"><img src="<%=basePath%>/js/appWeb/images/package_yuyue.png"    class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">关注的</span></li>
-					<li onclick="selectSort(3);"><img src="<%=basePath%>/js/appWeb/images/package_card.png"   class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span class="f_26 clr_f ver_mid">屏蔽的</span></li>
+
+				<a href="javascript:;"><img
+					src="<%=basePath%>/js/appWeb/images/filter.png"
+					class="dis_b filter_toggle" style="width:1rem;" /></a> <img
+					src="<%=basePath%>/js/appWeb/images/arr_up.png"
+					style="width:0.55rem;top:1.7rem;"
+					class="dis_b arr_up_down dis_n xx_pic" />
+
+				<ul class="more_ul pad_20 dis_n xx_daohang" style="top:1.9rem;">
+					<li onclick="selectSort(1);"><img
+						src="<%=basePath%>/js/appWeb/images/package_new.png"
+						class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span
+						class="f_26 clr_f ver_mid">最新的</span></li>
+					<li onclick="selectSort(2);"><img
+						src="<%=basePath%>/js/appWeb/images/package_yuyue.png"
+						class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span
+						class="f_26 clr_f ver_mid">关注的</span></li>
+					<li onclick="selectSort(3);"><img
+						src="<%=basePath%>/js/appWeb/images/package_card.png"
+						class="ver_mid" style="width:0.6rem;margin-right:0.3rem;" /> <span
+						class="f_26 clr_f ver_mid">屏蔽的</span></li>
 				</ul>
-				
+
 
 			</div>
 		</div>
 		<div id="circle"></div>
-		
-		
+
+
 		<script id="circle_list_tmpl" type="text/x-jquery-tmpl">
 				<div class="pad_30 bg_f borderbot1 mt_20"    onclick="locationHref({{= id}});">
 			<div class="dis_f ali_top jus_bt pos_rela" >
@@ -191,58 +216,61 @@ Object data=session.getAttribute("data");
 			</div>
 		</div>
 		</script>
-		<!--  --><script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
+		<!--  -->
+		<script id="lunbo_list_tmpl" type="text/x-jquery-tmpl">
 			<li><a href="{{if type==1}}{{= url}}{{else type==2}}/mts/appWeb/posterPackage/posterPackageDetail.jsp?id={{= itemId}}{{else type==3}}/mts/appWeb/mediaPackage/mediaPackageDetail.jsp?id={{= itemId}}{{else type==4}}/mts/appWeb/card/cardDetail.jsp?id={{= itemId}}{{else type==5}}/mts/appWeb/activity/activityDetail.jsp?id={{= itemId}}{{else type==6}}/mts/appWeb/circle/circleDetail.jsp?id={{= itemId}}{{/if}}"><img src="{{= image}}" class="dis_b" /></a></li>
 		</script>
-						<script type="text/javascript">
-					$('.filter_toggle').click(function(){
-						$('.xx_pic').toggle();
-						$('.xx_daohang').toggle();
-						$('.whte').toggle();
-					});
-					$('.whte').click(function(){
-						$('.xx_pic').toggle();
-						$('.xx_daohang').toggle();
-						$('.whte').toggle();
-					});
-					$(".alert-box").click(function(){
-						$(this).css("top","100%");
-						$("#black-box").hide();
-						$('.xx_pic').hide()
-						$('.more_ul_toggle').siblings("img").hide()
-					})
-					$("#black-box").click(function(){
-						$(".arr_up_down ").hide();
-						$(".more_ul ").hide();
-						$(this).hide();
-					})
-					$(".Report").click(function(){
-						event.stopPropagation();
-					})
-					    $(".show-img-box").click(function(){
-    	$(this).toggle();
-    });
-				    var swiper = new Swiper('.swiper-container', {
-				        pagination: '.swiper-pagination',
-				        paginationClickable: true,
-				        observer:true,
-				        observeParents:true,
-				        spaceBetween : 10
-				    });
-				</script>
+		<script type="text/javascript">
+			$('.filter_toggle').click(function() {
+				$('.xx_pic').toggle();
+				$('.xx_daohang').toggle();
+				$('.whte').toggle();
+			});
+			$('.whte').click(function() {
+				$('.xx_pic').toggle();
+				$('.xx_daohang').toggle();
+				$('.whte').toggle();
+			});
+			$(".alert-box").click(function() {
+				$(this).css("top", "100%");
+				$("#black-box").hide();
+				$('.xx_pic').hide()
+				$('.more_ul_toggle').siblings("img").hide()
+			})
+			$("#black-box").click(function() {
+				$(".arr_up_down ").hide();
+				$(".more_ul ").hide();
+				$(this).hide();
+			})
+			$(".Report").click(function() {
+				event.stopPropagation();
+			})
+			$(".show-img-box").click(function() {
+				$(this).toggle();
+			});
+			var swiper = new Swiper('.swiper-container', {
+				pagination : '.swiper-pagination',
+				paginationClickable : true,
+				observer : true,
+				observeParents : true,
+				spaceBetween : 10
+			});
+		</script>
 
-<script type="text/javascript">
-
-</script>
-			<a onclick="xinzeng();" ><img src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed" style="height:2.9rem;" /></a>
-					<div class="public_App" style="bottom:0;">
+		<script type="text/javascript">
+			
+		</script>
+		<a onclick="xinzeng();"><img
+			src="<%=basePath%>/js/appWeb/images/public.png" class="public_fixed"
+			style="height:2.9rem;" /></a>
+		<div class="public_App" style="bottom:0;">
 			<img src="<%=basePath%>/js/appWeb/images/close_hb.png" id="close_app">
 			<img src="<%=basePath%>/js/appWeb/images/App_icon.jpg">
 			<p>领福利，发活动，用APP免费参加</p>
 			<span onclick="appLink()">立即打开</span>
 		</div>
 		<script type="text/javascript">
-			$("#close_app").click(function(){
+			$("#close_app").click(function() {
 				$(".public_App").remove()
 			})
 		</script>
