@@ -6,6 +6,7 @@ var userId;
 var appUserId="";
 var isChange=0;
 var isChangess=0;
+var itemUserId="";
 //初始化页面
 var data='&pageIndex='+nextPage;
 show();
@@ -47,8 +48,35 @@ function show(){
 			return;
 		}
 		
+		
 		$('#appuser_detail_tmpl').tmpl(result.data).appendTo($('#detail'));
 		
+		itemUserId=result.data.id;
+		
+		console.log(itemId+"---------"+appUserId);
+		//加载页面方法
+		$.ajax({
+		url : '/mts/system/attention/atten/json?web=&appUserId='+appUserId+'&itemId='+itemUserId,
+		type : "post",
+		dataType : "json",
+		success : function(result){
+			
+			if(result.status=="error"){
+				
+				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+				return;
+			}
+			if(result.data==0){
+				$("#attr").html("关注");
+			}else{
+				$("#attr").html("已关注");
+			}
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(XMLHttpRequest) ;
+				console.log(textStatus) ;
+			}
+		});
 		
 		$.ajax({
 			url : '/mts/system/appuser/publish/json?web=&id='+getQueryString("id"),
@@ -66,6 +94,11 @@ function show(){
 					$('#posterCount').html(result.data.posterCount);
 				}
 				isChange=0;
+				
+				
+				
+				
+				
 			},
 			error:function(XMLHttpRequest, textStatus, errorThrown){
 				console.log(XMLHttpRequest) ;
@@ -142,7 +175,28 @@ function show(){
 }
 
 
-
+function attr(){
+	if(appUserId==""){
+		window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+	}
+	//加载页面方法
+	$.ajax({
+	url : '/mts/system/attention/update/json?web=&userId='+appUserId+'&itemId='+itemUserId,
+	type : "post",
+	dataType : "json",
+	success : function(result){
+		if(result.status=="error"){
+			window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
+			return;
+		}
+		 window.location.reload();
+	},
+	error:function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest) ;
+			console.log(textStatus) ;
+		}
+	});
+}
 
 function change(type,isClear,li){
 	console.log(isChangess);
@@ -352,15 +406,15 @@ function change(type,isClear,li){
 						}
 						
 						if(result.data[int].image!=undefined){
+							
 							var images=result.data[int].image.split(";");
 							
 							result.data[int].image=images[0];
 							
 						}
 						
-						
-						
 						$('#activity_list_tmpl').tmpl(result.data[int]).appendTo($('#list'));
+						
 					}
 					
 					
