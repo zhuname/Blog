@@ -265,11 +265,9 @@ $("#price").click(function(){
 
 <div>
 						{{if type==2}}
-<div style="width:100%;height:7rem;">
-						<video src="{{= mediaUrl}}" poster="{{= mediaImage}}" style="width:100%;height:30%;" controls="controls">
+						<video src="{{= mediaUrl}}" poster="{{= mediaImage}}" style="width:100%;height:auto;" controls="controls">
 						您的浏览器不支持 video 标签。
 						</video>
-</div>
 						{{else}}
 <div class="show-img"  style="overflow:hidden">
 						{{if images}}
