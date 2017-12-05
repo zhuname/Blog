@@ -326,7 +326,7 @@ public class PosterPackageController  extends BaseController {
 			 id= java.lang.Integer.valueOf(strId.trim());
 			 PosterPackage posterPackage = posterPackageService.findPosterPackageById(id);
 			 
-			 if(null != posterPackage && 3 == posterPackage.getStatus()){
+			// if(null != posterPackage && 3 == posterPackage.getStatus()){
 				 if(posterPackage.getLookNum()==null){
 					 posterPackage.setLookNum(0);
 				 }
@@ -338,7 +338,7 @@ public class PosterPackageController  extends BaseController {
 				 }
 				 
 				 
-			 }
+			 //}
 			 
 			 Page newPage = new Page();
 			 newPage.setPageSize(1000000);
