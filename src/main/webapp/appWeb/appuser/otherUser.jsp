@@ -121,7 +121,7 @@ height:auto;
 				<div class="opa8">
 					<img src="<%=basePath%>/js/appWeb/images/fans2.png" class="ver_mid" style="width:0.55rem;" />
 					<span class="ver_mid f_22 clr_f">{{= fansNum}}</span>
-				<div class="f_20 f_light clr_f" style="border:1px solid #FFF;padding:0 0.1rem;border-radius: 0.1rem;white-space:nowrap" onclick="attr();" id="attr">已关注</div>
+				<div class="f_20 f_light clr_f" style="border:1px solid #FFF;padding:0 0.1rem;border-radius: 0.1rem;white-space:nowrap" onclick="attr();" id="attr">关注</div>
 				</div>
 			</div>
 

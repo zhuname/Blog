@@ -53,7 +53,7 @@ function show(){
 		
 		itemUserId=result.data.id;
 		
-		console.log(itemId+"---------"+appUserId);
+		console.log(itemUserId+"---------"+appUserId);
 		//加载页面方法
 		$.ajax({
 		url : '/mts/system/attention/atten/json?web=&appUserId='+appUserId+'&itemId='+itemUserId,
@@ -62,7 +62,6 @@ function show(){
 		success : function(result){
 			
 			if(result.status=="error"){
-				
 				window.location.href="/mts/appWeb/appuser/appuserLogin.jsp";
 				return;
 			}
