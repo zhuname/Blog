@@ -143,35 +143,34 @@ height:auto;
 
 
 	</script>
-	
+
 	<div id="imgUrl" style="display: none;">
-	
-	<%=basePath%>/js/appWeb/images/
+		<%=basePath%>/js/appWeb/images/
 	</div>
-	
+
 		<!-- 这个是勋章模版 -->
 	<script id="appuser_xunzhang_tmpl" type="text/x-jquery-tmpl">
 		<img src="{{= medal.image}}" class="ver_mid" style="width:0.5rem;" />
 	</script>
 
-		<ul  class="zy_nav_ul f_24 clr_3 dis_f ali_ct jus_bt padl_20 bg_f borderbot1" >
-			<li onclick="change(1,2,this)" class="change dis_f ali_ct flex_col jus_ct zy_cur ">
-				<img src="<%=basePath%>/js/appWeb/images/h1h.png" class="ver_mid" style="width:0.8rem;" />
+		<ul class="zy_nav_ul f_24 clr_3 dis_f ali_ct jus_bt padl_20 bg_f borderbot1" >
+			<li onclick="change(1,2,this)" class="change dis_f ali_ct flex_col jus_ct zy_cur">
+				<img src="<%=basePath%>/js/appWeb/images/h1h.png" class="ver_mid" style="width:0.8rem;"/>
 				<p class='lir clr_r' id="cityCircleCount">0</p>
 			</li>
 
 			<li onclick="change(2,2,this)" class="change dis_f ali_ct flex_col jus_ct ">
-				<img src="<%=basePath%>/js/appWeb/images/h2.png" class="ver_mid" style="width:0.8rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/h2.png" class="ver_mid" style="width:0.8rem;"/>
 				<p class='lir'  id="posterCount">0</p>
 			</li>
 
 			<li onclick="change(3,2,this)" class="change dis_f ali_ct flex_col jus_ct ">
-				<img src="<%=basePath%>/js/appWeb/images/h3.png" class="ver_mid" style="width:0.8rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/h3.png" class="ver_mid" style="width:0.8rem;"/>
 				<p class='lir' id="mediaCount">0</p>
 			</li>
 
 			<li onclick="change(4,2,this)" class="change dis_f ali_ct flex_col jus_ct ">
-				<img src="<%=basePath%>/js/appWeb/images/h4.png" class="ver_mid" style="width:0.8rem;" />
+				<img src="<%=basePath%>/js/appWeb/images/h4.png" class="ver_mid" style="width:0.8rem;"/>
 				<p class='lir' id="activityCount">0</p>
 			</li>
 		</ul>

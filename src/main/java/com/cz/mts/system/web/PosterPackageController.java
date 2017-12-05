@@ -429,6 +429,18 @@ public class PosterPackageController  extends BaseController {
 				 Card card = cardService.findCardById(posterPackage.getCardId());
 				 if(null != card && StringUtils.isNotBlank(card.getTitle())){
 					 posterPackage.setCardTitle(card.getTitle());
+					 
+					 if(card.getCatergoryId()!=null&&posterPackage.getCardCategoryId()==null){
+						 Category category = categoryService.findCategoryById(card.getCatergoryId());
+						 if(category != null){
+							 if(StringUtils.isNotBlank(category.getName())){
+								 posterPackage.setCardCategoryName(category.getName());
+							 }
+							 
+						 }
+						 
+					 }
+					 
 				 }
 			 }
 			 
