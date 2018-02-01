@@ -574,8 +574,24 @@
                 <artifactId>aliyun-java-sdk-sms</artifactId>
                 <version>3.0.0-rc1</version>
             </dependency>
-      
-      
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>DJNativeSwing-SWT</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>DJNativeSwing</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.swt.org.eclipse.swt.win32.win32.x86_64.4.3.swt</groupId>
+			<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+			<version>4.3</version>
+		</dependency>
+
+
+
 	</dependencies> 
 
 	<build>
